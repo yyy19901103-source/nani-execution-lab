@@ -1,0 +1,342 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="製造DX ROI計算ツール"
+  description="製造DXプロジェクトの投資対効果（ROI）を簡易計算するツール。年間効果額・回収期間・3年累積効果をリアルタイムで算出。"
+>
+
+  <!-- Hero -->
+  <div style="position:relative;height:18rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a10 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.03;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">ROI Calculator</p>
+      <h1 style="font-size:clamp(1.75rem,5vw,2.75rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">製造DX ROI計算ツール</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;font-weight:300;">DXプロジェクトの投資対効果を定量化して<br>意思決定・社内提案を加速する</p>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:3rem 1.5rem 6rem;">
+
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:2rem;align-items:start;" id="main-grid">
+
+      <!-- LEFT: Input form -->
+      <div>
+
+        <!-- Effects section -->
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:2rem;margin-bottom:1.5rem;">
+          <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.35em;margin-bottom:1.5rem;">BENEFITS — 効果の定量化</p>
+
+          <div class="field-group">
+            <label class="field-label">削減工数（時間/月）</label>
+            <input class="calc-input" id="hours_saved" type="number" min="0" value="0" placeholder="0">
+          </div>
+          <div class="field-group">
+            <label class="field-label">時間単価（円/時間）</label>
+            <input class="calc-input" id="hourly_rate" type="number" min="0" value="3500" placeholder="3500">
+          </div>
+
+          <div style="height:1px;background:rgba(255,255,255,0.04);margin:1.25rem 0;"></div>
+
+          <div class="field-group">
+            <label class="field-label">削減不良件数（件/月）</label>
+            <input class="calc-input" id="defect_saved" type="number" min="0" value="0" placeholder="0">
+          </div>
+          <div class="field-group">
+            <label class="field-label">不良1件あたりコスト（円）</label>
+            <input class="calc-input" id="defect_cost" type="number" min="0" value="50000" placeholder="50000">
+          </div>
+
+          <div style="height:1px;background:rgba(255,255,255,0.04);margin:1.25rem 0;"></div>
+
+          <div class="field-group">
+            <label class="field-label">削減クレーム件数（件/月）</label>
+            <input class="calc-input" id="claim_saved" type="number" min="0" value="0" placeholder="0">
+          </div>
+          <div class="field-group">
+            <label class="field-label">クレーム1件あたり対応コスト（円）</label>
+            <input class="calc-input" id="claim_cost" type="number" min="0" value="100000" placeholder="100000">
+          </div>
+
+          <div style="height:1px;background:rgba(255,255,255,0.04);margin:1.25rem 0;"></div>
+
+          <div class="field-group">
+            <label class="field-label">納期遵守率改善による受注増（万円/年）</label>
+            <input class="calc-input" id="revenue_increase" type="number" min="0" value="0" placeholder="0">
+          </div>
+        </div>
+
+        <!-- Investment section -->
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:2rem;margin-bottom:1.5rem;">
+          <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.35em;margin-bottom:1.5rem;">INVESTMENT — 投資額</p>
+
+          <div class="field-group">
+            <label class="field-label">システム導入費（初期）（万円）</label>
+            <input class="calc-input" id="system_cost" type="number" min="0" value="0" placeholder="0">
+          </div>
+          <div class="field-group">
+            <label class="field-label">構築・設定工数費（万円）</label>
+            <input class="calc-input" id="build_cost" type="number" min="0" value="0" placeholder="0">
+          </div>
+          <div class="field-group">
+            <label class="field-label">年間保守費（万円）</label>
+            <input class="calc-input" id="maintenance_cost" type="number" min="0" value="0" placeholder="0">
+          </div>
+          <div class="field-group">
+            <label class="field-label">社内工数（教育・移行）（万円）</label>
+            <input class="calc-input" id="internal_cost" type="number" min="0" value="0" placeholder="0">
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div style="background:rgba(200,169,110,0.04);border:1px solid rgba(200,169,110,0.12);padding:1.5rem;">
+          <p style="color:rgba(200,169,110,0.7);font-size:0.65rem;letter-spacing:0.25em;margin-bottom:0.75rem;">計算の前提と注意事項</p>
+          <ul style="color:rgba(255,255,255,0.4);font-size:0.75rem;line-height:1.85;margin:0;padding-left:1.25rem;">
+            <li>本ツールは概算ROI算出を目的とした簡易計算です。実際の意思決定には詳細な業務分析が必要です。</li>
+            <li>時間単価は社会保険料・管理費等を含む実コストベースでの入力を推奨します（目安: 時給の1.3〜1.5倍）。</li>
+            <li>不良・クレームコストには調査工数・手直し費・顧客信頼の毀損なども含めて試算することを推奨します。</li>
+            <li>効果は段階的に発現するため、1年目は実績の50〜70%程度で保守的に見積もるのが現実的です。</li>
+            <li>ROI計算における「投資額」は初年度の総コストを基準にしています。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIGHT: Results (sticky) -->
+      <div id="results-panel" style="position:sticky;top:80px;">
+
+        <div style="background:#111114;border:1px solid rgba(200,169,110,0.2);padding:1.75rem;margin-bottom:1rem;">
+          <p style="color:rgba(200,169,110,0.6);font-size:0.6rem;letter-spacing:0.35em;margin-bottom:1.5rem;">RESULTS — 計算結果</p>
+
+          <!-- Annual benefit -->
+          <div style="text-align:center;padding:1.25rem 0;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:1.25rem;">
+            <p style="color:rgba(255,255,255,0.35);font-size:0.6rem;letter-spacing:0.2em;margin-bottom:0.5rem;">年間効果額</p>
+            <div id="r_annual_benefit" style="font-size:2.25rem;font-weight:100;color:#c8a96e;line-height:1;">¥0</div>
+            <p style="color:rgba(255,255,255,0.25);font-size:0.65rem;margin-top:0.35rem;">万円</p>
+          </div>
+
+          <!-- ROI -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+            <div style="text-align:center;padding:1rem 0.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);">
+              <p style="color:rgba(255,255,255,0.3);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.4rem;">ROI（初年）</p>
+              <div id="r_roi" style="font-size:1.5rem;font-weight:300;color:#4ec97a;line-height:1;">—%</div>
+            </div>
+            <div style="text-align:center;padding:1rem 0.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);">
+              <p style="color:rgba(255,255,255,0.3);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.4rem;">回収期間</p>
+              <div id="r_payback" style="font-size:1.5rem;font-weight:300;color:#c8a96e;line-height:1;">—</div>
+              <p style="color:rgba(255,255,255,0.25);font-size:0.58rem;">ヶ月</p>
+            </div>
+          </div>
+
+          <!-- 3 year cumulative -->
+          <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);padding:1rem;margin-bottom:1.25rem;">
+            <p style="color:rgba(255,255,255,0.3);font-size:0.6rem;letter-spacing:0.15em;margin-bottom:0.4rem;">3年累積効果</p>
+            <div id="r_cumulative" style="font-size:1.4rem;font-weight:300;color:#c8a96e;">¥0 万円</div>
+          </div>
+
+          <!-- Breakdown -->
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);line-height:2;border-top:1px solid rgba(255,255,255,0.05);padding-top:1rem;">
+            <div style="display:flex;justify-content:space-between;"><span>工数削減（年）</span><span id="r_hour_effect">¥0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>不良削減（年）</span><span id="r_defect_effect">¥0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>クレーム削減（年）</span><span id="r_claim_effect">¥0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>受注増（年）</span><span id="r_revenue_effect">¥0 万円</span></div>
+            <div style="height:1px;background:rgba(255,255,255,0.04);margin:0.5rem 0;"></div>
+            <div style="display:flex;justify-content:space-between;"><span>総投資額（初年）</span><span id="r_invest_yr1">¥0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>総投資額（次年以降）</span><span id="r_invest_yr2">¥0 万円/年</span></div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.625rem;">
+          <button id="copy-btn" style="padding:0.75rem;border:1px solid rgba(200,169,110,0.35);background:transparent;color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;cursor:pointer;transition:all 0.2s;width:100%;" onmouseover="this.style.background='rgba(200,169,110,0.08)'" onmouseout="this.style.background='transparent'">
+            📋 計算結果をコピー
+          </button>
+          <button id="reset-btn" style="padding:0.75rem;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);font-size:0.7rem;letter-spacing:0.2em;cursor:pointer;transition:all 0.2s;width:100%;" onmouseover="this.style.borderColor='rgba(255,255,255,0.25)';this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.4)'">
+            ↺ リセット
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /main-grid -->
+
+  </div>
+
+</BaseLayout>
+
+<style>
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+  .field-label {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+  .calc-input {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #edede8;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+  .calc-input:focus {
+    border-color: rgba(200,169,110,0.4);
+  }
+  .calc-input::-webkit-outer-spin-button,
+  .calc-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  @media (max-width: 900px) {
+    #main-grid {
+      grid-template-columns: 1fr !important;
+    }
+    #results-panel {
+      position: static !important;
+    }
+  }
+</style>
+
+<script is:inline>
+(function() {
+  function v(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+
+  function fmt(num) {
+    if (num >= 10000) return (num / 10000).toFixed(1);
+    return (num / 10000).toFixed(2);
+  }
+
+  function calculate() {
+    const hoursSaved    = v('hours_saved');
+    const hourlyRate    = v('hourly_rate');
+    const defectSaved   = v('defect_saved');
+    const defectCost    = v('defect_cost');
+    const claimSaved    = v('claim_saved');
+    const claimCost     = v('claim_cost');
+    const revenueInc    = v('revenue_increase') * 10000; // 万円→円
+
+    const systemCost    = v('system_cost') * 10000;
+    const buildCost     = v('build_cost') * 10000;
+    const maintenanceCost = v('maintenance_cost') * 10000;
+    const internalCost  = v('internal_cost') * 10000;
+
+    // Annual effects
+    const hourEffect    = hoursSaved * hourlyRate * 12;
+    const defectEffect  = defectSaved * defectCost * 12;
+    const claimEffect   = claimSaved * claimCost * 12;
+    const annualBenefit = hourEffect + defectEffect + claimEffect + revenueInc;
+
+    // Investment
+    const investYr1     = systemCost + buildCost + maintenanceCost + internalCost;
+    const investYr2     = maintenanceCost;
+
+    // ROI
+    const roiPct        = investYr1 > 0 ? ((annualBenefit - investYr1) / investYr1) * 100 : null;
+
+    // Payback months
+    const monthlyBenefit = annualBenefit / 12;
+    const paybackMonths  = monthlyBenefit > 0 ? investYr1 / monthlyBenefit : null;
+
+    // 3-year cumulative
+    const cumulative3yr  = annualBenefit * 3 - systemCost - buildCost - internalCost - maintenanceCost * 3;
+
+    // Update DOM
+    const ab = annualBenefit / 10000;
+    document.getElementById('r_annual_benefit').textContent = `¥${ab >= 0 ? '' : '-'}${Math.abs(ab).toFixed(1)}`;
+
+    const roiEl = document.getElementById('r_roi');
+    if (roiPct !== null) {
+      roiEl.textContent = `${roiPct >= 0 ? '+' : ''}${roiPct.toFixed(1)}%`;
+      roiEl.style.color = roiPct < 0 ? '#e06060' : roiPct < 50 ? '#e0c060' : '#4ec97a';
+    } else {
+      roiEl.textContent = '—';
+      roiEl.style.color = 'rgba(255,255,255,0.3)';
+    }
+
+    const pbEl = document.getElementById('r_payback');
+    if (paybackMonths !== null && isFinite(paybackMonths)) {
+      pbEl.textContent = paybackMonths.toFixed(1);
+      pbEl.style.color = paybackMonths <= 12 ? '#4ec97a' : paybackMonths <= 24 ? '#c8a96e' : '#e06060';
+    } else {
+      pbEl.textContent = '—';
+      pbEl.style.color = 'rgba(255,255,255,0.3)';
+    }
+
+    const cum = cumulative3yr / 10000;
+    const cumEl = document.getElementById('r_cumulative');
+    cumEl.textContent = `${cum >= 0 ? '+ ' : ''}¥${cum.toFixed(1)} 万円`;
+    cumEl.style.color = cum >= 0 ? '#c8a96e' : '#e06060';
+
+    document.getElementById('r_hour_effect').textContent    = `¥${(hourEffect/10000).toFixed(1)} 万円`;
+    document.getElementById('r_defect_effect').textContent  = `¥${(defectEffect/10000).toFixed(1)} 万円`;
+    document.getElementById('r_claim_effect').textContent   = `¥${(claimEffect/10000).toFixed(1)} 万円`;
+    document.getElementById('r_revenue_effect').textContent = `¥${(revenueInc/10000).toFixed(1)} 万円`;
+    document.getElementById('r_invest_yr1').textContent     = `¥${(investYr1/10000).toFixed(1)} 万円`;
+    document.getElementById('r_invest_yr2').textContent     = `¥${(investYr2/10000).toFixed(1)} 万円/年`;
+  }
+
+  document.querySelectorAll('.calc-input').forEach(inp => {
+    inp.addEventListener('input', calculate);
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    document.getElementById('hours_saved').value = '0';
+    document.getElementById('hourly_rate').value = '3500';
+    document.getElementById('defect_saved').value = '0';
+    document.getElementById('defect_cost').value = '50000';
+    document.getElementById('claim_saved').value = '0';
+    document.getElementById('claim_cost').value = '100000';
+    document.getElementById('revenue_increase').value = '0';
+    document.getElementById('system_cost').value = '0';
+    document.getElementById('build_cost').value = '0';
+    document.getElementById('maintenance_cost').value = '0';
+    document.getElementById('internal_cost').value = '0';
+    calculate();
+  });
+
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const hoursSaved   = parseFloat(document.getElementById('hours_saved').value) || 0;
+    const hourlyRate   = parseFloat(document.getElementById('hourly_rate').value) || 0;
+    const defectSaved  = parseFloat(document.getElementById('defect_saved').value) || 0;
+    const defectCost   = parseFloat(document.getElementById('defect_cost').value) || 0;
+    const claimSaved   = parseFloat(document.getElementById('claim_saved').value) || 0;
+    const claimCost    = parseFloat(document.getElementById('claim_cost').value) || 0;
+    const revenueInc   = (parseFloat(document.getElementById('revenue_increase').value) || 0);
+    const systemCost   = parseFloat(document.getElementById('system_cost').value) || 0;
+    const buildCost    = parseFloat(document.getElementById('build_cost').value) || 0;
+    const maintCost    = parseFloat(document.getElementById('maintenance_cost').value) || 0;
+    const intCost      = parseFloat(document.getElementById('internal_cost').value) || 0;
+
+    const annualBenManen = (hoursSaved*hourlyRate*12 + defectSaved*defectCost*12 + claimSaved*claimCost*12)/10000 + revenueInc;
+    const investYr1Manen = systemCost + buildCost + maintCost + intCost;
+    const roiPct = investYr1Manen > 0 ? ((annualBenManen - investYr1Manen) / investYr1Manen * 100).toFixed(1) : '—';
+    const paybackMo = annualBenManen > 0 ? (investYr1Manen / (annualBenManen/12)).toFixed(1) : '—';
+    const cum3yr = annualBenManen * 3 - (systemCost + buildCost + intCost) - maintCost * 3;
+
+    let text = `【製造DX ROI計算結果】\n\n`;
+    text += `■ 年間効果額: ${annualBenManen.toFixed(1)} 万円\n`;
+    text += `■ ROI（初年）: ${roiPct}%\n`;
+    text += `■ 回収期間: ${paybackMo} ヶ月\n`;
+    text += `■ 3年累積効果: ${cum3yr.toFixed(1)} 万円\n\n`;
+    text += `■ 総投資額（初年）: ${investYr1Manen.toFixed(1)} 万円\n\n`;
+    text += `算出: NaNi Execution Lab ROI計算ツール (${window.location.href})`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ コピーしました';
+      setTimeout(() => { btn.textContent = '📋 計算結果をコピー'; }, 2000);
+    });
+  });
+
+  calculate();
+})();
+</script>

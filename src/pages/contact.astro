@@ -2,30 +2,108 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const email = 'yyy19901103@gmail.com';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const inquiryTypes = [
+  {
+    icon: '🔍',
+    title: 'DX推進の相談',
+    body: '現場課題・システム選定・効果測定などご相談ください。',
+  },
+  {
+    icon: '📋',
+    title: 'テンプレート・資料の依頼',
+    body: 'カスタムテンプレート・事例詳細資料のご依頼はこちら。',
+  },
+  {
+    icon: '🤝',
+    title: '取材・登壇・コラボ',
+    body: 'メディア取材・勉強会・イベント登壇のお誘いを歓迎します。',
+  },
+  {
+    icon: '💬',
+    title: 'その他のご連絡',
+    body: 'フィードバック・アイデア共有などお気軽にどうぞ。',
+  },
+];
+
+const faqs = [
+  {
+    q: '費用はかかりますか？',
+    a: '情報発信・学習コンテンツはすべて無料です。個別コンサルティングについては内容に応じてご相談ください。',
+  },
+  {
+    q: '製造業以外でも相談できますか？',
+    a: 'はい。業務自動化・データ活用に関するご相談はどんな業種でも受け付けています。',
+  },
+  {
+    q: '返信にどのくらいかかりますか？',
+    a: '通常2〜3営業日以内にご返信します。内容によっては確認に時間をいただく場合があります。',
+  },
+  {
+    q: '学習ロードマップについて質問できますか？',
+    a: 'もちろんです。特定のテーマについての質問・補足資料の依頼もお気軽にどうぞ。',
+  },
+  {
+    q: '守秘義務はありますか？',
+    a: 'ご相談内容は第三者に共有しません。具体的な事例・数値を含むご相談もご安心ください。',
+  },
+];
 ---
 
 <BaseLayout title="CONTACT" description="NaNi Execution Lab へのお問い合わせ。製造業DX・AI活用のご相談はこちら。">
-  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
-    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">CONTACT</p>
-    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">Contact</h1>
-    <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
-      事例に関するご質問、取り組みへの連携、技術相談などお気軽にご連絡ください。
-    </p>
+
+  <!-- Hero -->
+  <div style="position:relative;height:18rem;overflow:hidden;margin-top:64px;">
+    <img
+      src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1600&q=60"
+      alt="CONTACT"
+      loading="lazy"
+      style="width:100%;height:100%;object-fit:cover;opacity:0.2;"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,rgba(12,12,14,0.05) 45%,rgba(12,12,14,0.98) 100%);"></div>
+    <div style="position:absolute;bottom:2.5rem;left:0;right:0;max-width:1100px;margin:0 auto;padding:0 1.5rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.25);font-size:0.68rem;letter-spacing:0.12em;margin-bottom:0.75rem;">
+        <a href={`${base}/`} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">TOP</a>
+        <span>›</span>
+        <span style="color:rgba(255,255,255,0.45);">CONTACT</span>
+      </div>
+      <h1 style="font-size:clamp(1.75rem,5vw,3rem);font-weight:100;letter-spacing:0.2em;color:#edede8;line-height:1.2;">Contact</h1>
+      <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;letter-spacing:0.06em;margin-top:0.5rem;">事例に関するご質問、取り組みへの連携、技術相談などお気軽にご連絡ください</p>
+    </div>
   </div>
 
-  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:4rem;max-width:56rem;">
+  <!-- Main content -->
+  <div style="max-width:1100px;margin:0 auto;padding:3rem 1.5rem 8rem;">
 
-      <!-- Email -->
-      <div>
-        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">EMAIL</p>
-        <p style="color:rgba(255,255,255,0.45);font-size:0.875rem;line-height:1.9;margin-bottom:2rem;">
-          以下のメールアドレスへ直接ご連絡ください。<br/>
-          通常2〜3営業日以内に返信いたします。
-        </p>
+    <!-- Inquiry type cards -->
+    <section style="margin-bottom:4rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:1.75rem;">お問い合わせ種別</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;max-width:56rem;">
+        {inquiryTypes.map(item => (
+          <div
+            class="inquiry-card"
+            style="border:1px solid rgba(255,255,255,0.07);padding:1.5rem;border-radius:6px;background:rgba(255,255,255,0.015);transition:all 0.2s;cursor:default;"
+          >
+            <div style="font-size:1.5rem;margin-bottom:0.875rem;line-height:1;">{item.icon}</div>
+            <div style="font-size:0.82rem;font-weight:400;color:rgba(237,237,232,0.85);margin-bottom:0.5rem;letter-spacing:0.03em;">{item.title}</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.38);line-height:1.8;">{item.body}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Email CTA -->
+    <section style="max-width:56rem;margin-bottom:5rem;padding:2.5rem;border:1px solid rgba(200,169,110,0.15);border-radius:8px;background:rgba(200,169,110,0.03);">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:1rem;">EMAIL</p>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.875rem;line-height:1.9;margin-bottom:1.75rem;max-width:36rem;">
+        以下のメールアドレスへ直接ご連絡ください。<br/>
+        通常2〜3営業日以内に返信いたします。
+      </p>
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
         <a
           href={`mailto:${email}`}
-          style="display:inline-flex;align-items:center;gap:0.75rem;border:1px solid #c8a96e;color:#c8a96e;font-size:0.75rem;letter-spacing:0.2em;padding:1rem 2rem;transition:all 0.3s;text-decoration:none;"
+          style="display:inline-flex;align-items:center;gap:0.75rem;border:1px solid #c8a96e;color:#c8a96e;font-size:0.75rem;letter-spacing:0.2em;padding:0.875rem 2rem;transition:all 0.3s;text-decoration:none;border-radius:2px;"
           onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
           onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
         >
@@ -34,25 +112,75 @@ const email = 'yyy19901103@gmail.com';
           </svg>
           <span>メールを送る</span>
         </a>
-        <p style="color:rgba(255,255,255,0.2);font-size:0.7rem;margin-top:0.875rem;letter-spacing:0.05em;">{email}</p>
+        <p style="color:rgba(255,255,255,0.2);font-size:0.72rem;letter-spacing:0.05em;">{email}</p>
       </div>
+    </section>
 
-      <!-- Guidelines -->
-      <div>
-        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">GUIDELINES</p>
-        <div style="display:flex;flex-direction:column;gap:1.25rem;">
-          {[
-            { title: 'ご相談歓迎', body: '製造業DX・業務自動化に関するご相談はお気軽にどうぞ。' },
-            { title: '取材・登壇', body: '事例の取材・勉強会・セミナーへの登壇依頼も受け付けています。' },
-            { title: '技術コラボ', body: '同じ課題に取り組む方との情報交換・コラボレーションも歓迎します。' },
-          ].map(item => (
-            <div style="border-left:1px solid rgba(255,255,255,0.1);padding-left:1rem;">
-              <div style="color:#edede8;font-size:0.85rem;font-weight:400;margin-bottom:0.375rem;">{item.title}</div>
-              <div style="color:rgba(255,255,255,0.4);font-size:0.78rem;line-height:1.8;">{item.body}</div>
+    <!-- FAQ -->
+    <section style="max-width:52rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:2rem;">よくある質問</p>
+      <div style="display:flex;flex-direction:column;gap:0;" id="faq-list">
+        {faqs.map((faq, i) => (
+          <div
+            class="faq-item"
+            style="border-top:1px solid rgba(255,255,255,0.06);overflow:hidden;"
+            data-index={i}
+          >
+            <button
+              class="faq-trigger"
+              style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.125rem 0;background:transparent;border:none;cursor:pointer;text-align:left;gap:1rem;"
+            >
+              <span style="font-size:0.85rem;color:rgba(237,237,232,0.78);letter-spacing:0.02em;line-height:1.6;">{faq.q}</span>
+              <span class="faq-icon" style="flex-shrink:0;color:rgba(200,169,110,0.5);font-size:1rem;line-height:1;transition:transform 0.25s;">+</span>
+            </button>
+            <div class="faq-body" style="max-height:0;overflow:hidden;transition:max-height 0.3s ease;">
+              <p style="padding:0 0 1.25rem;color:rgba(255,255,255,0.42);font-size:0.8rem;line-height:1.9;">{faq.a}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+        <div style="border-top:1px solid rgba(255,255,255,0.06);"></div>
       </div>
-    </div>
+    </section>
+
   </div>
 </BaseLayout>
+
+<style>
+  .inquiry-card:hover {
+    border-color: rgba(200,169,110,0.2) !important;
+    background: rgba(200,169,110,0.04) !important;
+  }
+</style>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const trigger = item.querySelector('.faq-trigger');
+    const body = item.querySelector('.faq-body') as HTMLElement;
+    const icon = item.querySelector('.faq-icon') as HTMLElement;
+
+    trigger?.addEventListener('click', () => {
+      const isOpen = body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+      // Close all
+      document.querySelectorAll('.faq-body').forEach((b: Element) => {
+        (b as HTMLElement).style.maxHeight = '0px';
+      });
+      document.querySelectorAll('.faq-icon').forEach((ic: Element) => {
+        (ic as HTMLElement).textContent = '+';
+        (ic as HTMLElement).style.transform = 'rotate(0deg)';
+      });
+      // Open clicked if it was closed
+      if (!isOpen) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        icon.textContent = '−';
+        icon.style.transform = 'rotate(180deg)';
+      }
+    });
+  });
+
+  // Lazy image
+  document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+    if ((img as HTMLImageElement).complete) img.classList.add('loaded');
+    else img.addEventListener('load', () => img.classList.add('loaded'));
+  });
+</script>

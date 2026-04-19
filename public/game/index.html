@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>まほうの庭 ✿ Magic Garden</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ ローディング画面 ═══ -->
+<div id="screen-loading" class="screen active">
+  <div class="loading-wrap">
+    <div class="loading-sprite">🌸</div>
+    <h1 class="loading-title">まほうの庭</h1>
+    <p class="loading-sub">✿ Magic Garden ✿</p>
+    <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
+    <p class="loading-text">読み込んでいます…</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ ゲーム画面 ═══════════ -->
+<div id="screen-game" class="screen">
+
+  <!-- ヘッダー -->
+  <header class="game-header">
+    <div class="hd-resources">
+      <span class="res-coins">🪙 <span id="coins">0</span></span>
+      <span class="res-crystals">💎 <span id="crystals">0</span></span>
+      <span class="res-stamina" id="stamina-display">⚡ 30/30</span>
+    </div>
+    <div class="hd-player" id="player-name">まほうつかい</div>
+    <div class="hd-icons">
+      <button id="btn-bgm" class="btn-icon" title="BGM">🔊</button>
+      <button id="btn-cloud-settings" class="btn-cloud-icon" title="クラウド設定">☁️</button>
+    </div>
+  </header>
+
+  <!-- タブナビ -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="home">🏠<br>ホーム</button>
+    <button class="tab-btn" data-tab="adventure">⚔️<br>冒険</button>
+    <button class="tab-btn" data-tab="generals">👥<br>副将</button>
+    <button class="tab-btn" data-tab="gacha">🎲<br>召喚</button>
+    <button class="tab-btn" data-tab="zukan">📖<br>図鑑</button>
+  </nav>
+
+  <!-- タブコンテンツ -->
+  <main class="tab-content">
+
+    <!-- ══════════════ ホームタブ ══════════════ -->
+    <div id="tab-home" class="tab-panel active">
+
+      <!-- 放置報酬ポップアップ -->
+      <div id="idle-reward" class="overlay hidden">
+        <div class="popup-card">
+          <span class="popup-icon">🌸</span>
+          <h3 class="popup-title">おかえり！</h3>
+          <p id="idle-reward-text" class="popup-text">コインを集めておいたよ！</p>
+          <button id="collect-btn" class="btn btn-primary">受け取る ✓</button>
+        </div>
+      </div>
+
+      <!-- ダッシュボード -->
+      <div id="home-dashboard" class="home-dashboard"></div>
+
+      <!-- 現在の編成 -->
+      <section class="home-section">
+        <h3 class="section-label">⚔️ 現在の編成</h3>
+        <div id="formation-display" class="formation-display"></div>
+      </section>
+
+      <!-- 今日の任務 -->
+      <section class="home-section">
+        <h3 class="section-label">📋 今日の任務</h3>
+        <div id="daily-tasks" class="daily-tasks-list"></div>
+      </section>
+
+      <!-- 保存 -->
+      <button id="save-btn" class="btn btn-save">💾 保存する</button>
+      <div id="save-confirm" class="toast hidden">✓ 保存しました！</div>
+
+    </div><!-- /tab-home -->
+
+    <!-- ══════════════ 冒険タブ ══════════════ -->
+    <div id="tab-adventure" class="tab-panel">
+
+      <!-- バトル結果オーバーレイ -->
+      <div id="battle-result" class="overlay hidden">
+        <div class="result-panel">
+          <div id="result-banner" class="result-banner">勝利！</div>
+          <div id="result-loot"   class="result-loot"></div>
+          <div id="result-log"    class="result-log"></div>
+          <div class="result-btns">
+            <button id="result-retry" class="btn btn-retry hidden">🔄 再挑戦</button>
+            <button id="result-close" class="btn btn-primary">閉じる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 章タブ -->
+      <div class="chapter-tabs">
+        <button class="chapter-tab active" data-chapter="0">一章</button>
+        <button class="chapter-tab"        data-chapter="1">二章</button>
+        <button class="chapter-tab"        data-chapter="2">三章</button>
+        <button class="chapter-tab"        data-chapter="3">四章</button>
+        <button class="chapter-tab"        data-chapter="4">五章</button>
+        <button class="chapter-tab"        data-boss="true">👹日課</button>
+      </div>
+
+      <!-- ステージリスト -->
+      <div id="stage-list" class="stage-list"></div>
+
+      <!-- 日課ボスセクション -->
+      <div id="daily-boss-section" class="daily-boss-section hidden">
+        <div class="boss-attempts-bar">
+          <span id="boss-attempts-text">挑戦回数: 3回残り</span>
+        </div>
+        <div id="boss-cards" class="boss-cards"></div>
+      </div>
+
+    </div><!-- /tab-adventure -->
+
+    <!-- ══════════════ 副将タブ ══════════════ -->
+    <div id="tab-generals" class="tab-panel">
+
+      <!-- 副将詳細オーバーレイ -->
+      <div id="general-detail" class="detail-overlay hidden">
+        <div class="detail-panel">
+          <button id="detail-close" class="detail-close">✕</button>
+          <div id="detail-body" class="detail-body"></div>
+        </div>
+      </div>
+
+      <!-- 編成スロット -->
+      <section class="home-section">
+        <h3 class="section-label">⚔️ 編成（最大3体）</h3>
+        <div id="formation-editor" class="formation-editor"></div>
+      </section>
+
+      <!-- 所持副将 -->
+      <section class="home-section">
+        <h3 class="section-label">👥 所持副将 <span id="generals-count"></span></h3>
+        <div id="generals-grid" class="generals-grid"></div>
+      </section>
+
+    </div><!-- /tab-generals -->
+
+    <!-- ══════════════ ガチャタブ ══════════════ -->
+    <div id="tab-gacha" class="tab-panel">
+
+      <!-- ガチャ結果オーバーレイ -->
+      <div id="gacha-result" class="overlay hidden">
+        <div class="gacha-result-panel">
+          <h3 class="gacha-result-title">✨ 召喚結果！</h3>
+          <div id="gacha-result-cards" class="gacha-result-grid"></div>
+          <button id="gacha-result-close" class="btn btn-primary">閉じる</button>
+        </div>
+      </div>
+
+      <!-- バナー -->
+      <div class="gacha-banner">
+        <div class="banner-title">🌟 副将召喚 🌟</div>
+        <div class="banner-rates">
+          <span class="rate-ssr">SSR 15%</span>
+          <span class="rate-sr">SR  45%</span>
+          <span class="rate-r">R   40%</span>
+        </div>
+        <div class="gacha-btns">
+          <button id="draw-1-btn" class="btn btn-draw1">
+            1回召喚<br><small>💎 30</small>
+          </button>
+          <button id="draw-10-btn" class="btn btn-draw10">
+            10回召喚<br><small>💎 280</small>
+          </button>
+        </div>
+        <p id="pity-count" class="pity-text">天井まで: 90回</p>
+      </div>
+
+      <!-- 装備倉庫 -->
+      <section class="home-section">
+        <h3 class="section-label">🎒 装備倉庫</h3>
+        <div id="equip-inventory" class="equip-list"></div>
+      </section>
+
+      <!-- ショップ -->
+      <section class="home-section">
+        <h3 class="section-label">🛒 装備ショップ <span class="shop-refresh-label">毎日更新</span></h3>
+        <div id="shop-list" class="shop-list"></div>
+      </section>
+
+      <!-- 素材インベントリ -->
+      <section class="home-section">
+        <h3 class="section-label">🧪 所持素材</h3>
+        <div id="materials-list" class="materials-list"></div>
+      </section>
+
+    </div><!-- /tab-gacha -->
+
+    <!-- ══════════════ 図鑑タブ ══════════════ -->
+    <div id="tab-zukan" class="tab-panel">
+
+      <!-- キャラ図鑑 -->
+      <section class="home-section">
+        <h3 class="section-label">👥 副将図鑑 <span id="zukan-count"></span></h3>
+        <div id="zukan-generals" class="zukan-generals"></div>
+      </section>
+
+      <!-- ステージ進捗 -->
+      <section class="home-section">
+        <h3 class="section-label">🗺️ 冒険進捗</h3>
+        <div id="zukan-stages" class="zukan-stages"></div>
+      </section>
+
+      <!-- 装備図鑑 -->
+      <section class="home-section">
+        <h3 class="section-label">⚔️ 装備図鑑</h3>
+        <div id="zukan-equips" class="zukan-equips"></div>
+      </section>
+
+    </div><!-- /tab-zukan -->
+
+  </main>
+</div><!-- /screen-game -->
+
+<!-- ═══ クラウド設定モーダル ═══ -->
+<div id="cloud-modal" class="overlay hidden">
+  <div class="popup-card cloud-modal-card">
+    <h3 class="popup-title">☁️ クラウド設定</h3>
+    <p class="cloud-modal-desc">Google Sheets でセーブを共有します。<br>2人で同じシートに繋いでね！</p>
+
+    <label class="cloud-label">GAS エンドポイント URL</label>
+    <input id="cloud-endpoint" class="cloud-input" type="url"
+           placeholder="https://script.google.com/macros/s/.../exec">
+
+    <label class="cloud-label">プレイヤーID <small>（例: player1 / player2）</small></label>
+    <input id="cloud-playerid" class="cloud-input" type="text"
+           placeholder="player1" maxlength="32">
+
+    <div class="cloud-btns">
+      <button id="cloud-test-btn"  class="btn btn-outline">🔌 接続テスト</button>
+      <button id="cloud-pull-btn"  class="btn btn-outline">📥 クラウドから読込</button>
+    </div>
+    <div id="cloud-status" class="cloud-status"></div>
+
+    <div class="cloud-btns" style="margin-top:8px">
+      <button id="cloud-save-btn"  class="btn btn-primary">保存</button>
+      <button id="cloud-close-btn" class="btn btn-secondary">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- 装備ピッカーオーバーレイ（全タブ共通） -->
+<div id="equip-picker" class="detail-overlay hidden">
+  <div class="detail-panel equip-picker-panel">
+    <button id="equip-picker-close" class="detail-close">✕</button>
+    <h3 id="equip-picker-title" class="equip-picker-title">装備を選ぶ</h3>
+    <div id="equip-picker-list" class="equip-picker-list"></div>
+  </div>
+</div>
+
+<!-- JS 読み込み順序は依存関係を考慮 -->
+<script src="js/generals_data.js"></script>
+<script src="js/stages_data.js"></script>
+<script src="js/battle_engine.js"></script>
+<script src="js/bgm.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/idle.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

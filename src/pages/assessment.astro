@@ -1,0 +1,372 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="製造DX 成熟度診断"
+  description="20問の質問に答えて、自社のDX成熟度と優先テーマを把握する製造DX成熟度診断ツール。"
+>
+
+  <!-- Hero -->
+  <div style="position:relative;height:20rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0f1520 60%,#12100e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">Self Assessment Tool</p>
+      <h1 style="font-size:clamp(1.75rem,5vw,2.75rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">製造DX 成熟度診断</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;font-weight:300;max-width:34rem;margin:0 auto;">20問の質問に答えて、自社のDX成熟度と<br>優先テーマを把握する</p>
+    </div>
+  </div>
+
+  <div style="max-width:860px;margin:0 auto;padding:3rem 1.5rem 6rem;">
+
+    <!-- Intro card -->
+    <div id="intro-card" style="background:#111114;border:1px solid rgba(200,169,110,0.2);padding:2.5rem;margin-bottom:2rem;">
+      <h2 style="font-size:1.1rem;font-weight:300;color:#edede8;margin-bottom:1rem;letter-spacing:0.05em;">診断の使い方</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-bottom:1.75rem;">
+        <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+          <span style="color:#c8a96e;font-size:1.1rem;flex-shrink:0;">01</span>
+          <p style="color:rgba(255,255,255,0.5);font-size:0.82rem;line-height:1.7;margin:0;">20問に「はい / 一部該当 / いいえ」で回答</p>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+          <span style="color:#c8a96e;font-size:1.1rem;flex-shrink:0;">02</span>
+          <p style="color:rgba(255,255,255,0.5);font-size:0.82rem;line-height:1.7;margin:0;">5カテゴリ別スコアと総合成熟度レベルを算出</p>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+          <span style="color:#c8a96e;font-size:1.1rem;flex-shrink:0;">03</span>
+          <p style="color:rgba(255,255,255,0.5);font-size:0.82rem;line-height:1.7;margin:0;">スコアの低いカテゴリへの推奨学習リンクを確認</p>
+        </div>
+      </div>
+      <button id="start-btn" style="display:inline-block;background:#c8a96e;color:#000;font-size:0.75rem;letter-spacing:0.3em;padding:0.9rem 2.5rem;border:none;cursor:pointer;font-weight:500;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        診断を始める →
+      </button>
+    </div>
+
+    <!-- Quiz section -->
+    <div id="quiz-section" style="display:none;">
+
+      <!-- Progress bar -->
+      <div style="background:rgba(255,255,255,0.06);height:4px;border-radius:2px;margin-bottom:0.75rem;">
+        <div id="progress-fill" style="height:4px;background:linear-gradient(90deg,#c8a96e,#e0a040);border-radius:2px;transition:width 0.4s ease;width:0%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:2.5rem;">
+        <span id="progress-text" style="color:rgba(200,169,110,0.7);font-size:0.7rem;letter-spacing:0.15em;">質問 1 / 20</span>
+        <span id="category-label" style="color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.1em;"></span>
+      </div>
+
+      <!-- Question card -->
+      <div id="question-card" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:2.5rem;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;">
+        <p id="question-text" style="font-size:1.1rem;color:#edede8;font-weight:300;line-height:1.7;margin-bottom:2rem;letter-spacing:0.03em;"></p>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;" id="answer-buttons">
+          <button class="ans-btn" data-val="1" style="padding:1rem 1.5rem;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.7);font-size:0.875rem;cursor:pointer;text-align:left;transition:all 0.2s;letter-spacing:0.03em;">
+            ✓ &nbsp; はい — 実施できている
+          </button>
+          <button class="ans-btn" data-val="0.5" style="padding:1rem 1.5rem;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.7);font-size:0.875rem;cursor:pointer;text-align:left;transition:all 0.2s;letter-spacing:0.03em;">
+            △ &nbsp; 一部該当 — 部分的・不完全
+          </button>
+          <button class="ans-btn" data-val="0" style="padding:1rem 1.5rem;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.7);font-size:0.875rem;cursor:pointer;text-align:left;transition:all 0.2s;letter-spacing:0.03em;">
+            ✗ &nbsp; いいえ — まだできていない
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;margin-top:1.25rem;">
+        <button id="prev-btn" style="padding:0.6rem 1.25rem;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);font-size:0.75rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.4)'">
+          ← 前の質問
+        </button>
+        <span style="color:rgba(255,255,255,0.2);font-size:0.72rem;align-self:center;">選択すると自動で次へ進みます</span>
+      </div>
+    </div>
+
+    <!-- Results section -->
+    <div id="results-section" style="display:none;">
+
+      <!-- Level header -->
+      <div style="background:linear-gradient(135deg,#111114 0%,#0f1520 100%);border:1px solid rgba(200,169,110,0.25);padding:2.5rem;text-align:center;margin-bottom:2rem;">
+        <p style="color:rgba(200,169,110,0.6);font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">MATURITY LEVEL</p>
+        <div id="level-number" style="font-size:5rem;font-weight:100;color:#c8a96e;line-height:1;margin-bottom:0.75rem;"></div>
+        <div id="level-name" style="font-size:1.25rem;font-weight:300;color:#edede8;letter-spacing:0.1em;margin-bottom:0.5rem;"></div>
+        <div id="level-desc" style="color:rgba(255,255,255,0.45);font-size:0.875rem;max-width:38rem;margin:0 auto;line-height:1.7;"></div>
+      </div>
+
+      <!-- Score summary -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-bottom:2rem;">
+        <!-- Total score -->
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;text-align:center;">
+          <p style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.75rem;">TOTAL SCORE</p>
+          <div id="total-score" style="font-size:3rem;font-weight:100;color:#c8a96e;line-height:1;margin-bottom:0.5rem;"></div>
+          <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;">/ 20.0 点</p>
+        </div>
+
+        <!-- Category scores -->
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;grid-column:span 2;" id="cat-score-col">
+          <p style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.3em;margin-bottom:1.25rem;">CATEGORY SCORES</p>
+          <div id="cat-bars"></div>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div id="recommendations" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:2rem;margin-bottom:1.5rem;">
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:1.25rem;">RECOMMENDED LEARNING</p>
+        <div id="rec-list"></div>
+      </div>
+
+      <!-- Action buttons -->
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+        <button id="copy-btn" style="padding:0.875rem 2rem;border:1px solid rgba(200,169,110,0.4);background:transparent;color:#c8a96e;font-size:0.72rem;letter-spacing:0.25em;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(200,169,110,0.08)'" onmouseout="this.style.background='transparent'">
+          📋 結果をコピー
+        </button>
+        <button id="reset-btn" style="padding:0.875rem 2rem;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.5);font-size:0.72rem;letter-spacing:0.25em;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.5)'">
+          ↺ もう一度診断する
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</BaseLayout>
+
+<style>
+  .ans-btn:hover {
+    border-color: rgba(200,169,110,0.45) !important;
+    color: #edede8 !important;
+    background: rgba(200,169,110,0.06) !important;
+  }
+  .ans-btn.selected {
+    border-color: #c8a96e !important;
+    color: #c8a96e !important;
+    background: rgba(200,169,110,0.1) !important;
+  }
+  @media (max-width: 640px) {
+    #cat-score-col { grid-column: span 1 !important; }
+  }
+</style>
+
+<script is:inline>
+(function() {
+  const base = document.querySelector('meta[name="base-url"]')?.getAttribute('content') || '';
+
+  const questions = [
+    // A: データ基盤
+    { text: '受注〜出荷までの主要な業務記録が電子化されている', cat: 'A', catLabel: 'A: データ基盤' },
+    { text: '製番・シリアル単位でのトレーサビリティ（製造履歴の追跡）が可能である', cat: 'A', catLabel: 'A: データ基盤' },
+    { text: '品質・生産・設備の各データが1か所に統合されている', cat: 'A', catLabel: 'A: データ基盤' },
+    { text: 'データを翌日以内（リアルタイムに近い形）で確認できる', cat: 'A', catLabel: 'A: データ基盤' },
+    // B: プロセス標準化
+    { text: '業務手順書（SOP）が最新版で整備・管理されている', cat: 'B', catLabel: 'B: プロセス標準化' },
+    { text: '設計変更の通知が関係部門に確実に届いている', cat: 'B', catLabel: 'B: プロセス標準化' },
+    { text: '検査基準が文書化されており、誰でも同じ判断ができる', cat: 'B', catLabel: 'B: プロセス標準化' },
+    { text: '段取り替えの手順が標準化・時間計測されている', cat: 'B', catLabel: 'B: プロセス標準化' },
+    // C: 可視化・分析
+    { text: 'OEE（設備総合効率）を月次以上の頻度で計算・確認している', cat: 'C', catLabel: 'C: 可視化・分析' },
+    { text: '不良率・FPY（初回合格率）をKPIとして追跡している', cat: 'C', catLabel: 'C: 可視化・分析' },
+    { text: '納期遵守率を定量的に管理している', cat: 'C', catLabel: 'C: 可視化・分析' },
+    { text: '生産・品質データをグラフ・ダッシュボードで視覚化している', cat: 'C', catLabel: 'C: 可視化・分析' },
+    // D: 自動化・AI
+    { text: '定型的な集計・転記作業が自動化されている', cat: 'D', catLabel: 'D: 自動化・AI' },
+    { text: 'システム間のデータ連携が自動化されている（手動入力なし）', cat: 'D', catLabel: 'D: 自動化・AI' },
+    { text: 'AIや機械学習を少なくとも1つの業務プロセスで活用している', cat: 'D', catLabel: 'D: 自動化・AI' },
+    { text: '予知保全または条件ベースの保全（CBM）を実施している', cat: 'D', catLabel: 'D: 自動化・AI' },
+    // E: 組織・継続性
+    { text: 'DX推進の担当者・チームが明確に定められている', cat: 'E', catLabel: 'E: 組織・継続性' },
+    { text: 'DXの効果がROI（投資対効果）で定期的に測定・報告されている', cat: 'E', catLabel: 'E: 組織・継続性' },
+    { text: '現場スタッフがDXツールを主体的に使いこなしている', cat: 'E', catLabel: 'E: 組織・継続性' },
+    { text: '改善サイクル（PDCA）がDXプロジェクトに組み込まれている', cat: 'E', catLabel: 'E: 組織・継続性' },
+  ];
+
+  const levels = [
+    { min: 0,    max: 0.30, level: 1, name: '記録整備期',  desc: 'まずデータを電子化・記録する基盤作りから始めましょう。紙・Excelの電子化と基本的な記録体制の構築が最優先です。' },
+    { min: 0.30, max: 0.50, level: 2, name: '可視化推進期', desc: '集めたデータをダッシュボードで見える化する段階です。KPIを定義し、定期的にレビューする仕組みを整えましょう。' },
+    { min: 0.50, max: 0.70, level: 3, name: '分析活用期',  desc: 'データから改善アクションを導き出す段階です。統計分析やトレンド把握を通じて、問題の根本原因を特定できます。' },
+    { min: 0.70, max: 0.85, level: 4, name: '自動化展開期', desc: '定型作業の自動化・AI活用の本格導入を進める段階です。ROIを測定しながら自動化範囲を広げていきましょう。' },
+    { min: 0.85, max: 1.01, level: 5, name: '自律改善期',  desc: 'データドリブンな継続改善サイクルが確立しています。組織全体でDXを推進し、競争優位を持続させる段階です。' },
+  ];
+
+  const catInfo = {
+    A: { name: 'データ基盤',    color: '#4a9eff' },
+    B: { name: 'プロセス標準化', color: '#4ec97a' },
+    C: { name: '可視化・分析',  color: '#e0a040' },
+    D: { name: '自動化・AI',   color: '#c8a96e' },
+    E: { name: '組織・継続性',  color: '#e06080' },
+  };
+
+  const recommendations = {
+    A: [
+      { label: 'テーマ10: 記録情報設計', path: '/learning/10_record_design' },
+      { label: 'テーマ11: ITインフラ', path: '/learning/11_it_infra' },
+    ],
+    B: [
+      { label: 'テーマ4: 設計変更管理', path: '/learning/04_ecm' },
+      { label: 'テーマ15: 標準化と教育', path: '/learning/15_standardization' },
+    ],
+    C: [
+      { label: 'テーマ7: 品質統計', path: '/learning/07_quality_stats' },
+      { label: 'テーマ16: KPI設計・運用', path: '/learning/16_kpi' },
+    ],
+    D: [
+      { label: 'テーマ12: AI活用', path: '/learning/12_ai' },
+      { label: 'テーマ13: PoC設計', path: '/learning/13_poc' },
+    ],
+    E: [
+      { label: 'テーマ14: 運用設計', path: '/learning/14_operations' },
+      { label: 'テーマ15: 標準化と教育', path: '/learning/15_standardization' },
+    ],
+  };
+
+  let answers = new Array(20).fill(null);
+  let currentQ = 0;
+
+  function getSiteBase() {
+    const pathname = window.location.pathname;
+    const match = pathname.match(/^(\/[^/]+)?\/assessment/);
+    if (match && match[1]) return match[1];
+    return '';
+  }
+
+  function showQuestion(idx) {
+    currentQ = idx;
+    const q = questions[idx];
+    document.getElementById('question-text').textContent = `Q${idx + 1}. ${q.text}`;
+    document.getElementById('progress-text').textContent = `質問 ${idx + 1} / 20`;
+    document.getElementById('category-label').textContent = q.catLabel;
+    document.getElementById('progress-fill').style.width = `${((idx) / 20) * 100}%`;
+
+    const btns = document.querySelectorAll('.ans-btn');
+    btns.forEach(btn => {
+      btn.classList.remove('selected');
+      const val = parseFloat(btn.dataset.val);
+      if (answers[idx] !== null && answers[idx] === val) {
+        btn.classList.add('selected');
+      }
+    });
+
+    document.getElementById('prev-btn').style.opacity = idx === 0 ? '0.3' : '1';
+    document.getElementById('prev-btn').disabled = idx === 0;
+  }
+
+  function computeResults() {
+    const catScores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+    const catCounts = { A: 4, B: 4, C: 4, D: 4, E: 4 };
+    let total = 0;
+    questions.forEach((q, i) => {
+      const val = answers[i] || 0;
+      catScores[q.cat] += val;
+      total += val;
+    });
+    return { catScores, catCounts, total };
+  }
+
+  function showResults() {
+    document.getElementById('quiz-section').style.display = 'none';
+    document.getElementById('results-section').style.display = 'block';
+    document.getElementById('progress-fill').style.width = '100%';
+
+    const { catScores, catCounts, total } = computeResults();
+    const ratio = total / 20;
+
+    // Level
+    const levelObj = levels.find(l => ratio >= l.min && ratio < l.max) || levels[levels.length - 1];
+    document.getElementById('level-number').textContent = `Lv.${levelObj.level}`;
+    document.getElementById('level-name').textContent = levelObj.name;
+    document.getElementById('level-desc').textContent = levelObj.desc;
+    document.getElementById('total-score').textContent = total.toFixed(1);
+
+    // Category bars
+    const barsEl = document.getElementById('cat-bars');
+    barsEl.innerHTML = '';
+    const lowCats = [];
+    ['A', 'B', 'C', 'D', 'E'].forEach(cat => {
+      const score = catScores[cat];
+      const max = catCounts[cat];
+      const pct = (score / max) * 100;
+      const info = catInfo[cat];
+      if (pct < 60) lowCats.push(cat);
+
+      barsEl.innerHTML += `
+        <div style="margin-bottom:1rem;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.35rem;">
+            <span style="color:rgba(255,255,255,0.65);font-size:0.78rem;">${cat}: ${info.name}</span>
+            <span style="color:${info.color};font-size:0.78rem;font-weight:500;">${score.toFixed(1)} / ${max}</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);height:6px;border-radius:3px;">
+            <div style="height:6px;background:${info.color};border-radius:3px;width:${pct}%;transition:width 0.8s ease;"></div>
+          </div>
+        </div>`;
+    });
+
+    // Recommendations
+    const recEl = document.getElementById('rec-list');
+    recEl.innerHTML = '';
+    const siteBase = getSiteBase();
+    if (lowCats.length === 0) {
+      recEl.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-size:0.85rem;">全カテゴリ高スコアです。引き続き最新DX手法のキャッチアップを続けてください。</p>';
+    } else {
+      lowCats.forEach(cat => {
+        const info = catInfo[cat];
+        const recs = recommendations[cat];
+        recEl.innerHTML += `
+          <div style="margin-bottom:1.25rem;">
+            <p style="color:${info.color};font-size:0.72rem;letter-spacing:0.15em;margin-bottom:0.625rem;">${cat}: ${info.name} — 優先強化カテゴリ</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.625rem;">
+              ${recs.map(r => `<a href="${siteBase}${r.path}" style="padding:0.5rem 1rem;border:1px solid rgba(${cat === 'A' ? '74,158,255' : cat === 'B' ? '78,201,122' : cat === 'C' ? '224,160,64' : cat === 'D' ? '200,169,110' : '224,96,128'},0.35);color:rgba(255,255,255,0.65);font-size:0.75rem;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.color='#edede8';this.style.borderColor='rgba(200,169,110,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.65)';this.style.borderColor='rgba(${cat === 'A' ? '74,158,255' : cat === 'B' ? '78,201,122' : cat === 'C' ? '224,160,64' : cat === 'D' ? '200,169,110' : '224,96,128'},0.35)'">${r.label} →</a>`).join('')}
+            </div>
+          </div>`;
+      });
+    }
+  }
+
+  // Events
+  document.getElementById('start-btn').addEventListener('click', () => {
+    document.getElementById('intro-card').style.display = 'none';
+    document.getElementById('quiz-section').style.display = 'block';
+    showQuestion(0);
+  });
+
+  document.querySelectorAll('.ans-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = parseFloat(btn.dataset.val);
+      answers[currentQ] = val;
+      btn.classList.add('selected');
+      setTimeout(() => {
+        if (currentQ < 19) {
+          showQuestion(currentQ + 1);
+        } else {
+          showResults();
+        }
+      }, 320);
+    });
+  });
+
+  document.getElementById('prev-btn').addEventListener('click', () => {
+    if (currentQ > 0) showQuestion(currentQ - 1);
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    answers = new Array(20).fill(null);
+    currentQ = 0;
+    document.getElementById('results-section').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('progress-fill').style.width = '0%';
+  });
+
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const { catScores, catCounts, total } = computeResults();
+    const ratio = total / 20;
+    const levelObj = levels.find(l => ratio >= l.min && ratio < l.max) || levels[levels.length - 1];
+    let text = `【製造DX成熟度診断結果】\n`;
+    text += `総合スコア: ${total.toFixed(1)} / 20.0点\n`;
+    text += `成熟度レベル: Lv.${levelObj.level} ${levelObj.name}\n\n`;
+    text += `【カテゴリ別スコア】\n`;
+    ['A','B','C','D','E'].forEach(cat => {
+      text += `${cat}: ${catInfo[cat].name} — ${catScores[cat].toFixed(1)} / ${catCounts[cat]}\n`;
+    });
+    text += `\n診断実施: NaNi Execution Lab (${window.location.href})`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ コピーしました';
+      setTimeout(() => { btn.textContent = '📋 結果をコピー'; }, 2000);
+    });
+  });
+})();
+</script>
