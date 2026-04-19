@@ -9,10 +9,11 @@ featured: true
 
 ## 🌐 ライブデモ
 
-**👉 [ワンクリック・デプロイ（Streamlit Cloud）](https://share.streamlit.io/deploy?repository=yyy19901103-source/project-optimizer&branch=main&mainModule=app.py)**  
+**🚀 [今すぐブラウザで試す](https://nani-project-optimizer.streamlit.app/)**  
 📦 [GitHub リポジトリ](https://github.com/yyy19901103-source/project-optimizer)
 
-> 上記リンクから GitHub OAuth でログインするだけで、あなたのアカウントでこのアプリをクラウドにデプロイできます（無料・約3分）。
+> Streamlit Community Cloud で常時稼働中。インストール不要・ブラウザから即アクセス可能。
+> サンプルデータ（会議文字起こし・タスク一覧・カレンダー）が同梱されているので、ログインなしで全機能を試せます。
 
 ---
 
