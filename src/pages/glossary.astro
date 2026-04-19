@@ -1,0 +1,201 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+interface GlossaryTerm {
+  term: string;
+  abbr?: string;
+  reading?: string;
+  explanation: string;
+  group: string;
+}
+
+const terms: GlossaryTerm[] = [
+  // ア行
+  { term: '一品一様', reading: 'いっぴんいちよう', explanation: 'ETO（受注設計生産）製造業に特有の概念で、顧客ごと・受注ごとに仕様が異なる製品を指す。同じ製品が繰り返し生産される量産型とは根本的に異なり、設計・調達・製造の全工程で個別対応が必要となる。標準化や自動化が難しい反面、高付加価値な製品を提供できる。', group: 'ア' },
+  { term: '受注設計生産', reading: 'じゅちゅうせっけいせいさん', abbr: 'ETO', explanation: 'Engineer-to-Orderの略。顧客からの受注を受けてから設計を開始し、顧客仕様に合わせた製品を製造する生産形態。プラント機器・産業機械・特注設備などが代表例。リードタイムが長く、設計変更管理が複雑になる。', group: 'ア' },
+  { term: '改善', reading: 'かいぜん', abbr: 'Kaizen', explanation: 'トヨタ生産方式（TPS）に起源を持つ継続的改善の概念。現場の作業者が主体となって小さな改善を積み重ねることを重視する。「ムダ・ムラ・ムリ」を排除することを目的とし、今日では世界中の製造業・サービス業に普及している。', group: 'カ' },
+  { term: '可用率', reading: 'かようりつ', explanation: 'OEE（設備総合効率）を構成する3要素の一つ。計画稼働時間に対して設備が実際に稼働していた時間の割合。計算式は（計画稼働時間－ダウンタイム）÷計画稼働時間。故障・段取り・調整などによる停止時間がこの指標を悪化させる。', group: 'カ' },
+  { term: '管理図', reading: 'かんりず', explanation: '工程の品質特性の時系列変化を統計的に監視するグラフ。中心線（CL）・上方管理限界（UCL）・下方管理限界（LCL）の3本の線で構成され、測定値がこの範囲内に収まっているかを確認する。SPC（統計的工程管理）の基本ツール。', group: 'カ' },
+  { term: '工程能力指数', reading: 'こうていのうりょくしすう', abbr: 'Cpk', explanation: '工程が規格を満たす製品を安定して生産できる能力を数値化した指標。CpkはCp（工程能力指数）に工程のずれを考慮したもの。一般的にCpk≥1.33で工程能力が十分とされる。数値が低い場合は工程の改善や規格の見直しが必要。', group: 'カ' },
+  { term: '根本原因解析', reading: 'こんぽんげんいんかいせき', abbr: 'RCA', explanation: 'Root Cause Analysisの略。問題の表面的な症状ではなく、根本的な原因を特定するための体系的手法。なぜなぜ分析（5 Whys）・FTA（故障の木解析）・特性要因図（フィッシュボーン）などがRCAの代表的ツール。真因を特定することで再発防止策を立案できる。', group: 'カ' },
+  // サ行
+  { term: '自働化', reading: 'じどうか', abbr: 'Jidoka', explanation: 'トヨタ生産方式の二本柱の一つ。「自動化」と区別するためにニンベンのついた「自働化」と表記する。異常が発生したときに機械が自律的に停止し、問題を人に知らせる機能を指す。品質問題の拡大を防ぎ、少人化を実現するための概念。', group: 'サ' },
+  { term: '自主保全', reading: 'じしゅほぜん', explanation: 'TPM（全員参加の生産保全）における活動の一つ。設備のオペレーターが自ら清掃・点検・給油・増締め・異常の初期対応を行う活動。「自分の設備は自分で守る」意識を醸成し、故障ゼロを目指す。', group: 'サ' },
+  { term: '設計変更', reading: 'せっけいへんこう', explanation: '製品の設計仕様・図面・BOMを変更すること。顧客要求の変更・品質問題の是正・コスト削減・法規制対応などが原因となる。ETO製造業では製造中に設計変更が発生することが多く、影響を受ける工程・部材・検査への適切な伝達管理（ECM）が重要。', group: 'サ' },
+  { term: '設備総合効率', reading: 'せつびそうごうこうりつ', abbr: 'OEE', explanation: 'Overall Equipment Effectivenessの略。可用率×性能率×品質率で計算される設備の有効活用度を示す指標。World Class水準は85%以上とされる。6大ロス（故障・段取り・空転・速度低下・不良・立上がり）を分析する際の基準指標となる。', group: 'サ' },
+  // タ行
+  { term: '段取り替え', reading: 'だんどりかえ', abbr: 'SMED', explanation: 'ある製品の生産から次の製品の生産への切り替え作業。SMED（Single Minute Exchange of Die：一桁分台替え）はこの段取り時間を10分以内に短縮することを目指す手法。外段取り（ライン稼働中に準備できる作業）と内段取り（ライン停止中のみできる作業）に分類して改善する。', group: 'タ' },
+  { term: 'トレーサビリティ', reading: 'とれーさびりてぃ', explanation: '製品の製造履歴（使用した材料・部品のロット、製造工程、担当者、検査結果など）を追跡できる仕組み。顧客クレームへの迅速な原因究明・リコール対象の特定・品質監査への対応に不可欠。ETO製造業では製番（受注番号）単位での完全トレーサビリティが求められることが多い。', group: 'タ' },
+  // ナ行
+  { term: '二重入力', reading: 'にじゅうにゅうりょく', explanation: '同一データを複数のシステムや帳票に繰り返し入力する非効率な作業。例えば、紙の検査記録に記入した後、同じ内容をExcelや基幹システムに入力するケース。転記ミスの原因になるほか、工数の無駄でもある。デジタル化・システム連携でなくすべき代表的なムダ。', group: 'ナ' },
+  // ハ行
+  { term: '標準化', reading: 'ひょうじゅんか', explanation: '作業手順・設備設定・品質基準などを文書化し、誰が行っても同じ結果が得られるようにすること。改善活動の成果を持続させるためにも不可欠。標準化なき改善は属人化し、担当者が変わると元に戻る。ETO製造業では「一品一様」の性質上、完全な標準化は難しいが、共通部分の標準化は推進できる。', group: 'ハ' },
+  { term: '品質機能展開', reading: 'ひんしつきのうてんかい', abbr: 'QFD', explanation: 'Quality Function Deploymentの略。顧客の要求（声）を製品の技術的品質特性に変換し、設計・製造に展開する手法。品質の家（House of Quality）と呼ばれるマトリックス図を使って顧客ニーズと設計パラメータの関係を整理する。', group: 'ハ' },
+  { term: '不良率', reading: 'ふりょうりつ', explanation: '生産した製品全数に対する不良品の割合。計算式は不良品数÷生産全数×100（%）。不良率の計算方法（工程内不良vs出荷後クレーム）を部門間で統一定義することが重要。ppm（百万分率）で表すこともある。OEEの品質率（1－不良率）の逆数。', group: 'ハ' },
+  { term: 'ポカヨケ', reading: 'ぽかよけ', abbr: 'Poka-yoke', explanation: '人間のミス（ポカ）を物理的・機械的に防止する仕組み。シャシーの向きを間違えると組み付けられない形状設計・センサーによる未作業検知・バーコード照合による部品違い防止などが代表例。エラープルーフィング（Error-proofing）とも呼ばれる。', group: 'ハ' },
+  // マ行
+  { term: 'マスターデータ', reading: 'ますたーでーた', explanation: '企業の基幹業務で繰り返し参照される基本データ。品目マスター・取引先マスター・工程マスター・設備マスターなどが代表例。トランザクションデータ（日々の取引記録）の基盤となる。マスターデータの品質が低い（表記揺れ・重複・欠損）と、すべての下流プロセスに影響が出る。', group: 'マ' },
+  { term: 'ムダ（無駄）', reading: 'むだ', abbr: 'Muda', explanation: 'トヨタ生産方式（TPS）における7つのムダ：加工のムダ・在庫のムダ・造りすぎのムダ・手待ちのムダ・動作のムダ・運搬のムダ・不良・手直しのムダ。付加価値を生まない活動を指し、徹底的な排除が生産性向上の基本。', group: 'マ' },
+  { term: '予知保全', reading: 'よちほぜん', abbr: 'PdM', explanation: 'Predictive Maintenanceの略。設備の稼働データ（振動・温度・電流など）をリアルタイムで監視し、故障の予兆を検知して事前にメンテナンスを行う保全方式。定期保全（時間基準）や事後保全（故障後対応）に比べ、計画外停止を減らしながらメンテナンスコストを最適化できる。', group: 'ヤ' },
+  // English terms
+  { term: 'BOM', explanation: 'Bill of Materialsの略。製品を構成する部品・材料の一覧表。階層構造で「親品目→子品目」の関係を表す。設計BOM（E-BOM）と製造BOM（M-BOM）が存在し、ETOでは受注ごとに異なるBOMが生成される。PLM・MES・ERPで連携して管理されるべき最重要マスターデータの一つ。', group: 'A-Z' },
+  { term: 'BPMN', explanation: 'Business Process Model and Notationの略。業務プロセスをフローチャート形式で標準的に表現するための記法。開始・終了イベント・タスク・ゲートウェイ・フローなどの標準アイコンを使用する。DX推進のAS-IS（現状）・TO-BE（将来）プロセスの可視化に活用される。', group: 'A-Z' },
+  { term: 'DMAIC', explanation: 'Six Sigmaのプロジェクト推進フレームワーク。Define（定義）→Measure（測定）→Analyze（分析）→Improve（改善）→Control（管理）の5ステップ。製造品質の改善プロジェクトや、DX施策の推進フレームワークとして広く活用されている。', group: 'A-Z' },
+  { term: 'ECM', explanation: 'Engineering Change Managementの略。設計変更を管理する業務プロセスおよびシステムの総称。変更の登録・影響範囲の評価・関係者への通知・有効化・記録保管を体系的に管理する。ETOでは変更件数が多く、ECMの仕組みが整っていないと手直し損失が拡大する。', group: 'A-Z' },
+  { term: 'ERP', explanation: 'Enterprise Resource Planningの略。財務・調達・製造・販売・人事などの業務を統合管理するシステム。SAP・Oracle・IFSなどが代表的なERPベンダー。ETOではBOMや工程の個別性が高いため、ERPだけでは対応しきれないケースが多く、PLM・MESとの連携が必要になる。', group: 'A-Z' },
+  { term: 'FMEA', explanation: 'Failure Mode and Effects Analysisの略。設計・工程の潜在的な故障モードとその影響を事前に洗い出し、リスクを定量化・優先度付けする手法。RPN（リスク優先度数）＝発生度×影響度×検出度で計算する。設計段階での品質作り込みと、工程設計の信頼性向上に使用される。', group: 'A-Z' },
+  { term: 'ISA-95', explanation: '製造企業の業務機能と情報システムの階層を定義した国際標準規格（IEC 62264）。Level 0（物理的プロセス）からLevel 4（ERPなどのビジネス系システム）まで5階層で定義する。製造IT全体アーキテクチャの設計・MES導入プロジェクトの際の共通言語として参照される。', group: 'A-Z' },
+  { term: 'JIT', explanation: 'Just-in-Timeの略。トヨタ生産方式の二本柱の一つ。「必要なものを・必要な時に・必要な量だけ」生産・供給する考え方。過剰在庫・過剰生産というムダを排除し、キャッシュフローを改善する。かんばん方式によって工程間の引き取り・補充を制御する。', group: 'A-Z' },
+  { term: 'KGI / KPI', explanation: 'KGI（Key Goal Indicator：重要目標達成指標）は最終的な達成目標を示す指標（例：売上目標・顧客満足度）。KPI（Key Performance Indicator：重要業績評価指標）はKGI達成のためのプロセスを評価する指標（例：OEE・不良率・納期遵守率）。DX推進では両者を明確に定義・測定することが成果を証明する上で必須。', group: 'A-Z' },
+  { term: 'MES', explanation: 'Manufacturing Execution Systemの略。工場フロアの製造実行を管理するシステム。作業指示・実績収集・品質管理・トレーサビリティ・設備管理などを担う。ERPとPLC/SCADAの間に位置し、ISA-95のLevel 3に相当する。', group: 'A-Z' },
+  { term: 'OEE', explanation: 'Overall Equipment Effectivenessの略。設備総合効率。可用率×性能率×品質率の積で計算され、設備の有効活用度を総合的に評価する。World Class水準は85%以上。詳細は「設備総合効率」の項目を参照。', group: 'A-Z' },
+  { term: 'PLM', explanation: 'Product Lifecycle Managementの略。製品の企画から設計・製造・保守・廃棄までのライフサイクル全体を管理するシステム・プロセスの総称。CADデータ・BOM・技術文書・設計変更記録を一元管理する。ETOでは受注案件ごとの設計管理・変更管理の基盤として重要。', group: 'A-Z' },
+  { term: 'PoC', explanation: 'Proof of Conceptの略。本格導入前に概念実証を行う取り組み。「この技術は現場で機能するか」「期待する効果が得られるか」を限定的な範囲で検証する。AI外観検査・IoT設備監視など新規技術導入の際は、3ヶ月・1工程・明確な成功条件でPoCを設計することが推奨される。', group: 'A-Z' },
+  { term: 'SCADA', explanation: 'Supervisory Control and Data Acquisitionの略。複数の設備・センサーのデータを収集・監視・制御する上位システム。PLCなどのフィールド機器からOPCやModbusなどのプロトコルでデータを取得し、リアルタイム監視・アラート・データ記録を行う。ISA-95のLevel 2に相当。', group: 'A-Z' },
+  { term: 'SPC', explanation: 'Statistical Process Controlの略。統計的手法を用いて製造工程のばらつきを監視・管理する手法。管理図・工程能力指数（Cpk）・ヒストグラムなどのツールを使用する。工程の異常を早期検知し、不良発生前に対処することで品質コストを削減できる。', group: 'A-Z' },
+  { term: 'TPM', explanation: 'Total Productive Maintenanceの略。全員参加の生産保全。設備の故障ゼロ・不良ゼロ・災害ゼロを目標に、オペレーターを含む全員が設備保全に参加する活動。自主保全・計画保全・品質保全・初期管理・教育訓練など8本柱で構成される。', group: 'A-Z' },
+  { term: 'TPS', explanation: 'Toyota Production Systemの略。トヨタ自動車が構築した生産管理システム。ジャスト・イン・タイム（JIT）と自働化の2本柱を基本とし、かんばん・アンドン・標準作業・平準化など多くの手法を含む。世界中のリーン生産の原点であり、今日のDX推進においても基本思想として参照される。', group: 'A-Z' },
+];
+
+const groups = ['ア', 'カ', 'サ', 'タ', 'ナ', 'ハ', 'マ', 'ヤ', 'A-Z'];
+const groupLabels: Record<string, string> = {
+  'ア': 'ア行',
+  'カ': 'カ行',
+  'サ': 'サ行',
+  'タ': 'タ行',
+  'ナ': 'ナ行',
+  'ハ': 'ハ行',
+  'マ': 'マ行',
+  'ヤ': 'ヤ行',
+  'A-Z': 'A-Z（英字・略語）',
+};
+---
+
+<BaseLayout
+  title="製造DX 用語集"
+  description="製造DX推進に必要な用語を解説。ETO・OEE・MES・PLM・TPMなど30以上の専門用語を日本語で丁寧に説明します。"
+>
+
+  <!-- Hero -->
+  <div style="position:relative;height:16rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1520 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">Reference</p>
+      <h1 style="font-size:clamp(1.75rem,5vw,2.5rem);font-weight:300;letter-spacing:0.15em;color:#edede8;margin-bottom:0.75rem;">製造DX 用語集</h1>
+      <p style="color:rgba(255,255,255,0.4);font-size:0.875rem;font-weight:300;">ETO製造業・DX推進に関わる専門用語を体系的に解説</p>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:3rem 1.5rem 6rem;">
+
+    <!-- Search -->
+    <div style="margin-bottom:3rem;max-width:40rem;margin-left:auto;margin-right:auto;">
+      <div style="position:relative;">
+        <svg style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.3);pointer-events:none;" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input
+          id="glossary-search"
+          type="text"
+          placeholder="用語を検索..."
+          style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#edede8;padding:0.875rem 1rem 0.875rem 2.75rem;font-size:0.875rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(200,169,110,0.4)'"
+          onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+        />
+      </div>
+      <p id="search-count" style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;text-align:right;"></p>
+    </div>
+
+    <!-- Group Navigation -->
+    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:3rem;justify-content:center;" id="group-nav">
+      {groups.map(g => (
+        <a
+          href={`#group-${g}`}
+          style="padding:0.375rem 0.875rem;font-size:0.7rem;letter-spacing:0.15em;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.45);transition:all 0.2s;text-decoration:none;"
+          onmouseover="this.style.borderColor='#c8a96e';this.style.color='#c8a96e'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.45)'"
+        >
+          {groupLabels[g]}
+        </a>
+      ))}
+    </div>
+
+    <!-- No results message -->
+    <div id="no-results" style="display:none;text-align:center;padding:4rem 0;color:rgba(255,255,255,0.3);">
+      <p style="font-size:0.875rem;">該当する用語が見つかりませんでした</p>
+    </div>
+
+    <!-- Terms by Group -->
+    {groups.map(group => {
+      const groupTerms = terms.filter(t => t.group === group);
+      return (
+        <div class="term-group" id={`group-${group}`} style="margin-bottom:4rem;">
+          <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;">
+            <h2 style="font-size:1rem;font-weight:300;letter-spacing:0.3em;color:#c8a96e;">{groupLabels[group]}</h2>
+            <div style="flex:1;height:1px;background:rgba(200,169,110,0.15);"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem;">
+            {groupTerms.map(t => (
+              <div
+                class="term-card"
+                data-term={t.term}
+                data-abbr={t.abbr || ''}
+                data-explanation={t.explanation}
+                style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);padding:1.5rem;transition:border-color 0.2s;"
+                onmouseover="this.style.borderColor='rgba(200,169,110,0.2)'"
+                onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'"
+              >
+                <div style="display:flex;align-items:baseline;gap:0.75rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+                  <span style="color:#c8a96e;font-size:1rem;font-weight:400;letter-spacing:0.05em;">{t.term}</span>
+                  {t.abbr && <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.15em;font-family:monospace;">{t.abbr}</span>}
+                  {t.reading && <span style="color:rgba(255,255,255,0.2);font-size:0.7rem;">（{t.reading}）</span>}
+                </div>
+                <p style="color:rgba(255,255,255,0.55);font-size:0.8rem;line-height:1.85;">{t.explanation}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+
+  </div>
+</BaseLayout>
+
+<script>
+  const searchInput = document.getElementById('glossary-search') as HTMLInputElement;
+  const searchCount = document.getElementById('search-count');
+  const noResults = document.getElementById('no-results');
+  const cards = document.querySelectorAll('.term-card') as NodeListOf<HTMLElement>;
+  const groups = document.querySelectorAll('.term-group') as NodeListOf<HTMLElement>;
+
+  searchInput?.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const term = (card.dataset.term || '').toLowerCase();
+      const abbr = (card.dataset.abbr || '').toLowerCase();
+      const explanation = (card.dataset.explanation || '').toLowerCase();
+      const match = !q || term.includes(q) || abbr.includes(q) || explanation.includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) visibleCount++;
+    });
+
+    // Hide empty groups
+    groups.forEach(group => {
+      const visibleCards = group.querySelectorAll('.term-card:not([style*="display: none"])');
+      group.style.display = visibleCards.length > 0 ? '' : 'none';
+    });
+
+    if (noResults) {
+      noResults.style.display = visibleCount === 0 && q ? 'block' : 'none';
+    }
+
+    if (searchCount) {
+      searchCount.textContent = q ? `${visibleCount} 件ヒット` : '';
+    }
+  });
+</script>
