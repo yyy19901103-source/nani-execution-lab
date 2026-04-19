@@ -145,4 +145,4 @@ AIが生成したコードでも「なぜこう書いたか説明して」と一
 
 このゲームは NaNi Execution Lab 上でそのまま遊べます。
 
-→ [ゲームをプレイする](/game)
+→ [ゲームをプレイする](/nani-execution-lab/game/)
