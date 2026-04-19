@@ -6,56 +6,56 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const downloads = [
   {
     title: '製造業DX推進チェックリスト',
-    description: '現場のDX成熟度評価と推進ステップの確認用チェックリスト。自己診断と優先順位付けに活用できます。',
+    description: '5フェーズ（現状把握/課題特定/施策選定/実装/効果測定）×各フェーズ10項目、全50問のチェックリスト。自己診断スコア付き。フェーズごとの達成度が視覚的に把握でき、次に優先すべき施策を特定できます。部門横断のキックオフ会議や、経営への現状報告にも活用可能。',
     format: 'PDF',
     category: '診断・評価',
     file: null,
   },
   {
     title: '業務自動化 要件定義テンプレート',
-    description: 'AI・RPA導入前の業務整理・要件定義に使えるテンプレート。現状業務フロー・課題・自動化スコープを整理します。',
+    description: 'SIPOC形式（Supplier/Input/Process/Output/Customer）で現状業務を構造化するフォーマット。現状業務フロー図（AS-IS）・課題リスト・自動化スコープ定義・データ入出力定義・成功条件/失敗条件欄を収録。RPA・AI導入前の業務整理から、システムベンダーへの要件伝達まで一貫して使えます。ETO特有の「例外処理の多さ」を明示する欄を設けています。',
     format: 'Excel',
     category: '業務設計',
     file: null,
   },
   {
     title: 'KPIダッシュボード 設計シート',
-    description: '経営・現場で使えるKPIの設計シート。目標値・計算ロジック・データソースを一元管理するフォーマット。',
+    description: 'KGI→KPI分解ツリーで経営目標と現場指標を紐付けるフォーマット。各KPIについて計算ロジック・データソース・更新頻度・責任者を3列で管理。BSC（バランスト・スコアカード）4視点（財務/顧客/内部プロセス/学習と成長）に対応した分類シート付き。ETOでは「納期遵守率・変更件数・設計手戻りコスト」などの固有KPIテンプレートを収録。',
     format: 'Excel',
     category: '計測・分析',
     file: null,
   },
   {
     title: 'OEEデータ収集シート',
-    description: '設備ごとの稼働・停止・品質データを記録するシート。OEE計算式込みで、すぐに運用を開始できます。',
+    description: '設備ごとの稼働/停止/不良データを記録する入力表。停止理由は「6大ロス分類（故障/段取り/空転/速度低下/不良/立上がり）」の列で自動分類。OEE（可用率×性能率×品質率）の計算式を内蔵し、入力するだけで日次・週次・月次の推移グラフが自動生成されます。ETOへの適用時に留意すべき「計画外作業・設計変更に伴う停止」の記録欄も設けています。',
     format: 'Excel',
     category: '計測・分析',
     file: null,
   },
   {
     title: '設計変更管理台帳テンプレート',
-    description: 'ECMの変更記録・影響範囲・承認状況を管理するExcelフォーマット。ETO製造業の変更管理プロセス対応。',
+    description: '変更番号・要求元部門・変更内容・影響範囲（図面/BOM/工程/調達/在庫/出荷済製品の6領域チェックボックス）・承認ステータス（申請/審査中/承認/却下/保留）・有効化日付・変更コスト見積を一覧管理。ETO特有の「製造中案件への設計変更」が発生した際の影響トレースを効率化します。変更履歴の検索・フィルタリング機能付き。',
     format: 'Excel',
     category: 'プロセス管理',
     file: null,
   },
   {
     title: 'PoC評価計画書テンプレート',
-    description: '成功条件・評価期間・担当者・コストを定義するPoC計画書雛形。DXプロジェクト立ち上げ時の合意形成に活用。',
+    description: 'A4 2枚構成のPoC計画書雛形。背景・解決したい課題・PoC目標・定量的成功条件・失敗条件・評価期間・担当者アサイン・コスト見積（ツール費/人件費/外部委託費）・判断基準・承認者の全項目を網羅。「成功条件を数値で定義する」「失敗条件を事前に合意する」というDXプロジェクト失敗防止の原則に沿った構成。承認者への説明・合意形成に即活用できます。',
     format: 'PowerPoint',
     category: 'プロジェクト管理',
     file: null,
   },
   {
     title: '製造DX推進ロードマップ（90日版）',
-    description: 'DXプロジェクト最初の90日間のマイルストーン計画テンプレート。フェーズ別タスク・成果物・KPIを定義します。',
+    description: 'Month 1（現状把握・課題特定）→ Month 2（PoC準備・ベンダー選定）→ Month 3（PoC実施・効果測定）の3段階。各月のマイルストーン・成果物・担当者欄を含むGanttチャート形式。「最初の90日で何を達成すべきか」という問いに対する実践的な答えを提示。役員承認プロセスや現場説明会のタイミングも組み込んだ実務対応版です。',
     format: 'PDF',
     category: 'プロジェクト管理',
     file: null,
   },
   {
     title: 'サプライヤー評価シート',
-    description: '品質・納期・コスト・対応力の4軸でサプライヤーを評価するフォーマット。定期評価や新規選定に対応。',
+    description: '品質（不良率・是正対応速度）/納期（遵守率・リードタイム精度）/コスト（見積精度・値下げ交渉対応）/対応力（情報共有・緊急対応・変更対応）の4軸20項目100点満点評価フォーマット。ETO特有の「設計変更への迅速対応」「仕様変更時の見積即応性」を評価項目に含む。定期評価や新規サプライヤー選定、取引継続可否の判断基準として活用できます。',
     format: 'Excel',
     category: 'サプライチェーン',
     file: null,
@@ -179,7 +179,30 @@ function formatColor(fmt: string) {
     </div>
   </div>
 
-  <!-- Section 4: CTA -->
+  <!-- Section 4: Assessment & ROI CTA -->
+  <div style="background:rgba(200,169,110,0.04);border-top:1px solid rgba(200,169,110,0.1);border-bottom:1px solid rgba(200,169,110,0.1);">
+    <div style="max-width:1280px;margin:0 auto;padding:4rem 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;text-align:center;">INTERACTIVE TOOLS</p>
+      <h2 style="font-size:1.4rem;font-weight:200;letter-spacing:0.08em;color:#edede8;text-align:center;margin-bottom:0.75rem;">診断ツールも活用ください</h2>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.82rem;text-align:center;margin-bottom:2.5rem;line-height:1.8;">テンプレートのダウンロード前後に、現状の成熟度把握とROI試算で方向性を明確にすると、より効果的に活用できます。</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:780px;margin:0 auto;">
+        <a href={`${base}/assessment`} style="display:block;background:#111114;border:1px solid rgba(200,169,110,0.2);padding:2rem;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(200,169,110,0.5)'" onmouseout="this.style.borderColor='rgba(200,169,110,0.2)'">
+          <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.625rem;">ASSESSMENT</p>
+          <h3 style="color:#edede8;font-size:1rem;font-weight:300;margin-bottom:0.5rem;">製造DX 成熟度診断</h3>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;line-height:1.7;margin-bottom:1rem;">20問で自社のDX成熟度と優先テーマを把握。どのテンプレートから使い始めるべきかが明確になります。</p>
+          <span style="color:#c8a96e;font-size:0.72rem;letter-spacing:0.15em;">診断を始める →</span>
+        </a>
+        <a href={`${base}/roi-calculator`} style="display:block;background:#111114;border:1px solid rgba(200,169,110,0.2);padding:2rem;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(200,169,110,0.5)'" onmouseout="this.style.borderColor='rgba(200,169,110,0.2)'">
+          <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.625rem;">ROI CALCULATOR</p>
+          <h3 style="color:#edede8;font-size:1rem;font-weight:300;margin-bottom:0.5rem;">ROI簡易計算ツール</h3>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;line-height:1.7;margin-bottom:1rem;">DXプロジェクトの年間効果・回収期間・3年累積効果をリアルタイム計算。社内提案書作成の前に活用を。</p>
+          <span style="color:#c8a96e;font-size:0.72rem;letter-spacing:0.15em;">ROIを試算する →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: CTA -->
   <div style="max-width:1280px;margin:0 auto;padding:5rem 1.5rem 8rem;text-align:center;">
     <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">CUSTOM REQUESTS</p>
     <h2 style="font-size:clamp(1.25rem,3vw,1.75rem);font-weight:200;letter-spacing:0.08em;color:#edede8;margin-bottom:1rem;">

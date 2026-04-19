@@ -1,0 +1,297 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="製造ITツール比較"
+  description="MES・ERP・PLM・SCADA・CMMSの責任分担、ETO向け選定チェックリスト、ツールポジショニング、統合設計パターンを徹底解説。"
+>
+
+  <!-- Hero -->
+  <div style="position:relative;height:20rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#100c1a 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.03;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">Tool Comparison Guide</p>
+      <h1 style="font-size:clamp(1.75rem,5vw,2.75rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">製造ITツール比較</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;font-weight:300;">MES・ERP・PLM・SCADA・CMMS の役割分担と<br>ETO製造業向け選定ガイド</p>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:4rem 1.5rem 6rem;">
+
+    <!-- Section 1: Responsibility Matrix -->
+    <div style="margin-bottom:5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">SECTION 1</p>
+      <h2 style="font-size:1.4rem;font-weight:300;color:#edede8;letter-spacing:0.08em;margin-bottom:0.5rem;">MES vs ERP vs PLM — 責任分担マトリクス</h2>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.8rem;margin-bottom:2rem;">各システムがどの業務を主担当するかを整理。◎=主担当 △=補助 —=対象外</p>
+
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;min-width:640px;">
+          <thead>
+            <tr>
+              <th style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1rem;text-align:left;color:rgba(255,255,255,0.5);font-weight:400;min-width:160px;">機能</th>
+              <th style="background:rgba(74,158,255,0.1);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1rem;text-align:center;color:#4a9eff;font-weight:500;">ERP</th>
+              <th style="background:rgba(78,201,122,0.1);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1rem;text-align:center;color:#4ec97a;font-weight:500;">MES</th>
+              <th style="background:rgba(200,169,110,0.1);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1rem;text-align:center;color:#c8a96e;font-weight:500;">PLM</th>
+              <th style="background:rgba(224,96,128,0.1);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1rem;text-align:center;color:#e06080;font-weight:500;">SCADA</th>
+              <th style="background:rgba(160,120,240,0.1);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1rem;text-align:center;color:#a078f0;font-weight:500;">CMMS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ['受注管理',         '◎','—','—','—','—'],
+              ['在庫・調達',        '◎','△','—','—','—'],
+              ['原価管理',         '◎','△','—','—','—'],
+              ['生産指示',         '△','◎','—','—','—'],
+              ['実績収集',         '—','◎','—','△','—'],
+              ['品質記録',         '△','◎','△','—','—'],
+              ['設備監視',         '—','△','—','◎','△'],
+              ['図面・BOM管理',    '△','—','◎','—','—'],
+              ['設計変更管理',      '—','—','◎','—','—'],
+              ['保全計画・履歴',    '—','—','—','—','◎'],
+              ['トレーサビリティ',   '△','◎','△','—','—'],
+            ].map((row, i) => (
+              <tr style={i % 2 === 0 ? 'background:rgba(255,255,255,0.015)' : ''}>
+                <td style="border:1px solid rgba(255,255,255,0.06);padding:0.6rem 1rem;color:rgba(255,255,255,0.65);">{row[0]}</td>
+                {row.slice(1).map((cell, j) => {
+                  const colors = ['#4a9eff','#4ec97a','#c8a96e','#e06080','#a078f0'];
+                  const isMain = cell === '◎';
+                  const isSub = cell === '△';
+                  return (
+                    <td style={`border:1px solid rgba(255,255,255,0.06);padding:0.6rem 1rem;text-align:center;font-weight:${isMain ? '600' : '400'};color:${isMain ? colors[j] : isSub ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.15)'};font-size:${isMain ? '1.05rem' : '0.85rem'};`}>{cell}</td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:1.5rem;">
+        {[
+          { label: '◎ 主担当', desc: 'そのシステムが責任を持つ機能', color: '#c8a96e' },
+          { label: '△ 補助',   desc: '他システムと連携して補完的に対応', color: 'rgba(255,255,255,0.4)' },
+          { label: '— 対象外', desc: 'このシステムのスコープ外',          color: 'rgba(255,255,255,0.2)' },
+        ].map(item => (
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span style={`color:${item.color};font-size:0.85rem;font-weight:600;`}>{item.label}</span>
+            <span style="color:rgba(255,255,255,0.3);font-size:0.72rem;">{item.desc}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Section 2: Selection Checklist -->
+    <div style="margin-bottom:5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">SECTION 2</p>
+      <h2 style="font-size:1.4rem;font-weight:300;color:#edede8;letter-spacing:0.08em;margin-bottom:0.5rem;">ETO製造向けシステム選定チェックリスト</h2>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.8rem;margin-bottom:2rem;">システム選定・RFP作成時の評価ポイントを整理</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem;">
+
+        <!-- MES -->
+        <div style="background:#111114;border:1px solid rgba(78,201,122,0.2);padding:1.75rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+            <span style="color:#4ec97a;font-size:1.1rem;font-weight:500;font-family:monospace;">MES</span>
+            <span style="color:rgba(255,255,255,0.3);font-size:0.72rem;">選定チェックリスト（10項目）</span>
+          </div>
+          {[
+            '製番・シリアル単位のトレーサビリティ対応',
+            '設計変更（ECN）の自動反映機能',
+            '多品種少量生産への対応（柔軟な工程定義）',
+            'ERPとのAPI連携またはデータ連携機能',
+            'モバイル・タブレット対応（現場入力）',
+            'カスタマイズの容易さとコスト',
+            '日本語サポート・国内導入実績',
+            'SaaS/クラウド vs オンプレミスの選択肢',
+            '段階的導入（モジュール単位）の可否',
+            'トレーニング・導入支援体制',
+          ].map((item, i) => (
+            <div style="display:flex;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:rgba(78,201,122,0.5);font-size:0.7rem;flex-shrink:0;margin-top:0.15rem;">{String(i+1).padStart(2,'0')}</span>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;line-height:1.6;">{item}</span>
+            </div>
+          ))}
+        </div>
+
+        <!-- ERP -->
+        <div style="background:#111114;border:1px solid rgba(74,158,255,0.2);padding:1.75rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+            <span style="color:#4a9eff;font-size:1.1rem;font-weight:500;font-family:monospace;">ERP</span>
+            <span style="color:rgba(255,255,255,0.3);font-size:0.72rem;">選定チェックリスト（8項目）</span>
+          </div>
+          {[
+            '受注設計生産（ETO）のビジネスプロセス対応',
+            'PLM/MESとの標準インターフェース',
+            'プロジェクト別原価管理機能',
+            '設計変更に伴うBOM・発注の更新管理',
+            '中堅製造業向けの実績と価格帯',
+            '日本の商習慣（消費税・振込・帳票）対応',
+            'ERPリプレース時のデータ移行サポート',
+            'スモールスタート（段階的拡張）の可否',
+          ].map((item, i) => (
+            <div style="display:flex;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:rgba(74,158,255,0.5);font-size:0.7rem;flex-shrink:0;margin-top:0.15rem;">{String(i+1).padStart(2,'0')}</span>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;line-height:1.6;">{item}</span>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 3: Positioning map -->
+    <div style="margin-bottom:5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">SECTION 3</p>
+      <h2 style="font-size:1.4rem;font-weight:300;color:#edede8;letter-spacing:0.08em;margin-bottom:0.5rem;">代表的ツールカテゴリ別ポジショニング</h2>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.8rem;margin-bottom:2rem;">機能充実度 × 導入コストの2軸で分類</p>
+
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:2rem;position:relative;min-height:360px;">
+        <!-- Axis labels -->
+        <div style="position:absolute;top:1rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.15em;">高機能</div>
+        <div style="position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.15em;">シンプル</div>
+        <div style="position:absolute;left:0.5rem;top:50%;transform:translateY(-50%) rotate(-90deg);color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.1em;white-space:nowrap;">低コスト</div>
+        <div style="position:absolute;right:0.5rem;top:50%;transform:translateY(-50%) rotate(90deg);color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.1em;white-space:nowrap;">高コスト</div>
+
+        <!-- Grid lines -->
+        <div style="position:absolute;top:50%;left:2.5rem;right:2.5rem;height:1px;background:rgba(255,255,255,0.06);"></div>
+        <div style="position:absolute;left:50%;top:2rem;bottom:2rem;width:1px;background:rgba(255,255,255,0.06);"></div>
+
+        <!-- Quadrants -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;gap:0;padding:2rem 2.5rem;">
+          <!-- Top-left: High capability, Low cost -->
+          <div style="padding:1.25rem;border-right:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04);">
+            <p style="color:rgba(255,255,255,0.2);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.75rem;">高機能 × 低〜中コスト</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              {['国産中堅ERP各社', 'Infor CloudSuite', 'IFS Cloud', 'Dynamics 365'].map(t => (
+                <span style="padding:0.3rem 0.7rem;background:rgba(74,158,255,0.1);border:1px solid rgba(74,158,255,0.25);color:#4a9eff;font-size:0.7rem;">{t}</span>
+              ))}
+            </div>
+          </div>
+          <!-- Top-right: High capability, High cost -->
+          <div style="padding:1.25rem;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <p style="color:rgba(255,255,255,0.2);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.75rem;">高機能 × 高コスト</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              {['SAP S/4HANA', 'Oracle Cloud ERP', 'PTC Windchill', 'Siemens Teamcenter'].map(t => (
+                <span style="padding:0.3rem 0.7rem;background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.25);color:#c8a96e;font-size:0.7rem;">{t}</span>
+              ))}
+            </div>
+          </div>
+          <!-- Bottom-left: Simple, Low cost -->
+          <div style="padding:1.25rem;border-right:1px solid rgba(255,255,255,0.04);">
+            <p style="color:rgba(255,255,255,0.2);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.75rem;">シンプル × 低コスト</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              {['クラウドMES新興系', 'Excel + Python', 'ノーコードツール', 'Google Sheets連携'].map(t => (
+                <span style="padding:0.3rem 0.7rem;background:rgba(78,201,122,0.1);border:1px solid rgba(78,201,122,0.25);color:#4ec97a;font-size:0.7rem;">{t}</span>
+              ))}
+            </div>
+          </div>
+          <!-- Bottom-right: Simple, Mid cost -->
+          <div style="padding:1.25rem;">
+            <p style="color:rgba(255,255,255,0.2);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.75rem;">シンプル × 中コスト</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              {['中堅MES各社', 'CMMS専門ソフト', 'SaaS型品質管理', 'BI + データ連携基盤'].map(t => (
+                <span style="padding:0.3rem 0.7rem;background:rgba(224,96,128,0.1);border:1px solid rgba(224,96,128,0.25);color:#e06080;font-size:0.7rem;">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p style="color:rgba(255,255,255,0.25);font-size:0.72rem;margin-top:0.75rem;">※ ポジショニングは一般的な傾向であり、企業規模・導入スコープ・カスタマイズ度によって大きく変動します。必ず複数ベンダーのRFPを比較してください。</p>
+    </div>
+
+    <!-- Section 4: Integration patterns -->
+    <div style="margin-bottom:4rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">SECTION 4</p>
+      <h2 style="font-size:1.4rem;font-weight:300;color:#edede8;letter-spacing:0.08em;margin-bottom:0.5rem;">ETOに特有の統合設計パターン</h2>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.8rem;margin-bottom:2rem;">製造業の特性に合わせた3つのシステム統合アプローチ</p>
+
+      <!-- Flow diagram -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:2rem;margin-bottom:2rem;overflow-x:auto;">
+        <p style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.2em;margin-bottom:1.25rem;">典型的なETOシステム連携フロー</p>
+        <pre style="color:rgba(255,255,255,0.55);font-size:0.8rem;line-height:2;font-family:'Cascadia Code','Fira Code',monospace;background:none;border:none;padding:0;margin:0;white-space:pre-wrap;">受注 → PLM（設計）→ ERP（調達/原価）→ MES（製造実績）→ 品質記録
+          ↕              ↕               ↕
+       BOM連携         発注連携          実績連携
+     設計変更伝達      原価実績取込      検査結果集約</pre>
+      </div>
+
+      <!-- 3 patterns -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;">
+        {[
+          {
+            num: '01',
+            name: 'PLM中心型',
+            sub: '設計主導の製造業に適合',
+            color: '#c8a96e',
+            merit: ['設計情報が単一ソースとして管理されるため整合性が高い', '設計変更の影響範囲が自動的にトレースできる', '図面・BOM・技術文書の一元管理が実現'],
+            demerit: ['PLMのライセンス・導入コストが高い', 'ERP・MESとのAPI連携構築に工数がかかる', '調達・原価はERPに依存するため二重管理リスク'],
+          },
+          {
+            num: '02',
+            name: 'ERP中心型',
+            sub: '調達・原価管理が複雑な製造業',
+            color: '#4a9eff',
+            merit: ['受注〜出荷まで一貫した業務フローを一つのシステムで管理', '会計・調達・製造の情報が統合されリアルタイムな原価把握が可能', '導入実績が豊富でベンダーサポートが充実'],
+            demerit: ['ERPの設計管理機能はPLMより劣ることが多い', '製造現場の詳細管理（実績収集・品質）にMES補完が必要', 'カスタマイズが複雑になりがちでTCOが高い'],
+          },
+          {
+            num: '03',
+            name: 'MES中心型',
+            sub: '工程管理・品質記録が最重要の製造業',
+            color: '#4ec97a',
+            merit: ['製造現場の実績・品質・トレーサビリティが最も詳細に管理できる', 'ERP・PLMとの連携範囲を絞ることで段階的導入しやすい', 'IoT・設備データとの統合が容易'],
+            demerit: ['受注・原価・調達はERPに依存するため連携設計が必要', 'PLMとのBOM同期が手動になりやすい', '中小企業ではMES自体の導入・維持コストが課題になる場合も'],
+          },
+        ].map(p => (
+          <div style={`background:#111114;border:1px solid rgba(${p.color === '#c8a96e' ? '200,169,110' : p.color === '#4a9eff' ? '74,158,255' : '78,201,122'},0.2);padding:1.75rem;`}>
+            <div style="display:flex;align-items:baseline;gap:0.75rem;margin-bottom:0.25rem;">
+              <span style={`color:${p.color};font-size:0.65rem;letter-spacing:0.2em;`}>{p.num}</span>
+              <h3 style={`font-size:1rem;font-weight:400;color:${p.color};letter-spacing:0.05em;`}>{p.name}</h3>
+            </div>
+            <p style="color:rgba(255,255,255,0.35);font-size:0.72rem;margin-bottom:1.25rem;">{p.sub}</p>
+            <div style="margin-bottom:1rem;">
+              <p style="color:rgba(78,201,122,0.7);font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.5rem;">メリット</p>
+              {p.merit.map(m => (
+                <div style="display:flex;gap:0.5rem;padding:0.3rem 0;">
+                  <span style="color:rgba(78,201,122,0.5);font-size:0.7rem;flex-shrink:0;">+</span>
+                  <span style="color:rgba(255,255,255,0.55);font-size:0.75rem;line-height:1.6;">{m}</span>
+                </div>
+              ))}
+            </div>
+            <div>
+              <p style="color:rgba(224,96,128,0.7);font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.5rem;">課題・デメリット</p>
+              {p.demerit.map(d => (
+                <div style="display:flex;gap:0.5rem;padding:0.3rem 0;">
+                  <span style="color:rgba(224,96,128,0.5);font-size:0.7rem;flex-shrink:0;">−</span>
+                  <span style="color:rgba(255,255,255,0.5);font-size:0.75rem;line-height:1.6;">{d}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- CTA to learning -->
+    <div style="background:rgba(200,169,110,0.05);border:1px solid rgba(200,169,110,0.15);padding:2.5rem;text-align:center;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">RELATED LEARNING</p>
+      <h3 style="font-size:1.1rem;font-weight:300;color:#edede8;margin-bottom:0.75rem;letter-spacing:0.05em;">より深く学ぶには</h3>
+      <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:1.5rem;line-height:1.7;">各システムの詳細・導入プロセス・統合設計については学習ロードマップで体系的に解説しています</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;">
+        {[
+          { label: 'テーマ11: ITインフラ・システム構成', path: '/learning/11_it_infra' },
+          { label: 'テーマ13: PoC設計', path: '/learning/13_poc' },
+          { label: 'テーマ4: 設計変更管理', path: '/learning/04_ecm' },
+        ].map(link => (
+          <a href={`${base}${link.path}`} style="padding:0.625rem 1.25rem;border:1px solid rgba(200,169,110,0.3);color:rgba(200,169,110,0.8);font-size:0.75rem;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(200,169,110,0.08)';this.style.color='#c8a96e'" onmouseout="this.style.background='transparent';this.style.color='rgba(200,169,110,0.8)'">
+            {link.label} →
+          </a>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
