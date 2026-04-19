@@ -13,13 +13,32 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Hero images per case
+const heroImages: Record<string, string> = {
+  'email-task':       'https://images.unsplash.com/photo-1596526131083-e8c633c948d2?auto=format&fit=crop&w=1920&q=80',
+  'dashboard':        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80',
+  'supplier-quality': 'https://images.unsplash.com/photo-1565514020179-026b92b84bb6?auto=format&fit=crop&w=1920&q=80',
+};
+const slug = entry.id.replace(/\.md$/, '');
+const heroImg = heroImages[slug] ?? 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80';
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description}>
 
+  <!-- Hero image banner -->
+  <div style="position:relative;height:22rem;overflow:hidden;">
+    <img
+      src={heroImg}
+      alt={entry.data.title}
+      style="width:100%;height:100%;object-fit:cover;opacity:0.3;"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,transparent 30%,rgba(12,12,14,0.9) 100%);"></div>
+  </div>
+
   <!-- Breadcrumb -->
-  <div style="padding-top:5.5rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
-    <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.08em;padding-top:1rem;">
+  <div style="padding-top:1.5rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
+    <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.08em;">
       <a href={`${base}/`} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">TOP</a>
       <span>/</span>
       <a href={`${base}/cases`} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">事例</a>
@@ -29,7 +48,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </div>
 
   <!-- Article Header -->
-  <header style="padding:3rem 1.5rem 2.5rem;max-width:1280px;margin:0 auto;border-bottom:1px solid rgba(255,255,255,0.06);">
+  <header style="padding:2rem 1.5rem 2.5rem;max-width:1280px;margin:0 auto;border-bottom:1px solid rgba(255,255,255,0.06);">
     <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;text-transform:uppercase;">{entry.data.category}</p>
     <h1 style="font-size:clamp(1.5rem,4vw,2.75rem);font-weight:300;letter-spacing:0.05em;color:#edede8;line-height:1.4;margin-bottom:1rem;">{entry.data.title}</h1>
     <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.8;max-width:48rem;">{entry.data.description}</p>

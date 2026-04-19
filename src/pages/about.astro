@@ -8,24 +8,42 @@ const techStack = ['Python','FastAPI','n8n','Power BI','Claude API','React','Git
 
 <BaseLayout title="ABOUT" description="NaNi Execution Lab について。製造業DXとAI活用の実践者。">
 
-  <!-- Page Header -->
-  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
-    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">ABOUT</p>
-    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;">About</h1>
+  <!-- Page Hero Image -->
+  <div style="position:relative;height:22rem;overflow:hidden;">
+    <img
+      src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1920&q=80"
+      alt="Manufacturing team"
+      style="width:100%;height:100%;object-fit:cover;opacity:0.25;"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,transparent 30%,rgba(12,12,14,0.85) 100%);"></div>
+    <div style="position:absolute;bottom:3rem;left:0;right:0;max-width:1280px;margin:0 auto;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">ABOUT</p>
+      <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;">About</h1>
+    </div>
   </div>
 
-  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
+  <div style="max-width:1280px;margin:0 auto;padding:3rem 1.5rem 8rem;">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:4rem;">
 
       <!-- Left: Profile -->
       <div>
         <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:2rem;">PROFILE</p>
 
-        <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:2rem;margin-bottom:2rem;">
-          <div style="margin-bottom:1.25rem;">
-            <div style="font-size:1.5rem;font-weight:300;letter-spacing:0.1em;color:#edede8;margin-bottom:0.25rem;">NaNi</div>
-            <div style="color:rgba(255,255,255,0.35);font-size:0.75rem;letter-spacing:0.08em;">製造業DX推進 / AI業務自動化 エンジニア</div>
+        <!-- Profile image -->
+        <div style="position:relative;margin-bottom:2rem;overflow:hidden;border:1px solid rgba(255,255,255,0.07);">
+          <img
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+            alt="Profile"
+            style="width:100%;height:16rem;object-fit:cover;object-position:center top;opacity:0.6;filter:grayscale(30%);"
+          />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(12,12,14,0.8) 0%,transparent 60%);"></div>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem;">
+            <div style="font-size:1.25rem;font-weight:300;letter-spacing:0.1em;color:#edede8;">NaNi</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.7rem;letter-spacing:0.08em;margin-top:0.25rem;">製造業DX推進 / AI業務自動化 エンジニア</div>
           </div>
+        </div>
+
+        <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:1.75rem;margin-bottom:2rem;">
           <p style="color:rgba(255,255,255,0.55);font-size:0.875rem;line-height:1.9;">
             製造業において品質管理・サプライヤー管理・生産管理のDX推進を担当。
             AI技術と業務自動化ツールを組み合わせ、データ主導の仕組みづくりを実践。
@@ -55,13 +73,24 @@ const techStack = ['Python','FastAPI','n8n','Power BI','Claude API','React','Git
         <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:2rem;">MISSION</p>
         <div style="display:flex;flex-direction:column;gap:1.5rem;margin-bottom:3rem;">
           {[
-            { title: 'データ主導の意思決定', body: '現場の経験と勘に依存した意思決定をデータで支援し、再現性のある仕組みへ転換する。' },
-            { title: '自律型プロセス設計',   body: '人間の判断が必要な部分と自動化できる部分を見極め、持続可能な業務フローを構築する。' },
-            { title: '実行可能な知見の発信', body: '理論ではなく実際に機能した仕組みを記録し、製造業DXの参考事例として共有する。' },
+            { title: 'データ主導の意思決定', body: '現場の経験と勘に依存した意思決定をデータで支援し、再現性のある仕組みへ転換する。', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80' },
+            { title: '自律型プロセス設計',   body: '人間の判断が必要な部分と自動化できる部分を見極め、持続可能な業務フローを構築する。', img: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=400&q=80' },
+            { title: '実行可能な知見の発信', body: '理論ではなく実際に機能した仕組みを記録し、製造業DXの参考事例として共有する。', img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80' },
           ].map(item => (
-            <div style="border-left:2px solid rgba(200,169,110,0.35);padding-left:1.5rem;">
-              <h3 style="color:#edede8;font-size:0.9rem;font-weight:400;margin-bottom:0.5rem;">{item.title}</h3>
-              <p style="color:rgba(255,255,255,0.45);font-size:0.8rem;line-height:1.9;">{item.body}</p>
+            <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;overflow:hidden;" class="mission-card">
+              <div style="overflow:hidden;height:9rem;">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  style="width:100%;height:100%;object-fit:cover;opacity:0.5;transition:all 0.5s;"
+                  loading="lazy"
+                  class="mission-img"
+                />
+              </div>
+              <div style="border-left:2px solid rgba(200,169,110,0.35);padding:1.25rem 1.5rem;">
+                <h3 style="color:#edede8;font-size:0.9rem;font-weight:400;margin-bottom:0.5rem;">{item.title}</h3>
+                <p style="color:rgba(255,255,255,0.45);font-size:0.8rem;line-height:1.9;">{item.body}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -79,3 +108,7 @@ const techStack = ['Python','FastAPI','n8n','Power BI','Claude API','React','Git
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  .mission-card:hover .mission-img { opacity: 0.8 !important; transform: scale(1.04); }
+</style>

@@ -5,16 +5,28 @@ interface Props {
   category: string;
   slug: string;
   tags?: string[];
+  image?: string;
 }
-const { title, description, category, slug, tags = [] } = Astro.props;
+const { title, description, category, slug, tags = [], image } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <a
   href={`${base}/cases/${slug}`}
-  style="display:block;border:1px solid rgba(255,255,255,0.07);background:#141418;transition:all 0.3s;text-decoration:none;"
+  style="display:block;border:1px solid rgba(255,255,255,0.07);background:#141418;transition:all 0.3s;text-decoration:none;overflow:hidden;"
   class="case-card"
 >
+  {image && (
+    <div style="overflow:hidden;height:13rem;">
+      <img
+        src={image}
+        alt={title}
+        style="width:100%;height:100%;object-fit:cover;opacity:0.7;transition:all 0.5s;"
+        loading="lazy"
+        class="case-img"
+      />
+    </div>
+  )}
   <div style="padding:2rem;">
     <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;margin-bottom:1rem;">{category}</div>
     <h3 style="font-size:1.125rem;font-weight:300;color:#edede8;margin-bottom:0.75rem;line-height:1.6;letter-spacing:0.03em;" class="card-title">{title}</h3>
@@ -37,5 +49,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .case-card:hover { border-color: rgba(200,169,110,0.35) !important; transform: translateY(-2px); }
   .case-card:hover .card-title { color: #c8a96e !important; }
   .case-card:hover .arrow { transform: translateX(4px); }
+  .case-card:hover .case-img { opacity: 1 !important; transform: scale(1.05); }
   .arrow { transition: transform 0.2s; display: inline-block; }
 </style>

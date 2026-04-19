@@ -8,19 +8,38 @@ interface Props {
   type: 'blog' | 'news';
   tags?: string[];
   category?: string;
+  heroImage?: string;
 }
 
-const { title, description, date, type, tags = [], category } = Astro.props;
+const { title, description, date, type, tags = [], category, heroImage } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const formatted = new Date(date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
 const typeLabel = type === 'blog' ? 'BLOG' : 'NEWS';
 const typePath  = `${base}/${type}`;
+
+// Default hero images per type
+const defaultImages = {
+  blog: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1920&q=80',
+  news: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1920&q=80',
+};
+const bgImage = heroImage ?? defaultImages[type];
 ---
 
 <BaseLayout title={title} description={description}>
+
+  <!-- Hero image banner -->
+  <div style="position:relative;height:18rem;overflow:hidden;">
+    <img
+      src={bgImage}
+      alt={title}
+      style="width:100%;height:100%;object-fit:cover;opacity:0.2;"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,transparent 30%,rgba(12,12,14,0.95) 100%);"></div>
+  </div>
+
   <!-- Breadcrumb -->
-  <div style="padding-top:5.5rem;padding-bottom:0;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
-    <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.1em;padding-top:1rem;">
+  <div style="padding-top:1rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
+    <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.1em;">
       <a href={`${base}/`} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">TOP</a>
       <span>/</span>
       <a href={typePath} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">{typeLabel}</a>
@@ -30,7 +49,7 @@ const typePath  = `${base}/${type}`;
   </div>
 
   <!-- Article Header -->
-  <header style="padding:3rem 1.5rem 2.5rem;max-width:1280px;margin:0 auto;border-bottom:1px solid rgba(255,255,255,0.06);">
+  <header style="padding:2rem 1.5rem 2.5rem;max-width:1280px;margin:0 auto;border-bottom:1px solid rgba(255,255,255,0.06);">
     <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">{category ?? typeLabel}</p>
     <div style="color:rgba(255,255,255,0.25);font-size:0.75rem;letter-spacing:0.08em;margin-bottom:1rem;">{formatted}</div>
     <h1 style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:300;letter-spacing:0.05em;color:#edede8;line-height:1.4;margin-bottom:1rem;">{title}</h1>

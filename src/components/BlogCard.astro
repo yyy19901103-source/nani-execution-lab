@@ -6,8 +6,9 @@ interface Props {
   slug: string;
   type?: 'blog' | 'news';
   category?: string;
+  image?: string;
 }
-const { title, description, date, slug, type = 'blog', category } = Astro.props;
+const { title, description, date, slug, type = 'blog', category, image } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const formatted = new Date(date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
@@ -18,7 +19,18 @@ const formatted = new Date(date).toLocaleDateString('ja-JP', { year: 'numeric', 
   class="blog-card"
 >
   <div style="display:flex;align-items:flex-start;gap:1.5rem;">
-    <div style="min-width:7rem;">
+    {image && (
+      <div style="flex-shrink:0;width:5rem;height:3.5rem;overflow:hidden;border:1px solid rgba(255,255,255,0.07);">
+        <img
+          src={image}
+          alt={title}
+          style="width:100%;height:100%;object-fit:cover;opacity:0.7;transition:all 0.4s;"
+          loading="lazy"
+          class="card-thumb"
+        />
+      </div>
+    )}
+    <div style="min-width:7rem;flex-shrink:0;">
       <div style="color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.05em;line-height:1.5;">{formatted}</div>
       {category && (
         <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.1em;margin-top:0.25rem;">{category}</div>
@@ -30,11 +42,12 @@ const formatted = new Date(date).toLocaleDateString('ja-JP', { year: 'numeric', 
         <p style="color:rgba(255,255,255,0.35);font-size:0.8rem;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{description}</p>
       )}
     </div>
-    <span style="color:#c8a96e;font-size:0.875rem;margin-top:0.1rem;transition:transform 0.2s;display:inline-block;" class="arrow">→</span>
+    <span style="color:#c8a96e;font-size:0.875rem;margin-top:0.1rem;transition:transform 0.2s;display:inline-block;flex-shrink:0;" class="arrow">→</span>
   </div>
 </a>
 
 <style>
   .blog-card:hover .post-title { color: #c8a96e !important; }
   .blog-card:hover .arrow { transform: translateX(4px); }
+  .blog-card:hover .card-thumb { opacity: 1 !important; transform: scale(1.05); }
 </style>
