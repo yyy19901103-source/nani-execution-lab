@@ -7,6 +7,15 @@ tags: ["JavaScript", "Gemini AI", "Google Apps Script", "PWA", "家計管理", "
 featured: true
 ---
 
+## 🌐 ライブデモ
+
+**👉 [今すぐ使う（PWA）](https://yyy19901103-source.github.io/kehi-seisan/)**  
+📦 [GitHub リポジトリ](https://github.com/yyy19901103-source/kehi-seisan)
+
+スマホで開いて「ホーム画面に追加」すればアプリのように起動できます。
+
+---
+
 ## 背景
 
 「毎月手書きのノートで家計管理しているが、スマホアプリに転記するのが面倒」——そのギャップを埋めるため、**ノートを撮影するだけでAIが自動入力する**家計簿アプリを構築した。

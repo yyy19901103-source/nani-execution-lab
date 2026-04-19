@@ -7,6 +7,15 @@ tags: ["Python", "Streamlit", "AI", "スケジューリング", "クリティカ
 featured: true
 ---
 
+## 🌐 ライブデモ
+
+**👉 [ワンクリック・デプロイ（Streamlit Cloud）](https://share.streamlit.io/deploy?repository=yyy19901103-source/project-optimizer&branch=main&mainModule=app.py)**  
+📦 [GitHub リポジトリ](https://github.com/yyy19901103-source/project-optimizer)
+
+> 上記リンクから GitHub OAuth でログインするだけで、あなたのアカウントでこのアプリをクラウドにデプロイできます（無料・約3分）。
+
+---
+
 ## 背景
 
 プロジェクト管理の現場では「会議で決まったことを手動でタスク管理ツールに転記する」「スケジュールの衝突に気づかず後から手直し」という作業が慢性的に発生する。
