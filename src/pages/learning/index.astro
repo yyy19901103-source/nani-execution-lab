@@ -45,9 +45,56 @@ const phases = [
   },
 ];
 
+// Estimated study time per topic
+const studyTime: Record<string, string> = {
+  '01_business': '約60分',
+  '02_eto_mto': '約90分',
+  '03_biz_process': '約90分',
+  '04_ecm': '約120分',
+  '05_mfg_deployment': '約90分',
+  '06_mfg_tech': '約90分',
+  '07_quality_stats': '約120分',
+  '08_equipment': '約90分',
+  '09_procurement': '約60分',
+  '10_record_design': '約90分',
+  '11_it_infra': '約90分',
+  '12_ai': '約120分',
+  '13_poc': '約90分',
+  '14_operations': '約60分',
+  '15_standardization': '約60分',
+  '16_kpi': '約90分',
+};
+
+// Key skills per topic
+const keySkills: Record<string, string[]> = {
+  '01_business': ['#受注生産','#ETO','#ビジネスモデル'],
+  '02_eto_mto': ['#ETO','#MTO','#MTS','#生産方式'],
+  '03_biz_process': ['#BPMN','#業務フロー','#SIPOC'],
+  '04_ecm': ['#設計変更','#ECM','#変更管理'],
+  '05_mfg_deployment': ['#製造展開','#工程設計','#BOM'],
+  '06_mfg_tech': ['#生産技術','#治工具','#設備'],
+  '07_quality_stats': ['#SPC','#FMEA','#Cpk','#管理図'],
+  '08_equipment': ['#TPM','#OEE','#保全'],
+  '09_procurement': ['#調達','#サプライヤー','#在庫'],
+  '10_record_design': ['#データ設計','#トレーサビリティ','#記録'],
+  '11_it_infra': ['#MES','#ERP','#ISA95','#システム連携'],
+  '12_ai': ['#AI','#機械学習','#外観検査','#予知保全'],
+  '13_poc': ['#PoC','#検証設計','#ROI'],
+  '14_operations': ['#運用設計','#SLA','#継続改善'],
+  '15_standardization': ['#標準化','#5S','#教育'],
+  '16_kpi': ['#KPI','#KGI','#効果測定','#BSC'],
+};
+
 function getItem(id: string) {
   return allLearning.find(e => e.id === id);
 }
+
+// Calculate total study time in minutes
+const totalMinutes = Object.values(studyTime).reduce((sum, t) => {
+  const m = parseInt(t.replace('約','').replace('分',''));
+  return sum + m;
+}, 0);
+const totalHours = Math.round(totalMinutes / 60);
 ---
 
 <BaseLayout title="製造DX学習ロードマップ | NaNi Execution Lab">
@@ -80,6 +127,30 @@ function getItem(id: string) {
           <div style="font-size:1.75rem;font-weight:200;color:#c8a96e;">16</div>
           <div style="font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">TOPICS</div>
         </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="text-align:center;">
+          <div style="font-size:1.75rem;font-weight:200;color:#c8a96e;">{totalHours}h</div>
+          <div style="font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">TOTAL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Progress Bar -->
+  <div id="progress-section" style="position:sticky;top:64px;z-index:50;background:rgba(12,12,14,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.75rem 1.5rem;">
+    <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+      <span style="font-size:0.65rem;letter-spacing:0.15em;color:rgba(200,169,110,0.7);white-space:nowrap;">学習進捗</span>
+      <div style="flex:1;min-width:120px;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;">
+        <div id="progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#4a9eff,#4ec97a,#e0a040,#c8a96e);border-radius:2px;transition:width 0.5s ease;"></div>
+      </div>
+      <span id="progress-label" style="font-size:0.7rem;color:rgba(255,255,255,0.4);white-space:nowrap;">0 / 16 完了</span>
+      <div style="display:flex;gap:0.5rem;">
+        {phases.map(p => (
+          <div style={`display:flex;align-items:center;gap:0.35rem;font-size:0.6rem;color:${p.color};opacity:0.7;`}>
+            <div style={`width:8px;height:8px;border-radius:50%;background:${p.color};`}></div>
+            <span>{p.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   </div>
@@ -88,16 +159,38 @@ function getItem(id: string) {
 
     <!-- Schedule link -->
     <div style="margin-bottom:3rem;text-align:center;">
-      <a href={`${base}/learning/00_schedule`} style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.875rem 2rem;background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.3);border-radius:6px;text-decoration:none;color:#c8a96e;font-size:0.85rem;letter-spacing:0.1em;transition:all 0.2s;">
+      <a href={`${base}/learning/00_schedule`} style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.875rem 2rem;background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.3);border-radius:6px;text-decoration:none;color:#c8a96e;font-size:0.85rem;letter-spacing:0.1em;transition:all 0.2s;" class="schedule-link">
         📋 全体スケジュール・学習優先順位を見る →
       </a>
+    </div>
+
+    <!-- Phase Timeline -->
+    <div style="margin-bottom:3.5rem;padding:2rem;background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
+      <h2 style="font-size:0.7rem;letter-spacing:0.2em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin:0 0 1.75rem;">フェーズ構成タイムライン</h2>
+      <div class="timeline-container" style="display:flex;align-items:stretch;gap:0;position:relative;">
+        {phases.map((phase, i) => (
+          <div class="timeline-phase" style={`flex:1;position:relative;padding:1.25rem 1rem;border-left:${i===0?'1px':'0px'} solid rgba(255,255,255,0.08);border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);border-right:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.01);transition:background 0.2s;`}>
+            <!-- Phase number bubble -->
+            <div style={`width:32px;height:32px;border-radius:50%;background:${phase.color}20;border:1.5px solid ${phase.color}60;display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:${phase.color};font-weight:300;margin-bottom:0.75rem;`}>
+              {phase.num}
+            </div>
+            <div style={`font-size:0.6rem;letter-spacing:0.15em;color:${phase.color};margin-bottom:0.25rem;text-transform:uppercase;`}>{phase.label}</div>
+            <div style="font-size:0.85rem;font-weight:300;color:rgba(255,255,255,0.8);margin-bottom:0.35rem;line-height:1.3;">{phase.subtitle}</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.05em;">{phase.weeks}</div>
+            <!-- Arrow connector -->
+            {i < phases.length - 1 && (
+              <div style={`position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:20px;height:20px;background:#0c0c0e;border-top:1px solid rgba(255,255,255,0.08);border-right:1px solid rgba(255,255,255,0.08);transform:translateY(-50%) rotate(45deg);z-index:2;`}></div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
 
     <!-- Phases -->
     {phases.map(phase => (
       <div style="margin-bottom:3.5rem;">
         <!-- Phase header -->
-        <div style={`display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.07);`}>
+        <div style={`display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:2px solid ${phase.color}30;`}>
           <span style={`font-size:0.7rem;letter-spacing:0.2em;color:${phase.color};padding:0.2rem 0.75rem;background:${phase.color}18;border:1px solid ${phase.color}40;border-radius:12px;`}>{phase.label}</span>
           <h2 style="font-size:1.2rem;font-weight:300;color:rgba(255,255,255,0.9);margin:0;">{phase.subtitle}</h2>
           <span style="font-size:0.75rem;color:rgba(255,255,255,0.35);letter-spacing:0.1em;">{phase.weeks}</span>
@@ -109,23 +202,42 @@ function getItem(id: string) {
           {phase.ids.map(id => {
             const item = getItem(id);
             if (!item) return null;
+            const time = studyTime[id];
+            const skills = keySkills[id] || [];
             return (
               <a
                 href={`${base}/learning/${id}`}
-                style="display:block;padding:1.25rem 1.5rem;background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:8px;text-decoration:none;transition:all 0.2s;group:;"
+                style={`display:block;padding:1.25rem 1.5rem;background:#111114;border:1px solid rgba(255,255,255,0.07);border-left:3px solid ${phase.color}60;border-radius:0 8px 8px 0;text-decoration:none;transition:all 0.2s;`}
                 class="topic-card"
               >
-                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+                <!-- Top row: priority + week + time badge -->
+                <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;flex-wrap:wrap;">
                   {item.data.priority && (
-                    <span style={`font-size:0.65rem;padding:0.15rem 0.5rem;border-radius:10px;background:${phase.color}15;color:${phase.color};border:1px solid ${phase.color}30;letter-spacing:0.05em;`}>
+                    <span style={`font-size:0.6rem;padding:0.15rem 0.5rem;border-radius:10px;background:${phase.color}15;color:${phase.color};border:1px solid ${phase.color}30;letter-spacing:0.05em;`}>
                       {item.data.priority}
                     </span>
                   )}
                   {item.data.week && (
-                    <span style="font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">Week {item.data.week}</span>
+                    <span style="font-size:0.6rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">Week {item.data.week}</span>
+                  )}
+                  {time && (
+                    <span style="font-size:0.6rem;padding:0.15rem 0.5rem;border-radius:10px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.08);letter-spacing:0.03em;margin-left:auto;">
+                      ⏱ {time}
+                    </span>
                   )}
                 </div>
-                <h3 style="font-size:0.9rem;font-weight:400;color:rgba(255,255,255,0.85);margin:0 0 0.5rem;letter-spacing:0.03em;line-height:1.4;">{item.data.title}</h3>
+                <!-- Title -->
+                <h3 style="font-size:0.9rem;font-weight:400;color:rgba(255,255,255,0.85);margin:0 0 0.75rem;letter-spacing:0.03em;line-height:1.4;">{item.data.title}</h3>
+                <!-- Skill tags -->
+                {skills.length > 0 && (
+                  <div style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.75rem;">
+                    {skills.map(skill => (
+                      <span style={`font-size:0.58rem;padding:0.1rem 0.4rem;border-radius:3px;background:${phase.color}0d;color:${phase.color}99;letter-spacing:0.02em;`}>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <div style={`width:24px;height:2px;background:${phase.color};opacity:0.4;border-radius:1px;transition:width 0.2s;`} class="card-line"></div>
               </a>
             );
@@ -133,6 +245,25 @@ function getItem(id: string) {
         </div>
       </div>
     ))}
+
+    <!-- 学習の進め方 Guide Section -->
+    <div style="margin-bottom:3rem;padding:2rem 2.5rem;background:linear-gradient(135deg,#111820 0%,#111114 100%);border:1px solid rgba(200,169,110,0.15);border-radius:12px;">
+      <h2 style="font-size:0.85rem;font-weight:400;letter-spacing:0.15em;color:#c8a96e;text-transform:uppercase;margin:0 0 1.5rem;">学習の進め方</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
+        {[
+          { step: '01', title: '全体像を把握する', desc: 'まず00_scheduleで16週間のロードマップを確認。優先順位と学習の流れを頭に入れる。（目安：30分）', color: '#4a9eff' },
+          { step: '02', title: '優先テーマから着手', desc: '★1位〜★5位のテーマを最初に集中して学ぶ。ビジネス基盤なしに個別技術を学んでも応用が効かない。', color: '#4ec97a' },
+          { step: '03', title: 'チェックリストで確認', desc: '各テーマの「実務チェックリスト」を使って理解度を自己評価。全項目に答えられるまで繰り返す。', color: '#e0a040' },
+          { step: '04', title: '自社業務に当てはめる', desc: '学習後すぐに「自社ではどうか？」を考える。具体的な業務名・プロセス名で置き換えると定着が速い。', color: '#c8a96e' },
+        ].map(item => (
+          <div style={`padding:1.25rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-top:2px solid ${item.color}40;border-radius:0 0 6px 6px;`}>
+            <div style={`font-size:1.5rem;font-weight:100;color:${item.color};opacity:0.5;margin-bottom:0.5rem;line-height:1;`}>{item.step}</div>
+            <div style="font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.8);margin-bottom:0.5rem;">{item.title}</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.45);line-height:1.6;">{item.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
 
     <!-- Reference section -->
     <div style="margin-top:1rem;padding:2rem;background:#111114;border:1px solid rgba(200,169,110,0.15);border-radius:8px;">
@@ -161,7 +292,8 @@ function getItem(id: string) {
   .topic-card:hover {
     border-color: rgba(200,169,110,0.25) !important;
     background: #161618 !important;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
   .topic-card:hover .card-line {
     width: 48px !important;
@@ -171,4 +303,43 @@ function getItem(id: string) {
     border-color: rgba(200,169,110,0.3) !important;
     color: #c8a96e !important;
   }
+  .schedule-link:hover {
+    background: rgba(200,169,110,0.12) !important;
+    transform: translateY(-1px);
+  }
+  .timeline-phase:hover {
+    background: rgba(255,255,255,0.03) !important;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-container {
+      flex-direction: column !important;
+    }
+    .timeline-phase > div:last-child {
+      display: none !important;
+    }
+  }
 </style>
+
+<script>
+  // Progress tracking via localStorage
+  const ALL_TOPICS = [
+    '01_business','02_eto_mto','03_biz_process','04_ecm',
+    '05_mfg_deployment','06_mfg_tech','07_quality_stats','08_equipment','09_procurement',
+    '10_record_design','11_it_infra','12_ai','15_standardization',
+    '13_poc','14_operations','16_kpi',
+  ];
+
+  function updateProgress() {
+    const completed = ALL_TOPICS.filter(id => localStorage.getItem(`learning_done_${id}`) === '1');
+    const count = completed.length;
+    const pct = Math.round((count / ALL_TOPICS.length) * 100);
+
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('progress-label');
+    if (bar) bar.style.width = pct + '%';
+    if (label) label.textContent = `${count} / ${ALL_TOPICS.length} 完了`;
+  }
+
+  updateProgress();
+</script>
