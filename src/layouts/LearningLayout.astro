@@ -1,0 +1,189 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export interface Props {
+  title: string;
+  currentSlug?: string;
+}
+
+const { title, currentSlug } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// 全learning記事を取得してナビゲーション構築
+const allLearning = await getCollection('learning');
+
+// ナビグループ定義
+const navGroups = [
+  {
+    label: '📋 全体スケジュール',
+    items: allLearning.filter(e => e.id === '00_schedule'),
+  },
+  {
+    label: 'Phase 1 — ビジネス基盤（W1-4）',
+    items: allLearning.filter(e => [
+      '01_business','02_eto_mto','03_biz_process','04_ecm'
+    ].includes(e.id)).sort((a,b) => a.id.localeCompare(b.id)),
+  },
+  {
+    label: 'Phase 2 — 製造技術基盤（W5-9）',
+    items: allLearning.filter(e => [
+      '05_mfg_deployment','06_mfg_tech','07_quality_stats','08_equipment','09_procurement'
+    ].includes(e.id)).sort((a,b) => a.id.localeCompare(b.id)),
+  },
+  {
+    label: 'Phase 3 — DX実装（W10-12）',
+    items: allLearning.filter(e => [
+      '10_record_design','11_it_infra','12_ai','15_standardization'
+    ].includes(e.id)).sort((a,b) => a.id.localeCompare(b.id)),
+  },
+  {
+    label: 'Phase 4 — 統合・運用（W13-16）',
+    items: allLearning.filter(e => [
+      '13_poc','14_operations','16_kpi'
+    ].includes(e.id)).sort((a,b) => a.id.localeCompare(b.id)),
+  },
+  {
+    label: '📚 リファレンス',
+    items: allLearning.filter(e => ['99_frameworks','99_references'].includes(e.id))
+      .sort((a,b) => a.id.localeCompare(b.id)),
+  },
+];
+---
+
+<BaseLayout title={title}>
+  <div style="min-height:100vh;padding-top:64px;background:#0c0c0e;">
+
+    <!-- Page hero -->
+    <div style="background:linear-gradient(135deg,#0f1420 0%,#0c0c0e 60%,#12100e 100%);border-bottom:1px solid rgba(200,169,110,0.15);padding:2.5rem 1.5rem 2rem;">
+      <div style="max-width:1280px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+          <a href={`${base}/learning`} style="color:rgba(200,169,110,0.7);font-size:0.7rem;letter-spacing:0.15em;text-decoration:none;">LEARNING</a>
+          <span style="color:rgba(255,255,255,0.2);font-size:0.7rem;">›</span>
+          <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;letter-spacing:0.1em;">{title}</span>
+        </div>
+        <h1 style="font-size:1.5rem;font-weight:300;color:rgba(255,255,255,0.9);letter-spacing:0.05em;margin:0;">{title}</h1>
+      </div>
+    </div>
+
+    <!-- Main layout -->
+    <div style="max-width:1280px;margin:0 auto;padding:2rem 1.5rem;display:flex;gap:2rem;align-items:flex-start;">
+
+      <!-- Sidebar -->
+      <aside id="learning-sidebar" style="width:260px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 96px);overflow-y:auto;">
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:1.25rem 0;">
+
+          {navGroups.map(group => (
+            <div style="margin-bottom:0.25rem;">
+              <div style="padding:0.5rem 1.25rem;font-size:0.65rem;letter-spacing:0.15em;color:rgba(200,169,110,0.6);font-weight:500;text-transform:uppercase;">
+                {group.label}
+              </div>
+              {group.items.map(item => {
+                const href = `${base}/learning/${item.id}`;
+                const isActive = currentSlug === item.id;
+                return (
+                  <a
+                    href={href}
+                    style={`display:block;padding:0.5rem 1.25rem 0.5rem 1.5rem;font-size:0.75rem;letter-spacing:0.05em;text-decoration:none;transition:all 0.15s;border-left:2px solid ${isActive ? '#c8a96e' : 'transparent'};color:${isActive ? '#c8a96e' : 'rgba(255,255,255,0.55)'};background:${isActive ? 'rgba(200,169,110,0.05)' : 'transparent'};`}
+                  >
+                    {item.data.title}
+                  </a>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <main style="flex:1;min-width:0;">
+        <article
+          class="learning-content"
+          style="background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:2.5rem;color:rgba(255,255,255,0.8);line-height:1.8;"
+        >
+          <slot />
+        </article>
+
+        <!-- Prev/Next nav -->
+        <div id="prev-next-nav" style="margin-top:1.5rem;display:flex;gap:1rem;justify-content:space-between;" data-current={currentSlug}>
+        </div>
+      </main>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Sidebar scrollbar */
+  #learning-sidebar::-webkit-scrollbar { width: 4px; }
+  #learning-sidebar::-webkit-scrollbar-track { background: transparent; }
+  #learning-sidebar::-webkit-scrollbar-thumb { background: rgba(200,169,110,0.2); border-radius: 2px; }
+
+  /* Markdown content styles */
+  .learning-content h1 { font-size:1.75rem; font-weight:300; color:rgba(255,255,255,0.95); margin:0 0 1.5rem; letter-spacing:0.05em; border-bottom:1px solid rgba(200,169,110,0.2); padding-bottom:0.75rem; }
+  .learning-content h2 { font-size:1.2rem; font-weight:400; color:rgba(200,169,110,0.9); margin:2.5rem 0 1rem; letter-spacing:0.08em; }
+  .learning-content h3 { font-size:1rem; font-weight:500; color:rgba(255,255,255,0.85); margin:1.75rem 0 0.75rem; }
+  .learning-content h4 { font-size:0.9rem; font-weight:500; color:rgba(255,255,255,0.75); margin:1.25rem 0 0.5rem; }
+  .learning-content p { margin:0 0 1rem; color:rgba(255,255,255,0.7); }
+  .learning-content ul, .learning-content ol { margin:0.5rem 0 1rem 1.5rem; color:rgba(255,255,255,0.7); }
+  .learning-content li { margin-bottom:0.35rem; }
+  .learning-content blockquote { border-left:3px solid rgba(200,169,110,0.5); padding:0.75rem 1.25rem; margin:1.25rem 0; background:rgba(200,169,110,0.05); color:rgba(255,255,255,0.6); font-style:italic; border-radius:0 4px 4px 0; }
+  .learning-content code { background:rgba(255,255,255,0.07); padding:0.15em 0.4em; border-radius:3px; font-family:'Fira Code',monospace; font-size:0.85em; color:rgba(200,169,110,0.9); }
+  .learning-content pre { background:#0a0a0c; border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:1.25rem 1.5rem; overflow-x:auto; margin:1rem 0 1.5rem; }
+  .learning-content pre code { background:none; padding:0; color:rgba(200,220,180,0.85); font-size:0.82rem; line-height:1.7; }
+  .learning-content table { width:100%; border-collapse:collapse; margin:1rem 0 1.5rem; font-size:0.85rem; }
+  .learning-content th { background:rgba(200,169,110,0.08); color:rgba(200,169,110,0.9); padding:0.6rem 1rem; text-align:left; font-weight:500; border:1px solid rgba(255,255,255,0.08); }
+  .learning-content td { padding:0.55rem 1rem; color:rgba(255,255,255,0.65); border:1px solid rgba(255,255,255,0.06); vertical-align:top; }
+  .learning-content tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
+  .learning-content a { color:rgba(200,169,110,0.85); text-decoration:underline; text-underline-offset:2px; }
+  .learning-content a:hover { color:#c8a96e; }
+  .learning-content strong { color:rgba(255,255,255,0.9); font-weight:600; }
+  .learning-content hr { border:none; border-top:1px solid rgba(255,255,255,0.08); margin:2rem 0; }
+
+  /* Mobile: sidebar hidden by default, shown via toggle */
+  @media (max-width: 1023px) {
+    #learning-sidebar { display: none; width: 100%; position: static; max-height: none; }
+    #learning-sidebar.open { display: block; }
+  }
+</style>
+
+<script>
+  // Prev/Next navigation
+  const navEl = document.getElementById('prev-next-nav');
+  const current = navEl?.dataset.current;
+  const base = document.querySelector('base')?.href?.replace(/\/$/, '') || '';
+
+  // Flat ordered list
+  const order = [
+    '00_schedule',
+    '01_business','02_eto_mto','03_biz_process','04_ecm',
+    '05_mfg_deployment','06_mfg_tech','07_quality_stats','08_equipment','09_procurement',
+    '10_record_design','11_it_infra','12_ai','15_standardization',
+    '13_poc','14_operations','16_kpi',
+    '99_frameworks','99_references',
+  ];
+
+  if (navEl && current) {
+    const idx = order.indexOf(current);
+    const siteBase = window.location.pathname.replace(/\/learning\/.*$/, '');
+
+    if (idx > 0) {
+      const prev = order[idx - 1];
+      const prevBtn = document.createElement('a');
+      prevBtn.href = `${siteBase}/learning/${prev}`;
+      prevBtn.style.cssText = 'flex:1;padding:0.875rem 1.25rem;background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:6px;text-decoration:none;color:rgba(255,255,255,0.55);font-size:0.8rem;letter-spacing:0.05em;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem;';
+      prevBtn.innerHTML = '← 前のテーマ';
+      navEl.appendChild(prevBtn);
+    } else {
+      navEl.appendChild(document.createElement('div'));
+    }
+
+    if (idx < order.length - 1) {
+      const next = order[idx + 1];
+      const nextBtn = document.createElement('a');
+      nextBtn.href = `${siteBase}/learning/${next}`;
+      nextBtn.style.cssText = 'flex:1;padding:0.875rem 1.25rem;background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:6px;text-decoration:none;color:rgba(255,255,255,0.55);font-size:0.8rem;letter-spacing:0.05em;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem;justify-content:flex-end;';
+      nextBtn.innerHTML = '次のテーマ →';
+      navEl.appendChild(nextBtn);
+    }
+  }
+</script>

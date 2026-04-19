@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const allLearning = await getCollection('learning');
+
+const phases = [
+  {
+    num: 1,
+    label: 'Phase 1',
+    subtitle: 'ビジネス基盤',
+    weeks: 'Week 1–4',
+    color: '#4a9eff',
+    desc: '製造業のビジネスモデル・ETO/MTO・業務プロセス・設計変更管理',
+    ids: ['01_business','02_eto_mto','03_biz_process','04_ecm'],
+  },
+  {
+    num: 2,
+    label: 'Phase 2',
+    subtitle: '製造技術基盤',
+    weeks: 'Week 5–9',
+    color: '#4ec97a',
+    desc: '製造展開・生産技術・品質統計・設備管理・調達管理',
+    ids: ['05_mfg_deployment','06_mfg_tech','07_quality_stats','08_equipment','09_procurement'],
+  },
+  {
+    num: 3,
+    label: 'Phase 3',
+    subtitle: 'DX実装',
+    weeks: 'Week 10–12',
+    color: '#e0a040',
+    desc: '記録情報設計・ITインフラ・AI活用・標準化と教育',
+    ids: ['10_record_design','11_it_infra','12_ai','15_standardization'],
+  },
+  {
+    num: 4,
+    label: 'Phase 4',
+    subtitle: '統合・運用',
+    weeks: 'Week 13–16',
+    color: '#c8a96e',
+    desc: 'PoC設計・運用設計・効果測定KPI',
+    ids: ['13_poc','14_operations','16_kpi'],
+  },
+];
+
+function getItem(id: string) {
+  return allLearning.find(e => e.id === id);
+}
+---
+
+<BaseLayout title="製造DX学習ロードマップ | NaNi Execution Lab">
+
+  <!-- Hero -->
+  <div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#0d1a2e 0%,#0c0c0e 50%,#1a0d0d 100%);padding:6rem 1.5rem 4rem;text-align:center;margin-top:64px;">
+    <div style="position:absolute;inset:0;opacity:0.08;background-image:url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center;"></div>
+    <div style="position:relative;max-width:800px;margin:0 auto;">
+      <div style="display:inline-block;padding:0.35rem 1rem;background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.25);border-radius:20px;font-size:0.7rem;letter-spacing:0.2em;color:#c8a96e;margin-bottom:1.5rem;">MANUFACTURING DX LEARNING</div>
+      <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:200;color:rgba(255,255,255,0.95);letter-spacing:0.05em;margin:0 0 1.25rem;line-height:1.3;">
+        製造DX<br>
+        <span style="color:#c8a96e;font-weight:300;">学習ロードマップ</span>
+      </h1>
+      <p style="font-size:1rem;color:rgba(255,255,255,0.55);letter-spacing:0.05em;max-width:600px;margin:0 auto 2rem;line-height:1.7;">
+        ETO製造業のDX推進担当者が「実務で使える」レベルの知識を習得するための<br>
+        16週間・4フェーズの体系的学習カリキュラム
+      </p>
+      <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-size:1.75rem;font-weight:200;color:#c8a96e;">16</div>
+          <div style="font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">WEEKS</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="text-align:center;">
+          <div style="font-size:1.75rem;font-weight:200;color:#c8a96e;">4</div>
+          <div style="font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">PHASES</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="text-align:center;">
+          <div style="font-size:1.75rem;font-weight:200;color:#c8a96e;">16</div>
+          <div style="font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">TOPICS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:3rem 1.5rem 5rem;">
+
+    <!-- Schedule link -->
+    <div style="margin-bottom:3rem;text-align:center;">
+      <a href={`${base}/learning/00_schedule`} style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.875rem 2rem;background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.3);border-radius:6px;text-decoration:none;color:#c8a96e;font-size:0.85rem;letter-spacing:0.1em;transition:all 0.2s;">
+        📋 全体スケジュール・学習優先順位を見る →
+      </a>
+    </div>
+
+    <!-- Phases -->
+    {phases.map(phase => (
+      <div style="margin-bottom:3.5rem;">
+        <!-- Phase header -->
+        <div style={`display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.07);`}>
+          <span style={`font-size:0.7rem;letter-spacing:0.2em;color:${phase.color};padding:0.2rem 0.75rem;background:${phase.color}18;border:1px solid ${phase.color}40;border-radius:12px;`}>{phase.label}</span>
+          <h2 style="font-size:1.2rem;font-weight:300;color:rgba(255,255,255,0.9);margin:0;">{phase.subtitle}</h2>
+          <span style="font-size:0.75rem;color:rgba(255,255,255,0.35);letter-spacing:0.1em;">{phase.weeks}</span>
+        </div>
+        <p style="font-size:0.85rem;color:rgba(255,255,255,0.45);margin:0 0 1.25rem;letter-spacing:0.03em;">{phase.desc}</p>
+
+        <!-- Topic cards -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;">
+          {phase.ids.map(id => {
+            const item = getItem(id);
+            if (!item) return null;
+            return (
+              <a
+                href={`${base}/learning/${id}`}
+                style="display:block;padding:1.25rem 1.5rem;background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:8px;text-decoration:none;transition:all 0.2s;group:;"
+                class="topic-card"
+              >
+                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+                  {item.data.priority && (
+                    <span style={`font-size:0.65rem;padding:0.15rem 0.5rem;border-radius:10px;background:${phase.color}15;color:${phase.color};border:1px solid ${phase.color}30;letter-spacing:0.05em;`}>
+                      {item.data.priority}
+                    </span>
+                  )}
+                  {item.data.week && (
+                    <span style="font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">Week {item.data.week}</span>
+                  )}
+                </div>
+                <h3 style="font-size:0.9rem;font-weight:400;color:rgba(255,255,255,0.85);margin:0 0 0.5rem;letter-spacing:0.03em;line-height:1.4;">{item.data.title}</h3>
+                <div style={`width:24px;height:2px;background:${phase.color};opacity:0.4;border-radius:1px;transition:width 0.2s;`} class="card-line"></div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+
+    <!-- Reference section -->
+    <div style="margin-top:1rem;padding:2rem;background:#111114;border:1px solid rgba(200,169,110,0.15);border-radius:8px;">
+      <h2 style="font-size:1rem;font-weight:400;color:#c8a96e;letter-spacing:0.1em;margin:0 0 1.25rem;">📚 リファレンス</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.75rem;">
+        {['99_frameworks','99_references'].map(id => {
+          const item = getItem(id);
+          if (!item) return null;
+          return (
+            <a
+              href={`${base}/learning/${id}`}
+              style="display:block;padding:1rem 1.25rem;background:rgba(200,169,110,0.04);border:1px solid rgba(200,169,110,0.12);border-radius:6px;text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.85rem;letter-spacing:0.03em;transition:all 0.2s;"
+              class="ref-card"
+            >
+              {item.data.title}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .topic-card:hover {
+    border-color: rgba(200,169,110,0.25) !important;
+    background: #161618 !important;
+    transform: translateY(-1px);
+  }
+  .topic-card:hover .card-line {
+    width: 48px !important;
+    opacity: 0.8 !important;
+  }
+  .ref-card:hover {
+    border-color: rgba(200,169,110,0.3) !important;
+    color: #c8a96e !important;
+  }
+</style>

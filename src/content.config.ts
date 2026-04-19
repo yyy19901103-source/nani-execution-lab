@@ -35,4 +35,15 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { cases, blog, news };
+const learning = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/learning' }),
+  schema: z.object({
+    title: z.string(),
+    week: z.number().optional(),
+    phase: z.number().optional(),
+    priority: z.string().optional(),
+    slug: z.string().optional(),
+  }),
+});
+
+export const collections = { cases, blog, news, learning };
