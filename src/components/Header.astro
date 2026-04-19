@@ -1,14 +1,16 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const navItems = [
-  { href: '/',         label: 'TOP' },
-  { href: '/about',    label: 'ABOUT' },
-  { href: '/cases',    label: '事例' },
-  { href: '/blog',     label: 'BLOG' },
-  { href: '/news',     label: 'NEWS' },
-  { href: '/download', label: 'DOWNLOAD' },
-  { href: '/gallery',  label: 'GALLERY' },
-  { href: '/video',    label: 'VIDEO' },
-  { href: '/contact',  label: 'CONTACT' },
+  { href: `${base}/`,         label: 'TOP' },
+  { href: `${base}/about`,    label: 'ABOUT' },
+  { href: `${base}/cases`,    label: '事例' },
+  { href: `${base}/blog`,     label: 'BLOG' },
+  { href: `${base}/news`,     label: 'NEWS' },
+  { href: `${base}/download`, label: 'DOWNLOAD' },
+  { href: `${base}/gallery`,  label: 'GALLERY' },
+  { href: `${base}/video`,    label: 'VIDEO' },
+  { href: `${base}/contact`,  label: 'CONTACT' },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -20,7 +22,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
   <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;">
 
     <!-- Logo -->
-    <a href="/" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+    <a href={`${base}/`} style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
       <span style="color:#c8a96e;font-size:1.25rem;font-weight:300;letter-spacing:0.2em;">NaNi</span>
       <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;font-weight:300;letter-spacing:0.2em;" class="hidden-mobile">EXECUTION LAB</span>
     </a>
@@ -28,7 +30,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     <!-- Desktop Nav -->
     <nav class="desktop-nav">
       {navItems.map(item => {
-        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        const isActive = currentPath === item.href.replace(/\/$/, '') || (item.label !== 'TOP' && currentPath.startsWith(item.href));
         return (
           <a
             href={item.href}
@@ -56,7 +58,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
   <div id="mobile-menu" style="display:none;background:#0c0c0e;border-top:1px solid rgba(255,255,255,0.05);">
     <nav style="max-width:1280px;margin:0 auto;padding:1rem 1.5rem;display:flex;flex-direction:column;gap:0;">
       {navItems.map(item => {
-        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        const isActive = currentPath === item.href.replace(/\/$/, '') || (item.label !== 'TOP' && currentPath.startsWith(item.href));
         return (
           <a
             href={item.href}

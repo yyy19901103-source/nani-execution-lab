@@ -8,11 +8,12 @@ interface Props {
   category?: string;
 }
 const { title, description, date, slug, type = 'blog', category } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const formatted = new Date(date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
 <a
-  href={`/${type}/${slug}`}
+  href={`${base}/${type}/${slug}`}
   style="display:block;border-bottom:1px solid rgba(255,255,255,0.06);padding:1.5rem 0;transition:all 0.2s;text-decoration:none;"
   class="blog-card"
 >

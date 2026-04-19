@@ -12,6 +12,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description}>
@@ -19,9 +20,9 @@ const { Content } = await render(entry);
   <!-- Breadcrumb -->
   <div style="padding-top:5.5rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
     <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.08em;padding-top:1rem;">
-      <a href="/" style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">TOP</a>
+      <a href={`${base}/`} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">TOP</a>
       <span>/</span>
-      <a href="/cases" style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">事例</a>
+      <a href={`${base}/cases`} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">事例</a>
       <span>/</span>
       <span style="color:rgba(255,255,255,0.5);">{entry.data.title}</span>
     </div>
@@ -48,7 +49,7 @@ const { Content } = await render(entry);
 
   <!-- Back link -->
   <div style="max-width:56rem;margin:0 auto;padding:0 1.5rem 6rem;">
-    <a href="/cases" style="display:inline-flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">
+    <a href={`${base}/cases`} style="display:inline-flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">
       <span>←</span><span>事例一覧へ戻る</span>
     </a>
   </div>

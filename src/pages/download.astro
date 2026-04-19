@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const downloads = [
   {
     title: '製造業DX推進チェックリスト',
@@ -66,7 +67,7 @@ const downloads = [
 
     <div style="margin-top:3rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.05);max-width:48rem;">
       <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);line-height:1.8;">
-        特定業務向けのテンプレートや資料のご要望は<a href="/contact" style="color:#c8a96e;text-decoration:underline;text-underline-offset:3px;">お問い合わせ</a>ください。
+        特定業務向けのテンプレートや資料のご要望は<a href={`${base}/contact`} style="color:#c8a96e;text-decoration:underline;text-underline-offset:3px;">お問い合わせ</a>ください。
       </p>
     </div>
   </div>

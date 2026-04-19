@@ -7,10 +7,11 @@ interface Props {
   tags?: string[];
 }
 const { title, description, category, slug, tags = [] } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <a
-  href={`/cases/${slug}`}
+  href={`${base}/cases/${slug}`}
   style="display:block;border:1px solid rgba(255,255,255,0.07);background:#141418;transition:all 0.3s;text-decoration:none;"
   class="case-card"
 >
@@ -33,15 +34,8 @@ const { title, description, category, slug, tags = [] } = Astro.props;
 </a>
 
 <style>
-  .case-card:hover {
-    border-color: rgba(200,169,110,0.35) !important;
-    transform: translateY(-2px);
-  }
-  .case-card:hover .card-title {
-    color: #c8a96e !important;
-  }
-  .case-card:hover .arrow {
-    transform: translateX(4px);
-  }
+  .case-card:hover { border-color: rgba(200,169,110,0.35) !important; transform: translateY(-2px); }
+  .case-card:hover .card-title { color: #c8a96e !important; }
+  .case-card:hover .arrow { transform: translateX(4px); }
   .arrow { transition: transform 0.2s; display: inline-block; }
 </style>
