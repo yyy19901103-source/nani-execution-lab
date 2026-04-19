@@ -107,8 +107,75 @@ const techStack = ['Python','FastAPI','n8n','Power BI','Claude API','React','Git
       </div>
     </div>
   </div>
+
+  <!-- Section: Expertise Areas -->
+  <div style="background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.05);">
+    <div style="max-width:1280px;margin:0 auto;padding:4rem 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">EXPERTISE</p>
+      <h2 style="font-size:1.5rem;font-weight:200;letter-spacing:0.1em;color:#edede8;margin-bottom:2.5rem;">専門領域</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;">
+        {[
+          { icon: '⚙', title: 'ETO製造プロセス設計', body: '受注設計生産の業務フロー・設計変更管理・トレーサビリティ設計の実務経験' },
+          { icon: '🗄', title: '製造データ基盤構築', body: 'MES・ERP連携設計、マスターデータ管理、データパイプライン構築' },
+          { icon: '🤖', title: 'AI・自動化実装', body: '外観検査AI・予知保全・業務自動化ツール（n8n/Python）の現場導入' },
+          { icon: '📊', title: '効果測定・KPI設計', body: 'OEE計算基盤、品質KPIダッシュボード、ROI分析レポート設計' },
+          { icon: '👥', title: '変革推進・組織支援', body: '現場への定着化設計、教育プログラム構築、経営報告フォーマット整備' },
+          { icon: '📝', title: '技術ブログ・教育コンテンツ', body: '製造DX学習ロードマップ（16週間カリキュラム）作成・発信' },
+        ].map(item => (
+          <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:1.5rem;" class="expertise-card">
+            <div style="font-size:1.5rem;margin-bottom:1rem;opacity:0.7;">{item.icon}</div>
+            <h3 style="font-size:0.875rem;font-weight:400;color:#edede8;margin-bottom:0.625rem;letter-spacing:0.04em;">{item.title}</h3>
+            <p style="font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.75;">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: About This Site -->
+  <div style="max-width:1280px;margin:0 auto;padding:4rem 1.5rem;">
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">ABOUT THIS SITE</p>
+    <h2 style="font-size:1.5rem;font-weight:200;letter-spacing:0.1em;color:#edede8;margin-bottom:2rem;">このサイトについて</h2>
+    <div style="max-width:48rem;border-left:2px solid rgba(200,169,110,0.3);padding-left:2rem;">
+      <div style="display:flex;flex-direction:column;gap:1.25rem;">
+        {[
+          'NaNi Execution Lab は「製造DXの実行」に特化した個人技術発信サイトです。',
+          '理論ではなく「実際に動いた仕組み」の共有を目的としています。ブログに書く内容はすべて実装・運用した経験に基づいています。',
+          'ETO製造業（受注設計生産）のDX推進担当者・製造エンジニアに向けて発信しています。',
+          '事例・ブログ・学習ロードマップ・用語集の4コンテンツを中心に展開中です。',
+        ].map(text => (
+          <p style="font-size:0.875rem;color:rgba(255,255,255,0.5);line-height:1.9;">{text}</p>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Contact CTA -->
+  <div style="background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="max-width:1280px;margin:0 auto;padding:5rem 1.5rem;text-align:center;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">CONTACT</p>
+      <h2 style="font-size:clamp(1.25rem,3vw,1.75rem);font-weight:200;letter-spacing:0.08em;color:#edede8;margin-bottom:1rem;">
+        DXの相談・テンプレート依頼
+      </h2>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.9;max-width:32rem;margin:0 auto 2.5rem;">
+        DXの相談・テンプレート依頼・コラボレーションはお気軽にどうぞ。
+      </p>
+      <a
+        href={`${base}/contact`}
+        style="display:inline-block;border:1px solid #c8a96e;color:#c8a96e;font-size:0.7rem;letter-spacing:0.3em;padding:0.875rem 2.5rem;transition:all 0.3s;"
+        onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
+        onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
+      >
+        お問い合わせ
+      </a>
+    </div>
+  </div>
+
+  <div style="padding-bottom:4rem;"></div>
+
 </BaseLayout>
 
 <style>
   .mission-card:hover .mission-img { opacity: 0.8 !important; transform: scale(1.04); }
+  .expertise-card:hover { border-color: rgba(200,169,110,0.2) !important; }
 </style>

@@ -12,6 +12,33 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// All posts for related
+const allPosts = await getCollection('blog');
+const currentTags: string[] = entry.data.tags ?? [];
+
+// Related: share at least 1 tag, not current post, sorted by overlap count
+const related = allPosts
+  .filter(p => p.id !== entry.id)
+  .map(p => {
+    const pTags: string[] = p.data.tags ?? [];
+    const overlap = pTags.filter(t => currentTags.includes(t)).length;
+    return { post: p, overlap };
+  })
+  .filter(x => x.overlap > 0)
+  .sort((a, b) => b.overlap - a.overlap || new Date(b.post.data.date).getTime() - new Date(a.post.data.date).getTime())
+  .slice(0, 3)
+  .map(x => x.post);
+
+// Extract h2 headings from body for TOC
+const bodyRaw: string = (entry as any).body ?? '';
+const h2Matches = [...bodyRaw.matchAll(/^## (.+)$/gm)];
+const tocItems = h2Matches.map(m => ({
+  text: m[1].trim(),
+  id: m[1].trim().toLowerCase().replace(/[^\w\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]+/g, '-').replace(/^-|-$/g, ''),
+}));
 ---
 
 <PostLayout
@@ -21,5 +48,102 @@ const { Content } = await render(entry);
   type="blog"
   tags={entry.data.tags}
 >
-  <Content />
+  <!-- TOC + Content layout for desktop -->
+  <div id="article-wrapper" style="position:relative;">
+
+    <!-- Sticky TOC (desktop only) -->
+    {tocItems.length > 0 && (
+      <aside id="toc-sidebar" style="display:none;position:fixed;top:5rem;right:max(1rem,calc(50vw - 36rem));width:13rem;z-index:10;" aria-label="目次">
+        <p style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;margin-bottom:0.75rem;">目次</p>
+        <nav>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.4rem;">
+            {tocItems.map(item => (
+              <li>
+                <a
+                  href={`#${item.id}`}
+                  style="font-size:0.72rem;color:rgba(255,255,255,0.3);text-decoration:none;line-height:1.5;display:block;padding:0.15rem 0;transition:color 0.2s;border-left:1px solid rgba(255,255,255,0.06);padding-left:0.6rem;"
+                  class="toc-link"
+                  onmouseover="this.style.color='#c8a96e';this.style.borderLeftColor='rgba(200,169,110,0.5)'"
+                  onmouseout="this.style.color='rgba(255,255,255,0.3)';this.style.borderLeftColor='rgba(255,255,255,0.06)'"
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    )}
+
+    <!-- Share button -->
+    <div style="margin-bottom:1.5rem;display:flex;justify-content:flex-end;">
+      <button
+        id="share-btn"
+        onclick="copyUrl()"
+        style="display:inline-flex;align-items:center;gap:0.5rem;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.15em;padding:0.5rem 1rem;cursor:pointer;transition:all 0.2s;"
+        onmouseover="this.style.borderColor='rgba(200,169,110,0.4)';this.style.color='#c8a96e'"
+        onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.35)'"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 17l4 4 4-4M12 12V21M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/>
+        </svg>
+        URLをコピー
+      </button>
+      <span id="copy-feedback" style="display:none;margin-left:0.75rem;font-size:0.65rem;color:#c8a96e;align-self:center;letter-spacing:0.1em;">コピーしました</span>
+    </div>
+
+    <!-- Article content -->
+    <Content />
+  </div>
+
+  <!-- Related posts -->
+  {related.length > 0 && (
+    <div style="margin-top:4rem;padding-top:2.5rem;border-top:1px solid rgba(255,255,255,0.06);">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">RELATED POSTS</p>
+      <h3 style="font-size:1rem;font-weight:200;letter-spacing:0.1em;color:#edede8;margin-bottom:1.5rem;">関連記事</h3>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        {related.map(post => (
+          <a
+            href={`${base}/blog/${post.id.replace(/\.md$/, '')}`}
+            style="display:block;border:1px solid rgba(255,255,255,0.07);background:#141418;padding:1.25rem 1.5rem;text-decoration:none;transition:border-color 0.2s;"
+            class="related-card"
+          >
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
+              <span style="font-size:0.6rem;color:rgba(255,255,255,0.25);letter-spacing:0.08em;">{new Date(post.data.date).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'})}</span>
+              {(post.data.tags ?? []).slice(0,2).map((t: string) => (
+                <span style="font-size:0.58rem;color:rgba(200,169,110,0.5);border:1px solid rgba(200,169,110,0.2);padding:0.05rem 0.4rem;">{t}</span>
+              ))}
+            </div>
+            <p style="font-size:0.875rem;color:#edede8;margin-bottom:0.375rem;line-height:1.4;">{post.data.title}</p>
+            <p style="font-size:0.75rem;color:rgba(255,255,255,0.35);line-height:1.6;">{post.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
 </PostLayout>
+
+<style>
+  .related-card:hover { border-color: rgba(200,169,110,0.25) !important; }
+</style>
+
+<script is:inline>
+  // Show TOC on wide screens
+  function checkToc() {
+    const toc = document.getElementById('toc-sidebar');
+    if (!toc) return;
+    toc.style.display = window.innerWidth >= 1200 ? 'block' : 'none';
+  }
+  checkToc();
+  window.addEventListener('resize', checkToc);
+
+  // Copy URL
+  function copyUrl() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      const fb = document.getElementById('copy-feedback');
+      if (!fb) return;
+      fb.style.display = 'inline';
+      setTimeout(() => { fb.style.display = 'none'; }, 2000);
+    });
+  }
+</script>

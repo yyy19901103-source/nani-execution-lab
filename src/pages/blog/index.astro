@@ -1,36 +1,195 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BlogCard from '../../components/BlogCard.astro';
 import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const posts = await getCollection('blog');
 const sorted = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Extract all unique tags
+const allTags = [...new Set(sorted.flatMap(p => p.data.tags ?? []))].sort();
+
+// Featured posts: posts with featured:true, else the 2 latest
+const featuredPosts = sorted.filter(p => (p.data as any).featured === true);
+const highlightedPosts = featuredPosts.length > 0 ? featuredPosts : sorted.slice(0, 2);
+const restPosts = sorted.filter(p => !highlightedPosts.includes(p));
+
+// Reading time: assume avg 400 chars/min for Japanese
+function readingTime(body: string | undefined): number {
+  if (!body) return 3;
+  const chars = body.replace(/\s+/g, '').length;
+  return Math.max(1, Math.round(chars / 400));
+}
 ---
 
 <BaseLayout title="BLOG" description="製造業DX・AI活用に関するブログ記事。実践から得た知見を発信。">
-  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
-    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">BLOG</p>
-    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">Blog</h1>
-    <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
-      製造業DX・AI活用・業務自動化に関する技術記事と実践レポート。
-    </p>
-  </div>
 
-  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
-    <div style="max-width:48rem;">
-      {sorted.length > 0 ? (
-        sorted.map(post => (
-          <BlogCard
-            title={post.data.title}
-            description={post.data.description}
-            date={post.data.date}
-            slug={post.id.replace(/\.md$/, '')}
-            type="blog"
-          />
-        ))
-      ) : (
-        <p style="color:rgba(255,255,255,0.2);text-align:center;padding:6rem 0;font-size:0.875rem;letter-spacing:0.2em;">準備中</p>
-      )}
+  <!-- Hero -->
+  <div style="position:relative;height:20rem;overflow:hidden;">
+    <img
+      src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1600&q=60"
+      alt="Blog"
+      style="width:100%;height:100%;object-fit:cover;opacity:0.22;"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,transparent 30%,rgba(12,12,14,0.95) 100%);"></div>
+    <div style="position:absolute;bottom:3rem;left:0;right:0;max-width:1280px;margin:0 auto;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">BLOG</p>
+      <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:0.5rem;">Blog</h1>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
+        製造業DX・AI活用・業務自動化に関する技術記事と実践レポート。
+      </p>
     </div>
   </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:3rem 1.5rem 8rem;">
+
+    {sorted.length > 0 ? (
+      <>
+        <!-- Featured / Latest highlight section -->
+        {highlightedPosts.length > 0 && (
+          <div style="margin-bottom:3.5rem;">
+            <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">
+              {featuredPosts.length > 0 ? '注目記事' : '最新記事'}
+            </p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;">
+              {highlightedPosts.map(post => {
+                const mins = readingTime((post as any).body);
+                const slug = post.id.replace(/\.md$/, '');
+                return (
+                  <a href={`${base}/blog/${slug}`} style="display:block;text-decoration:none;border:1px solid rgba(200,169,110,0.2);background:#141418;overflow:hidden;transition:border-color 0.2s;" class="featured-card">
+                    <div style="padding:1.75rem;">
+                      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap;">
+                        <span style="font-size:0.6rem;color:#c8a96e;letter-spacing:0.15em;">{new Date(post.data.date).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'})}</span>
+                        <span style="font-size:0.6rem;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.08);padding:0.1rem 0.4rem;">約{mins}分で読めます</span>
+                      </div>
+                      <h2 style="font-size:1rem;font-weight:400;color:#edede8;margin-bottom:0.75rem;line-height:1.5;">{post.data.title}</h2>
+                      <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.75;margin-bottom:1rem;">{post.data.description}</p>
+                      {post.data.tags && post.data.tags.length > 0 && (
+                        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+                          {post.data.tags.map((tag: string) => (
+                            <span style="font-size:0.6rem;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.08);padding:0.1rem 0.5rem;">{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <!-- Tag filter -->
+        {allTags.length > 0 && (
+          <div style="margin-bottom:2rem;">
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+              <span style="font-size:0.65rem;color:rgba(255,255,255,0.25);letter-spacing:0.1em;margin-right:0.5rem;">タグで絞り込み：</span>
+              <button
+                data-tag="all"
+                onclick="filterByTag('all')"
+                style="font-size:0.62rem;letter-spacing:0.1em;padding:0.3rem 0.75rem;border:1px solid #c8a96e;background:rgba(200,169,110,0.12);color:#c8a96e;cursor:pointer;transition:all 0.15s;"
+                class="tag-btn active-tag"
+              >
+                すべて
+              </button>
+              {allTags.map(tag => (
+                <button
+                  data-tag={tag}
+                  onclick={`filterByTag('${tag}')`}
+                  style="font-size:0.62rem;letter-spacing:0.1em;padding:0.3rem 0.75rem;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.15s;"
+                  class="tag-btn"
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Post count -->
+        <p id="post-count" style="color:rgba(255,255,255,0.2);font-size:0.72rem;letter-spacing:0.08em;margin-bottom:1.5rem;">{sorted.length}件の記事</p>
+
+        <!-- All posts list -->
+        <div id="posts-list" style="max-width:48rem;display:flex;flex-direction:column;gap:0.75rem;">
+          {sorted.map(post => {
+            const mins = readingTime((post as any).body);
+            const slug = post.id.replace(/\.md$/, '');
+            const tags = post.data.tags ?? [];
+            return (
+              <div
+                class="post-item"
+                data-tags={tags.join(',')}
+                style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:1.5rem;transition:border-color 0.2s;"
+              >
+                <a href={`${base}/blog/${slug}`} style="text-decoration:none;display:block;">
+                  <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+                    <span style="font-size:0.62rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;">{new Date(post.data.date).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'})}</span>
+                    <span style="font-size:0.6rem;color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.07);padding:0.1rem 0.4rem;">約{mins}分で読めます</span>
+                  </div>
+                  <h3 style="font-size:0.95rem;font-weight:400;color:#edede8;margin-bottom:0.5rem;line-height:1.5;">{post.data.title}</h3>
+                  <p style="font-size:0.8rem;color:rgba(255,255,255,0.38);line-height:1.7;margin-bottom:0.75rem;">{post.data.description}</p>
+                  {tags.length > 0 && (
+                    <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+                      {tags.map((tag: string) => (
+                        <span style="font-size:0.6rem;color:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.07);padding:0.1rem 0.5rem;">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </a>
+              </div>
+            );
+          })}
+        </div>
+      </>
+    ) : (
+      <p style="color:rgba(255,255,255,0.2);text-align:center;padding:6rem 0;font-size:0.875rem;letter-spacing:0.2em;">準備中</p>
+    )}
+  </div>
 </BaseLayout>
+
+<style>
+  .featured-card:hover { border-color: rgba(200,169,110,0.4) !important; }
+  .post-item:hover { border-color: rgba(200,169,110,0.2) !important; }
+  .tag-btn.active-tag {
+    border-color: #c8a96e !important;
+    background: rgba(200,169,110,0.12) !important;
+    color: #c8a96e !important;
+  }
+</style>
+
+<script is:inline>
+  function filterByTag(tag) {
+    const items = document.querySelectorAll('.post-item');
+    const buttons = document.querySelectorAll('.tag-btn');
+    const countEl = document.getElementById('post-count');
+    let visible = 0;
+
+    buttons.forEach(btn => {
+      if (btn.dataset.tag === tag) {
+        btn.classList.add('active-tag');
+        btn.style.borderColor = '#c8a96e';
+        btn.style.background = 'rgba(200,169,110,0.12)';
+        btn.style.color = '#c8a96e';
+      } else {
+        btn.classList.remove('active-tag');
+        btn.style.borderColor = 'rgba(255,255,255,0.1)';
+        btn.style.background = 'transparent';
+        btn.style.color = 'rgba(255,255,255,0.4)';
+      }
+    });
+
+    items.forEach(item => {
+      const tags = (item.dataset.tags || '').split(',').filter(Boolean);
+      const show = tag === 'all' || tags.includes(tag);
+      item.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    if (countEl) {
+      countEl.textContent = tag === 'all'
+        ? `${items.length}件の記事`
+        : `${visible}件の記事（タグ: ${tag}）`;
+    }
+  }
+</script>

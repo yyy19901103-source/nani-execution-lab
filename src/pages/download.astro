@@ -2,73 +2,206 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const downloads = [
   {
     title: '製造業DX推進チェックリスト',
     description: '現場のDX成熟度評価と推進ステップの確認用チェックリスト。自己診断と優先順位付けに活用できます。',
     format: 'PDF',
+    category: '診断・評価',
     file: null,
   },
   {
     title: '業務自動化 要件定義テンプレート',
     description: 'AI・RPA導入前の業務整理・要件定義に使えるテンプレート。現状業務フロー・課題・自動化スコープを整理します。',
     format: 'Excel',
+    category: '業務設計',
     file: null,
   },
   {
     title: 'KPIダッシュボード 設計シート',
     description: '経営・現場で使えるKPIの設計シート。目標値・計算ロジック・データソースを一元管理するフォーマット。',
     format: 'Excel',
+    category: '計測・分析',
+    file: null,
+  },
+  {
+    title: 'OEEデータ収集シート',
+    description: '設備ごとの稼働・停止・品質データを記録するシート。OEE計算式込みで、すぐに運用を開始できます。',
+    format: 'Excel',
+    category: '計測・分析',
+    file: null,
+  },
+  {
+    title: '設計変更管理台帳テンプレート',
+    description: 'ECMの変更記録・影響範囲・承認状況を管理するExcelフォーマット。ETO製造業の変更管理プロセス対応。',
+    format: 'Excel',
+    category: 'プロセス管理',
+    file: null,
+  },
+  {
+    title: 'PoC評価計画書テンプレート',
+    description: '成功条件・評価期間・担当者・コストを定義するPoC計画書雛形。DXプロジェクト立ち上げ時の合意形成に活用。',
+    format: 'PowerPoint',
+    category: 'プロジェクト管理',
+    file: null,
+  },
+  {
+    title: '製造DX推進ロードマップ（90日版）',
+    description: 'DXプロジェクト最初の90日間のマイルストーン計画テンプレート。フェーズ別タスク・成果物・KPIを定義します。',
+    format: 'PDF',
+    category: 'プロジェクト管理',
+    file: null,
+  },
+  {
+    title: 'サプライヤー評価シート',
+    description: '品質・納期・コスト・対応力の4軸でサプライヤーを評価するフォーマット。定期評価や新規選定に対応。',
+    format: 'Excel',
+    category: 'サプライチェーン',
     file: null,
   },
 ];
+
+const externalLinks = [
+  {
+    category: '公的機関・標準',
+    links: [
+      { title: 'IPA DX白書2023', url: 'https://www.ipa.go.jp/publish/wp-dx/dx-2023.html', desc: '日本企業DX推進実態の最新調査' },
+      { title: '経済産業省 DX推進ガイドライン', url: 'https://www.meti.go.jp/policy/it_policy/dx/dx.html', desc: 'DX推進のための企業診断ツール' },
+      { title: 'NIST Engineering Statistics Handbook', url: 'https://www.itl.nist.gov/div898/handbook/', desc: 'SPC・統計品質管理の無料参考書' },
+    ],
+  },
+  {
+    category: '製造技術',
+    links: [
+      { title: 'OEE Academy', url: 'https://oee.academy/', desc: 'OEE計算・改善手法の解説' },
+      { title: 'MESA International', url: 'https://www.mesa.org/', desc: 'MESの標準・ベストプラクティス' },
+      { title: 'ASQ Quality Resources', url: 'https://asq.org/quality-resources', desc: '品質管理ツール・テンプレート集' },
+    ],
+  },
+  {
+    category: '学習・書籍',
+    links: [
+      { title: 'Lean Enterprise Institute', url: 'https://www.lean.org/', desc: 'リーン生産方式の実践ガイド' },
+      { title: 'Prosci ADKAR', url: 'https://www.prosci.com/methodology/adkar', desc: '変革管理モデルの解説' },
+      { title: 'Balanced Scorecard Institute', url: 'https://balancedscorecard.org/', desc: 'KPI設計の実践フレームワーク' },
+    ],
+  },
+];
+
+function formatColor(fmt: string) {
+  if (fmt === 'PDF') return { bg: 'rgba(220,60,60,0.15)', border: 'rgba(220,60,60,0.4)', text: '#e87070' };
+  if (fmt === 'Excel') return { bg: 'rgba(50,180,80,0.12)', border: 'rgba(50,180,80,0.35)', text: '#60c878' };
+  return { bg: 'rgba(240,130,40,0.12)', border: 'rgba(240,130,40,0.35)', text: '#f09050' };
+}
 ---
 
-<BaseLayout title="DOWNLOAD" description="製造業DX関連の資料・テンプレートをダウンロード。">
-  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
-    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">DOWNLOAD</p>
-    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">Download</h1>
-    <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
-      事例で使用したテンプレート・チェックリスト・参考資料を公開しています。
-    </p>
-  </div>
+<BaseLayout title="DOWNLOAD & RESOURCES" description="製造DX推進に使えるテンプレート・チェックリスト・参考資料を無料公開。">
 
-  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
-    <div style="max-width:48rem;display:flex;flex-direction:column;gap:0.75rem;">
-      {downloads.map(item => (
-        <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;">
-          <div style="flex:1;min-width:200px;">
-            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-              <span style="font-size:0.65rem;color:#c8a96e;border:1px solid rgba(200,169,110,0.4);padding:0.1rem 0.5rem;letter-spacing:0.1em;">{item.format}</span>
-            </div>
-            <h3 style="font-size:0.95rem;font-weight:400;color:#edede8;margin-bottom:0.375rem;">{item.title}</h3>
-            <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.7;">{item.description}</p>
-          </div>
-          <div>
-            {item.file ? (
-              <a
-                href={item.file}
-                download
-                style="display:inline-block;border:1px solid #c8a96e;color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;padding:0.75rem 1.5rem;white-space:nowrap;transition:all 0.2s;"
-                onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
-                onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
-              >
-                DOWNLOAD
-              </a>
-            ) : (
-              <span style="display:inline-block;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.2);font-size:0.65rem;letter-spacing:0.2em;padding:0.75rem 1.5rem;white-space:nowrap;">
-                準備中
-              </span>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div style="margin-top:3rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.05);max-width:48rem;">
-      <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);line-height:1.8;">
-        特定業務向けのテンプレートや資料のご要望は<a href={`${base}/contact`} style="color:#c8a96e;text-decoration:underline;text-underline-offset:3px;">お問い合わせ</a>ください。
+  <!-- Hero -->
+  <div style="position:relative;height:22rem;overflow:hidden;">
+    <img
+      src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=60"
+      alt="Resources hub"
+      style="width:100%;height:100%;object-fit:cover;opacity:0.25;"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,transparent 30%,rgba(12,12,14,0.9) 100%);"></div>
+    <div style="position:absolute;bottom:3rem;left:0;right:0;max-width:1280px;margin:0 auto;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">DOWNLOAD & RESOURCES</p>
+      <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">DOWNLOAD & RESOURCES</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.8;max-width:40rem;">
+        製造DX推進に使えるテンプレート・チェックリスト・参考資料を無料公開
       </p>
     </div>
   </div>
+
+  <!-- Section 2: Downloads -->
+  <div style="max-width:1280px;margin:0 auto;padding:4rem 1.5rem 0;">
+    <div style="margin-bottom:2.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">TEMPLATES & CHECKLISTS</p>
+      <h2 style="font-size:1.5rem;font-weight:200;letter-spacing:0.1em;color:#edede8;margin-bottom:0.5rem;">ダウンロード資料</h2>
+      <p style="color:rgba(255,255,255,0.3);font-size:0.8rem;">すべて無料公開予定。順次追加中です。</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;margin-bottom:6rem;">
+      {downloads.map(item => {
+        const fc = formatColor(item.format);
+        return (
+          <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:1.75rem;display:flex;flex-direction:column;gap:1rem;transition:border-color 0.2s;" class="dl-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:wrap;">
+              <span style={`font-size:0.6rem;letter-spacing:0.12em;padding:0.2rem 0.6rem;background:${fc.bg};border:1px solid ${fc.border};color:${fc.text};`}>{item.format}</span>
+              <span style="font-size:0.6rem;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.07);padding:0.2rem 0.6rem;letter-spacing:0.05em;">{item.category}</span>
+            </div>
+            <div style="flex:1;">
+              <h3 style="font-size:0.95rem;font-weight:400;color:#edede8;margin-bottom:0.625rem;line-height:1.5;">{item.title}</h3>
+              <p style="font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.75;">{item.description}</p>
+            </div>
+            <div>
+              <span style="display:inline-block;border:1px solid rgba(200,169,110,0.35);color:rgba(200,169,110,0.55);font-size:0.62rem;letter-spacing:0.25em;padding:0.6rem 1.25rem;">準備中</span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Section 3: External Links -->
+  <div style="background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="max-width:1280px;margin:0 auto;padding:4rem 1.5rem;">
+      <div style="margin-bottom:2.5rem;">
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">EXTERNAL RESOURCES</p>
+        <h2 style="font-size:1.5rem;font-weight:200;letter-spacing:0.1em;color:#edede8;">参考リンク集</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2.5rem;">
+        {externalLinks.map(col => (
+          <div>
+            <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(200,169,110,0.2);">{col.category}</p>
+            <div style="display:flex;flex-direction:column;gap:0.75rem;">
+              {col.links.map(link => (
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="display:block;border:1px solid rgba(255,255,255,0.06);background:#141418;padding:1rem 1.25rem;text-decoration:none;transition:border-color 0.2s;"
+                  class="ext-link"
+                >
+                  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.375rem;">
+                    <span style="font-size:0.82rem;color:#edede8;font-weight:400;line-height:1.4;">{link.title}</span>
+                    <span style="color:#c8a96e;font-size:0.8rem;flex-shrink:0;margin-top:0.1rem;">→</span>
+                  </div>
+                  <p style="font-size:0.72rem;color:rgba(255,255,255,0.3);line-height:1.6;margin:0;">{link.desc}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: CTA -->
+  <div style="max-width:1280px;margin:0 auto;padding:5rem 1.5rem 8rem;text-align:center;">
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">CUSTOM REQUESTS</p>
+    <h2 style="font-size:clamp(1.25rem,3vw,1.75rem);font-weight:200;letter-spacing:0.08em;color:#edede8;margin-bottom:1rem;">
+      カスタムテンプレートのご依頼
+    </h2>
+    <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.9;max-width:32rem;margin:0 auto 2.5rem;">
+      カスタムテンプレート・コンサルティングについてはお気軽にお問い合わせください。
+      業種・規模・課題に合わせたフォーマット作成にも対応しています。
+    </p>
+    <a
+      href={`${base}/contact`}
+      style="display:inline-block;border:1px solid #c8a96e;color:#c8a96e;font-size:0.7rem;letter-spacing:0.3em;padding:0.875rem 2.5rem;transition:all 0.3s;"
+      onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
+      onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
+    >
+      お問い合わせ
+    </a>
+  </div>
+
 </BaseLayout>
+
+<style>
+  .dl-card:hover { border-color: rgba(200,169,110,0.2) !important; }
+  .ext-link:hover { border-color: rgba(200,169,110,0.25) !important; }
+</style>

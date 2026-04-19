@@ -1,51 +1,134 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// 動画を追加する場合: youtubeId または src (public/videos/ のパス) を指定
-const videos: { title: string; description: string; youtubeId?: string; src?: string }[] = [];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const videoSeries = [
+  {
+    title: '「ETO製造DXの進め方」解説シリーズ',
+    episodes: 16,
+    description: '16週間カリキュラムの各テーマを動画で解説予定。Phase 1〜4の全16本。受注設計生産特有のDX推進手法を体系的に学べます。',
+    gradient: 'linear-gradient(135deg, rgba(12,12,14,0.9) 0%, rgba(30,25,10,0.95) 50%, rgba(15,20,30,0.9) 100%)',
+    accentColor: '#c8a96e',
+    phase: 'PHASE 1-4',
+  },
+  {
+    title: '「実装デモ」シリーズ',
+    episodes: 8,
+    description: '設計変更自動化・OEEダッシュボード・AI外観検査のライブデモ動画予定。実際の画面操作とコード解説で、再現できる形で公開します。',
+    gradient: 'linear-gradient(135deg, rgba(12,12,14,0.9) 0%, rgba(10,25,25,0.95) 50%, rgba(12,12,14,0.9) 100%)',
+    accentColor: '#5bbfad',
+    phase: 'DEMO',
+  },
+  {
+    title: '「現場事例インタビュー」シリーズ',
+    episodes: 5,
+    description: '製造DX推進担当者へのインタビュー動画（企画中）。リアルな現場課題・意思決定・失敗談を赤裸々に語ります。',
+    gradient: 'linear-gradient(135deg, rgba(12,12,14,0.9) 0%, rgba(25,12,25,0.95) 50%, rgba(12,12,14,0.9) 100%)',
+    accentColor: '#a070d0',
+    phase: 'INTERVIEW',
+  },
+];
 ---
 
 <BaseLayout title="VIDEO" description="製造業DX・AI活用の解説動画・デモ動画。">
-  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
-    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">VIDEO</p>
-    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">Video</h1>
-    <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
-      システム解説・デモ動画・事例紹介を公開しています。
-    </p>
+
+  <!-- Hero -->
+  <div style="position:relative;height:18rem;overflow:hidden;">
+    <img
+      src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1920&q=80"
+      alt="Video content"
+      style="width:100%;height:100%;object-fit:cover;opacity:0.2;"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,transparent 30%,rgba(12,12,14,0.9) 100%);"></div>
+    <div style="position:absolute;bottom:3rem;left:0;right:0;max-width:1280px;margin:0 auto;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">VIDEO</p>
+      <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:0.5rem;">解説動画・デモ</h1>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
+        製造DX推進の解説・ライブデモ・現場事例インタビューを順次公開予定です。
+      </p>
+    </div>
   </div>
 
-  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
-    {videos.length > 0 ? (
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2rem;">
-        {videos.map(video => (
-          <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;overflow:hidden;">
-            {video.youtubeId && (
-              <div style="position:relative;aspect-ratio:16/9;">
-                <iframe
-                  src={`https://www.youtube.com/embed/${video.youtubeId}`}
-                  title={video.title}
-                  style="width:100%;height:100%;border:none;"
-                  allowfullscreen
-                ></iframe>
+  <!-- Video Cards -->
+  <div style="max-width:1280px;margin:0 auto;padding:4rem 1.5rem 0;">
+    <div style="margin-bottom:2.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">COMING SOON</p>
+      <h2 style="font-size:1.5rem;font-weight:200;letter-spacing:0.1em;color:#edede8;">配信予定シリーズ</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;margin-bottom:6rem;">
+      {videoSeries.map(series => (
+        <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;overflow:hidden;" class="video-card">
+          <!-- Thumbnail placeholder -->
+          <div style={`position:relative;aspect-ratio:16/9;background:${series.gradient};`}>
+            <!-- Play button -->
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+              <div style={`width:3.5rem;height:3.5rem;border-radius:50%;border:2px solid ${series.accentColor};display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);`}>
+                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" style={`margin-left:3px;`}>
+                  <path d="M1 1L15 9L1 17V1Z" fill={series.accentColor} stroke={series.accentColor} stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
               </div>
-            )}
-            {video.src && !video.youtubeId && (
-              <div style="position:relative;aspect-ratio:16/9;">
-                <video src={video.src} controls style="width:100%;height:100%;" preload="metadata"></video>
-              </div>
-            )}
-            <div style="padding:1.5rem;">
-              <h3 style="font-size:0.95rem;font-weight:300;color:#edede8;margin-bottom:0.5rem;">{video.title}</h3>
-              <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.7;">{video.description}</p>
+            </div>
+            <!-- Phase badge -->
+            <div style="position:absolute;top:1rem;left:1rem;">
+              <span style={`font-size:0.6rem;letter-spacing:0.2em;padding:0.2rem 0.6rem;border:1px solid ${series.accentColor};color:${series.accentColor};background:rgba(0,0,0,0.5);`}>{series.phase}</span>
+            </div>
+            <!-- Coming soon overlay -->
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:0.75rem 1rem;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);">
+              <span style="font-size:0.6rem;color:rgba(255,255,255,0.4);letter-spacing:0.2em;">配信予定</span>
             </div>
           </div>
-        ))}
-      </div>
-    ) : (
-      <div style="border:1px solid rgba(255,255,255,0.04);padding:8rem 2rem;text-align:center;">
-        <p style="color:rgba(255,255,255,0.15);font-size:0.8rem;letter-spacing:0.3em;margin-bottom:0.75rem;">COMING SOON</p>
-        <p style="color:rgba(255,255,255,0.08);font-size:0.7rem;letter-spacing:0.1em;">システムデモ・解説動画など掲載予定</p>
-      </div>
-    )}
+          <!-- Card body -->
+          <div style="padding:1.5rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;gap:0.5rem;flex-wrap:wrap;">
+              <h3 style="font-size:0.9rem;font-weight:400;color:#edede8;line-height:1.4;">{series.title}</h3>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.875rem;">
+              <span style="font-size:0.7rem;color:rgba(255,255,255,0.25);letter-spacing:0.08em;">全{series.episodes}本予定</span>
+              <span style={`font-size:0.65rem;padding:0.15rem 0.5rem;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.3);letter-spacing:0.1em;`}>配信予定</span>
+            </div>
+            <p style="font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.75;">{series.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
+
+  <!-- Newsletter CTA -->
+  <div style="background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="max-width:1280px;margin:0 auto;padding:5rem 1.5rem;text-align:center;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">NEWSLETTER</p>
+      <h2 style="font-size:clamp(1.25rem,3vw,1.75rem);font-weight:200;letter-spacing:0.08em;color:#edede8;margin-bottom:1rem;">
+        動画公開の通知を受け取る
+      </h2>
+      <p style="color:rgba(255,255,255,0.3);font-size:0.8rem;margin-bottom:2.5rem;">
+        新着動画・コンテンツの更新をメールでお知らせします
+      </p>
+      <div style="display:flex;align-items:stretch;gap:0;max-width:26rem;margin:0 auto 1rem;">
+        <input
+          type="email"
+          placeholder="メールアドレスを入力"
+          style="flex:1;background:#141418;border:1px solid rgba(255,255,255,0.1);border-right:none;color:#edede8;font-size:0.8rem;padding:0.75rem 1rem;outline:none;letter-spacing:0.04em;"
+        />
+        <button
+          style="background:#c8a96e;color:#0c0c0e;font-size:0.7rem;letter-spacing:0.2em;padding:0.75rem 1.5rem;border:none;cursor:pointer;white-space:nowrap;font-weight:500;transition:opacity 0.2s;"
+          onmouseover="this.style.opacity='0.85'"
+          onmouseout="this.style.opacity='1'"
+        >
+          登録する
+        </button>
+      </div>
+      <p style="color:rgba(255,255,255,0.2);font-size:0.7rem;letter-spacing:0.04em;">
+        メールアドレスは動画公開通知のみに使用します
+      </p>
+    </div>
+  </div>
+
+  <div style="padding-bottom:4rem;"></div>
+
 </BaseLayout>
+
+<style>
+  .video-card:hover { border-color: rgba(200,169,110,0.2) !important; }
+</style>

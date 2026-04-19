@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main pages -->
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/</loc><lastmod>2026-04-19</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/about</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/cases</loc><lastmod>2026-04-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog</loc><lastmod>2026-04-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/news</loc><lastmod>2026-04-19</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning</loc><lastmod>2026-04-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/glossary</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/download</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/video</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/contact</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Blog posts -->
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog/2026-04-19-five-principles</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog/2026-04-14-eto-dx-start</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog/2026-04-10-data-quality-first</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog/2026-04-07-oee-improvement</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog/2026-04-03-ai-visual-inspection</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog/2026-03-28-ecm-pitfalls</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/blog/2026-03-21-kpi-report-tips</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Cases -->
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/cases/dashboard</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/cases/ecm-automation</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/cases/email-task</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/cases/oee-monitoring</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/cases/quality-traceability</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/cases/supplier-quality</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Learning modules -->
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/00_schedule</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/01_business</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/02_eto_mto</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/03_biz_process</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/04_ecm</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/05_mfg_deployment</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/06_mfg_tech</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/07_quality_stats</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/08_equipment</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/09_procurement</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/10_record_design</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/11_it_infra</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/12_ai</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/13_poc</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/14_operations</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/15_standardization</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/16_kpi</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/99_frameworks</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yyy19901103-source.github.io/nani-execution-lab/learning/99_references</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+</urlset>

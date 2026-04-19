@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="404 — ページが見つかりません" description="お探しのページは見つかりませんでした。">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+
+    <!-- Grid background pattern -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(200,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,169,110,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+
+    <!-- SVG circuit decoration -->
+    <svg style="position:absolute;top:0;right:0;opacity:0.04;width:400px;height:400px;" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="4" fill="#c8a96e"/>
+      <circle cx="150" cy="50" r="4" fill="#c8a96e"/>
+      <circle cx="250" cy="50" r="4" fill="#c8a96e"/>
+      <circle cx="350" cy="50" r="4" fill="#c8a96e"/>
+      <circle cx="50" cy="150" r="4" fill="#c8a96e"/>
+      <circle cx="150" cy="150" r="6" fill="#c8a96e"/>
+      <circle cx="350" cy="150" r="4" fill="#c8a96e"/>
+      <circle cx="50" cy="250" r="4" fill="#c8a96e"/>
+      <circle cx="250" cy="250" r="6" fill="#c8a96e"/>
+      <circle cx="350" cy="250" r="4" fill="#c8a96e"/>
+      <circle cx="150" cy="350" r="4" fill="#c8a96e"/>
+      <circle cx="250" cy="350" r="4" fill="#c8a96e"/>
+      <line x1="50" y1="50" x2="150" y2="50" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="150" y1="50" x2="150" y2="150" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="150" y1="150" x2="250" y2="150" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="250" y1="50" x2="250" y2="150" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="250" y1="150" x2="350" y2="150" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="350" y1="50" x2="350" y2="150" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="50" y1="150" x2="50" y2="250" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="50" y1="250" x2="150" y2="250" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="150" y1="250" x2="150" y2="350" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="150" y1="350" x2="250" y2="350" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="250" y1="250" x2="250" y2="350" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="250" y1="250" x2="350" y2="250" stroke="#c8a96e" stroke-width="1"/>
+      <line x1="350" y1="150" x2="350" y2="250" stroke="#c8a96e" stroke-width="1"/>
+    </svg>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;text-align:center;padding:2rem 1.5rem;">
+      <!-- Large 404 -->
+      <div style="font-size:clamp(5rem,15vw,8rem);font-weight:100;color:rgba(200,169,110,0.12);letter-spacing:0.2em;line-height:1;margin-bottom:0.5rem;font-family:system-ui,sans-serif;user-select:none;">
+        404
+      </div>
+
+      <!-- Title -->
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">PAGE NOT FOUND</p>
+      <h1 style="font-size:clamp(1.25rem,4vw,1.75rem);font-weight:200;letter-spacing:0.1em;color:#edede8;margin-bottom:1rem;">
+        ページが見つかりません
+      </h1>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:28rem;margin:0 auto 3rem;">
+        お探しのページは移動または削除された可能性があります。
+      </p>
+
+      <!-- Navigation links -->
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-bottom:3rem;">
+        {[
+          { label: 'TOP', href: `${base}/` },
+          { label: '事例', href: `${base}/cases` },
+          { label: 'BLOG', href: `${base}/blog` },
+          { label: 'LEARNING', href: `${base}/learning` },
+          { label: '用語集', href: `${base}/glossary` },
+        ].map(nav => (
+          <a
+            href={nav.href}
+            style="border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.25em;padding:0.6rem 1.25rem;text-decoration:none;transition:all 0.2s;"
+            class="nav-404"
+          >
+            {nav.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- Back to top -->
+      <a
+        href={`${base}/`}
+        style="display:inline-block;border:1px solid #c8a96e;color:#c8a96e;font-size:0.7rem;letter-spacing:0.3em;padding:0.875rem 2.5rem;text-decoration:none;transition:all 0.3s;"
+        onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
+        onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
+      >
+        TOPへ戻る
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .nav-404:hover {
+    border-color: rgba(200,169,110,0.4) !important;
+    color: #c8a96e !important;
+  }
+</style>
