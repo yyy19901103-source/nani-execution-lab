@@ -112,9 +112,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
           <!-- Annual benefit -->
           <div style="text-align:center;padding:1.25rem 0;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:1.25rem;">
-            <p style="color:rgba(255,255,255,0.35);font-size:0.6rem;letter-spacing:0.2em;margin-bottom:0.5rem;">年間効果額</p>
-            <div id="r_annual_benefit" style="font-size:2.25rem;font-weight:100;color:#c8a96e;line-height:1;">¥0</div>
-            <p style="color:rgba(255,255,255,0.25);font-size:0.65rem;margin-top:0.35rem;">万円</p>
+            <p style="color:rgba(255,255,255,0.35);font-size:0.6rem;letter-spacing:0.2em;margin-bottom:0.5rem;">年間効果額（万円）</p>
+            <div id="r_annual_benefit" style="font-size:2.25rem;font-weight:100;color:#c8a96e;line-height:1;">0</div>
           </div>
 
           <!-- ROI -->
@@ -133,18 +132,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <!-- 3 year cumulative -->
           <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);padding:1rem;margin-bottom:1.25rem;">
             <p style="color:rgba(255,255,255,0.3);font-size:0.6rem;letter-spacing:0.15em;margin-bottom:0.4rem;">3年累積効果</p>
-            <div id="r_cumulative" style="font-size:1.4rem;font-weight:300;color:#c8a96e;">¥0 万円</div>
+            <div id="r_cumulative" style="font-size:1.4rem;font-weight:300;color:#c8a96e;">0 万円</div>
           </div>
 
           <!-- Breakdown -->
           <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);line-height:2;border-top:1px solid rgba(255,255,255,0.05);padding-top:1rem;">
-            <div style="display:flex;justify-content:space-between;"><span>工数削減（年）</span><span id="r_hour_effect">¥0 万円</span></div>
-            <div style="display:flex;justify-content:space-between;"><span>不良削減（年）</span><span id="r_defect_effect">¥0 万円</span></div>
-            <div style="display:flex;justify-content:space-between;"><span>クレーム削減（年）</span><span id="r_claim_effect">¥0 万円</span></div>
-            <div style="display:flex;justify-content:space-between;"><span>受注増（年）</span><span id="r_revenue_effect">¥0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>工数削減（年）</span><span id="r_hour_effect">0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>不良削減（年）</span><span id="r_defect_effect">0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>クレーム削減（年）</span><span id="r_claim_effect">0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>受注増（年）</span><span id="r_revenue_effect">0 万円</span></div>
             <div style="height:1px;background:rgba(255,255,255,0.04);margin:0.5rem 0;"></div>
-            <div style="display:flex;justify-content:space-between;"><span>総投資額（初年）</span><span id="r_invest_yr1">¥0 万円</span></div>
-            <div style="display:flex;justify-content:space-between;"><span>総投資額（次年以降）</span><span id="r_invest_yr2">¥0 万円/年</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>総投資額（初年）</span><span id="r_invest_yr1">0 万円</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>総投資額（次年以降）</span><span id="r_invest_yr2">0 万円/年</span></div>
           </div>
         </div>
 
@@ -210,11 +209,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 (function() {
   function v(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
 
-  function fmt(num) {
-    if (num >= 10000) return (num / 10000).toFixed(1);
-    return (num / 10000).toFixed(2);
-  }
-
   function calculate() {
     const hoursSaved    = v('hours_saved');
     const hourlyRate    = v('hourly_rate');
@@ -249,9 +243,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // 3-year cumulative
     const cumulative3yr  = annualBenefit * 3 - systemCost - buildCost - internalCost - maintenanceCost * 3;
 
+    // Return results for reuse (e.g. copy button)
+    const result = {
+      annualBenManen: annualBenefit / 10000,
+      investYr1Manen: investYr1 / 10000,
+      roiPct,
+      paybackMonths,
+      cum3yr: cumulative3yr / 10000,
+    };
+
     // Update DOM
     const ab = annualBenefit / 10000;
-    document.getElementById('r_annual_benefit').textContent = `¥${ab >= 0 ? '' : '-'}${Math.abs(ab).toFixed(1)}`;
+    document.getElementById('r_annual_benefit').textContent = `${ab >= 0 ? '' : '-'}${Math.abs(ab).toFixed(1)}`;
 
     const roiEl = document.getElementById('r_roi');
     if (roiPct !== null) {
@@ -273,15 +276,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     const cum = cumulative3yr / 10000;
     const cumEl = document.getElementById('r_cumulative');
-    cumEl.textContent = `${cum >= 0 ? '+ ' : ''}¥${cum.toFixed(1)} 万円`;
+    cumEl.textContent = `${cum >= 0 ? '+ ' : ''}${cum.toFixed(1)} 万円`;
     cumEl.style.color = cum >= 0 ? '#c8a96e' : '#e06060';
 
-    document.getElementById('r_hour_effect').textContent    = `¥${(hourEffect/10000).toFixed(1)} 万円`;
-    document.getElementById('r_defect_effect').textContent  = `¥${(defectEffect/10000).toFixed(1)} 万円`;
-    document.getElementById('r_claim_effect').textContent   = `¥${(claimEffect/10000).toFixed(1)} 万円`;
-    document.getElementById('r_revenue_effect').textContent = `¥${(revenueInc/10000).toFixed(1)} 万円`;
-    document.getElementById('r_invest_yr1').textContent     = `¥${(investYr1/10000).toFixed(1)} 万円`;
-    document.getElementById('r_invest_yr2').textContent     = `¥${(investYr2/10000).toFixed(1)} 万円/年`;
+    document.getElementById('r_hour_effect').textContent    = `${(hourEffect/10000).toFixed(1)} 万円`;
+    document.getElementById('r_defect_effect').textContent  = `${(defectEffect/10000).toFixed(1)} 万円`;
+    document.getElementById('r_claim_effect').textContent   = `${(claimEffect/10000).toFixed(1)} 万円`;
+    document.getElementById('r_revenue_effect').textContent = `${(revenueInc/10000).toFixed(1)} 万円`;
+    document.getElementById('r_invest_yr1').textContent     = `${(investYr1/10000).toFixed(1)} 万円`;
+    document.getElementById('r_invest_yr2').textContent     = `${(investYr2/10000).toFixed(1)} 万円/年`;
+
+    return result;
   }
 
   document.querySelectorAll('.calc-input').forEach(inp => {
@@ -304,30 +309,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   });
 
   document.getElementById('copy-btn').addEventListener('click', () => {
-    const hoursSaved   = parseFloat(document.getElementById('hours_saved').value) || 0;
-    const hourlyRate   = parseFloat(document.getElementById('hourly_rate').value) || 0;
-    const defectSaved  = parseFloat(document.getElementById('defect_saved').value) || 0;
-    const defectCost   = parseFloat(document.getElementById('defect_cost').value) || 0;
-    const claimSaved   = parseFloat(document.getElementById('claim_saved').value) || 0;
-    const claimCost    = parseFloat(document.getElementById('claim_cost').value) || 0;
-    const revenueInc   = (parseFloat(document.getElementById('revenue_increase').value) || 0);
-    const systemCost   = parseFloat(document.getElementById('system_cost').value) || 0;
-    const buildCost    = parseFloat(document.getElementById('build_cost').value) || 0;
-    const maintCost    = parseFloat(document.getElementById('maintenance_cost').value) || 0;
-    const intCost      = parseFloat(document.getElementById('internal_cost').value) || 0;
-
-    const annualBenManen = (hoursSaved*hourlyRate*12 + defectSaved*defectCost*12 + claimSaved*claimCost*12)/10000 + revenueInc;
-    const investYr1Manen = systemCost + buildCost + maintCost + intCost;
-    const roiPct = investYr1Manen > 0 ? ((annualBenManen - investYr1Manen) / investYr1Manen * 100).toFixed(1) : '—';
-    const paybackMo = annualBenManen > 0 ? (investYr1Manen / (annualBenManen/12)).toFixed(1) : '—';
-    const cum3yr = annualBenManen * 3 - (systemCost + buildCost + intCost) - maintCost * 3;
+    const r = calculate();
+    const roiStr      = r.roiPct !== null ? `${r.roiPct >= 0 ? '+' : ''}${r.roiPct.toFixed(1)}%` : '—';
+    const paybackStr  = (r.paybackMonths !== null && isFinite(r.paybackMonths)) ? `${r.paybackMonths.toFixed(1)} ヶ月` : '—';
 
     let text = `【製造DX ROI計算結果】\n\n`;
-    text += `■ 年間効果額: ${annualBenManen.toFixed(1)} 万円\n`;
-    text += `■ ROI（初年）: ${roiPct}%\n`;
-    text += `■ 回収期間: ${paybackMo} ヶ月\n`;
-    text += `■ 3年累積効果: ${cum3yr.toFixed(1)} 万円\n\n`;
-    text += `■ 総投資額（初年）: ${investYr1Manen.toFixed(1)} 万円\n\n`;
+    text += `■ 年間効果額: ${r.annualBenManen.toFixed(1)} 万円\n`;
+    text += `■ ROI（初年）: ${roiStr}\n`;
+    text += `■ 回収期間: ${paybackStr}\n`;
+    text += `■ 3年累積効果: ${r.cum3yr.toFixed(1)} 万円\n\n`;
+    text += `■ 総投資額（初年）: ${r.investYr1Manen.toFixed(1)} 万円\n\n`;
     text += `算出: NaNi Execution Lab ROI計算ツール (${window.location.href})`;
 
     navigator.clipboard.writeText(text).then(() => {

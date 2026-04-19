@@ -121,7 +121,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { icon:'💾', title:'LocalStorage保存', desc:'サーバーレスで動作。Google Sheets連携でクラウド保存に拡張可能。' },
         { icon:'🎨', title:'CSS設計', desc:'917行のカスタムCSS。モバイル最適化・アニメーション・スプライト制御。' },
         { icon:'⚔️', title:'バトルエンジン', desc:'ターン制バトルシステム。属性相性・スキル・ボス戦を純粋JSで実装。' },
-        { icon:'📦', title:'モジュール設計', desc:'6ファイル分離（game/main/storage/idle/data×2）。責務が明確な設計。' },
+        { icon:'📦', title:'モジュール設計', desc:'8ファイル分離（game/main/battle_engine/bgm/storage/idle/data×2）。責務が明確な設計。' },
       ].map(item => (
         <div style="padding:1.25rem;background:#111114;border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
           <div style="font-size:1.5rem;margin-bottom:0.625rem;">{item.icon}</div>

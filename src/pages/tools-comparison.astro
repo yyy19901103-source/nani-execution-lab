@@ -139,6 +139,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           ))}
         </div>
 
+        <!-- PLM -->
+        <div style="background:#111114;border:1px solid rgba(200,169,110,0.2);padding:1.75rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+            <span style="color:#c8a96e;font-size:1.1rem;font-weight:500;font-family:monospace;">PLM</span>
+            <span style="color:rgba(255,255,255,0.3);font-size:0.72rem;">選定チェックリスト（6項目）</span>
+          </div>
+          {[
+            '設計変更管理（ECO/ECR）の追跡・承認フロー機能があるか',
+            'E-BOM / M-BOM の変換・連携機能があるか',
+            'CAD（SolidWorks/CATIA等）との双方向連携が可能か',
+            '文書管理（図面・仕様書・承認記録）の一元化ができるか',
+            'ETO受注品の構成管理（オーダー別BOM）に対応しているか',
+            'ライフサイクル全体のコスト・品質トレースが可能か',
+          ].map((item, i) => (
+            <div style="display:flex;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:rgba(200,169,110,0.5);font-size:0.7rem;flex-shrink:0;margin-top:0.15rem;">{String(i+1).padStart(2,'0')}</span>
+              <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;line-height:1.6;">{item}</span>
+            </div>
+          ))}
+        </div>
+
       </div>
     </div>
 
@@ -165,7 +186,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div style="padding:1.25rem;border-right:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04);">
             <p style="color:rgba(255,255,255,0.2);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.75rem;">高機能 × 低〜中コスト</p>
             <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-              {['国産中堅ERP各社', 'Infor CloudSuite', 'IFS Cloud', 'Dynamics 365'].map(t => (
+              {['OBIC・GRANDIT・Mcframe等の国産中堅ERP', 'Infor CloudSuite', 'IFS Cloud', 'Dynamics 365'].map(t => (
                 <span style="padding:0.3rem 0.7rem;background:rgba(74,158,255,0.1);border:1px solid rgba(74,158,255,0.25);color:#4a9eff;font-size:0.7rem;">{t}</span>
               ))}
             </div>
@@ -188,11 +209,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               ))}
             </div>
           </div>
-          <!-- Bottom-right: Simple, Mid cost -->
+          <!-- Bottom-right: Simple, Mid-High cost -->
           <div style="padding:1.25rem;">
-            <p style="color:rgba(255,255,255,0.2);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.75rem;">シンプル × 中コスト</p>
+            <p style="color:rgba(255,255,255,0.2);font-size:0.58rem;letter-spacing:0.15em;margin-bottom:0.75rem;">シンプル × 中〜高コスト</p>
             <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-              {['中堅MES各社', 'CMMS専門ソフト', 'SaaS型品質管理', 'BI + データ連携基盤'].map(t => (
+              {['Wonderware・ICONICS等の中堅MES', 'CMMS専門ソフト', 'SaaS型品質管理', 'BI + データ連携基盤'].map(t => (
                 <span style="padding:0.3rem 0.7rem;background:rgba(224,96,128,0.1);border:1px solid rgba(224,96,128,0.25);color:#e06080;font-size:0.7rem;">{t}</span>
               ))}
             </div>

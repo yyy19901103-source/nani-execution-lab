@@ -84,13 +84,25 @@ n8n-stock-research/
 
 n8nはDocker推奨だが、Windows環境ではnpmグローバルインストールでも動作する。ただしn8nの環境変数制約（デフォルトでファイルアクセス・外部モジュールが制限）を解除する必要があった。
 
+PowerShellスクリプト（`.ps1`）で実行する場合:
+
 ```powershell
-# 必須の環境変数（start-n8n-internal.bat に記述）
+# 必須の環境変数（start-n8n-internal.bat のPowerShell版）
 $env:N8N_BLOCK_FILE_ACCESS_TO_N8N_FILES = "false"
 $env:N8N_RESTRICT_FILE_ACCESS_TO = ""
 $env:N8N_BLOCK_ENV_ACCESS_IN_NODE = "false"
 $env:NODE_FUNCTION_ALLOW_BUILTIN = "*"
 $env:NODE_FUNCTION_ALLOW_EXTERNAL = "*"
+```
+
+バッチファイル（`start-n8n-internal.bat`）で実行する場合:
+
+```bat
+set N8N_BLOCK_FILE_ACCESS_TO_N8N_FILES=false
+set N8N_RESTRICT_FILE_ACCESS_TO=
+set N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+set NODE_FUNCTION_ALLOW_BUILTIN=*
+set NODE_FUNCTION_ALLOW_EXTERNAL=*
 ```
 
 ### Yahoo Finance API v8 対応
@@ -118,7 +130,7 @@ $env:NODE_FUNCTION_ALLOW_EXTERNAL = "*"
 |------|------|------|
 | n8n 起動後にディレクトリ消失 | `Stop-Process` 強制終了でファイルロック → 再起動時に破損 | 正規の `n8n stop` コマンドで終了、再インストール |
 | Yahoo Finance 401エラー | v7→v8 API仕様変更 | エンドポイントをv8に変更、Headerを追加 |
-| cron式が無効 | n8n は6フィールド cron（秒含む）を要求 | `0 7 * * *` → `0 0 7 * * *` に修正 |
+| cron式が無効 | n8n の Schedule Trigger ノードは6フィールド cron（秒・分・時・日・月・曜日）を使用 | `0 7 * * *` → `0 0 7 * * *` に修正 |
 | Functionノードでファイル書き込み不可 | n8nのデフォルトセキュリティ制約 | 環境変数バッチで制約解除 |
 
 ---
@@ -130,7 +142,7 @@ $env:NODE_FUNCTION_ALLOW_EXTERNAL = "*"
 | n8n | **無料**（セルフホスト） |
 | 気象庁API | **無料** |
 | Yahoo Finance API | **無料** |
-| Claude Haiku API | **月約¥10**（1日1回・日本語500トークン相当） |
+| Claude Haiku API | **月約¥10**（1日1回・日本語500トークン相当）（claude-haiku-4-5 基準、2026年4月時点） |
 | **合計** | **月約¥10** |
 
 ---

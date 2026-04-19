@@ -12,11 +12,11 @@ const navItems = [
   { href: `${base}/tools-comparison`,  label: 'ツール比較' },
   { href: `${base}/glossary`,          label: '用語集' },
   { href: `${base}/download`,          label: 'DOWNLOAD' },
-  { href: `${base}/gallery`,           label: 'GALLERY' },
-  { href: `${base}/news`,              label: 'NEWS' },
-  { href: `${base}/video`,             label: 'VIDEO' },
-  { href: `${base}/game`,              label: '🎮 GAME' },
   { href: `${base}/contact`,           label: 'CONTACT' },
+  { href: `${base}/game`,              label: '🎮 GAME' },
+  { href: `${base}/gallery`,           label: 'GALLERY',  dim: true },
+  { href: `${base}/news`,              label: 'NEWS' },
+  { href: `${base}/video`,             label: 'VIDEO',    dim: true },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -37,10 +37,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     <nav class="desktop-nav">
       {navItems.map(item => {
         const isActive = currentPath === item.href.replace(/\/$/, '') || (item.label !== 'TOP' && currentPath.startsWith(item.href));
+        const baseColor = item.dim ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.45)';
         return (
           <a
             href={item.href}
-            style={`padding:0.4rem 0.55rem;font-size:0.65rem;letter-spacing:0.12em;transition:color 0.2s;color:${isActive ? '#c8a96e' : 'rgba(255,255,255,0.45)'};`}
+            style={`padding:0.4rem 0.55rem;font-size:0.65rem;letter-spacing:0.12em;transition:color 0.2s;color:${isActive ? '#c8a96e' : baseColor};`}
             class="nav-link"
           >
             {item.label}
@@ -65,10 +66,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     <nav style="max-width:1280px;margin:0 auto;padding:1rem 1.5rem;display:flex;flex-direction:column;gap:0;">
       {navItems.map(item => {
         const isActive = currentPath === item.href.replace(/\/$/, '') || (item.label !== 'TOP' && currentPath.startsWith(item.href));
+        const baseColor = item.dim ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.55)';
         return (
           <a
             href={item.href}
-            style={`padding:0.875rem 0.75rem;font-size:0.8rem;letter-spacing:0.15em;border-bottom:1px solid rgba(255,255,255,0.05);transition:color 0.2s;color:${isActive ? '#c8a96e' : 'rgba(255,255,255,0.55)'};`}
+            style={`padding:0.875rem 0.75rem;font-size:0.8rem;letter-spacing:0.15em;border-bottom:1px solid rgba(255,255,255,0.05);transition:color 0.2s;color:${isActive ? '#c8a96e' : baseColor};`}
           >
             {item.label}
           </a>
