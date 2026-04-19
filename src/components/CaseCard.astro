@@ -1,0 +1,47 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  slug: string;
+  tags?: string[];
+}
+const { title, description, category, slug, tags = [] } = Astro.props;
+---
+
+<a
+  href={`/cases/${slug}`}
+  style="display:block;border:1px solid rgba(255,255,255,0.07);background:#141418;transition:all 0.3s;text-decoration:none;"
+  class="case-card"
+>
+  <div style="padding:2rem;">
+    <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;margin-bottom:1rem;">{category}</div>
+    <h3 style="font-size:1.125rem;font-weight:300;color:#edede8;margin-bottom:0.75rem;line-height:1.6;letter-spacing:0.03em;" class="card-title">{title}</h3>
+    <p style="color:rgba(255,255,255,0.45);font-size:0.875rem;line-height:1.8;">{description}</p>
+    {tags.length > 0 && (
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.25rem;">
+        {tags.map(tag => (
+          <span style="font-size:0.65rem;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.1);padding:0.15rem 0.5rem;letter-spacing:0.05em;">{tag}</span>
+        ))}
+      </div>
+    )}
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-top:1.5rem;color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;">
+      <span>詳細を見る</span>
+      <span class="arrow">→</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .case-card:hover {
+    border-color: rgba(200,169,110,0.35) !important;
+    transform: translateY(-2px);
+  }
+  .case-card:hover .card-title {
+    color: #c8a96e !important;
+  }
+  .case-card:hover .arrow {
+    transform: translateX(4px);
+  }
+  .arrow { transition: transform 0.2s; display: inline-block; }
+</style>

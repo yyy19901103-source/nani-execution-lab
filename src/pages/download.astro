@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const downloads = [
+  {
+    title: '製造業DX推進チェックリスト',
+    description: '現場のDX成熟度評価と推進ステップの確認用チェックリスト。自己診断と優先順位付けに活用できます。',
+    format: 'PDF',
+    file: null,
+  },
+  {
+    title: '業務自動化 要件定義テンプレート',
+    description: 'AI・RPA導入前の業務整理・要件定義に使えるテンプレート。現状業務フロー・課題・自動化スコープを整理します。',
+    format: 'Excel',
+    file: null,
+  },
+  {
+    title: 'KPIダッシュボード 設計シート',
+    description: '経営・現場で使えるKPIの設計シート。目標値・計算ロジック・データソースを一元管理するフォーマット。',
+    format: 'Excel',
+    file: null,
+  },
+];
+---
+
+<BaseLayout title="DOWNLOAD" description="製造業DX関連の資料・テンプレートをダウンロード。">
+  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">DOWNLOAD</p>
+    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">Download</h1>
+    <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
+      事例で使用したテンプレート・チェックリスト・参考資料を公開しています。
+    </p>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
+    <div style="max-width:48rem;display:flex;flex-direction:column;gap:0.75rem;">
+      {downloads.map(item => (
+        <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+              <span style="font-size:0.65rem;color:#c8a96e;border:1px solid rgba(200,169,110,0.4);padding:0.1rem 0.5rem;letter-spacing:0.1em;">{item.format}</span>
+            </div>
+            <h3 style="font-size:0.95rem;font-weight:400;color:#edede8;margin-bottom:0.375rem;">{item.title}</h3>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.7;">{item.description}</p>
+          </div>
+          <div>
+            {item.file ? (
+              <a
+                href={item.file}
+                download
+                style="display:inline-block;border:1px solid #c8a96e;color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;padding:0.75rem 1.5rem;white-space:nowrap;transition:all 0.2s;"
+                onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
+                onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
+              >
+                DOWNLOAD
+              </a>
+            ) : (
+              <span style="display:inline-block;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.2);font-size:0.65rem;letter-spacing:0.2em;padding:0.75rem 1.5rem;white-space:nowrap;">
+                準備中
+              </span>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div style="margin-top:3rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.05);max-width:48rem;">
+      <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);line-height:1.8;">
+        特定業務向けのテンプレートや資料のご要望は<a href="/contact" style="color:#c8a96e;text-decoration:underline;text-underline-offset:3px;">お問い合わせ</a>ください。
+      </p>
+    </div>
+  </div>
+</BaseLayout>

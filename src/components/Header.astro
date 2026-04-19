@@ -1,0 +1,100 @@
+---
+const navItems = [
+  { href: '/',         label: 'TOP' },
+  { href: '/about',    label: 'ABOUT' },
+  { href: '/cases',    label: '事例' },
+  { href: '/blog',     label: 'BLOG' },
+  { href: '/news',     label: 'NEWS' },
+  { href: '/download', label: 'DOWNLOAD' },
+  { href: '/gallery',  label: 'GALLERY' },
+  { href: '/video',    label: 'VIDEO' },
+  { href: '/contact',  label: 'CONTACT' },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header
+  style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(12,12,14,0.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.05);"
+>
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;">
+
+    <!-- Logo -->
+    <a href="/" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+      <span style="color:#c8a96e;font-size:1.25rem;font-weight:300;letter-spacing:0.2em;">NaNi</span>
+      <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;font-weight:300;letter-spacing:0.2em;" class="hidden-mobile">EXECUTION LAB</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="desktop-nav">
+      {navItems.map(item => {
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        return (
+          <a
+            href={item.href}
+            style={`padding:0.5rem 0.75rem;font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;color:${isActive ? '#c8a96e' : 'rgba(255,255,255,0.45)'};`}
+            class="nav-link"
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Mobile hamburger -->
+    <button id="menu-btn" style="display:none;padding:0.5rem;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.6);" class="mobile-btn" aria-label="メニュー">
+      <svg id="icon-open" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+      <svg id="icon-close" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display:none;">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" style="display:none;background:#0c0c0e;border-top:1px solid rgba(255,255,255,0.05);">
+    <nav style="max-width:1280px;margin:0 auto;padding:1rem 1.5rem;display:flex;flex-direction:column;gap:0;">
+      {navItems.map(item => {
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        return (
+          <a
+            href={item.href}
+            style={`padding:0.875rem 0.75rem;font-size:0.8rem;letter-spacing:0.15em;border-bottom:1px solid rgba(255,255,255,0.05);transition:color 0.2s;color:${isActive ? '#c8a96e' : 'rgba(255,255,255,0.55)'};`}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+  </div>
+</header>
+
+<style>
+  @media (min-width: 1024px) {
+    .desktop-nav { display: flex !important; align-items: center; }
+    .mobile-btn  { display: none !important; }
+    .hidden-mobile { display: block !important; }
+  }
+  @media (max-width: 1023px) {
+    .desktop-nav { display: none; }
+    .mobile-btn  { display: block !important; }
+    .hidden-mobile { display: none; }
+  }
+  .nav-link:hover { color: rgba(255,255,255,0.9) !important; }
+</style>
+
+<script>
+  const btn   = document.getElementById('menu-btn');
+  const menu  = document.getElementById('mobile-menu');
+  const iOpen = document.getElementById('icon-open');
+  const iClose= document.getElementById('icon-close');
+  let isOpen  = false;
+
+  btn?.addEventListener('click', () => {
+    isOpen = !isOpen;
+    menu!.style.display  = isOpen ? 'block' : 'none';
+    iOpen!.style.display = isOpen ? 'none'  : 'block';
+    iClose!.style.display= isOpen ? 'block' : 'none';
+  });
+</script>

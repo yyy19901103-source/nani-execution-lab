@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseCard from '../components/CaseCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allCases = await getCollection('cases');
+const featuredCases = allCases
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
+
+const allNews = await getCollection('news');
+const latestNews = allNews
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 5);
+---
+
+<BaseLayout title="TOP">
+
+  <!-- ═══ HERO ═══ -->
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+
+    <!-- Background gradient -->
+    <div style="position:absolute;inset:0;background:linear-gradient(160deg,#0c0c0e 0%,#101018 50%,#0c0c0e 100%);"></div>
+
+    <!-- Decorative horizontal line -->
+    <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(200,169,110,0.08),transparent);pointer-events:none;"></div>
+
+    <!-- Hero content -->
+    <div style="position:relative;z-index:10;max-width:56rem;margin:0 auto;padding:0 1.5rem;text-align:center;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:2rem;text-transform:uppercase;">
+        Manufacturing DX · AI Integration · Process Design
+      </p>
+      <h1 style="font-size:clamp(3rem,9vw,6rem);font-weight:100;letter-spacing:0.15em;color:#edede8;line-height:1.1;margin-bottom:1.5rem;">
+        NaNi
+      </h1>
+      <p style="font-size:clamp(0.8rem,2vw,1rem);font-weight:300;letter-spacing:0.35em;color:rgba(255,255,255,0.35);margin-bottom:2.5rem;text-transform:uppercase;">
+        Execution Lab
+      </p>
+      <p style="color:rgba(255,255,255,0.45);font-size:clamp(0.9rem,2.5vw,1.1rem);font-weight:300;line-height:1.9;margin-bottom:3rem;max-width:36rem;margin-left:auto;margin-right:auto;">
+        データでプロセスを再設計し、<br/>価値を生む自律型仕組みを実現する。
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+        <a href="/cases" style="display:inline-block;border:1px solid #c8a96e;color:#c8a96e;font-size:0.7rem;letter-spacing:0.3em;padding:1rem 2.5rem;transition:all 0.3s;" onmouseover="this.style.background='#c8a96e';this.style.color='#000'" onmouseout="this.style.background='transparent';this.style.color='#c8a96e'">
+          実行事例を見る
+        </a>
+        <a href="/about" style="display:inline-block;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.5);font-size:0.7rem;letter-spacing:0.3em;padding:1rem 2.5rem;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.6)';this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.5)'">
+          ABOUT
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.15);">
+      <span style="font-size:0.6rem;letter-spacing:0.3em;">SCROLL</span>
+      <div style="width:1px;height:2rem;background:linear-gradient(to bottom,rgba(255,255,255,0.15),transparent);animation:pulse 2s infinite;"></div>
+    </div>
+  </section>
+
+  <!-- ═══ CASE STUDIES ═══ -->
+  <section style="padding:6rem 1.5rem;max-width:1280px;margin:0 auto;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">CASE STUDIES</p>
+        <h2 style="font-size:clamp(1.5rem,4vw,2rem);font-weight:300;letter-spacing:0.1em;color:#edede8;">実行事例</h2>
+      </div>
+      <a href="/cases" style="color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">ALL CASES →</a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:rgba(255,255,255,0.04);">
+      {featuredCases.map(c => (
+        <CaseCard
+          title={c.data.title}
+          description={c.data.description}
+          category={c.data.category}
+          slug={c.id.replace(/\.md$/, '')}
+          tags={c.data.tags}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem;">
+    <div style="height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,0.08),transparent);"></div>
+  </div>
+
+  <!-- ═══ NEWS ═══ -->
+  <section style="padding:6rem 1.5rem;max-width:1280px;margin:0 auto;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:0.75rem;">LATEST NEWS</p>
+        <h2 style="font-size:clamp(1.5rem,4vw,2rem);font-weight:300;letter-spacing:0.1em;color:#edede8;">ニュース</h2>
+      </div>
+      <a href="/news" style="color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">ALL NEWS →</a>
+    </div>
+    <div style="max-width:48rem;">
+      {latestNews.map(n => (
+        <BlogCard
+          title={n.data.title}
+          date={n.data.date}
+          slug={n.id.replace(/\.md$/, '')}
+          type="news"
+          category={n.data.category}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ CONCEPT ═══ -->
+  <section style="padding:8rem 1.5rem;background:#0f0f14;">
+    <div style="max-width:48rem;margin:0 auto;text-align:center;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:2rem;">CONCEPT</p>
+      <blockquote style="font-size:clamp(1.25rem,3.5vw,1.75rem);font-weight:100;color:#edede8;line-height:1.8;letter-spacing:0.05em;margin-bottom:2rem;">
+        「データでプロセスを再設計し、<br/>
+        価値を生む自律型仕組みを実現する。」
+      </blockquote>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.9;max-width:32rem;margin:0 auto;">
+        製造業の現場で積み上げたDX経験とAIを活用した業務自動化の実践事例を発信しています。
+      </p>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+</style>

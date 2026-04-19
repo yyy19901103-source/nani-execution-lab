@@ -1,0 +1,57 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date: string;
+  type: 'blog' | 'news';
+  tags?: string[];
+  category?: string;
+}
+
+const { title, description, date, type, tags = [], category } = Astro.props;
+const formatted = new Date(date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+const typeLabel = type === 'blog' ? 'BLOG' : 'NEWS';
+const typePath  = `/${type}`;
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Breadcrumb -->
+  <div style="padding-top:5.5rem;padding-bottom:0;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
+    <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.25);font-size:0.7rem;letter-spacing:0.1em;padding-top:1rem;">
+      <a href="/" style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">TOP</a>
+      <span>/</span>
+      <a href={typePath} style="transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">{typeLabel}</a>
+      <span>/</span>
+      <span style="color:rgba(255,255,255,0.5);">{title}</span>
+    </div>
+  </div>
+
+  <!-- Article Header -->
+  <header style="padding:3rem 1.5rem 2.5rem;max-width:1280px;margin:0 auto;border-bottom:1px solid rgba(255,255,255,0.06);">
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">{category ?? typeLabel}</p>
+    <div style="color:rgba(255,255,255,0.25);font-size:0.75rem;letter-spacing:0.08em;margin-bottom:1rem;">{formatted}</div>
+    <h1 style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:300;letter-spacing:0.05em;color:#edede8;line-height:1.4;margin-bottom:1rem;">{title}</h1>
+    {description && <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.8;max-width:48rem;">{description}</p>}
+    {tags.length > 0 && (
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;">
+        {tags.map(tag => (
+          <span style="font-size:0.65rem;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.1);padding:0.15rem 0.6rem;">{tag}</span>
+        ))}
+      </div>
+    )}
+  </header>
+
+  <!-- Article Body -->
+  <article class="prose-custom" style="max-width:48rem;margin:0 auto;padding:3rem 1.5rem;">
+    <slot />
+  </article>
+
+  <!-- Back link -->
+  <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem 6rem;">
+    <a href={typePath} style="display:inline-flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">
+      <span>←</span><span>{typeLabel}一覧へ戻る</span>
+    </a>
+  </div>
+</BaseLayout>

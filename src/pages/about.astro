@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const focusAreas = ['製造業DX推進','AI業務自動化','データパイプライン','プロセス再設計','ダッシュボード構築','サプライヤー管理'];
+const techStack = ['Python','FastAPI','n8n','Power BI','Claude API','React','GitHub Actions','LINE Bot','Render.com'];
+---
+
+<BaseLayout title="ABOUT" description="NaNi Execution Lab について。製造業DXとAI活用の実践者。">
+
+  <!-- Page Header -->
+  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">ABOUT</p>
+    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;">About</h1>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:4rem;">
+
+      <!-- Left: Profile -->
+      <div>
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:2rem;">PROFILE</p>
+
+        <div style="border:1px solid rgba(255,255,255,0.07);background:#141418;padding:2rem;margin-bottom:2rem;">
+          <div style="margin-bottom:1.25rem;">
+            <div style="font-size:1.5rem;font-weight:300;letter-spacing:0.1em;color:#edede8;margin-bottom:0.25rem;">NaNi</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:0.75rem;letter-spacing:0.08em;">製造業DX推進 / AI業務自動化 エンジニア</div>
+          </div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.875rem;line-height:1.9;">
+            製造業において品質管理・サプライヤー管理・生産管理のDX推進を担当。
+            AI技術と業務自動化ツールを組み合わせ、データ主導の仕組みづくりを実践。
+            現場課題の本質を捉え、持続的に機能する仕組みの設計と実装を行っている。
+          </p>
+        </div>
+
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.25rem;">FOCUS AREAS</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.625rem;margin-bottom:2.5rem;">
+          {focusAreas.map(area => (
+            <div style="border:1px solid rgba(255,255,255,0.07);padding:0.625rem 0.875rem;font-size:0.8rem;color:rgba(255,255,255,0.5);letter-spacing:0.04em;">
+              {area}
+            </div>
+          ))}
+        </div>
+
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.25rem;">TECH STACK</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+          {techStack.map(tech => (
+            <span style="font-size:0.7rem;color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.1);padding:0.25rem 0.625rem;letter-spacing:0.05em;">{tech}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right: Mission & Values -->
+      <div>
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:2rem;">MISSION</p>
+        <div style="display:flex;flex-direction:column;gap:1.5rem;margin-bottom:3rem;">
+          {[
+            { title: 'データ主導の意思決定', body: '現場の経験と勘に依存した意思決定をデータで支援し、再現性のある仕組みへ転換する。' },
+            { title: '自律型プロセス設計',   body: '人間の判断が必要な部分と自動化できる部分を見極め、持続可能な業務フローを構築する。' },
+            { title: '実行可能な知見の発信', body: '理論ではなく実際に機能した仕組みを記録し、製造業DXの参考事例として共有する。' },
+          ].map(item => (
+            <div style="border-left:2px solid rgba(200,169,110,0.35);padding-left:1.5rem;">
+              <h3 style="color:#edede8;font-size:0.9rem;font-weight:400;margin-bottom:0.5rem;">{item.title}</h3>
+              <p style="color:rgba(255,255,255,0.45);font-size:0.8rem;line-height:1.9;">{item.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">CONTACT</p>
+        <a
+          href="/contact"
+          style="display:inline-block;border:1px solid #c8a96e;color:#c8a96e;font-size:0.7rem;letter-spacing:0.3em;padding:0.875rem 2rem;transition:all 0.3s;"
+          onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
+          onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
+        >
+          お問い合わせはこちら
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

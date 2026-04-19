@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sorted = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout title="BLOG" description="製造業DX・AI活用に関するブログ記事。実践から得た知見を発信。">
+  <div style="padding-top:8rem;padding-bottom:3rem;max-width:1280px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;">
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">BLOG</p>
+    <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:100;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">Blog</h1>
+    <p style="color:rgba(255,255,255,0.35);font-size:0.875rem;line-height:1.8;max-width:32rem;">
+      製造業DX・AI活用・業務自動化に関する技術記事と実践レポート。
+    </p>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem 8rem;">
+    <div style="max-width:48rem;">
+      {sorted.length > 0 ? (
+        sorted.map(post => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            slug={post.id.replace(/\.md$/, '')}
+            type="blog"
+          />
+        ))
+      ) : (
+        <p style="color:rgba(255,255,255,0.2);text-align:center;padding:6rem 0;font-size:0.875rem;letter-spacing:0.2em;">準備中</p>
+      )}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    background-color: #0c0c0e;
+    color: #edede8;
+    font-family: 'Noto Sans JP', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background: #c8a96e;
+    color: #000;
+  }
+}
+
+/* ─── Prose styles (Markdown content) ─── */
+.prose-custom { color: #edede8; }
+
+.prose-custom h2 {
+  font-size: 1.375rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: #edede8;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.prose-custom h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #c8a96e;
+  margin-top: 2rem;
+  margin-bottom: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+.prose-custom p {
+  color: rgba(237,237,232,0.65);
+  line-height: 2;
+  margin-bottom: 1.5rem;
+}
+
+.prose-custom ul,
+.prose-custom ol {
+  color: rgba(237,237,232,0.65);
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose-custom li { margin-bottom: 0.5rem; line-height: 1.9; }
+
+.prose-custom strong { color: #edede8; font-weight: 500; }
+
+.prose-custom table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+}
+
+.prose-custom th {
+  background: #1e1e24;
+  color: #c8a96e;
+  text-align: left;
+  padding: 0.625rem 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+}
+
+.prose-custom td {
+  padding: 0.625rem 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(237,237,232,0.6);
+}
+
+.prose-custom tr:hover td { background: rgba(255,255,255,0.02); }
+
+.prose-custom hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin: 3rem 0;
+}
+
+.prose-custom blockquote {
+  border-left: 2px solid #c8a96e;
+  padding-left: 1.5rem;
+  color: rgba(237,237,232,0.45);
+  margin: 2rem 0;
+}
+
+.prose-custom code {
+  background: #1e1e24;
+  color: #c8a96e;
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  font-size: 0.875rem;
+}
+
+.prose-custom pre {
+  background: #141418;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 1.5rem;
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+.prose-custom pre code { background: none; color: #edede8; padding: 0; }
+
+.prose-custom a { color: #c8a96e; text-decoration: underline; text-underline-offset: 3px; }
+.prose-custom a:hover { color: #d4b87a; }
