@@ -2,18 +2,21 @@
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const navItems = [
-  { href: `${base}/`,         label: 'TOP' },
-  { href: `${base}/about`,    label: 'ABOUT' },
-  { href: `${base}/cases`,    label: '事例' },
-  { href: `${base}/blog`,     label: 'BLOG' },
-  { href: `${base}/news`,     label: 'NEWS' },
-  { href: `${base}/download`, label: 'DOWNLOAD' },
-  { href: `${base}/gallery`,  label: 'GALLERY' },
-  { href: `${base}/video`,    label: 'VIDEO' },
-  { href: `${base}/learning`, label: 'LEARNING' },
-  { href: `${base}/game`,     label: '🎮 GAME' },
-  { href: `${base}/glossary`, label: '用語集' },
-  { href: `${base}/contact`,  label: 'CONTACT' },
+  { href: `${base}/`,                  label: 'TOP' },
+  { href: `${base}/about`,             label: 'ABOUT' },
+  { href: `${base}/cases`,             label: '事例' },
+  { href: `${base}/blog`,              label: 'BLOG' },
+  { href: `${base}/learning`,          label: 'LEARNING' },
+  { href: `${base}/assessment`,        label: '診断' },
+  { href: `${base}/roi-calculator`,    label: 'ROI計算' },
+  { href: `${base}/tools-comparison`,  label: 'ツール比較' },
+  { href: `${base}/glossary`,          label: '用語集' },
+  { href: `${base}/download`,          label: 'DOWNLOAD' },
+  { href: `${base}/gallery`,           label: 'GALLERY' },
+  { href: `${base}/news`,              label: 'NEWS' },
+  { href: `${base}/video`,             label: 'VIDEO' },
+  { href: `${base}/game`,              label: '🎮 GAME' },
+  { href: `${base}/contact`,           label: 'CONTACT' },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -37,7 +40,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
         return (
           <a
             href={item.href}
-            style={`padding:0.5rem 0.75rem;font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;color:${isActive ? '#c8a96e' : 'rgba(255,255,255,0.45)'};`}
+            style={`padding:0.4rem 0.55rem;font-size:0.65rem;letter-spacing:0.12em;transition:color 0.2s;color:${isActive ? '#c8a96e' : 'rgba(255,255,255,0.45)'};`}
             class="nav-link"
           >
             {item.label}

@@ -6,13 +6,14 @@ export async function getStaticPaths() {
   const cases = await getCollection('cases');
   return cases.map(c => ({
     params: { slug: c.id.replace(/\.md$/, '') },
-    props: { entry: c },
+    props: { entry: c, allCases: cases },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, allCases } = Astro.props;
 const { Content } = await render(entry);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const slug = entry.id.replace(/\.md$/, '');
 
 // Hero images per case
 const heroImages: Record<string, string> = {
@@ -20,8 +21,12 @@ const heroImages: Record<string, string> = {
   'dashboard':        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80',
   'supplier-quality': 'https://images.unsplash.com/photo-1565514020179-026b92b84bb6?auto=format&fit=crop&w=1920&q=80',
 };
-const slug = entry.id.replace(/\.md$/, '');
 const heroImg = heroImages[slug] ?? 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80';
+
+// Related cases: up to 2 other cases
+const relatedCases = allCases
+  .filter(c => c.id.replace(/\.md$/, '') !== slug)
+  .slice(0, 2);
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description}>
@@ -31,6 +36,7 @@ const heroImg = heroImages[slug] ?? 'https://images.unsplash.com/photo-158109122
     <img
       src={heroImg}
       alt={entry.data.title}
+      loading="lazy"
       style="width:100%;height:100%;object-fit:cover;opacity:0.3;"
     />
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#0c0c0e 0%,transparent 30%,rgba(12,12,14,0.9) 100%);"></div>
@@ -66,11 +72,83 @@ const heroImg = heroImages[slug] ?? 'https://images.unsplash.com/photo-158109122
     <Content />
   </article>
 
+  <!-- CTA section -->
+  <div style="max-width:56rem;margin:0 auto;padding:0 1.5rem 3rem;">
+    <div style="border:1px solid rgba(200,169,110,0.18);border-radius:8px;padding:2.5rem;background:rgba(200,169,110,0.03);">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+        <div style="width:2rem;height:1px;background:#c8a96e;"></div>
+        <span style="font-size:0.62rem;letter-spacing:0.25em;color:#c8a96e;">同様の課題をお持ちの方へ</span>
+      </div>
+      <p style="color:rgba(237,237,232,0.75);font-size:0.9rem;line-height:1.9;margin-bottom:1.5rem;max-width:36rem;">
+        この事例と同様の課題についてご相談いただけます。<br/>
+        現場の状況に合わせた改善アプローチをご提案します。
+      </p>
+      <a
+        href={`${base}/contact`}
+        style="display:inline-flex;align-items:center;gap:0.5rem;border:1px solid #c8a96e;color:#c8a96e;font-size:0.72rem;letter-spacing:0.2em;padding:0.75rem 1.75rem;transition:all 0.3s;text-decoration:none;border-radius:2px;"
+        onmouseover="this.style.background='#c8a96e';this.style.color='#000'"
+        onmouseout="this.style.background='transparent';this.style.color='#c8a96e'"
+      >
+        お問い合わせ →
+      </a>
+    </div>
+  </div>
+
+  <!-- Related cases -->
+  {relatedCases.length > 0 && (
+    <div style="max-width:56rem;margin:0 auto;padding:0 1.5rem 4rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:1.5rem;">関連事例</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;">
+        {relatedCases.map(c => {
+          const cSlug = c.id.replace(/\.md$/, '');
+          const cHero = heroImages[cSlug] ?? 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=60';
+          return (
+            <a
+              href={`${base}/cases/${cSlug}`}
+              class="related-card"
+              style="border:1px solid rgba(255,255,255,0.07);border-radius:6px;overflow:hidden;text-decoration:none;transition:all 0.2s;display:block;"
+            >
+              <div style="height:8rem;overflow:hidden;">
+                <img
+                  src={cHero}
+                  alt={c.data.title}
+                  loading="lazy"
+                  style="width:100%;height:100%;object-fit:cover;opacity:0.35;transition:opacity 0.3s;"
+                  class="related-thumb"
+                />
+              </div>
+              <div style="padding:1.125rem;">
+                {c.data.category && (
+                  <span style="font-size:0.58rem;letter-spacing:0.15em;color:rgba(200,169,110,0.6);">{c.data.category}</span>
+                )}
+                <h3 class="related-title" style="font-size:0.82rem;font-weight:300;color:rgba(237,237,232,0.8);line-height:1.6;margin-top:0.375rem;transition:color 0.2s;">{c.data.title}</h3>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  )}
+
   <!-- Back link -->
-  <div style="max-width:56rem;margin:0 auto;padding:0 1.5rem 6rem;">
-    <a href={`${base}/cases`} style="display:inline-flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">
-      <span>←</span><span>事例一覧へ戻る</span>
+  <div style="max-width:56rem;margin:0 auto;padding:0 1.5rem 6rem;border-top:1px solid rgba(255,255,255,0.05);padding-top:2rem;">
+    <a href={`${base}/cases`} style="display:inline-flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;text-decoration:none;padding:0.5rem 0.875rem;border:1px solid rgba(255,255,255,0.08);border-radius:4px;" onmouseover="this.style.color='#c8a96e';this.style.borderColor='rgba(200,169,110,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.3)';this.style.borderColor='rgba(255,255,255,0.08)'">
+      ← 事例一覧へ戻る
     </a>
   </div>
 
 </BaseLayout>
+
+<style>
+  .related-card:hover { border-color: rgba(200,169,110,0.2) !important; }
+  .related-card:hover .related-title { color: #c8a96e !important; }
+  .related-card:hover .related-thumb { opacity: 0.55 !important; }
+</style>
+
+<script>
+  // Lazy image observer
+  document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+    if ((img as HTMLImageElement).complete) img.classList.add('loaded');
+    else img.addEventListener('load', () => img.classList.add('loaded'));
+  });
+</script>
