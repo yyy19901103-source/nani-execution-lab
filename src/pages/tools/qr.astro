@@ -110,7 +110,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     @media(max-width:860px){ #main-grid { grid-template-columns:1fr !important; } }
   </style>
 
-  <script is:inline src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 
   <script is:inline>
     const FORMS = {
@@ -237,11 +237,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let lastSvg = '';
     let lastPngDataUrl = '';
 
-    async function generate() {
+    function generate() {
       const payload = buildPayload();
       if (!payload) {
         $qrArea.innerHTML = '<span style="color:rgba(255,255,255,0.3);font-size:0.75rem;">入力待ち…</span>';
         $qrInfo.textContent = '';
+        return;
+      }
+      if (typeof qrcode === 'undefined') {
+        $qrArea.innerHTML = '<span style="color:#e88;font-size:0.75rem;">QRライブラリ読込中…少々お待ちください</span>';
+        setTimeout(generate, 300);
         return;
       }
       const size = Math.max(128, Math.min(1024, Number(document.getElementById('size').value) || 320));
@@ -249,12 +254,51 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const fg = document.getElementById('fg-color').value;
       const bg = document.getElementById('bg-color').value;
       const ecc = document.getElementById('ecc').value;
-      const opts = { errorCorrectionLevel: ecc, margin, width: size, color: { dark: fg, light: bg } };
+
       try {
-        const svg = await QRCode.toString(payload, { ...opts, type: 'svg' });
-        lastSvg = svg;
+        // typeNumber=0 auto, errorCorrectionLevel L/M/Q/H
+        const qr = qrcode(0, ecc);
+        qr.addData(payload);
+        qr.make();
+
+        const mc = qr.getModuleCount();
+        const totalMods = mc + margin * 2;
+        const modSize = size / totalMods;
+
+        // Build SVG (use path for efficiency)
+        let paths = '';
+        for (let r = 0; r < mc; r++) {
+          for (let c = 0; c < mc; c++) {
+            if (qr.isDark(r, c)) {
+              const x = ((c + margin) * modSize).toFixed(2);
+              const y = ((r + margin) * modSize).toFixed(2);
+              const s = modSize.toFixed(2);
+              paths += 'M' + x + ',' + y + 'h' + s + 'v' + s + 'h-' + s + 'z';
+            }
+          }
+        }
+        const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size +
+                    '" viewBox="0 0 ' + size + ' ' + size + '" shape-rendering="crispEdges">' +
+                    '<rect width="' + size + '" height="' + size + '" fill="' + bg + '"/>' +
+                    '<path d="' + paths + '" fill="' + fg + '"/></svg>';
+
+        // Render canvas for PNG export
         const canvas = document.createElement('canvas');
-        await QRCode.toCanvas(canvas, payload, opts);
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, size, size);
+        ctx.fillStyle = fg;
+        for (let r = 0; r < mc; r++) {
+          for (let c = 0; c < mc; c++) {
+            if (qr.isDark(r, c)) {
+              ctx.fillRect((c + margin) * modSize, (r + margin) * modSize, modSize + 0.5, modSize + 0.5);
+            }
+          }
+        }
+
+        lastSvg = svg;
         lastPngDataUrl = canvas.toDataURL('image/png');
         $qrArea.innerHTML = svg;
         const svgEl = $qrArea.querySelector('svg');
@@ -263,10 +307,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           svgEl.style.height = 'auto';
           svgEl.style.maxWidth = size + 'px';
         }
-        $qrInfo.textContent = 'Size: ' + size + 'px · Data: ' + payload.length + ' chars · ECC: ' + ecc;
+        $qrInfo.textContent = 'Size: ' + size + 'px · Data: ' + payload.length + ' chars · ECC: ' + ecc + ' · ' + mc + '×' + mc + ' modules';
       } catch (e) {
-        $qrArea.innerHTML = '<span style="color:#e88;font-size:0.75rem;">生成エラー: データ量超過の可能性</span>';
-        $qrInfo.textContent = e.message || '';
+        $qrArea.innerHTML = '<span style="color:#e88;font-size:0.75rem;">生成エラー: ' + (e.message || 'データ量超過の可能性') + '</span>';
+        $qrInfo.textContent = '';
       }
     }
 
