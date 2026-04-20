@@ -72,6 +72,42 @@ const caseImages: Record<string, string> = {
     </div>
   </section>
 
+  <!-- ═══ TOOLS HUB (NEW) ═══ -->
+  <section style="padding:5rem 1.5rem;background:linear-gradient(180deg,#0c0c0e 0%,#14100a 50%,#0c0c0e 100%);border-top:1px solid rgba(200,169,110,0.08);border-bottom:1px solid rgba(200,169,110,0.08);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.75rem;">🛠 TOOLS · NEW</p>
+          <h2 style="font-size:clamp(1.5rem,4vw,2rem);font-weight:300;letter-spacing:0.1em;color:#edede8;margin-bottom:0.5rem;">便利ツール集</h2>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;">ブラウザで完結・登録不要・100% クライアントサイド処理</p>
+        </div>
+        <a href={`${base}/tools`} style="color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.2em;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">ALL TOOLS →</a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem;">
+        {[
+          { icon:'📋', name:'役員提案書', desc:'A4一枚を5分で', href:`${base}/tools/proposal`, badge:'NEW' },
+          { icon:'🔗', name:'Mermaid編集', desc:'双方向フロー図', href:`${base}/mermaid-tool`, badge:'NEW' },
+          { icon:'📊', name:'JSON/CSV変換', desc:'整形・相互変換', href:`${base}/tools/json`, badge:'NEW' },
+          { icon:'📱', name:'QRコード生成', desc:'URL/WiFi/連絡先', href:`${base}/tools/qr`, badge:'NEW' },
+          { icon:'🔍', name:'正規表現テスター', desc:'マッチ・置換', href:`${base}/tools/regex`, badge:'NEW' },
+          { icon:'⏰', name:'タイムスタンプ変換', desc:'Unix ⇄ 日時', href:`${base}/tools/timestamp`, badge:'NEW' },
+          { icon:'🕐', name:'Cron式ビルダー', desc:'cron自動生成', href:`${base}/tools/cron`, badge:'NEW' },
+          { icon:'💰', name:'ROI計算', desc:'投資対効果', href:`${base}/roi-calculator` },
+          { icon:'📋', name:'DX成熟度診断', desc:'20問自己評価', href:`${base}/assessment` },
+          { icon:'⚖️', name:'ツール比較', desc:'MES/ERP/PLM', href:`${base}/tools-comparison` },
+        ].map(t => (
+          <a href={t.href} style="background:rgba(17,17,20,0.7);border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.2rem;text-decoration:none;transition:all 0.2s;position:relative;display:block;" onmouseover="this.style.borderColor='rgba(200,169,110,0.5)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)';this.style.transform='translateY(0)'">
+            {t.badge && <span style="position:absolute;top:0.5rem;right:0.5rem;color:#c8a96e;font-size:0.55rem;letter-spacing:0.2em;border:1px solid rgba(200,169,110,0.5);padding:0.1rem 0.35rem;">{t.badge}</span>}
+            <div style="font-size:1.6rem;margin-bottom:0.5rem;">{t.icon}</div>
+            <div style="color:#edede8;font-size:0.85rem;font-weight:400;letter-spacing:0.03em;margin-bottom:0.25rem;">{t.name}</div>
+            <div style="color:rgba(255,255,255,0.45);font-size:0.7rem;">{t.desc}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ CASE STUDIES ═══ -->
   <section style="padding:6rem 1.5rem;max-width:1280px;margin:0 auto;">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:1rem;">
