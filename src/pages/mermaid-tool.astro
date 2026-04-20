@@ -1,0 +1,631 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="Mermaid ビジュアルフローエディタ"
+  description="Mermaid 記法のコードを直感的なドラッグ操作で編集できる双方向エディタ。ノード・エッジの追加・削除・リネームがリアルタイムでコードと同期。"
+>
+
+  <!-- Hero -->
+  <div style="position:relative;height:14rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d0c1a 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Visual Flow Editor</p>
+      <h1 style="font-size:clamp(1.5rem,5vw,2.3rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:0.7rem;">Mermaid ⇄ ビジュアル双方向編集</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;font-weight:300;">ドラッグで動かす / ダブルクリックで編集 / コードとリアルタイム同期</p>
+    </div>
+  </div>
+
+  <div style="max-width:1500px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- Toolbar -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.75rem 1rem;margin-bottom:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+      <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;">TEMPLATE</span>
+      <select id="template-select" class="m-select">
+        <option value="">—</option>
+        <option value="flowchart">フローチャート</option>
+        <option value="decision">判定分岐</option>
+        <option value="process">業務プロセス</option>
+        <option value="dx">製造DX構造</option>
+      </select>
+
+      <span style="color:rgba(255,255,255,0.15);margin:0 0.25rem;">|</span>
+
+      <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;">DIRECTION</span>
+      <select id="direction-select" class="m-select">
+        <option value="LR">左→右</option>
+        <option value="TD">上→下</option>
+        <option value="RL">右→左</option>
+        <option value="BT">下→上</option>
+      </select>
+
+      <span style="color:rgba(255,255,255,0.15);margin:0 0.25rem;">|</span>
+
+      <button id="btn-add-node" class="m-btn-ghost">➕ ノード追加</button>
+      <button id="btn-edge-mode" class="m-btn-ghost">🔗 エッジ作成</button>
+      <button id="btn-delete" class="m-btn-ghost">🗑 削除</button>
+      <button id="btn-relayout" class="m-btn-ghost">⟳ 再レイアウト</button>
+
+      <span style="flex:1;"></span>
+
+      <button id="btn-copy" class="m-btn-ghost">📋 コピー</button>
+      <button id="btn-svg" class="m-btn">⬇ SVG</button>
+      <button id="btn-png" class="m-btn">⬇ PNG</button>
+    </div>
+
+    <!-- Status Bar -->
+    <div id="status-bar" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.4rem 1rem;margin-bottom:0.75rem;font-size:0.72rem;color:rgba(255,255,255,0.5);display:flex;gap:1.5rem;">
+      <span>💡 ノードをダブルクリックでリネーム</span>
+      <span>📌 エッジもダブルクリックで編集</span>
+      <span>⌨ Del/Backspace で選択削除</span>
+      <span id="status-mode" style="color:#c8a96e;margin-left:auto;"></span>
+    </div>
+
+    <!-- Main Grid -->
+    <div style="display:grid;grid-template-columns:420px 1fr;gap:0.75rem;" id="main-grid">
+
+      <!-- Code Editor -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;min-height:620px;">
+        <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">MERMAID CODE</span>
+          <span id="char-count" style="color:rgba(255,255,255,0.3);font-size:0.68rem;">0</span>
+        </div>
+        <textarea id="mermaid-input" class="m-editor" spellcheck="false"></textarea>
+      </div>
+
+      <!-- Visual Editor -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;min-height:620px;position:relative;">
+        <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">VISUAL GRAPH</span>
+          <div style="display:flex;gap:0.25rem;">
+            <button id="zoom-out" class="m-zoom">−</button>
+            <button id="zoom-fit" class="m-zoom">⤢</button>
+            <button id="zoom-in" class="m-zoom">+</button>
+          </div>
+        </div>
+        <div id="cy-container" style="flex:1;background:#0f0f12;position:relative;"></div>
+        <div id="error-box" style="display:none;padding:0.6rem 1rem;border-top:1px solid rgba(220,80,80,0.25);background:rgba(220,80,80,0.05);color:#e88;font-size:0.72rem;font-family:ui-monospace,Consolas,monospace;white-space:pre-wrap;max-height:8rem;overflow:auto;"></div>
+      </div>
+
+    </div>
+
+    <!-- Syntax Guide -->
+    <div style="margin-top:1.5rem;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.9rem;">QUICK SYNTAX</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;color:rgba(255,255,255,0.7);font-size:0.72rem;line-height:1.6;">
+        <div>
+          <p style="color:#c8a96e;margin-bottom:0.35rem;font-size:0.66rem;letter-spacing:0.15em;">形状</p>
+          <code style="display:block;background:#0a0a0c;padding:0.5rem 0.7rem;font-family:ui-monospace,Consolas,monospace;font-size:0.68rem;color:#9ab;">A[矩形]<br>B(丸角)<br>C&#123;菱形&#125;<br>D((円))</code>
+        </div>
+        <div>
+          <p style="color:#c8a96e;margin-bottom:0.35rem;font-size:0.66rem;letter-spacing:0.15em;">矢印</p>
+          <code style="display:block;background:#0a0a0c;padding:0.5rem 0.7rem;font-family:ui-monospace,Consolas,monospace;font-size:0.68rem;color:#9ab;">A --&gt; B<br>A -.-&gt; B (点線)<br>A ==&gt; B (太線)<br>A --&gt;|Yes| B</code>
+        </div>
+        <div>
+          <p style="color:#c8a96e;margin-bottom:0.35rem;font-size:0.66rem;letter-spacing:0.15em;">操作</p>
+          <div style="font-size:0.7rem;">
+            ダブルクリック → ラベル編集<br>
+            ドラッグ → 位置変更<br>
+            Del/BS → 削除<br>
+            エッジ作成 → 2ノード順次クリック
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-select, .m-btn, .m-btn-ghost, .m-zoom {
+      background: #0a0a0c;
+      color: #edede8;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.42rem 0.75rem;
+      font-size: 0.72rem;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      transition: all 0.15s;
+    }
+    .m-select:hover, .m-btn-ghost:hover, .m-zoom:hover {
+      border-color: #c8a96e;
+      color: #c8a96e;
+    }
+    .m-btn-ghost.active {
+      background: rgba(200,169,110,0.15);
+      border-color: #c8a96e;
+      color: #c8a96e;
+    }
+    .m-btn {
+      background: #c8a96e;
+      color: #0c0c0e;
+      border-color: #c8a96e;
+      font-weight: 600;
+    }
+    .m-btn:hover {
+      background: #d4b87b;
+    }
+    .m-zoom {
+      padding: 0.22rem 0.5rem;
+      font-size: 0.85rem;
+      min-width: 1.9rem;
+    }
+    .m-editor {
+      flex: 1;
+      background: transparent;
+      color: #d5d5d0;
+      border: none;
+      outline: none;
+      resize: none;
+      padding: 1rem;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      tab-size: 2;
+    }
+    #cy-container canvas {
+      outline: none;
+    }
+    @media (max-width: 900px) {
+      #main-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.js"></script>
+
+  <script is:inline>
+    // ==========================================================
+    //  Mermaid Flowchart Parser  (subset)
+    // ==========================================================
+    function parseMermaid(text) {
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith('%%'));
+      let direction = 'LR';
+      const nodes = new Map();
+      const edges = [];
+      let edgeCounter = 0;
+
+      const shapeToken = '(\\(\\([^)]*\\)\\)|\\[[^\\]]*\\]|\\([^)]*\\)|\\{[^}]*\\})';
+      const idToken = '([A-Za-z0-9_]+)';
+      const arrowToken = '(-->|---|-\\.->|==>|-\\.-|===)';
+      const edgeRe = new RegExp('^' + idToken + shapeToken + '?\\s*' + arrowToken + '\\s*(?:\\|([^|]*)\\|)?\\s*' + idToken + shapeToken + '?\\s*$');
+      const nodeRe = new RegExp('^' + idToken + shapeToken + '?$');
+
+      function extractShape(tok) {
+        if (!tok) return { label: null, shape: null };
+        if (tok.startsWith('((') && tok.endsWith('))')) return { label: tok.slice(2,-2), shape: 'circle' };
+        if (tok.startsWith('[')) return { label: tok.slice(1,-1), shape: 'rect' };
+        if (tok.startsWith('(')) return { label: tok.slice(1,-1), shape: 'rounded' };
+        if (tok.startsWith('{')) return { label: tok.slice(1,-1), shape: 'diamond' };
+        return { label: null, shape: null };
+      }
+
+      function ensureNode(id, label, shape) {
+        if (!nodes.has(id)) {
+          nodes.set(id, { id, label: label != null ? label : id, shape: shape || 'rect' });
+        } else {
+          const existing = nodes.get(id);
+          if (label != null && existing.label === existing.id) existing.label = label;
+          if (shape) existing.shape = shape;
+        }
+      }
+
+      for (const raw of lines) {
+        if (/^(flowchart|graph)\s+(TD|TB|LR|RL|BT)/i.test(raw)) {
+          direction = raw.match(/(TD|TB|LR|RL|BT)/i)[1].toUpperCase();
+          if (direction === 'TB') direction = 'TD';
+          continue;
+        }
+        const em = raw.match(edgeRe);
+        if (em) {
+          const [, sId, sTok, arrow, eLabel, tId, tTok] = em;
+          const s = extractShape(sTok);
+          const t = extractShape(tTok);
+          ensureNode(sId, s.label, s.shape);
+          ensureNode(tId, t.label, t.shape);
+          const style = arrow.includes('-.') ? 'dashed' : (arrow.includes('==') ? 'thick' : 'solid');
+          edges.push({
+            id: 'e' + (++edgeCounter),
+            source: sId, target: tId,
+            label: eLabel || '',
+            style
+          });
+          continue;
+        }
+        const nm = raw.match(nodeRe);
+        if (nm) {
+          const s = extractShape(nm[2]);
+          ensureNode(nm[1], s.label, s.shape);
+        }
+      }
+
+      return { direction, nodes: [...nodes.values()], edges };
+    }
+
+    // ==========================================================
+    //  Mermaid Serializer
+    // ==========================================================
+    function serializeMermaid(direction, nodes, edges) {
+      const wrap = {
+        rect: ['[',']'],
+        rounded: ['(',')'],
+        diamond: ['{','}'],
+        circle: ['((','))']
+      };
+      let out = 'flowchart ' + direction + '\n';
+      for (const n of nodes) {
+        const [o, c] = wrap[n.shape] || ['[',']'];
+        if (n.label && n.label !== n.id) {
+          out += '  ' + n.id + o + n.label + c + '\n';
+        } else {
+          out += '  ' + n.id + '\n';
+        }
+      }
+      for (const e of edges) {
+        const arrow = e.style === 'dashed' ? '-.->' : (e.style === 'thick' ? '==>' : '-->');
+        const lbl = e.label ? ('|' + e.label + '|') : '';
+        out += '  ' + e.source + ' ' + arrow + (lbl ? ' ' + lbl : '') + ' ' + e.target + '\n';
+      }
+      return out.trimEnd();
+    }
+
+    // ==========================================================
+    //  Templates
+    // ==========================================================
+    const TEMPLATES = {
+      flowchart: 'flowchart LR\n  A[開始] --> B{判定}\n  B -->|Yes| C[処理1]\n  B -->|No| D[処理2]\n  C --> E[終了]\n  D --> E',
+      decision: 'flowchart TD\n  Start((開始)) --> Input[データ入力]\n  Input --> Check{妥当?}\n  Check -->|OK| Process[処理実行]\n  Check -->|NG| Error[エラー表示]\n  Error --> Input\n  Process --> End((完了))',
+      process: 'flowchart LR\n  A[受注] --> B[設計]\n  B --> C[調達]\n  C --> D[製造]\n  D --> E{品質OK?}\n  E -->|Yes| F[出荷]\n  E -->|No| G[手直し]\n  G --> D\n  F --> H((完了))',
+      dx: 'flowchart TD\n  Data[(データ基盤)] --> Core[AIで管理された<br>モノづくり]\n  Data --> Quality[品質管理DX]\n  Data --> Service[アフターサービス]\n  Core --> BOP[BOP自動生成]\n  Core --> MES[MES連携]\n  Quality --> Predict[品質予測AI]'
+    };
+
+    // ==========================================================
+    //  Cytoscape Setup
+    // ==========================================================
+    cytoscape.use(cytoscapeDagre);
+
+    const $input = document.getElementById('mermaid-input');
+    const $charCount = document.getElementById('char-count');
+    const $error = document.getElementById('error-box');
+    const $status = document.getElementById('status-mode');
+    const $template = document.getElementById('template-select');
+    const $direction = document.getElementById('direction-select');
+
+    const cy = cytoscape({
+      container: document.getElementById('cy-container'),
+      elements: [],
+      style: [
+        {
+          selector: 'node',
+          style: {
+            'background-color': '#17171d',
+            'border-color': '#c8a96e',
+            'border-width': 1.2,
+            'label': 'data(label)',
+            'color': '#edede8',
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'text-wrap': 'wrap',
+            'text-max-width': 140,
+            'font-family': 'ui-monospace, Consolas, monospace',
+            'font-size': 12,
+            'shape': 'round-rectangle',
+            'width': 'label',
+            'height': 'label',
+            'padding': '14px'
+          }
+        },
+        { selector: 'node[shape = "rect"]', style: { 'shape': 'rectangle' } },
+        { selector: 'node[shape = "rounded"]', style: { 'shape': 'round-rectangle' } },
+        { selector: 'node[shape = "diamond"]', style: { 'shape': 'diamond', 'padding': '28px' } },
+        { selector: 'node[shape = "circle"]', style: { 'shape': 'ellipse', 'padding': '20px' } },
+        {
+          selector: 'node:selected',
+          style: {
+            'border-color': '#ffd97a',
+            'border-width': 2.5,
+            'background-color': '#1d1a10'
+          }
+        },
+        {
+          selector: 'edge',
+          style: {
+            'width': 1.5,
+            'line-color': '#c8a96e',
+            'target-arrow-color': '#c8a96e',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'label': 'data(label)',
+            'font-size': 10,
+            'font-family': 'ui-monospace, Consolas, monospace',
+            'color': '#edede8',
+            'text-background-color': '#0f0f12',
+            'text-background-opacity': 1,
+            'text-background-padding': 3,
+            'text-background-shape': 'roundrectangle'
+          }
+        },
+        { selector: 'edge[style = "dashed"]', style: { 'line-style': 'dashed' } },
+        { selector: 'edge[style = "thick"]', style: { 'width': 3 } },
+        {
+          selector: 'edge:selected',
+          style: {
+            'line-color': '#ffd97a',
+            'target-arrow-color': '#ffd97a',
+            'width': 2.5
+          }
+        }
+      ],
+      layout: { name: 'preset' },
+      wheelSensitivity: 0.2,
+      boxSelectionEnabled: true
+    });
+
+    // ==========================================================
+    //  State
+    // ==========================================================
+    let currentDirection = 'LR';
+    let syncing = false;
+    let edgeMode = false;
+    let edgeSource = null;
+    let nodeIdCounter = 1;
+
+    function nextId(prefix) {
+      const prefix2 = prefix || 'N';
+      let n = nodeIdCounter;
+      const used = new Set(cy.nodes().map(x => x.id()));
+      while (used.has(prefix2 + n)) n++;
+      nodeIdCounter = n + 1;
+      return prefix2 + n;
+    }
+
+    // ==========================================================
+    //  Code → Graph
+    // ==========================================================
+    function applyCodeToGraph() {
+      if (syncing) return;
+      syncing = true;
+      try {
+        const code = $input.value;
+        $charCount.textContent = code.length;
+        const { direction, nodes, edges } = parseMermaid(code);
+        currentDirection = direction;
+        $direction.value = direction;
+
+        cy.elements().remove();
+        cy.add(nodes.map(n => ({ group: 'nodes', data: { id: n.id, label: n.label, shape: n.shape } })));
+        cy.add(edges.map(e => ({ group: 'edges', data: { id: e.id, source: e.source, target: e.target, label: e.label, style: e.style } })));
+
+        const rankDir = { 'LR': 'LR', 'TD': 'TB', 'RL': 'RL', 'BT': 'BT' }[direction] || 'LR';
+        cy.layout({ name: 'dagre', rankDir, nodeSep: 40, rankSep: 60, padding: 20, animate: false }).run();
+        cy.fit(null, 40);
+
+        $error.style.display = 'none';
+      } catch (err) {
+        $error.style.display = 'block';
+        $error.textContent = 'Parse error: ' + (err.message || err);
+      } finally {
+        syncing = false;
+      }
+    }
+
+    // ==========================================================
+    //  Graph → Code
+    // ==========================================================
+    function applyGraphToCode() {
+      if (syncing) return;
+      syncing = true;
+      try {
+        const nodes = cy.nodes().map(n => ({
+          id: n.id(),
+          label: n.data('label'),
+          shape: n.data('shape') || 'rect'
+        }));
+        const edges = cy.edges().map(e => ({
+          id: e.id(),
+          source: e.source().id(),
+          target: e.target().id(),
+          label: e.data('label') || '',
+          style: e.data('style') || 'solid'
+        }));
+        const code = serializeMermaid(currentDirection, nodes, edges);
+        $input.value = code;
+        $charCount.textContent = code.length;
+      } finally {
+        syncing = false;
+      }
+    }
+
+    // ==========================================================
+    //  Debounced code → graph
+    // ==========================================================
+    let codeTimer = null;
+    $input.addEventListener('input', () => {
+      if (codeTimer) clearTimeout(codeTimer);
+      codeTimer = setTimeout(applyCodeToGraph, 350);
+    });
+
+    // ==========================================================
+    //  Graph interactions
+    // ==========================================================
+    cy.on('dbltap', 'node', (e) => {
+      const node = e.target;
+      const next = prompt('ノードラベルを編集:', node.data('label'));
+      if (next !== null && next !== node.data('label')) {
+        node.data('label', next);
+        applyGraphToCode();
+      }
+    });
+
+    cy.on('dbltap', 'edge', (e) => {
+      const edge = e.target;
+      const next = prompt('エッジラベルを編集（空欄でラベル削除）:', edge.data('label') || '');
+      if (next !== null) {
+        edge.data('label', next);
+        applyGraphToCode();
+      }
+    });
+
+    cy.on('cxttap', 'node, edge', (e) => {
+      e.target.remove();
+      applyGraphToCode();
+    });
+
+    // Edge-creation mode
+    cy.on('tap', 'node', (e) => {
+      if (!edgeMode) return;
+      const n = e.target;
+      if (!edgeSource) {
+        edgeSource = n;
+        n.style('border-color', '#ffd97a');
+        $status.textContent = '🔗 次にターゲットノードをクリック';
+      } else if (edgeSource.id() !== n.id()) {
+        cy.add({ group: 'edges', data: {
+          id: 'e' + Date.now(),
+          source: edgeSource.id(),
+          target: n.id(),
+          label: '',
+          style: 'solid'
+        }});
+        edgeSource.style('border-color', '');
+        edgeSource = null;
+        edgeMode = false;
+        document.getElementById('btn-edge-mode').classList.remove('active');
+        $status.textContent = '';
+        applyGraphToCode();
+      }
+    });
+
+    cy.on('tap', (e) => {
+      if (e.target === cy && edgeMode) {
+        if (edgeSource) edgeSource.style('border-color', '');
+        edgeSource = null;
+        edgeMode = false;
+        document.getElementById('btn-edge-mode').classList.remove('active');
+        $status.textContent = '';
+      }
+    });
+
+    // Delete key
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement === $input) return;
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (cy.$(':selected').length > 0) {
+          e.preventDefault();
+          cy.$(':selected').remove();
+          applyGraphToCode();
+        }
+      }
+    });
+
+    // ==========================================================
+    //  Toolbar actions
+    // ==========================================================
+    document.getElementById('btn-add-node').addEventListener('click', () => {
+      const id = nextId('N');
+      const label = prompt('新規ノードのラベル:', id);
+      if (label === null) return;
+      const extent = cy.extent();
+      cy.add({ group: 'nodes', data: { id, label: label || id, shape: 'rect' }, position: { x: (extent.x1 + extent.x2)/2, y: (extent.y1 + extent.y2)/2 } });
+      applyGraphToCode();
+    });
+
+    document.getElementById('btn-edge-mode').addEventListener('click', (e) => {
+      edgeMode = !edgeMode;
+      e.currentTarget.classList.toggle('active', edgeMode);
+      if (edgeSource) { edgeSource.style('border-color', ''); edgeSource = null; }
+      $status.textContent = edgeMode ? '🔗 ソースノードをクリック' : '';
+    });
+
+    document.getElementById('btn-delete').addEventListener('click', () => {
+      if (cy.$(':selected').length > 0) {
+        cy.$(':selected').remove();
+        applyGraphToCode();
+      } else {
+        alert('ノードまたはエッジを選択してください');
+      }
+    });
+
+    document.getElementById('btn-relayout').addEventListener('click', () => {
+      const rankDir = { 'LR': 'LR', 'TD': 'TB', 'RL': 'RL', 'BT': 'BT' }[currentDirection] || 'LR';
+      cy.layout({ name: 'dagre', rankDir, nodeSep: 40, rankSep: 60, padding: 20, animate: true, animationDuration: 400 }).run();
+    });
+
+    $template.addEventListener('change', (e) => {
+      const t = e.target.value;
+      if (t && TEMPLATES[t]) {
+        $input.value = TEMPLATES[t];
+        applyCodeToGraph();
+      }
+    });
+
+    $direction.addEventListener('change', (e) => {
+      currentDirection = e.target.value;
+      applyGraphToCode();
+      const rankDir = { 'LR': 'LR', 'TD': 'TB', 'RL': 'RL', 'BT': 'BT' }[currentDirection];
+      cy.layout({ name: 'dagre', rankDir, nodeSep: 40, rankSep: 60, padding: 20, animate: true, animationDuration: 400 }).run();
+    });
+
+    document.getElementById('zoom-in').addEventListener('click', () => cy.zoom(cy.zoom() * 1.2));
+    document.getElementById('zoom-out').addEventListener('click', () => cy.zoom(cy.zoom() / 1.2));
+    document.getElementById('zoom-fit').addEventListener('click', () => cy.fit(null, 40));
+
+    document.getElementById('btn-copy').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText($input.value);
+        const btn = document.getElementById('btn-copy');
+        const orig = btn.textContent;
+        btn.textContent = '✓ コピー済';
+        setTimeout(() => btn.textContent = orig, 1200);
+      } catch (err) {
+        alert('コピー失敗');
+      }
+    });
+
+    // SVG export (cytoscape → png, but we construct SVG manually for simplicity)
+    function exportPng() {
+      const blob = cy.png({ output: 'blob', bg: '#0f0f12', full: true, scale: 2 });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'flow-' + Date.now() + '.png';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportSvg() {
+      // Cytoscape doesn't have SVG export out of the box; use PNG as fallback
+      // For a real SVG we'd need cytoscape-svg plugin; use data URI PNG wrapped in SVG
+      const pngDataUrl = cy.png({ output: 'base64uri', bg: '#0f0f12', full: true, scale: 2 });
+      const bbox = cy.elements().renderedBoundingBox();
+      const w = Math.ceil(bbox.w);
+      const h = Math.ceil(bbox.h);
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+        '<image href="' + pngDataUrl + '" width="' + w + '" height="' + h + '"/></svg>';
+      const blob = new Blob([svg], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'flow-' + Date.now() + '.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('btn-png').addEventListener('click', exportPng);
+    document.getElementById('btn-svg').addEventListener('click', exportSvg);
+
+    // ==========================================================
+    //  Initial load
+    // ==========================================================
+    $template.value = 'flowchart';
+    $input.value = TEMPLATES.flowchart;
+    applyCodeToGraph();
+  </script>
+
+</BaseLayout>
