@@ -8,13 +8,39 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   description="製造部門の部長が経営会議・役員承認を得るためのA4一枚エグゼクティブサマリー作成ツール。投資提案・DXプロジェクト・改善施策のプレゼン資料を5分で生成。"
 >
 
-  <div style="position:relative;height:13rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#1a1409 60%,#0c0c0e 100%);"></div>
-    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
-    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
-      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Executive Proposal</p>
-      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:0.5rem;">役員提案書ジェネレーター</h1>
-      <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;font-weight:300;">製造部長が<strong style="color:#c8a96e;">5分で作れる</strong>A4一枚エグゼクティブサマリー</p>
+  <!-- ═══════════════ CINEMATIC OVERLAYS ═══════════════ -->
+  <div id="cinema-letterbox-top" class="letterbox"></div>
+  <div id="cinema-letterbox-bot" class="letterbox letterbox-bot"></div>
+  <div id="cinema-curtain"></div>
+  <div id="film-grain"></div>
+  <div id="vignette"></div>
+
+  <!-- ═══════════════ HERO (CINEMATIC) ═══════════════ -->
+  <div class="cinema-hero">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-bg-grid"></div>
+    <div class="hero-spotlight"></div>
+
+    <div class="hero-content">
+      <p class="hero-marquee" data-reveal="fade-up" data-delay="400">
+        <span class="reel-dot"></span>
+        <span>REEL 01 · EXECUTIVE PROPOSAL</span>
+        <span class="reel-dot"></span>
+      </p>
+
+      <h1 class="hero-title" id="hero-title" data-reveal="letters" data-delay="700">役員提案書ジェネレーター</h1>
+
+      <div class="hero-rule" data-reveal="draw" data-delay="1600"></div>
+
+      <p class="hero-sub" data-reveal="fade-up" data-delay="1900">
+        製造部長が <span class="hero-accent">5 分</span> で作る A4 一枚のエグゼクティブサマリー
+      </p>
+
+      <div class="hero-credits" data-reveal="fade-up" data-delay="2200">
+        <span>DIRECTED BY YOU</span>
+        <span class="hero-credits-sep">·</span>
+        <span>PRESENTED TO THE BOARD</span>
+      </div>
     </div>
   </div>
 
@@ -155,6 +181,301 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </div>
 
   <style>
+    /* ═══════════════ CINEMATIC EFFECTS ═══════════════ */
+
+    /* Curtain (opening reveal) */
+    #cinema-curtain {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000;
+      pointer-events: none;
+      animation: curtainFade 1.2s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+    }
+    @keyframes curtainFade {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    /* Letterbox bars */
+    .letterbox {
+      position: fixed; left: 0; right: 0; height: 40vh; background: #000;
+      z-index: 9998; pointer-events: none;
+      top: 0;
+      animation: letterboxTop 2.6s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+    }
+    .letterbox-bot {
+      top: auto; bottom: 0;
+      animation-name: letterboxBot;
+    }
+    @keyframes letterboxTop {
+      0% { transform: translateY(0); }
+      55% { transform: translateY(0); }
+      100% { transform: translateY(-100%); }
+    }
+    @keyframes letterboxBot {
+      0% { transform: translateY(0); }
+      55% { transform: translateY(0); }
+      100% { transform: translateY(100%); }
+    }
+
+    /* Film grain */
+    #film-grain {
+      position: fixed; inset: 0; z-index: 9990;
+      pointer-events: none; opacity: 0.06;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.8 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      animation: grain 0.8s steps(4) infinite;
+      mix-blend-mode: overlay;
+    }
+    @keyframes grain {
+      0%,100% { transform: translate(0,0); }
+      25% { transform: translate(-3%,2%); }
+      50% { transform: translate(2%,-4%); }
+      75% { transform: translate(-4%,-2%); }
+    }
+
+    /* Vignette */
+    #vignette {
+      position: fixed; inset: 0; z-index: 9991;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+    }
+
+    /* Hero */
+    .cinema-hero {
+      position: relative;
+      height: 28rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #08080a;
+    }
+    .hero-bg-gradient {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(200,169,110,0.15), transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(200,169,110,0.08), transparent 55%),
+        linear-gradient(135deg, #0c0c0e 0%, #1a1409 60%, #0c0c0e 100%);
+      animation: bgDrift 18s ease-in-out infinite alternate;
+    }
+    @keyframes bgDrift {
+      0% { transform: scale(1) translate(0,0); filter: hue-rotate(0deg); }
+      100% { transform: scale(1.15) translate(-2%,-1%); filter: hue-rotate(-8deg); }
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0; opacity: 0.05;
+      background-image:
+        repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(200,169,110,0.5) 60px,rgba(200,169,110,0.5) 61px),
+        repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(200,169,110,0.5) 60px,rgba(200,169,110,0.5) 61px);
+    }
+    .hero-spotlight {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 120vmax; height: 120vmax;
+      transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(200,169,110,0.1) 0%, transparent 35%);
+      animation: spotlightPulse 6s ease-in-out infinite alternate;
+    }
+    @keyframes spotlightPulse {
+      0% { opacity: 0.7; transform: translate(-50%,-50%) scale(1); }
+      100% { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
+    }
+
+    .hero-content {
+      position: relative; z-index: 2; text-align: center; padding: 0 2rem;
+    }
+    .hero-marquee {
+      display: inline-flex; align-items: center; gap: 0.9rem;
+      color: #c8a96e;
+      font-size: 0.6rem; letter-spacing: 0.6em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      font-weight: 500;
+    }
+    .reel-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #c8a96e;
+      box-shadow: 0 0 12px rgba(200,169,110,0.8);
+      animation: reelPulse 2s ease-in-out infinite;
+    }
+    .reel-dot:nth-child(3) { animation-delay: 1s; }
+    @keyframes reelPulse {
+      0%,100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 200;
+      letter-spacing: 0.22em;
+      color: #edede8;
+      margin-bottom: 1.3rem;
+      line-height: 1.15;
+      text-shadow:
+        0 0 40px rgba(200,169,110,0.2),
+        0 2px 20px rgba(0,0,0,0.6);
+    }
+    .hero-title .char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      filter: blur(8px);
+    }
+    .hero-title.revealed .char {
+      animation: charReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes charReveal {
+      0% { opacity: 0; transform: translateY(20px) scale(0.9); filter: blur(8px); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    .hero-rule {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c8a96e 20%, #c8a96e 80%, transparent);
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 0 12px rgba(200,169,110,0.5);
+    }
+    .hero-rule.revealed {
+      animation: ruleDraw 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes ruleDraw {
+      0% { width: 0; }
+      100% { width: 340px; }
+    }
+
+    .hero-sub {
+      color: rgba(255,255,255,0.55);
+      font-size: clamp(0.88rem, 1.6vw, 1.05rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.6rem;
+    }
+    .hero-accent {
+      color: #c8a96e;
+      font-weight: 500;
+      position: relative;
+      padding: 0 0.2em;
+    }
+    .hero-accent::after {
+      content: '';
+      position: absolute; left: 0; bottom: -2px; right: 0; height: 1px;
+      background: #c8a96e;
+      transform: scaleX(0); transform-origin: left;
+      animation: accentUnderline 0.8s 2.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes accentUnderline { to { transform: scaleX(1); } }
+
+    .hero-credits {
+      color: rgba(200,169,110,0.5);
+      font-size: 0.6rem; letter-spacing: 0.5em;
+      text-transform: uppercase;
+    }
+    .hero-credits-sep {
+      margin: 0 0.7em; opacity: 0.5;
+    }
+
+    /* Reveal animations (scroll) */
+    [data-reveal] {
+      opacity: 0;
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-reveal="fade-up"] { transform: translateY(24px); }
+    [data-reveal].revealed { opacity: 1; transform: translateY(0); }
+
+    /* Form sections stagger */
+    .form-section {
+      transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .form-section:hover {
+      border-color: rgba(200,169,110,0.22);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    /* Counter text (numbers that tick up) */
+    .counter { font-variant-numeric: tabular-nums; }
+
+    /* Preview 3D tilt */
+    #preview-wrap {
+      perspective: 1800px;
+      transition: box-shadow 0.4s ease;
+    }
+    #preview {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      will-change: transform;
+    }
+    #preview.template-switch {
+      animation: dissolve 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes dissolve {
+      0% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+      40% { opacity: 0; filter: blur(10px); transform: translateY(-6px) scale(0.985); }
+      60% { opacity: 0; filter: blur(10px); transform: translateY(6px) scale(1.015); }
+      100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+    }
+
+    /* KPI cards in preview — dramatic entrance */
+    .p-box {
+      position: relative; overflow: hidden;
+    }
+    .p-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(200,169,110,0.15), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0% { left: -100%; }
+      60%, 100% { left: 200%; }
+    }
+
+    /* Gold shimmer buttons */
+    .m-btn {
+      position: relative; overflow: hidden;
+    }
+    .m-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transition: left 0.6s ease;
+    }
+    .m-btn:hover::before { left: 120%; }
+
+    /* Input focus glow */
+    .m-input:focus {
+      box-shadow: 0 0 0 1px rgba(200,169,110,0.4), 0 0 16px rgba(200,169,110,0.15);
+    }
+
+    /* Template select with subtle cinematic flair */
+    #template-select {
+      background-image: linear-gradient(135deg, rgba(200,169,110,0.08), transparent);
+    }
+
+    /* Counter badge ASK */
+    [class*="p-highlight"] {
+      position: relative;
+    }
+
+    /* Scrollbar */
+    .form-section + .form-section { }
+
+    /* Disable cinematic animations for reduced-motion users */
+    @media (prefers-reduced-motion: reduce) {
+      #cinema-curtain, .letterbox, #film-grain, .hero-bg-gradient, .hero-spotlight,
+      .reel-dot, .p-box::before, .m-btn::before {
+        animation: none !important;
+      }
+      .hero-title .char, .hero-rule, [data-reveal] {
+        opacity: 1 !important; transform: none !important; filter: none !important;
+        width: 340px !important;
+      }
+      .hero-title.revealed .char { animation: none; }
+    }
+
+    /* ═══════════════ ORIGINAL STYLES (unchanged) ═══════════════ */
     .m-select, .m-btn, .m-btn-ghost, .m-input {
       background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
       padding:0.48rem 0.75rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.03em;transition:all 0.15s;
@@ -586,8 +907,176 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       setTimeout(() => btn.textContent = orig, 1200);
     });
 
-    // Initial
-    applyTemplate('investment');
+    // ═══════════════ CINEMATIC EFFECTS ═══════════════
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 1. Split hero title into letters
+    (function splitTitle() {
+      const $title = document.getElementById('hero-title');
+      if (!$title) return;
+      const text = $title.textContent;
+      $title.textContent = '';
+      [...text].forEach((c, i) => {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = c === ' ' ? '\u00A0' : c;
+        span.style.animationDelay = (0.7 + i * 0.05) + 's';
+        $title.appendChild(span);
+      });
+      setTimeout(() => $title.classList.add('revealed'), 100);
+    })();
+
+    // 2. Reveal animations for data-reveal elements
+    (function setupReveals() {
+      const elements = document.querySelectorAll('[data-reveal]');
+      elements.forEach(el => {
+        const delay = Number(el.dataset.delay) || 0;
+        setTimeout(() => el.classList.add('revealed'), delay);
+      });
+
+      // Also reveal form sections when scrolled into view
+      const formSections = document.querySelectorAll('.form-section');
+      if ('IntersectionObserver' in window && !reduceMotion) {
+        formSections.forEach((s, i) => {
+          s.style.opacity = '0';
+          s.style.transform = 'translateY(18px)';
+          s.style.transition = 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+          s.style.transitionDelay = (i * 0.06) + 's';
+        });
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.style.opacity = '';
+              e.target.style.transform = '';
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.05 });
+        setTimeout(() => formSections.forEach(s => io.observe(s)), 2500);
+      }
+    })();
+
+    // 3. Counter animation (number tick-up)
+    const counterCache = new WeakMap();
+    function animateCounter(el, to) {
+      if (reduceMotion) { el.textContent = to.toLocaleString(); return; }
+      const from = counterCache.get(el) || 0;
+      const duration = 900;
+      const t0 = performance.now();
+      function step(now) {
+        const t = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(from + (to - from) * eased);
+        el.textContent = val.toLocaleString();
+        if (t < 1) requestAnimationFrame(step);
+        else counterCache.set(el, to);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // Patch render function to animate numbers
+    const origRender = render;
+    render = function() {
+      origRender();
+      requestAnimationFrame(() => {
+        const cards = $preview.querySelectorAll('[data-counter]');
+        cards.forEach(c => {
+          const target = Number(c.dataset.counter);
+          if (!isNaN(target)) animateCounter(c, target);
+        });
+      });
+    };
+
+    // 4. Template switch dissolve
+    const $templateSel = document.getElementById('template-select');
+    const origChange = $templateSel.onchange;
+    $templateSel.addEventListener('change', () => {
+      if (reduceMotion) return;
+      $preview.classList.remove('template-switch');
+      void $preview.offsetWidth;
+      $preview.classList.add('template-switch');
+    });
+
+    // 5. 3D tilt effect on preview
+    (function setupTilt() {
+      if (reduceMotion) return;
+      const $wrap = document.getElementById('preview-wrap');
+      let rect = null;
+      let rafId = null;
+      function onMove(e) {
+        if (!rect) rect = $wrap.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rx = (0.5 - y) * 4;
+        const ry = (x - 0.5) * 4;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          $preview.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateZ(0)';
+        });
+      }
+      function onLeave() {
+        rect = null;
+        if (rafId) cancelAnimationFrame(rafId);
+        $preview.style.transform = '';
+      }
+      $wrap.addEventListener('mousemove', onMove);
+      $wrap.addEventListener('mouseleave', onLeave);
+      window.addEventListener('resize', () => { rect = null; });
+    })();
+
+    // 6. Form focus -> subtle hero dim (ambient cinema effect)
+    (function setupAmbientFocus() {
+      const $hero = document.querySelector('.cinema-hero');
+      if (!$hero) return;
+      let focused = 0;
+      document.addEventListener('focusin', (e) => {
+        if (e.target.closest('.form-section')) {
+          focused++;
+          $hero.style.transition = 'filter 0.6s ease';
+          $hero.style.filter = 'brightness(0.7) saturate(0.85)';
+        }
+      });
+      document.addEventListener('focusout', (e) => {
+        if (e.target.closest('.form-section')) {
+          focused--;
+          if (focused <= 0) {
+            focused = 0;
+            $hero.style.filter = '';
+          }
+        }
+      });
+    })();
+
+    // 7. KPI cards counter markup injection (enhance render output)
+    // Re-inject counter data attributes after each render
+    const kpiObserver = new MutationObserver(() => {
+      const boxes = $preview.querySelectorAll('.p-box');
+      if (boxes.length !== 4) return;
+      const vals = [
+        { el: boxes[0].querySelector('.p-accent'), get: () => Number(document.getElementById('f-cost-init').value) || 0 },
+        { el: boxes[1].querySelector('.p-accent'), get: () => Number(document.getElementById('f-benefit').value) || 0 },
+        { el: boxes[2].querySelector('.p-accent'), get: () => null }, // payback is text like "1.8年"
+        { el: boxes[3].querySelector('.p-accent'), get: () => null }  // cumulative has +/- sign, handled separately
+      ];
+      vals.forEach(v => {
+        if (!v.el) return;
+        const n = v.get();
+        if (n == null) return;
+        // Find the first number-like run of digits in the current text
+        const match = v.el.textContent.match(/-?[\d,]+/);
+        if (!match) return;
+        const current = Number(match[0].replace(/,/g, ''));
+        if (current !== n) return;
+        // Set up animation by replacing the number span
+        const prefix = v.el.innerHTML.split(match[0])[0];
+        const suffix = v.el.innerHTML.split(match[0])[1] || '';
+        v.el.innerHTML = prefix + '<span class="counter" data-to="' + n + '">0</span>' + suffix;
+        const ce = v.el.querySelector('.counter');
+        if (ce) animateCounter(ce, n);
+      });
+    });
+    kpiObserver.observe($preview, { childList: true, subtree: false });
+
   </script>
 
 </BaseLayout>
