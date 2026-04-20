@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="Cron式ビルダー" description="ビジュアル選択でcron式を生成・解析。次回実行時刻プレビュー付き。n8n / GitHub Actions / crontab 互換。">
+
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a10 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Cron Builder</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">Cron式ビルダー</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- Expression display -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin-bottom:0.75rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">CRON EXPRESSION</p>
+      <div style="display:flex;gap:0.5rem;">
+        <input id="cron-expr" type="text" class="m-input mono" style="flex:1;font-size:1.1rem;letter-spacing:0.08em;" value="0 9 * * 1-5">
+        <button id="btn-copy" class="m-btn">📋</button>
+      </div>
+      <div id="human" style="margin-top:0.9rem;color:#c8a96e;font-size:0.85rem;letter-spacing:0.03em;"></div>
+      <div id="cron-error" style="display:none;margin-top:0.5rem;color:#e88;font-size:0.78rem;"></div>
+    </div>
+
+    <!-- Presets -->
+    <div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.75rem 1rem;margin-bottom:0.75rem;">
+      <p style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;margin-bottom:0.6rem;">PRESETS</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+        <button class="preset m-btn-ghost" data-c="0 * * * *">毎時0分</button>
+        <button class="preset m-btn-ghost" data-c="*/5 * * * *">5分毎</button>
+        <button class="preset m-btn-ghost" data-c="*/15 * * * *">15分毎</button>
+        <button class="preset m-btn-ghost" data-c="*/30 * * * *">30分毎</button>
+        <button class="preset m-btn-ghost" data-c="0 9 * * *">毎日9時</button>
+        <button class="preset m-btn-ghost" data-c="0 9 * * 1-5">平日9時</button>
+        <button class="preset m-btn-ghost" data-c="0 0 * * 0">日曜0時</button>
+        <button class="preset m-btn-ghost" data-c="0 0 1 * *">月初0時</button>
+        <button class="preset m-btn-ghost" data-c="0 0 1 1 *">元旦0時</button>
+        <button class="preset m-btn-ghost" data-c="0 9,13,17 * * *">3回/日(9,13,17)</button>
+      </div>
+    </div>
+
+    <!-- Visual Builder -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin-bottom:0.75rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">VISUAL BUILDER</p>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.75rem;" id="fields-grid"></div>
+      <p style="margin-top:1rem;color:rgba(255,255,255,0.4);font-size:0.72rem;">
+        💡 * = 毎回 / */N = N単位毎 / A,B = A・Bのみ / A-B = 範囲
+      </p>
+    </div>
+
+    <!-- Next executions -->
+    <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">NEXT 10 EXECUTIONS</p>
+      <div id="next-list" style="font-family:ui-monospace,Consolas,monospace;font-size:0.82rem;color:#d5d5d0;"></div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-input, .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.55rem 0.8rem;font-size:0.82rem;cursor:pointer;font-family:inherit;outline:none;transition:all 0.15s;
+    }
+    .m-input:focus { border-color:#c8a96e; }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .mono { font-family:ui-monospace,Consolas,monospace; }
+    .preset { font-size:0.7rem;padding:0.35rem 0.65rem; }
+    .field-label { color:#c8a96e;font-size:0.62rem;letter-spacing:0.15em;margin-bottom:0.45rem; }
+    .field-sub { color:rgba(255,255,255,0.35);font-size:0.65rem;margin-bottom:0.3rem; }
+    .next-item {
+      padding:0.5rem 0.75rem;background:#0a0a0c;border-left:2px solid #c8a96e;margin-bottom:0.35rem;
+    }
+    @media(max-width:760px){ #fields-grid { grid-template-columns:repeat(2,1fr) !important; } }
+  </style>
+
+  <script is:inline>
+    // 5-field cron: minute hour dayOfMonth month dayOfWeek
+    const FIELDS = [
+      { key:'minute', label:'MINUTE', range:[0,59], sub:'0-59' },
+      { key:'hour',   label:'HOUR',   range:[0,23], sub:'0-23' },
+      { key:'dom',    label:'DAY',    range:[1,31], sub:'1-31' },
+      { key:'month',  label:'MONTH',  range:[1,12], sub:'1-12' },
+      { key:'dow',    label:'WEEKDAY',range:[0,6],  sub:'0=Sun' }
+    ];
+
+    const $expr = document.getElementById('cron-expr');
+    const $human = document.getElementById('human');
+    const $err = document.getElementById('cron-error');
+    const $nextList = document.getElementById('next-list');
+    const $grid = document.getElementById('fields-grid');
+
+    // Render field inputs
+    $grid.innerHTML = FIELDS.map(f =>
+      '<div>' +
+        '<div class="field-label">' + f.label + '</div>' +
+        '<div class="field-sub">' + f.sub + '</div>' +
+        '<input type="text" class="m-input mono" data-field="' + f.key + '" style="width:100%;" value="*">' +
+      '</div>'
+    ).join('');
+
+    const $fieldInputs = $grid.querySelectorAll('[data-field]');
+
+    // === Parse cron field ===
+    function parseField(token, min, max) {
+      const result = new Set();
+      for (const part of token.split(',')) {
+        const stepMatch = part.match(/^(.+)\/(\d+)$/);
+        let range = stepMatch ? stepMatch[1] : part;
+        let step = stepMatch ? Number(stepMatch[2]) : 1;
+        let lo, hi;
+        if (range === '*') { lo = min; hi = max; }
+        else if (range.includes('-')) {
+          const [a, b] = range.split('-').map(Number);
+          lo = a; hi = b;
+        } else {
+          lo = hi = Number(range);
+        }
+        if (isNaN(lo) || isNaN(hi) || lo < min || hi > max || lo > hi) throw new Error('invalid field: ' + part);
+        for (let i = lo; i <= hi; i += step) result.add(i);
+      }
+      return [...result].sort((a,b) => a-b);
+    }
+
+    // === Validate & compute ===
+    function computeFromExpr(expr) {
+      const parts = expr.trim().split(/\s+/);
+      if (parts.length !== 5) throw new Error('5フィールド必要（分 時 日 月 曜日）');
+      return FIELDS.map((f, i) => parseField(parts[i], f.range[0], f.range[1]));
+    }
+
+    // === Humanize ===
+    function humanize(parts) {
+      const [min, hr, dom, mon, dow] = parts;
+      const pad = n => String(n).padStart(2,'0');
+
+      // time
+      let time;
+      if (min === '*' && hr === '*') time = '毎分';
+      else if (min === '*' && hr !== '*') time = hr + '時台の毎分';
+      else if (min !== '*' && hr === '*') {
+        if (/^\*\/\d+$/.test(min)) time = min.slice(2) + '分毎';
+        else time = '毎時' + min + '分';
+      }
+      else time = hr + '時' + pad(Number(min) || 0) + '分';
+
+      // day
+      let day = '';
+      if (dom !== '*' || mon !== '*') day += (mon !== '*' ? mon + '月' : '') + (dom !== '*' ? dom + '日' : '');
+      if (dow !== '*') {
+        const days = ['日','月','火','水','木','金','土'];
+        const dowStr = dow.split(',').map(p => {
+          if (p.includes('-')) {
+            const [a,b] = p.split('-').map(Number);
+            return days[a] + '〜' + days[b];
+          }
+          return days[Number(p)];
+        }).join('・');
+        day += (day ? ' ' : '') + dowStr + '曜';
+      }
+      if (!day) day = '毎日';
+
+      return day + ' ' + time + ' に実行';
+    }
+
+    // === Next executions ===
+    function nextExecutions(sets, count) {
+      const [mins, hrs, doms, mons, dows] = sets;
+      const results = [];
+      let d = new Date();
+      d.setSeconds(0, 0);
+      d.setMinutes(d.getMinutes() + 1);
+      const limit = Date.now() + 5 * 365 * 86400 * 1000;
+      while (results.length < count && d.getTime() < limit) {
+        const M = d.getMinutes();
+        const H = d.getHours();
+        const DoM = d.getDate();
+        const Mo = d.getMonth() + 1;
+        const DoW = d.getDay();
+        if (mins.includes(M) && hrs.includes(H) && doms.includes(DoM) && mons.includes(Mo) && dows.includes(DoW)) {
+          results.push(new Date(d));
+        }
+        d.setMinutes(d.getMinutes() + 1);
+      }
+      return results;
+    }
+
+    function exprFromFields() {
+      return [...$fieldInputs].map(i => i.value.trim() || '*').join(' ');
+    }
+
+    function updateFieldsFromExpr(expr) {
+      const parts = expr.trim().split(/\s+/);
+      if (parts.length !== 5) return;
+      $fieldInputs.forEach((el, i) => el.value = parts[i]);
+    }
+
+    function refresh(fromFields) {
+      try {
+        const expr = fromFields ? exprFromFields() : $expr.value;
+        if (fromFields) $expr.value = expr;
+        else updateFieldsFromExpr(expr);
+
+        const sets = computeFromExpr(expr);
+        $err.style.display = 'none';
+        $human.textContent = humanize(expr.trim().split(/\s+/));
+        const next = nextExecutions(sets, 10);
+        $nextList.innerHTML = next.map((d, i) =>
+          '<div class="next-item">' +
+            '<span style="color:#c8a96e;">#' + (i+1) + '</span>&nbsp;&nbsp;' +
+            d.toLocaleString('ja-JP', { weekday:'short', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' }) +
+            '<span style="color:rgba(255,255,255,0.35);margin-left:0.75rem;">(' + relative(d) + ')</span>' +
+          '</div>'
+        ).join('') || '<p style="color:rgba(255,255,255,0.3);">該当なし</p>';
+      } catch (e) {
+        $err.style.display = 'block';
+        $err.textContent = '✗ ' + e.message;
+        $human.textContent = '';
+        $nextList.innerHTML = '';
+      }
+    }
+
+    function relative(date) {
+      const diff = date.getTime() - Date.now();
+      const mins = Math.floor(diff / 60000);
+      if (mins < 60) return mins + '分後';
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 48) return hrs + '時間後';
+      const days = Math.floor(hrs / 24);
+      if (days < 60) return days + '日後';
+      return Math.floor(days / 30) + 'ヶ月後';
+    }
+
+    $expr.addEventListener('input', () => refresh(false));
+    $fieldInputs.forEach(el => el.addEventListener('input', () => refresh(true)));
+
+    document.querySelectorAll('.preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $expr.value = btn.dataset.c;
+        refresh(false);
+      });
+    });
+
+    document.getElementById('btn-copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText($expr.value);
+      const btn = document.getElementById('btn-copy');
+      const o = btn.textContent;
+      btn.textContent = '✓';
+      setTimeout(() => btn.textContent = o, 800);
+    });
+
+    refresh(false);
+  </script>
+
+</BaseLayout>

@@ -1,0 +1,270 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="JSON / CSV 変換ツール" description="JSONの整形・バリデート・最小化、およびCSV ⇄ JSON相互変換が可能な無料ブラウザツール。">
+
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a1a 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">JSON / CSV</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">JSON / CSV 変換ツール</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1400px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;margin-bottom:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+      <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;">MODE</span>
+      <button class="m-btn-ghost mode-btn active" data-mode="format">JSON整形</button>
+      <button class="m-btn-ghost mode-btn" data-mode="minify">最小化</button>
+      <button class="m-btn-ghost mode-btn" data-mode="validate">検証のみ</button>
+      <button class="m-btn-ghost mode-btn" data-mode="j2c">JSON→CSV</button>
+      <button class="m-btn-ghost mode-btn" data-mode="c2j">CSV→JSON</button>
+
+      <span style="flex:1;"></span>
+
+      <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;">INDENT</span>
+      <select id="indent-select" class="m-select">
+        <option value="2">2 spaces</option>
+        <option value="4">4 spaces</option>
+        <option value="tab">Tab</option>
+      </select>
+
+      <button id="btn-sample" class="m-btn-ghost">サンプル</button>
+      <button id="btn-swap" class="m-btn-ghost">⇄ 入替</button>
+      <button id="btn-copy" class="m-btn">📋 結果コピー</button>
+    </div>
+
+    <div id="status-bar" style="padding:0.5rem 1rem;font-size:0.72rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);margin-bottom:0.75rem;">
+      <span id="status">Ready</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;" id="main-grid">
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;min-height:520px;">
+        <div style="padding:0.7rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;">
+          <span style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">INPUT</span>
+          <span id="in-stats" style="color:rgba(255,255,255,0.3);font-size:0.68rem;">0 chars</span>
+        </div>
+        <textarea id="input" class="m-editor" spellcheck="false" placeholder="JSON or CSV をここにペースト…"></textarea>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;min-height:520px;">
+        <div style="padding:0.7rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;">
+          <span style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">OUTPUT</span>
+          <span id="out-stats" style="color:rgba(255,255,255,0.3);font-size:0.68rem;">0 chars</span>
+        </div>
+        <textarea id="output" class="m-editor" spellcheck="false" readonly></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-select, .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.42rem 0.75rem;font-size:0.72rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover,.m-select:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn-ghost.active { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover { background:#d4b87b; }
+    .m-editor {
+      flex:1;background:transparent;color:#d5d5d0;border:none;outline:none;resize:none;
+      padding:1rem;font-family:ui-monospace,Consolas,monospace;font-size:0.8rem;line-height:1.55;tab-size:2;
+    }
+    .status-ok { color:#9fd89f; }
+    .status-err { color:#e88; }
+    @media(max-width:900px){ #main-grid { grid-template-columns:1fr !important; } }
+  </style>
+
+  <script is:inline>
+    const $in = document.getElementById('input');
+    const $out = document.getElementById('output');
+    const $status = document.getElementById('status');
+    const $inStats = document.getElementById('in-stats');
+    const $outStats = document.getElementById('out-stats');
+    const $indent = document.getElementById('indent-select');
+    let mode = 'format';
+
+    const SAMPLES = {
+      format: '{"name":"NaNi","cases":[{"id":1,"title":"DX"},{"id":2,"title":"AI"}],"active":true}',
+      minify: '{\n  "name": "NaNi",\n  "cases": [\n    { "id": 1, "title": "DX" }\n  ]\n}',
+      validate: '{"name":"NaNi","active":true,"cases":[1,2,3]}',
+      j2c: '[{"id":1,"name":"Alpha","score":85},{"id":2,"name":"Beta","score":92},{"id":3,"name":"Gamma","score":78}]',
+      c2j: 'id,name,score\n1,Alpha,85\n2,Beta,92\n3,Gamma,78'
+    };
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        mode = btn.dataset.mode;
+        process();
+      });
+    });
+
+    function getIndent() {
+      const v = $indent.value;
+      return v === 'tab' ? '\t' : Number(v);
+    }
+
+    // CSV parse (simple; handles quoted fields)
+    function parseCSV(text) {
+      const rows = [];
+      let row = [], field = '', inQuotes = false, i = 0;
+      while (i < text.length) {
+        const c = text[i];
+        if (inQuotes) {
+          if (c === '"' && text[i+1] === '"') { field += '"'; i += 2; continue; }
+          if (c === '"') { inQuotes = false; i++; continue; }
+          field += c; i++; continue;
+        }
+        if (c === '"') { inQuotes = true; i++; continue; }
+        if (c === ',') { row.push(field); field = ''; i++; continue; }
+        if (c === '\n' || c === '\r') {
+          row.push(field); field = '';
+          if (row.length > 1 || row[0] !== '') rows.push(row);
+          row = [];
+          if (c === '\r' && text[i+1] === '\n') i++;
+          i++; continue;
+        }
+        field += c; i++;
+      }
+      if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+      return rows;
+    }
+
+    function toCSV(rows) {
+      return rows.map(r => r.map(v => {
+        const s = v == null ? '' : String(v);
+        if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+        return s;
+      }).join(',')).join('\n');
+    }
+
+    function flatten(obj, prefix, res) {
+      res = res || {};
+      prefix = prefix || '';
+      if (obj == null || typeof obj !== 'object' || Array.isArray(obj)) {
+        res[prefix || 'value'] = obj;
+        return res;
+      }
+      for (const k in obj) {
+        const v = obj[k];
+        const key = prefix ? prefix + '.' + k : k;
+        if (v != null && typeof v === 'object' && !Array.isArray(v)) flatten(v, key, res);
+        else res[key] = Array.isArray(v) ? JSON.stringify(v) : v;
+      }
+      return res;
+    }
+
+    function process() {
+      const src = $in.value;
+      $inStats.textContent = src.length + ' chars';
+      if (!src.trim()) {
+        $out.value = '';
+        $outStats.textContent = '0 chars';
+        $status.textContent = 'Ready';
+        $status.className = '';
+        return;
+      }
+      try {
+        let result = '';
+        if (mode === 'format') {
+          const obj = JSON.parse(src);
+          result = JSON.stringify(obj, null, getIndent());
+          ok('✓ Valid JSON · ' + describe(obj));
+        } else if (mode === 'minify') {
+          const obj = JSON.parse(src);
+          result = JSON.stringify(obj);
+          ok('✓ Minified · ' + (src.length - result.length) + ' chars saved');
+        } else if (mode === 'validate') {
+          const obj = JSON.parse(src);
+          result = '✓ Valid JSON\n\nStructure: ' + describe(obj);
+          ok('✓ Valid JSON');
+        } else if (mode === 'j2c') {
+          const obj = JSON.parse(src);
+          if (!Array.isArray(obj)) throw new Error('JSON must be an array of objects');
+          const flats = obj.map(o => flatten(o));
+          const keys = [...new Set(flats.flatMap(f => Object.keys(f)))];
+          const rows = [keys, ...flats.map(f => keys.map(k => f[k]))];
+          result = toCSV(rows);
+          ok('✓ Converted · ' + obj.length + ' rows · ' + keys.length + ' cols');
+        } else if (mode === 'c2j') {
+          const rows = parseCSV(src);
+          if (rows.length < 2) throw new Error('CSV needs at least a header and one data row');
+          const [header, ...data] = rows;
+          const objs = data.map(r => {
+            const o = {};
+            header.forEach((k, i) => {
+              const v = r[i];
+              if (v === undefined || v === '') o[k] = '';
+              else if (/^-?\d+(\.\d+)?$/.test(v)) o[k] = Number(v);
+              else if (v === 'true' || v === 'false') o[k] = v === 'true';
+              else o[k] = v;
+            });
+            return o;
+          });
+          result = JSON.stringify(objs, null, getIndent());
+          ok('✓ Converted · ' + objs.length + ' rows');
+        }
+        $out.value = result;
+        $outStats.textContent = result.length + ' chars';
+      } catch (err) {
+        const msg = err.message || String(err);
+        const posMatch = msg.match(/position (\d+)/);
+        let hint = '';
+        if (posMatch) {
+          const pos = Number(posMatch[1]);
+          const before = src.slice(0, pos);
+          const line = (before.match(/\n/g) || []).length + 1;
+          const col = pos - (before.lastIndexOf('\n') + 1) + 1;
+          hint = ' (line ' + line + ', col ' + col + ')';
+        }
+        $status.textContent = '✗ ' + msg + hint;
+        $status.className = 'status-err';
+        $out.value = '';
+        $outStats.textContent = '0 chars';
+      }
+    }
+
+    function ok(msg) { $status.textContent = msg; $status.className = 'status-ok'; }
+
+    function describe(obj) {
+      if (obj == null) return 'null';
+      if (Array.isArray(obj)) return 'array [' + obj.length + ']';
+      if (typeof obj === 'object') return 'object {' + Object.keys(obj).length + ' keys}';
+      return typeof obj;
+    }
+
+    let t = null;
+    $in.addEventListener('input', () => { clearTimeout(t); t = setTimeout(process, 200); });
+    $indent.addEventListener('change', process);
+
+    document.getElementById('btn-sample').addEventListener('click', () => {
+      $in.value = SAMPLES[mode] || SAMPLES.format;
+      process();
+    });
+
+    document.getElementById('btn-swap').addEventListener('click', () => {
+      const v = $out.value;
+      $out.value = $in.value;
+      $in.value = v;
+      process();
+    });
+
+    document.getElementById('btn-copy').addEventListener('click', async () => {
+      if (!$out.value) return;
+      await navigator.clipboard.writeText($out.value);
+      const btn = document.getElementById('btn-copy');
+      const o = btn.textContent;
+      btn.textContent = '✓ Copied';
+      setTimeout(() => btn.textContent = o, 1200);
+    });
+
+    $in.value = SAMPLES.format;
+    process();
+  </script>
+
+</BaseLayout>

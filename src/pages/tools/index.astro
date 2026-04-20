@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const tools = [
+  {
+    name: 'Mermaid ⇄ フロー編集',
+    icon: '🔗',
+    desc: 'Mermaid記法とビジュアルフローを双方向同期。ドラッグ・ダブルクリックで直感編集。',
+    href: `${base}/mermaid-tool/`,
+    tag: 'ダイアグラム'
+  },
+  {
+    name: 'JSON / CSV 変換',
+    icon: '📊',
+    desc: 'JSONの整形・バリデート・最小化。CSV ⇄ JSON 相互変換。',
+    href: `${base}/tools/json/`,
+    tag: 'データ変換'
+  },
+  {
+    name: 'QRコード生成',
+    icon: '📱',
+    desc: 'URL・テキスト・WiFi情報・連絡先からQRコード生成。色カスタマイズ・PNG/SVGダウンロード。',
+    href: `${base}/tools/qr/`,
+    tag: 'ユーティリティ'
+  },
+  {
+    name: '正規表現テスター',
+    icon: '🔍',
+    desc: 'リアルタイムで正規表現マッチング・キャプチャグループ抽出・置換プレビュー。',
+    href: `${base}/tools/regex/`,
+    tag: '開発'
+  },
+  {
+    name: 'タイムスタンプ変換',
+    icon: '⏰',
+    desc: 'Unix時間 ⇄ 日時（ISO8601・RFC・ローカル）の相互変換。タイムゾーン対応。',
+    href: `${base}/tools/timestamp/`,
+    tag: '開発'
+  },
+  {
+    name: 'Cron式ビルダー',
+    icon: '🕐',
+    desc: 'ビジュアル選択でcron式を生成。次回実行時刻プレビュー・n8n/GitHub Actions対応。',
+    href: `${base}/tools/cron/`,
+    tag: '自動化'
+  },
+  {
+    name: 'ROI計算',
+    icon: '💰',
+    desc: '製造DX投資の効果額・回収期間・3年累積を即時算出。',
+    href: `${base}/roi-calculator/`,
+    tag: '経営'
+  },
+  {
+    name: 'DX成熟度診断',
+    icon: '📋',
+    desc: '20問で自社の製造DX成熟度を5段階評価・カテゴリ別スコア算出。',
+    href: `${base}/assessment/`,
+    tag: '経営'
+  },
+  {
+    name: 'ツール比較',
+    icon: '⚖️',
+    desc: 'MES・ERP・PLM・IoTプラットフォーム主要ツールの比較表。',
+    href: `${base}/tools-comparison/`,
+    tag: '選定'
+  }
+];
+---
+
+<BaseLayout
+  title="便利ツール集 — NaNi Execution Lab"
+  description="製造業・開発者向けの便利ツール集。Mermaid編集・JSON/CSV変換・QR生成・正規表現・cron式・ROI計算など、業務効率化ツールを無料提供。"
+>
+
+  <!-- Hero -->
+  <div style="position:relative;height:16rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#131020 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">Tools Hub</p>
+      <h1 style="font-size:clamp(1.75rem,5vw,2.75rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">便利ツール集</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;font-weight:300;">ブラウザで動く・無料・登録不要<br>すべてのデータはローカルで処理</p>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:3rem 1.5rem 6rem;">
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;">
+      {tools.map(t => (
+        <a href={t.href} class="tool-card">
+          <div style="display:flex;align-items:flex-start;gap:0.9rem;margin-bottom:1rem;">
+            <div style="font-size:2rem;">{t.icon}</div>
+            <div style="flex:1;">
+              <p style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.25rem;">{t.tag}</p>
+              <h3 style="color:#edede8;font-size:1rem;font-weight:400;letter-spacing:0.04em;">{t.name}</h3>
+            </div>
+          </div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.55;">{t.desc}</p>
+          <div style="margin-top:1rem;color:#c8a96e;font-size:0.72rem;letter-spacing:0.25em;">
+            OPEN →
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Note -->
+    <div style="margin-top:3rem;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem 1.75rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.35em;margin-bottom:0.75rem;">PRIVACY</p>
+      <p style="color:rgba(255,255,255,0.6);font-size:0.8rem;line-height:1.65;">
+        すべてのツールは <strong style="color:#edede8;">完全にクライアントサイド</strong> で動作します。
+        入力したデータはサーバーに送信されず、ブラウザ内でのみ処理されます。
+        QRコード生成・JSON変換・正規表現テストなど、機密情報を含むデータでも安心してお使いいただけます。
+      </p>
+    </div>
+
+  </div>
+
+  <style>
+    .tool-card {
+      display: block;
+      background: #111114;
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 1.5rem 1.5rem 1.4rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,169,110,0.05), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .tool-card:hover {
+      border-color: rgba(200,169,110,0.4);
+      transform: translateY(-2px);
+    }
+    .tool-card:hover::before {
+      opacity: 1;
+    }
+  </style>
+
+</BaseLayout>

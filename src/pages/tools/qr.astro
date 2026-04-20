@@ -1,0 +1,307 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="QRコード生成ツール" description="URL・テキスト・WiFi・連絡先などからQRコードを即時生成。色・サイズ・エラー訂正カスタマイズ可能。PNG/SVGダウンロード。">
+
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#1a120d 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">QR Code Generator</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">QRコード生成</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:1.25rem;align-items:start;" id="main-grid">
+
+      <!-- Left: Input & options -->
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+
+        <!-- Type selector -->
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+          <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;">TYPE</span>
+          <button class="m-btn-ghost type-btn active" data-type="text">テキスト/URL</button>
+          <button class="m-btn-ghost type-btn" data-type="wifi">WiFi</button>
+          <button class="m-btn-ghost type-btn" data-type="vcard">連絡先</button>
+          <button class="m-btn-ghost type-btn" data-type="email">メール</button>
+          <button class="m-btn-ghost type-btn" data-type="sms">SMS</button>
+          <button class="m-btn-ghost type-btn" data-type="geo">位置</button>
+        </div>
+
+        <!-- Input area -->
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">DATA</p>
+          <div id="form-area"></div>
+        </div>
+
+        <!-- Style options -->
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">STYLE</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;">
+            <div>
+              <label class="field-label">前景色</label>
+              <input id="fg-color" type="color" value="#edede8" class="color-input">
+            </div>
+            <div>
+              <label class="field-label">背景色</label>
+              <input id="bg-color" type="color" value="#0c0c0e" class="color-input">
+            </div>
+            <div>
+              <label class="field-label">サイズ (px)</label>
+              <input id="size" type="number" min="128" max="1024" step="32" value="320" class="num-input">
+            </div>
+            <div>
+              <label class="field-label">マージン</label>
+              <input id="margin" type="number" min="0" max="10" value="2" class="num-input">
+            </div>
+            <div>
+              <label class="field-label">エラー訂正</label>
+              <select id="ecc" class="num-input">
+                <option value="L">L (7%)</option>
+                <option value="M" selected>M (15%)</option>
+                <option value="Q">Q (25%)</option>
+                <option value="H">H (30%)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Preview -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;position:sticky;top:6rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">PREVIEW</p>
+        <div id="qr-area" style="background:#0c0c0e;padding:1.25rem;display:flex;align-items:center;justify-content:center;min-height:320px;">
+          <span style="color:rgba(255,255,255,0.3);font-size:0.75rem;">入力待ち…</span>
+        </div>
+        <div id="qr-info" style="margin-top:0.75rem;color:rgba(255,255,255,0.4);font-size:0.7rem;text-align:center;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1rem;">
+          <button id="btn-png" class="m-btn">⬇ PNG</button>
+          <button id="btn-svg" class="m-btn">⬇ SVG</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.42rem 0.75rem;font-size:0.72rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn-ghost.active { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover { background:#d4b87b; }
+    .field-label {
+      display:block;color:rgba(255,255,255,0.55);font-size:0.68rem;letter-spacing:0.08em;margin-bottom:0.35rem;
+    }
+    .num-input, .color-input, .text-input {
+      width:100%;background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.5rem 0.7rem;font-size:0.8rem;font-family:inherit;outline:none;
+    }
+    .color-input { height:2.2rem;cursor:pointer;padding:0.2rem; }
+    .num-input:focus,.text-input:focus { border-color:#c8a96e; }
+    textarea.text-input { resize:vertical;min-height:4rem;font-family:ui-monospace,Consolas,monospace; }
+    .form-row + .form-row { margin-top:0.85rem; }
+    @media(max-width:860px){ #main-grid { grid-template-columns:1fr !important; } }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+
+  <script is:inline>
+    const FORMS = {
+      text: [
+        { key:'text', label:'テキスト または URL', type:'textarea', placeholder:'https://example.com または任意のテキスト', value:'https://nani-execution-lab.example' }
+      ],
+      wifi: [
+        { key:'ssid', label:'SSID', type:'text', placeholder:'ネットワーク名', value:'MyWiFi' },
+        { key:'password', label:'パスワード', type:'text', placeholder:'（暗号化がnoneの場合は空欄）', value:'password123' },
+        { key:'encryption', label:'暗号化方式', type:'select', options:[['WPA','WPA/WPA2'],['WEP','WEP'],['nopass','なし']], value:'WPA' },
+        { key:'hidden', label:'SSID非公開', type:'checkbox', value:false }
+      ],
+      vcard: [
+        { key:'name', label:'氏名', type:'text', placeholder:'山田 太郎', value:'山田 太郎' },
+        { key:'org', label:'会社名', type:'text', placeholder:'株式会社…', value:'' },
+        { key:'tel', label:'電話', type:'text', placeholder:'090-xxxx-xxxx', value:'' },
+        { key:'email', label:'メール', type:'text', placeholder:'you@example.com', value:'' },
+        { key:'url', label:'ウェブサイト', type:'text', placeholder:'https://…', value:'' }
+      ],
+      email: [
+        { key:'to', label:'宛先', type:'text', placeholder:'you@example.com', value:'' },
+        { key:'subject', label:'件名', type:'text', placeholder:'（任意）', value:'' },
+        { key:'body', label:'本文', type:'textarea', placeholder:'（任意）', value:'' }
+      ],
+      sms: [
+        { key:'number', label:'電話番号', type:'text', placeholder:'+819012345678', value:'' },
+        { key:'message', label:'メッセージ', type:'textarea', placeholder:'（任意）', value:'' }
+      ],
+      geo: [
+        { key:'lat', label:'緯度', type:'text', placeholder:'35.6762', value:'35.6762' },
+        { key:'lng', label:'経度', type:'text', placeholder:'139.6503', value:'139.6503' }
+      ]
+    };
+
+    let currentType = 'text';
+    const $formArea = document.getElementById('form-area');
+    const $qrArea = document.getElementById('qr-area');
+    const $qrInfo = document.getElementById('qr-info');
+
+    function renderForm() {
+      const fields = FORMS[currentType];
+      $formArea.innerHTML = '';
+      for (const f of fields) {
+        const row = document.createElement('div');
+        row.className = 'form-row';
+        const label = document.createElement('label');
+        label.className = 'field-label';
+        label.textContent = f.label;
+        row.appendChild(label);
+        let input;
+        if (f.type === 'textarea') {
+          input = document.createElement('textarea');
+          input.className = 'text-input';
+        } else if (f.type === 'select') {
+          input = document.createElement('select');
+          input.className = 'num-input';
+          for (const [v, lbl] of f.options) {
+            const o = document.createElement('option');
+            o.value = v; o.textContent = lbl;
+            if (v === f.value) o.selected = true;
+            input.appendChild(o);
+          }
+        } else if (f.type === 'checkbox') {
+          input = document.createElement('input');
+          input.type = 'checkbox';
+          input.checked = !!f.value;
+          input.style.marginTop = '0.4rem';
+          input.style.width = 'auto';
+          input.style.cursor = 'pointer';
+        } else {
+          input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'text-input';
+        }
+        input.placeholder = f.placeholder || '';
+        if (f.type !== 'select' && f.type !== 'checkbox') input.value = f.value || '';
+        input.dataset.key = f.key;
+        input.addEventListener('input', generate);
+        input.addEventListener('change', generate);
+        row.appendChild(input);
+        $formArea.appendChild(row);
+      }
+    }
+
+    function getData() {
+      const data = {};
+      $formArea.querySelectorAll('[data-key]').forEach(el => {
+        if (el.type === 'checkbox') data[el.dataset.key] = el.checked;
+        else data[el.dataset.key] = el.value;
+      });
+      return data;
+    }
+
+    function escapeWifi(s) { return String(s).replace(/([\\;,":])/g, '\\$1'); }
+    function escapeVcard(s) { return String(s).replace(/([,;\\])/g, '\\$1'); }
+
+    function buildPayload() {
+      const d = getData();
+      if (currentType === 'text') return d.text || '';
+      if (currentType === 'wifi')
+        return 'WIFI:T:' + d.encryption + ';S:' + escapeWifi(d.ssid) + ';P:' + escapeWifi(d.password || '') + (d.hidden ? ';H:true' : '') + ';;';
+      if (currentType === 'vcard') {
+        return 'BEGIN:VCARD\nVERSION:3.0\n' +
+          (d.name ? 'FN:' + escapeVcard(d.name) + '\n' : '') +
+          (d.org ? 'ORG:' + escapeVcard(d.org) + '\n' : '') +
+          (d.tel ? 'TEL:' + d.tel + '\n' : '') +
+          (d.email ? 'EMAIL:' + d.email + '\n' : '') +
+          (d.url ? 'URL:' + d.url + '\n' : '') +
+          'END:VCARD';
+      }
+      if (currentType === 'email')
+        return 'mailto:' + encodeURIComponent(d.to || '') +
+          (d.subject || d.body ? '?' + [
+            d.subject ? 'subject=' + encodeURIComponent(d.subject) : '',
+            d.body ? 'body=' + encodeURIComponent(d.body) : ''
+          ].filter(Boolean).join('&') : '');
+      if (currentType === 'sms')
+        return 'SMSTO:' + (d.number || '') + ':' + (d.message || '');
+      if (currentType === 'geo')
+        return 'geo:' + (d.lat || '0') + ',' + (d.lng || '0');
+      return '';
+    }
+
+    let lastSvg = '';
+    let lastPngDataUrl = '';
+
+    async function generate() {
+      const payload = buildPayload();
+      if (!payload) {
+        $qrArea.innerHTML = '<span style="color:rgba(255,255,255,0.3);font-size:0.75rem;">入力待ち…</span>';
+        $qrInfo.textContent = '';
+        return;
+      }
+      const size = Math.max(128, Math.min(1024, Number(document.getElementById('size').value) || 320));
+      const margin = Math.max(0, Math.min(10, Number(document.getElementById('margin').value) || 2));
+      const fg = document.getElementById('fg-color').value;
+      const bg = document.getElementById('bg-color').value;
+      const ecc = document.getElementById('ecc').value;
+      const opts = { errorCorrectionLevel: ecc, margin, width: size, color: { dark: fg, light: bg } };
+      try {
+        const svg = await QRCode.toString(payload, { ...opts, type: 'svg' });
+        lastSvg = svg;
+        const canvas = document.createElement('canvas');
+        await QRCode.toCanvas(canvas, payload, opts);
+        lastPngDataUrl = canvas.toDataURL('image/png');
+        $qrArea.innerHTML = svg;
+        const svgEl = $qrArea.querySelector('svg');
+        if (svgEl) {
+          svgEl.style.width = '100%';
+          svgEl.style.height = 'auto';
+          svgEl.style.maxWidth = size + 'px';
+        }
+        $qrInfo.textContent = 'Size: ' + size + 'px · Data: ' + payload.length + ' chars · ECC: ' + ecc;
+      } catch (e) {
+        $qrArea.innerHTML = '<span style="color:#e88;font-size:0.75rem;">生成エラー: データ量超過の可能性</span>';
+        $qrInfo.textContent = e.message || '';
+      }
+    }
+
+    document.querySelectorAll('.type-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentType = btn.dataset.type;
+        renderForm();
+        generate();
+      });
+    });
+    document.querySelectorAll('#fg-color,#bg-color,#size,#margin,#ecc').forEach(el => el.addEventListener('input', generate));
+    document.querySelectorAll('#fg-color,#bg-color,#ecc').forEach(el => el.addEventListener('change', generate));
+
+    document.getElementById('btn-png').addEventListener('click', () => {
+      if (!lastPngDataUrl) return;
+      const a = document.createElement('a');
+      a.href = lastPngDataUrl;
+      a.download = 'qr-' + Date.now() + '.png';
+      a.click();
+    });
+    document.getElementById('btn-svg').addEventListener('click', () => {
+      if (!lastSvg) return;
+      const blob = new Blob([lastSvg], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'qr-' + Date.now() + '.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    renderForm();
+    generate();
+  </script>
+
+</BaseLayout>

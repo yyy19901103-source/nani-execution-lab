@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="タイムスタンプ変換" description="Unix時間（秒/ミリ秒）⇄ ISO8601 / RFC / ローカル日時の相互変換。タイムゾーン対応。">
+
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a1a 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Timestamp Converter</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">タイムスタンプ変換</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- Current time -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:0.75rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">CURRENT TIME</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;">
+        <div>
+          <p class="field-label">Unix 秒</p>
+          <div class="ts-value" id="now-s"></div>
+        </div>
+        <div>
+          <p class="field-label">Unix ミリ秒</p>
+          <div class="ts-value" id="now-ms"></div>
+        </div>
+        <div>
+          <p class="field-label">ISO 8601</p>
+          <div class="ts-value" id="now-iso"></div>
+        </div>
+        <div>
+          <p class="field-label">ローカル</p>
+          <div class="ts-value" id="now-local"></div>
+        </div>
+      </div>
+      <button id="btn-use-now" class="m-btn" style="margin-top:1rem;">⏱ 現在時刻を使う</button>
+    </div>
+
+    <!-- Input -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:0.75rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">INPUT</p>
+      <input id="input" type="text" class="m-input mono" placeholder="1736899200 / 1736899200000 / 2026-01-15T10:00:00Z / 2026-01-15 10:00" value="" style="width:100%;">
+      <p style="margin-top:0.5rem;color:rgba(255,255,255,0.4);font-size:0.72rem;">
+        Unix秒・ミリ秒・ISO8601・一般的な日時文字列を自動判別
+      </p>
+    </div>
+
+    <!-- Output -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">OUTPUT</p>
+        <select id="tz-select" class="m-input" style="width:auto;padding:0.35rem 0.6rem;font-size:0.72rem;">
+          <option value="local">ローカル</option>
+          <option value="UTC">UTC</option>
+          <option value="Asia/Tokyo">Asia/Tokyo</option>
+          <option value="America/New_York">New York</option>
+          <option value="Europe/London">London</option>
+          <option value="Asia/Shanghai">Shanghai</option>
+        </select>
+      </div>
+
+      <div id="output-grid" style="display:grid;grid-template-columns:1fr;gap:0.5rem;"></div>
+
+      <div id="err-box" style="display:none;margin-top:1rem;padding:0.75rem 1rem;background:rgba(220,80,80,0.08);border-left:2px solid #e88;color:#e88;font-size:0.8rem;"></div>
+    </div>
+
+    <!-- Quick add/subtract -->
+    <div style="margin-top:0.75rem;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">ADD / SUBTRACT</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+        <button class="m-btn-ghost offset-btn" data-amount="-3600">−1時間</button>
+        <button class="m-btn-ghost offset-btn" data-amount="-60">−1分</button>
+        <button class="m-btn-ghost offset-btn" data-amount="60">+1分</button>
+        <button class="m-btn-ghost offset-btn" data-amount="3600">+1時間</button>
+        <button class="m-btn-ghost offset-btn" data-amount="86400">+1日</button>
+        <button class="m-btn-ghost offset-btn" data-amount="604800">+1週間</button>
+        <button class="m-btn-ghost offset-btn" data-amount="2592000">+30日</button>
+        <button class="m-btn-ghost offset-btn" data-amount="31536000">+1年</button>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-input, .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.55rem 0.8rem;font-size:0.85rem;cursor:pointer;font-family:inherit;outline:none;transition:all 0.15s;
+    }
+    .m-input:focus { border-color:#c8a96e; }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover { background:#d4b87b; }
+    .mono { font-family:ui-monospace,Consolas,monospace; }
+    .field-label { color:rgba(255,255,255,0.5);font-size:0.65rem;letter-spacing:0.1em;margin-bottom:0.3rem; }
+    .ts-value {
+      color:#edede8;font-family:ui-monospace,Consolas,monospace;font-size:0.88rem;
+      background:#0a0a0c;padding:0.55rem 0.75rem;border:1px solid rgba(255,255,255,0.05);
+      user-select:all;cursor:text;
+    }
+    .output-row {
+      display:grid;grid-template-columns:140px 1fr auto;gap:0.75rem;align-items:center;
+      padding:0.55rem 0.75rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);
+    }
+    .output-label { color:#c8a96e;font-size:0.7rem;letter-spacing:0.1em; }
+    .output-val { color:#edede8;font-family:ui-monospace,Consolas,monospace;font-size:0.82rem;user-select:all; }
+    .copy-btn {
+      background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);
+      padding:0.2rem 0.5rem;font-size:0.7rem;cursor:pointer;transition:all 0.15s;
+    }
+    .copy-btn:hover { color:#c8a96e;border-color:#c8a96e; }
+  </style>
+
+  <script is:inline>
+    const $input = document.getElementById('input');
+    const $outputGrid = document.getElementById('output-grid');
+    const $err = document.getElementById('err-box');
+    const $tz = document.getElementById('tz-select');
+
+    // Update "now"
+    function updateNow() {
+      const d = new Date();
+      const s = Math.floor(d.getTime()/1000);
+      document.getElementById('now-s').textContent = s;
+      document.getElementById('now-ms').textContent = d.getTime();
+      document.getElementById('now-iso').textContent = d.toISOString();
+      document.getElementById('now-local').textContent = d.toLocaleString('ja-JP');
+    }
+    updateNow();
+    setInterval(updateNow, 1000);
+
+    function parseInput(text) {
+      const s = text.trim();
+      if (!s) return null;
+      // Pure number → Unix
+      if (/^-?\d+$/.test(s)) {
+        const n = Number(s);
+        // Heuristic: >= 10^12 = ms, else seconds
+        const ms = Math.abs(n) >= 1e12 ? n : n * 1000;
+        return new Date(ms);
+      }
+      if (/^-?\d+\.\d+$/.test(s)) {
+        return new Date(Number(s) * 1000);
+      }
+      const d = new Date(s);
+      if (!isNaN(d.getTime())) return d;
+      // Try space-separated
+      const d2 = new Date(s.replace(' ', 'T'));
+      if (!isNaN(d2.getTime())) return d2;
+      return null;
+    }
+
+    function formatInTz(date, tz, opts) {
+      if (tz === 'local') return date.toLocaleString('ja-JP', opts);
+      return date.toLocaleString('ja-JP', { ...opts, timeZone: tz });
+    }
+
+    function render(date) {
+      $err.style.display = 'none';
+      const tz = $tz.value;
+      const rows = [
+        ['Unix 秒', Math.floor(date.getTime()/1000)],
+        ['Unix ミリ秒', date.getTime()],
+        ['ISO 8601', date.toISOString()],
+        ['UTC', date.toUTCString()],
+        ['日時 (TZ)', formatInTz(date, tz, { year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit' })],
+        ['相対時間', relativeTime(date)]
+      ];
+      $outputGrid.innerHTML = rows.map(([label, val]) =>
+        '<div class="output-row">' +
+          '<span class="output-label">' + label + '</span>' +
+          '<span class="output-val">' + val + '</span>' +
+          '<button class="copy-btn" data-copy="' + String(val).replace(/"/g,'&quot;') + '">📋</button>' +
+        '</div>'
+      ).join('');
+      $outputGrid.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(btn.dataset.copy);
+          const o = btn.textContent;
+          btn.textContent = '✓';
+          setTimeout(() => btn.textContent = o, 800);
+        });
+      });
+    }
+
+    function relativeTime(date) {
+      const diffMs = date.getTime() - Date.now();
+      const abs = Math.abs(diffMs);
+      const sign = diffMs < 0 ? '前' : '後';
+      const units = [
+        ['年', 365*24*3600*1000],
+        ['ヶ月', 30*24*3600*1000],
+        ['日', 24*3600*1000],
+        ['時間', 3600*1000],
+        ['分', 60*1000],
+        ['秒', 1000]
+      ];
+      for (const [u, ms] of units) {
+        if (abs >= ms) return Math.floor(abs/ms) + u + sign;
+      }
+      return '今';
+    }
+
+    function update() {
+      const d = parseInput($input.value);
+      if (!d) {
+        $outputGrid.innerHTML = '<p style="color:rgba(255,255,255,0.4);font-size:0.8rem;text-align:center;padding:1rem;">入力してください</p>';
+        if ($input.value.trim()) {
+          $err.textContent = '解析できません。Unix時間(1736899200)や ISO形式(2026-01-15T10:00:00Z) を試してください。';
+          $err.style.display = 'block';
+        }
+        return;
+      }
+      render(d);
+    }
+
+    $input.addEventListener('input', update);
+    $tz.addEventListener('change', update);
+
+    document.getElementById('btn-use-now').addEventListener('click', () => {
+      $input.value = Math.floor(Date.now()/1000);
+      update();
+    });
+
+    document.querySelectorAll('.offset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const d = parseInput($input.value) || new Date();
+        const newD = new Date(d.getTime() + Number(btn.dataset.amount) * 1000);
+        $input.value = Math.floor(newD.getTime()/1000);
+        update();
+      });
+    });
+
+    // Initial
+    $input.value = Math.floor(Date.now()/1000);
+    update();
+  </script>
+
+</BaseLayout>

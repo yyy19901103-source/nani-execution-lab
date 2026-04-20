@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="正規表現テスター" description="リアルタイムで正規表現のマッチング・キャプチャグループ・置換をテストできるブラウザツール。">
+
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#1a0d15 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Regex Tester</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">正規表現テスター</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- Pattern -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:0.75rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">PATTERN</p>
+      <div style="display:flex;align-items:center;gap:0.5rem;">
+        <span style="color:#c8a96e;font-family:ui-monospace,Consolas,monospace;font-size:1.2rem;">/</span>
+        <input id="pattern" type="text" class="m-input mono" placeholder="\d{3}-\d{4}" value="\b\w+@\w+\.\w+\b" style="flex:1;">
+        <span style="color:#c8a96e;font-family:ui-monospace,Consolas,monospace;font-size:1.2rem;">/</span>
+        <input id="flags" type="text" class="m-input mono" value="g" style="width:5rem;" placeholder="gim">
+      </div>
+      <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.75rem;font-size:0.72rem;color:rgba(255,255,255,0.65);">
+        <label style="cursor:pointer;"><input type="checkbox" class="flag-cb" data-flag="g" checked> g (全件)</label>
+        <label style="cursor:pointer;"><input type="checkbox" class="flag-cb" data-flag="i"> i (大小無視)</label>
+        <label style="cursor:pointer;"><input type="checkbox" class="flag-cb" data-flag="m"> m (複数行)</label>
+        <label style="cursor:pointer;"><input type="checkbox" class="flag-cb" data-flag="s"> s (. が改行にマッチ)</label>
+        <label style="cursor:pointer;"><input type="checkbox" class="flag-cb" data-flag="u"> u (Unicode)</label>
+      </div>
+    </div>
+
+    <!-- Presets -->
+    <div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.6rem 1rem;margin-bottom:0.75rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;">
+      <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;margin-right:0.25rem;">PRESETS</span>
+      <button class="preset-btn m-btn-ghost" data-p="\\b\\w+@\\w+\\.\\w+\\b">メール</button>
+      <button class="preset-btn m-btn-ghost" data-p="https?://[^\\s]+">URL</button>
+      <button class="preset-btn m-btn-ghost" data-p="\\d{3}-\\d{4}-\\d{4}">電話</button>
+      <button class="preset-btn m-btn-ghost" data-p="\\d{3}-\\d{4}">郵便番号</button>
+      <button class="preset-btn m-btn-ghost" data-p="\\d{4}-\\d{2}-\\d{2}">日付</button>
+      <button class="preset-btn m-btn-ghost" data-p="#[a-fA-F0-9]{6}">HEXカラー</button>
+      <button class="preset-btn m-btn-ghost" data-p="\\b\\d+\\b">整数</button>
+      <button class="preset-btn m-btn-ghost" data-p="[\\u4e00-\\u9faf]+">漢字</button>
+    </div>
+
+    <!-- Mode tabs -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;margin-bottom:0.75rem;display:flex;gap:0.5rem;align-items:center;">
+      <button class="m-btn-ghost mode-btn active" data-mode="match">マッチング</button>
+      <button class="m-btn-ghost mode-btn" data-mode="replace">置換</button>
+      <span style="flex:1;"></span>
+      <span id="match-count" style="color:#c8a96e;font-size:0.75rem;">0 matches</span>
+    </div>
+
+    <!-- Test area -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;" id="main-grid">
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;min-height:380px;">
+        <div style="padding:0.7rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <span style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">TEST STRING</span>
+        </div>
+        <textarea id="test-text" class="m-editor" spellcheck="false">山田太郎 yamada@example.com
+鈴木花子 hanako.suzuki@company.co.jp
+佐藤次郎 invalid-email
+田中 tanaka@test.org</textarea>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;min-height:380px;">
+        <div style="padding:0.7rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">RESULT</span>
+          <span id="exec-time" style="color:rgba(255,255,255,0.3);font-size:0.68rem;"></span>
+        </div>
+        <div id="result-area" style="flex:1;overflow:auto;padding:1rem;font-family:ui-monospace,Consolas,monospace;font-size:0.8rem;line-height:1.6;white-space:pre-wrap;word-break:break-all;color:#d5d5d0;"></div>
+      </div>
+    </div>
+
+    <!-- Replace input (hidden by default) -->
+    <div id="replace-row" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;margin-top:0.75rem;">
+      <label class="field-label">置換文字列（$1, $2… でキャプチャ参照）</label>
+      <input id="replace-input" type="text" class="m-input mono" placeholder="[$&]" value="">
+    </div>
+
+    <!-- Groups / Matches details -->
+    <div id="details" style="margin-top:0.75rem;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;display:none;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">MATCHES DETAIL</p>
+      <div id="detail-list" style="font-family:ui-monospace,Consolas,monospace;font-size:0.75rem;color:rgba(255,255,255,0.75);max-height:18rem;overflow:auto;"></div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-input, .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.5rem 0.75rem;font-size:0.8rem;cursor:pointer;font-family:inherit;outline:none;transition:all 0.15s;
+    }
+    .m-input:focus { border-color:#c8a96e; }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn-ghost.active { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
+    .preset-btn { font-size:0.68rem;padding:0.3rem 0.6rem; }
+    .mono { font-family:ui-monospace,Consolas,monospace; }
+    .field-label { display:block;color:rgba(255,255,255,0.55);font-size:0.68rem;letter-spacing:0.08em;margin-bottom:0.35rem; }
+    .m-editor {
+      flex:1;background:transparent;color:#d5d5d0;border:none;outline:none;resize:none;
+      padding:1rem;font-family:ui-monospace,Consolas,monospace;font-size:0.8rem;line-height:1.6;
+    }
+    .match-hl { background:rgba(200,169,110,0.25);color:#ffd97a;padding:0 2px;border-radius:2px; }
+    @media(max-width:860px){ #main-grid { grid-template-columns:1fr !important; } }
+  </style>
+
+  <script is:inline>
+    const $pattern = document.getElementById('pattern');
+    const $flags = document.getElementById('flags');
+    const $testText = document.getElementById('test-text');
+    const $resultArea = document.getElementById('result-area');
+    const $matchCount = document.getElementById('match-count');
+    const $execTime = document.getElementById('exec-time');
+    const $replaceRow = document.getElementById('replace-row');
+    const $replaceInput = document.getElementById('replace-input');
+    const $details = document.getElementById('details');
+    const $detailList = document.getElementById('detail-list');
+    let mode = 'match';
+
+    function escHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+    }
+
+    function syncFlagCheckboxes() {
+      const f = $flags.value;
+      document.querySelectorAll('.flag-cb').forEach(cb => {
+        cb.checked = f.includes(cb.dataset.flag);
+      });
+    }
+
+    function run() {
+      const pat = $pattern.value;
+      const flg = $flags.value;
+      const text = $testText.value;
+
+      if (!pat) {
+        $resultArea.innerHTML = '<span style="color:rgba(255,255,255,0.3);">パターンを入力してください</span>';
+        $matchCount.textContent = '0 matches';
+        $details.style.display = 'none';
+        return;
+      }
+
+      let re;
+      try {
+        re = new RegExp(pat, flg);
+      } catch (e) {
+        $resultArea.innerHTML = '<span style="color:#e88;">パターンエラー: ' + escHtml(e.message) + '</span>';
+        $matchCount.textContent = '✗ error';
+        $details.style.display = 'none';
+        return;
+      }
+
+      const t0 = performance.now();
+      const matches = [];
+      if (flg.includes('g')) {
+        let m;
+        while ((m = re.exec(text)) !== null) {
+          matches.push({ match: m[0], index: m.index, groups: m.slice(1), named: m.groups });
+          if (m[0].length === 0) re.lastIndex++;
+        }
+      } else {
+        const m = text.match(re);
+        if (m) matches.push({ match: m[0], index: m.index, groups: m.slice(1), named: m.groups });
+      }
+      const elapsed = (performance.now() - t0).toFixed(2);
+      $execTime.textContent = elapsed + 'ms';
+      $matchCount.textContent = matches.length + ' matches';
+
+      if (mode === 'replace') {
+        try {
+          const replaced = text.replace(flg.includes('g') ? new RegExp(pat, flg) : new RegExp(pat, flg), $replaceInput.value);
+          $resultArea.textContent = replaced;
+        } catch (e) {
+          $resultArea.innerHTML = '<span style="color:#e88;">' + escHtml(e.message) + '</span>';
+        }
+        $details.style.display = 'none';
+        return;
+      }
+
+      // Build highlighted HTML
+      let html = '';
+      let last = 0;
+      for (const m of matches) {
+        html += escHtml(text.slice(last, m.index));
+        html += '<span class="match-hl">' + escHtml(m.match) + '</span>';
+        last = m.index + m.match.length;
+      }
+      html += escHtml(text.slice(last));
+      $resultArea.innerHTML = html || '<span style="color:rgba(255,255,255,0.3);">マッチなし</span>';
+
+      // Detail list
+      if (matches.length > 0) {
+        $details.style.display = 'block';
+        $detailList.innerHTML = matches.map((m, i) => {
+          const groupsHtml = m.groups.map((g, gi) => g !== undefined ? '    $' + (gi+1) + ' = ' + escHtml(JSON.stringify(g)) : '').filter(Boolean).join('<br>');
+          const namedHtml = m.named ? Object.entries(m.named).map(([k,v]) => '    ?&lt;' + k + '&gt; = ' + escHtml(JSON.stringify(v))).join('<br>') : '';
+          return '<div style="margin-bottom:0.6rem;padding:0.45rem 0.6rem;background:#0a0a0c;border-left:2px solid #c8a96e;">' +
+                 '<div><span style="color:#c8a96e;">#' + (i+1) + '</span> @' + m.index + ' → <span class="match-hl">' + escHtml(m.match) + '</span></div>' +
+                 (groupsHtml ? '<div style="color:rgba(255,255,255,0.55);">' + groupsHtml + '</div>' : '') +
+                 (namedHtml ? '<div style="color:rgba(255,255,255,0.55);">' + namedHtml + '</div>' : '') +
+                 '</div>';
+        }).join('');
+      } else {
+        $details.style.display = 'none';
+      }
+    }
+
+    [$pattern, $flags, $testText, $replaceInput].forEach(el => el.addEventListener('input', () => {
+      if (el === $flags) syncFlagCheckboxes();
+      run();
+    }));
+
+    document.querySelectorAll('.flag-cb').forEach(cb => {
+      cb.addEventListener('change', () => {
+        let f = '';
+        document.querySelectorAll('.flag-cb').forEach(x => { if (x.checked) f += x.dataset.flag; });
+        $flags.value = f;
+        run();
+      });
+    });
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $pattern.value = btn.dataset.p;
+        run();
+      });
+    });
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        mode = btn.dataset.mode;
+        $replaceRow.style.display = mode === 'replace' ? 'block' : 'none';
+        run();
+      });
+    });
+
+    syncFlagCheckboxes();
+    run();
+  </script>
+
+</BaseLayout>
