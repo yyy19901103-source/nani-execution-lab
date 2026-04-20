@@ -159,6 +159,203 @@ const siteName = 'NaNi Execution Lab';
         100% { opacity: 1; transform: translate(2%,-2%); }
       }
 
+      /* ═══ AURORA BACKGROUND (subtle color wash) ═══ */
+      #site-aurora {
+        position: fixed; inset: -20%;
+        z-index: 9992;
+        pointer-events: none;
+        opacity: 0.35;
+        background:
+          radial-gradient(60vw 60vh at 15% 10%, rgba(120,90,50,0.25), transparent 60%),
+          radial-gradient(50vw 50vh at 90% 30%, rgba(50,40,80,0.2), transparent 65%),
+          radial-gradient(70vw 40vh at 50% 90%, rgba(200,169,110,0.15), transparent 70%);
+        filter: blur(40px);
+        animation: auroraFlow 30s ease-in-out infinite alternate;
+      }
+      @keyframes auroraFlow {
+        0%   { transform: translate(0,0) rotate(0deg); }
+        33%  { transform: translate(-3%, 2%) rotate(2deg); }
+        66%  { transform: translate(4%, -3%) rotate(-2deg); }
+        100% { transform: translate(-2%, 3%) rotate(1deg); }
+      }
+
+      /* ═══ MOUSE-FOLLOWING SPOTLIGHT ═══ */
+      #site-cursor-glow {
+        position: fixed; inset: 0;
+        z-index: 9993;
+        pointer-events: none;
+        background: radial-gradient(260px circle at var(--mx, -200px) var(--my, -200px),
+          rgba(200,169,110,0.10), rgba(200,169,110,0.03) 40%, transparent 65%);
+        transition: background 0.18s ease-out;
+        mix-blend-mode: screen;
+      }
+      @media (hover: none) {
+        #site-cursor-glow { display: none; }
+      }
+
+      /* ═══ FLOATING DUST CANVAS ═══ */
+      #site-dust {
+        position: fixed; inset: 0;
+        z-index: 9993;
+        pointer-events: none;
+        opacity: 0.6;
+      }
+
+      /* ═══ FILM STRIP SCROLL PROGRESS (top) ═══ */
+      #site-film-strip {
+        position: fixed; top: 0; left: 0; right: 0;
+        height: 3px;
+        z-index: 9997;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg,
+            transparent, transparent 50%,
+            rgba(200,169,110,0.08) 50%, rgba(200,169,110,0.08)) 0 0 / 8px 3px repeat-x,
+          rgba(255,255,255,0.02);
+      }
+      #site-film-strip-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #c8a96e, #e8cf92);
+        box-shadow: 0 0 12px rgba(200,169,110,0.7);
+        transition: width 0.1s linear;
+      }
+
+      /* ═══ STUDIO LOGO INTRO (first visit) ═══ */
+      #site-studio-intro {
+        position: fixed; inset: 0;
+        z-index: 9997;
+        pointer-events: none;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+      }
+      #site-studio-intro.first-visit {
+        display: flex;
+        animation: studioIntroFade 3.5s cubic-bezier(0.83, 0, 0.17, 1) 0.8s forwards;
+      }
+      @keyframes studioIntroFade {
+        0%, 75% { opacity: 1; }
+        100% { opacity: 0; visibility: hidden; }
+      }
+      #site-studio-intro .studio-wrap {
+        text-align: center;
+        position: relative;
+      }
+      #site-studio-intro .studio-brand {
+        color: #c8a96e;
+        font-size: clamp(3rem, 9vw, 6rem);
+        font-weight: 100;
+        letter-spacing: 0.3em;
+        line-height: 1;
+        text-shadow: 0 0 40px rgba(200,169,110,0.5), 0 0 80px rgba(200,169,110,0.3);
+      }
+      #site-studio-intro .studio-brand .ch {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(12px);
+        transform: translateY(30px) scale(0.8);
+      }
+      #site-studio-intro.first-visit .studio-brand .ch {
+        animation: studioChar 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes studioChar {
+        to { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+      }
+      #site-studio-intro .studio-tagline {
+        color: rgba(200,169,110,0.6);
+        font-size: 0.75rem;
+        letter-spacing: 0.6em;
+        margin-top: 1.5rem;
+        text-transform: uppercase;
+        opacity: 0;
+      }
+      #site-studio-intro.first-visit .studio-tagline {
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.8s forwards;
+      }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      #site-studio-intro .studio-ring {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 500px; height: 500px;
+        margin: -250px 0 0 -250px;
+        border: 1px solid rgba(200,169,110,0.3);
+        border-radius: 50%;
+        opacity: 0;
+      }
+      #site-studio-intro.first-visit .studio-ring {
+        animation: ringPulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+      }
+      @keyframes ringPulse {
+        0% { opacity: 0; transform: scale(0.3); }
+        50% { opacity: 0.6; }
+        100% { opacity: 0; transform: scale(1.4); }
+      }
+
+      /* ═══ GLOBAL HEADING ENHANCEMENTS ═══ */
+      h1, h2 {
+        transition: text-shadow 0.5s ease;
+      }
+      h1:hover {
+        text-shadow: 0 0 32px rgba(200,169,110,0.5), 0 0 64px rgba(200,169,110,0.2);
+      }
+      h2:hover {
+        text-shadow: 0 0 20px rgba(200,169,110,0.4);
+      }
+      h1 .splitCh, h2 .splitCh {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(14px);
+        filter: blur(6px);
+      }
+      h1.text-revealed .splitCh, h2.text-revealed .splitCh {
+        animation: splitReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes splitReveal {
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      }
+
+      /* ═══ MAGNETIC / TILT ═══ */
+      .magnetic {
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform;
+      }
+      .tilt-3d {
+        transform-style: preserve-3d;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        will-change: transform;
+      }
+      .tilt-3d:hover {
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(200,169,110,0.15);
+      }
+
+      /* ═══ IMAGE SCAN-LINE REVEAL ═══ */
+      .img-reveal {
+        position: relative;
+        overflow: hidden;
+      }
+      .img-reveal::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 0%, rgba(200,169,110,0.7) 50%, transparent 100%);
+        transform: translateY(-100%);
+        z-index: 2;
+        pointer-events: none;
+        mix-blend-mode: overlay;
+      }
+      .img-reveal.scanned::before {
+        animation: scanLine 1.2s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+      }
+      @keyframes scanLine {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+
       /* ═══ GLOBAL REVEAL SYSTEM ═══ */
       [data-reveal] {
         opacity: 0;
@@ -249,9 +446,26 @@ const siteName = 'NaNi Execution Lab';
     <div id="site-curtain" aria-hidden="true"></div>
     <div id="site-letterbox-top" aria-hidden="true"></div>
     <div id="site-letterbox-bot" aria-hidden="true"></div>
+    <div id="site-aurora" aria-hidden="true"></div>
     <div id="site-ambient" aria-hidden="true"></div>
+    <canvas id="site-dust" aria-hidden="true"></canvas>
+    <div id="site-cursor-glow" aria-hidden="true"></div>
     <div id="site-grain" aria-hidden="true"></div>
     <div id="site-vignette" aria-hidden="true"></div>
+
+    <!-- Film strip scroll progress -->
+    <div id="site-film-strip" aria-hidden="true">
+      <div id="site-film-strip-fill"></div>
+    </div>
+
+    <!-- Studio intro (first visit only) -->
+    <div id="site-studio-intro" aria-hidden="true">
+      <div class="studio-ring"></div>
+      <div class="studio-wrap">
+        <div class="studio-brand" id="studio-brand">NaNi</div>
+        <div class="studio-tagline">Execution Lab</div>
+      </div>
+    </div>
 
     <a
       href="#main-content"
@@ -269,31 +483,51 @@ const siteName = 'NaNi Execution Lab';
     <script is:inline>
       (function() {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isTouch = window.matchMedia('(hover: none)').matches;
 
-        // 1. Opening curtain — only on first visit per session
+        // 1. Opening curtain + studio intro — only on first visit per session
         const curtain = document.getElementById('site-curtain');
         const lbTop = document.getElementById('site-letterbox-top');
         const lbBot = document.getElementById('site-letterbox-bot');
+        const studio = document.getElementById('site-studio-intro');
+        const studioBrand = document.getElementById('studio-brand');
         const isFirstVisit = !sessionStorage.getItem('nani-visited');
+
+        // Split studio brand into characters
+        if (studioBrand) {
+          const text = studioBrand.textContent;
+          studioBrand.textContent = '';
+          [...text].forEach((c, i) => {
+            const span = document.createElement('span');
+            span.className = 'ch';
+            span.textContent = c === ' ' ? '\u00A0' : c;
+            span.style.animationDelay = (0.9 + i * 0.12) + 's';
+            studioBrand.appendChild(span);
+          });
+        }
 
         if (reduceMotion) {
           curtain.style.display = 'none';
+          studio.style.display = 'none';
         } else if (isFirstVisit) {
           sessionStorage.setItem('nani-visited', '1');
           curtain.classList.add('first-visit');
           lbTop.classList.add('first-visit');
           lbBot.classList.add('first-visit');
+          studio.classList.add('first-visit');
           setTimeout(() => { curtain.style.display = 'none'; }, 2000);
           setTimeout(() => {
             lbTop.style.display = 'none';
             lbBot.style.display = 'none';
           }, 3000);
+          setTimeout(() => { studio.style.display = 'none'; }, 4500);
         } else {
           // Subtle fade on subsequent pages
           curtain.style.animation = 'none';
           curtain.style.transition = 'opacity 0.4s ease-out';
           curtain.style.opacity = '0';
           setTimeout(() => { curtain.style.display = 'none'; }, 450);
+          studio.style.display = 'none';
         }
 
         // 2. Auto-reveal sections on scroll
@@ -356,6 +590,219 @@ const siteName = 'NaNi Execution Lab';
           document.body.style.opacity = '0';
           setTimeout(() => { location.href = a.href; }, 300);
         });
+
+        // 5. Mouse-following spotlight
+        if (!reduceMotion && !isTouch) {
+          const glow = document.getElementById('site-cursor-glow');
+          let tx = 0, ty = 0, cx = 0, cy = 0;
+          document.addEventListener('pointermove', (e) => {
+            tx = e.clientX; ty = e.clientY;
+          }, { passive: true });
+          function loop() {
+            cx += (tx - cx) * 0.12;
+            cy += (ty - cy) * 0.12;
+            glow.style.setProperty('--mx', cx + 'px');
+            glow.style.setProperty('--my', cy + 'px');
+            requestAnimationFrame(loop);
+          }
+          loop();
+        }
+
+        // 6. Floating dust particles
+        if (!reduceMotion) {
+          const canvas = document.getElementById('site-dust');
+          const ctx = canvas.getContext('2d');
+          let W = 0, H = 0;
+          const particles = [];
+          const PARTICLE_COUNT = 40;
+          function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+          }
+          resize();
+          window.addEventListener('resize', resize);
+          for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              r: Math.random() * 1.6 + 0.3,
+              vx: (Math.random() - 0.5) * 0.15,
+              vy: -Math.random() * 0.25 - 0.05,
+              a: Math.random() * 0.5 + 0.15,
+              phase: Math.random() * Math.PI * 2
+            });
+          }
+          function tick(t) {
+            ctx.clearRect(0, 0, W, H);
+            for (const p of particles) {
+              p.x += p.vx + Math.sin((t + p.phase * 1000) / 2000) * 0.15;
+              p.y += p.vy;
+              if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+              if (p.x < -10) p.x = W + 10;
+              if (p.x > W + 10) p.x = -10;
+              const twinkle = (Math.sin(t / 800 + p.phase) + 1) / 2;
+              const alpha = p.a * (0.4 + 0.6 * twinkle);
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(200,169,110,' + alpha.toFixed(3) + ')';
+              ctx.shadowBlur = 8;
+              ctx.shadowColor = 'rgba(200,169,110,0.6)';
+              ctx.fill();
+              ctx.shadowBlur = 0;
+            }
+            requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        } else {
+          const c = document.getElementById('site-dust');
+          if (c) c.style.display = 'none';
+        }
+
+        // 7. Film strip scroll progress
+        (function() {
+          const fill = document.getElementById('site-film-strip-fill');
+          if (!fill) return;
+          let rafP = null;
+          function update() {
+            if (rafP) return;
+            rafP = requestAnimationFrame(() => {
+              const st = window.scrollY || document.documentElement.scrollTop;
+              const max = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+              const p = Math.min(100, Math.max(0, (st / max) * 100));
+              fill.style.width = p + '%';
+              rafP = null;
+            });
+          }
+          window.addEventListener('scroll', update, { passive: true });
+          window.addEventListener('resize', update, { passive: true });
+          update();
+        })();
+
+        // 8. Split H1 (and first-H2) into letters with reveal
+        if (!reduceMotion) {
+          function splitHeading(h) {
+            if (h.dataset.split === '1') return;
+            if (h.querySelector('.splitCh')) return;
+            h.dataset.split = '1';
+            const walker = document.createTreeWalker(h, NodeFilter.SHOW_TEXT, null);
+            const textNodes = [];
+            let node;
+            while ((node = walker.nextNode())) {
+              if (node.nodeValue.trim().length) textNodes.push(node);
+            }
+            textNodes.forEach((n, ni) => {
+              const frag = document.createDocumentFragment();
+              [...n.nodeValue].forEach((c, i) => {
+                const s = document.createElement('span');
+                s.className = 'splitCh';
+                s.textContent = c === ' ' ? '\u00A0' : c;
+                s.style.animationDelay = (ni * 0.05 + i * 0.03) + 's';
+                frag.appendChild(s);
+              });
+              n.parentNode.replaceChild(frag, n);
+            });
+          }
+          function revealHeading(h) {
+            splitHeading(h);
+            requestAnimationFrame(() => h.classList.add('text-revealed'));
+          }
+          // Reveal visible H1s/H2s progressively
+          if ('IntersectionObserver' in window) {
+            const hIO = new IntersectionObserver((entries) => {
+              entries.forEach(e => {
+                if (e.isIntersecting) {
+                  revealHeading(e.target);
+                  hIO.unobserve(e.target);
+                }
+              });
+            }, { threshold: 0.2 });
+            setTimeout(() => {
+              document.querySelectorAll('main h1, main h2').forEach(h => {
+                // Skip if heading has special structure (like proposal hero which has its own)
+                if (h.closest('.hero-title, #hero-title, .studio-brand')) return;
+                if (h.textContent.trim().length > 100) return;
+                hIO.observe(h);
+              });
+            }, 500);
+          }
+        }
+
+        // 9. Magnetic buttons (subtle pull toward cursor)
+        if (!reduceMotion && !isTouch) {
+          function makeMagnetic(el) {
+            let rect = null;
+            let raf = null;
+            el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
+            el.addEventListener('mousemove', (e) => {
+              if (!rect) rect = el.getBoundingClientRect();
+              const x = e.clientX - rect.left - rect.width / 2;
+              const y = e.clientY - rect.top - rect.height / 2;
+              if (raf) cancelAnimationFrame(raf);
+              raf = requestAnimationFrame(() => {
+                el.style.transform = 'translate(' + (x * 0.2).toFixed(2) + 'px,' + (y * 0.2).toFixed(2) + 'px)';
+              });
+            });
+            el.addEventListener('mouseleave', () => {
+              rect = null;
+              if (raf) cancelAnimationFrame(raf);
+              el.style.transform = '';
+            });
+          }
+          // Apply to all primary gold-bordered CTAs
+          setTimeout(() => {
+            document.querySelectorAll('a[style*="border:1px solid #c8a96e"], a[style*="border: 1px solid #c8a96e"], .magnetic').forEach(el => {
+              el.classList.add('magnetic');
+              makeMagnetic(el);
+            });
+          }, 400);
+        }
+
+        // 10. 3D tilt on tool cards and featured cards
+        if (!reduceMotion && !isTouch) {
+          function makeTilt(el) {
+            let rect = null;
+            let raf = null;
+            el.classList.add('tilt-3d');
+            el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
+            el.addEventListener('mousemove', (e) => {
+              if (!rect) rect = el.getBoundingClientRect();
+              const x = (e.clientX - rect.left) / rect.width - 0.5;
+              const y = (e.clientY - rect.top) / rect.height - 0.5;
+              if (raf) cancelAnimationFrame(raf);
+              raf = requestAnimationFrame(() => {
+                el.style.transform = 'perspective(1200px) rotateX(' + (-y * 6).toFixed(2) + 'deg) rotateY(' + (x * 6).toFixed(2) + 'deg) translateZ(0)';
+              });
+            });
+            el.addEventListener('mouseleave', () => {
+              rect = null;
+              if (raf) cancelAnimationFrame(raf);
+              el.style.transform = '';
+            });
+          }
+          setTimeout(() => {
+            document.querySelectorAll('.tool-card, a[href*="/tools/"][style*="background:rgba(17,17,20"]').forEach(makeTilt);
+          }, 400);
+        }
+
+        // 11. Scan-line reveal on hero images
+        if (!reduceMotion && 'IntersectionObserver' in window) {
+          const scanIO = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                e.target.classList.add('scanned');
+                scanIO.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.3 });
+          setTimeout(() => {
+            document.querySelectorAll('section img').forEach(img => {
+              const wrap = img.parentElement;
+              if (!wrap) return;
+              wrap.classList.add('img-reveal');
+              scanIO.observe(wrap);
+            });
+          }, 800);
+        }
 
       })();
     </script>
