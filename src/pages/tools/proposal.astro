@@ -1,0 +1,593 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="役員提案書ジェネレーター — 製造部長向け"
+  description="製造部門の部長が経営会議・役員承認を得るためのA4一枚エグゼクティブサマリー作成ツール。投資提案・DXプロジェクト・改善施策のプレゼン資料を5分で生成。"
+>
+
+  <div style="position:relative;height:13rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#1a1409 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Executive Proposal</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:0.5rem;">役員提案書ジェネレーター</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;font-weight:300;">製造部長が<strong style="color:#c8a96e;">5分で作れる</strong>A4一枚エグゼクティブサマリー</p>
+    </div>
+  </div>
+
+  <div style="max-width:1500px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- Toolbar -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.75rem 1rem;margin-bottom:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+      <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;">TEMPLATE</span>
+      <select id="template-select" class="m-select">
+        <option value="investment">💰 投資提案</option>
+        <option value="dx">🚀 DXプロジェクト</option>
+        <option value="quality">✅ 品質改善</option>
+        <option value="kpi">📊 KPI報告</option>
+        <option value="risk">⚠️ リスク対応</option>
+        <option value="blank">📝 ブランク</option>
+      </select>
+
+      <span style="color:rgba(255,255,255,0.15);margin:0 0.25rem;">|</span>
+
+      <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;">PREVIEW</span>
+      <button class="m-btn-ghost theme-btn active" data-theme="print">印刷用（白）</button>
+      <button class="m-btn-ghost theme-btn" data-theme="dark">ダーク</button>
+
+      <span style="flex:1;"></span>
+
+      <button id="btn-reset" class="m-btn-ghost">🔄 リセット</button>
+      <button id="btn-print" class="m-btn">🖨 印刷 / PDF</button>
+      <button id="btn-png" class="m-btn">⬇ PNG</button>
+      <button id="btn-md" class="m-btn-ghost">📋 Markdown</button>
+    </div>
+
+    <!-- Main Grid -->
+    <div style="display:grid;grid-template-columns:420px 1fr;gap:0.75rem;" id="main-grid">
+
+      <!-- Form -->
+      <div style="display:flex;flex-direction:column;gap:0.75rem;max-height:calc(100vh - 2rem);overflow:auto;padding-right:0.25rem;">
+
+        <div class="form-section">
+          <p class="section-label">① タイトル・対象</p>
+          <label class="field-label">議題タイトル</label>
+          <input id="f-title" class="m-input" placeholder="例: ライン3 MES導入による工程管理高度化">
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:0.6rem;">
+            <div>
+              <label class="field-label">対象会議</label>
+              <input id="f-meeting" class="m-input" placeholder="例: 経営会議">
+            </div>
+            <div>
+              <label class="field-label">日付</label>
+              <input id="f-date" type="date" class="m-input">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:0.6rem;">
+            <div>
+              <label class="field-label">提案者</label>
+              <input id="f-author" class="m-input" placeholder="例: 製造部長 山田">
+            </div>
+            <div>
+              <label class="field-label">決裁者</label>
+              <input id="f-approver" class="m-input" placeholder="例: 工場長">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <p class="section-label">② 結論（ワンライン）</p>
+          <textarea id="f-conclusion" class="m-input m-area" rows="2" placeholder="一言で: 何に・いくら投資・どれだけの効果"></textarea>
+          <label class="field-label" style="margin-top:0.6rem;">意思決定を求める事項</label>
+          <input id="f-ask" class="m-input" placeholder="例: XX万円の予算承認">
+        </div>
+
+        <div class="form-section">
+          <p class="section-label">③ 背景・課題</p>
+          <textarea id="f-problem" class="m-input m-area" rows="4" placeholder="・現状の問題&#10;・定量的な影響&#10;・このまま放置した場合のリスク"></textarea>
+        </div>
+
+        <div class="form-section">
+          <p class="section-label">④ 解決策</p>
+          <textarea id="f-solution" class="m-input m-area" rows="4" placeholder="・具体的な施策&#10;・なぜこれが有効か&#10;・代替案を検討した結果"></textarea>
+        </div>
+
+        <div class="form-section">
+          <p class="section-label">⑤ 期待効果</p>
+          <label class="field-label">定量効果（1行1項目）</label>
+          <textarea id="f-effect-q" class="m-input m-area" rows="3" placeholder="工数削減: 年間 XXX 時間 (約 XXX 万円)&#10;不良率: X.X% → X.X%&#10;リードタイム: X日 → X日"></textarea>
+          <label class="field-label" style="margin-top:0.5rem;">定性効果</label>
+          <textarea id="f-effect-n" class="m-input m-area" rows="2" placeholder="・属人化の解消&#10;・顧客満足度向上&#10;・他ラインへの横展開可能"></textarea>
+        </div>
+
+        <div class="form-section">
+          <p class="section-label">⑥ 投資額</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+            <div>
+              <label class="field-label">初期投資（万円）</label>
+              <input id="f-cost-init" type="number" class="m-input" min="0" placeholder="1500">
+            </div>
+            <div>
+              <label class="field-label">年間運用費（万円）</label>
+              <input id="f-cost-run" type="number" class="m-input" min="0" placeholder="300">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:0.5rem;">
+            <div>
+              <label class="field-label">年間効果額（万円）</label>
+              <input id="f-benefit" type="number" class="m-input" min="0" placeholder="1200">
+            </div>
+            <div>
+              <label class="field-label">評価期間（年）</label>
+              <input id="f-years" type="number" class="m-input" min="1" max="10" value="3">
+            </div>
+          </div>
+          <div style="margin-top:0.6rem;padding:0.6rem 0.8rem;background:#0a0a0c;border-left:2px solid #c8a96e;font-size:0.75rem;color:rgba(255,255,255,0.7);">
+            <div id="calc-payback">回収期間: —</div>
+            <div id="calc-roi">累積効果: —</div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <p class="section-label">⑦ スケジュール</p>
+          <textarea id="f-schedule" class="m-input m-area" rows="4" placeholder="1Q: 要件定義・ベンダー選定&#10;2Q: 設計・PoC&#10;3Q: 実装・試運用&#10;4Q: 本格運用"></textarea>
+        </div>
+
+        <div class="form-section">
+          <p class="section-label">⑧ リスクと対策</p>
+          <textarea id="f-risk" class="m-input m-area" rows="3" placeholder="リスクA → 対策&#10;リスクB → 対策"></textarea>
+        </div>
+
+      </div>
+
+      <!-- Preview -->
+      <div id="preview-wrap" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.07);padding:1.25rem;overflow:auto;">
+        <div id="preview" class="preview-print"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <style>
+    .m-select, .m-btn, .m-btn-ghost, .m-input {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.48rem 0.75rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.03em;transition:all 0.15s;
+      outline:none;
+    }
+    .m-btn-ghost:hover,.m-select:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn-ghost.active { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover { background:#d4b87b; }
+    .m-input { width:100%;cursor:text;font-size:0.82rem; }
+    .m-input:focus { border-color:#c8a96e; }
+    .m-area { resize:vertical;font-family:inherit;line-height:1.5; }
+    .form-section {
+      background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;
+    }
+    .section-label {
+      color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;
+    }
+    .field-label {
+      display:block;color:rgba(255,255,255,0.55);font-size:0.66rem;letter-spacing:0.06em;margin-bottom:0.28rem;
+    }
+
+    /* --- Preview A4 page --- */
+    #preview {
+      max-width:880px;margin:0 auto;padding:2.2rem 2.5rem;min-height:1150px;
+      box-shadow:0 4px 24px rgba(0,0,0,0.4);
+      font-family:'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+    }
+    .preview-print { background:#ffffff;color:#1a1a1a; }
+    .preview-dark { background:#0f0f12;color:#edede8; }
+
+    .preview-print .p-title { color:#0a0a0c; }
+    .preview-print .p-sub { color:#555; }
+    .preview-print .p-accent { color:#a48344; }
+    .preview-print .p-section { border-left:3px solid #a48344; }
+    .preview-print .p-box { background:#f9f6ef;border:1px solid #e4d9b8; }
+    .preview-print .p-highlight { background:#fdf6e3;border-left:4px solid #a48344; }
+    .preview-print .p-table th { background:#f0eadc;color:#333; }
+    .preview-print .p-table td,.preview-print .p-table th { border-color:#ddd;color:#333; }
+    .preview-print .p-label { color:#888; }
+    .preview-print .p-divider { border-color:#e0e0e0; }
+
+    .preview-dark .p-title { color:#edede8; }
+    .preview-dark .p-sub { color:rgba(255,255,255,0.5); }
+    .preview-dark .p-accent { color:#c8a96e; }
+    .preview-dark .p-section { border-left:3px solid #c8a96e; }
+    .preview-dark .p-box { background:#161618;border:1px solid rgba(200,169,110,0.3); }
+    .preview-dark .p-highlight { background:rgba(200,169,110,0.08);border-left:4px solid #c8a96e; }
+    .preview-dark .p-table th { background:#1c1c22;color:#c8a96e; }
+    .preview-dark .p-table td,.preview-dark .p-table th { border-color:rgba(255,255,255,0.1);color:#edede8; }
+    .preview-dark .p-label { color:rgba(255,255,255,0.4); }
+    .preview-dark .p-divider { border-color:rgba(255,255,255,0.08); }
+
+    @media(max-width:1100px){ #main-grid { grid-template-columns:1fr !important; } }
+
+    @media print {
+      body > * { visibility:hidden !important; }
+      #preview-wrap, #preview-wrap * { visibility:visible !important; }
+      #preview-wrap {
+        position:absolute;left:0;top:0;padding:0;border:none;background:white;width:100%;
+      }
+      #preview {
+        box-shadow:none;min-height:auto;background:white !important;color:black !important;
+      }
+    }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+
+  <script is:inline>
+    const TEMPLATES = {
+      investment: {
+        title: 'ライン3 MES導入による工程管理高度化',
+        meeting: '経営会議',
+        author: '製造部長',
+        approver: '工場長',
+        conclusion: 'MES導入により工程可視化と品質トレーサビリティを実現し、年間1,200万円の効果を創出。1.8年で投資回収見込み。',
+        ask: 'MES導入に関する初期投資 1,500万円の承認',
+        problem: '・紙ベースの工程管理で実績収集に1日/週の工数が発生\n・不適合時の原因究明に平均3日要し、再発防止サイクルが遅い\n・品質記録の保管・検索コストが年々増加',
+        solution: '・オープン系MESを基幹系ERPとAPI連携\n・IoTゲートウェイで設備データを自動収集\n・ダッシュボード・アラートを現場タブレットに配信\n・ベンダー3社比較の結果、B社を選定（ライフサイクルコスト最小）',
+        effectQ: '工数削減: 年間 1,800時間 (900万円相当)\n不良率: 1.2% → 0.6%\nリードタイム: 平均7日 → 4日',
+        effectN: '・属人化していた工程判断の形式知化\n・他ラインへの横展開可能（ライン4・5も同基盤）\n・顧客トレーサビリティ要求への対応力向上',
+        costInit: 1500, costRun: 300, benefit: 1200, years: 3,
+        schedule: '1Q: 要件定義・ベンダー最終選定\n2Q: 基本設計・PoC実施（ライン3の1工程のみ）\n3Q: 全工程実装・試運用\n4Q: 本格運用・効果測定開始',
+        risk: '・ベンダー側リソース不足 → 契約時にSLAで担保、社内PMも専任化\n・現場の抵抗 → キーパーソン3名を設計段階から巻き込み\n・データ品質不足 → 事前にマスタ整備プロジェクトを先行実施'
+      },
+      dx: {
+        title: '製造現場DX推進計画 FY26',
+        meeting: 'DX推進委員会',
+        author: '製造部長',
+        approver: '執行役員',
+        conclusion: '3カ年DXロードマップ第1フェーズとして、データ基盤とMES導入を先行。3年累積効果 8,500万円を見込む。',
+        ask: 'FY26 DX予算 3,000万円の承認',
+        problem: '・データがシステム間・紙で分散し、経営判断に資するリアルタイム情報が無い\n・熟練者の暗黙知が形式知化されておらず、技能継承が停滞\n・同業他社がDXで先行しており、競争力の相対低下が懸念される',
+        solution: '・Phase1（今期）: データ基盤整備 + MES導入\n・Phase2: AI品質予測・予兆保全\n・Phase3: デジタルツイン・自律化\n・各フェーズをPoC→横展開でリスク低減',
+        effectQ: 'データ集計工数: 年間 3,000時間削減\n品質コスト: 年間 1,500万円削減（3年後）\n予兆保全による設備停止削減: 年間 600時間',
+        effectN: '・データドリブン経営基盤の確立\n・デジタル人材の社内育成\n・顧客への「見える化」サービス提供基盤',
+        costInit: 3000, costRun: 500, benefit: 2800, years: 3,
+        schedule: '1Q: データガバナンス体制確立・現状調査\n2Q: データ基盤PoC・MES要件定義\n3Q: MES本実装・データ基盤構築\n4Q: Phase1総括・Phase2計画策定',
+        risk: '・投資規模の大きさ → Phase分割で段階承認\n・人材不足 → 外部パートナー2社と共創体制\n・ROI長期化 → 四半期KPIで進捗可視化'
+      },
+      quality: {
+        title: '製品X 不適合多発への対策',
+        meeting: '品質会議',
+        author: '製造部長',
+        approver: '品質保証部長',
+        conclusion: '原因究明により5M要因のうち設備条件ばらつきと特定。条件自動制御投資 500万円で不良率75%改善見込み。',
+        ask: '対策投資 500万円の承認',
+        problem: '・製品Xの不適合率が先月0.8% → 今月2.3%に急上昇\n・顧客クレーム 3件 / 月発生（通常0〜1件）\n・対応工数 週40時間、対応コスト月200万円発生中',
+        solution: '・5M要因分析 → 設備温度条件のばらつきと特定\n・温度センサ追加 + PLC自動制御ロジック実装\n・作業標準書を条件パラメータ化してMESと連携',
+        effectQ: '不良率: 2.3% → 0.6% (75%削減)\n対応コスト: 月200万円 → 月50万円\nクレーム件数: 月3件 → 月0〜1件',
+        effectN: '・類似設備への展開可能\n・品質安定による受注機会拡大\n・現場の心理的負担軽減',
+        costInit: 500, costRun: 50, benefit: 1800, years: 3,
+        schedule: '1M: センサ追加・PLC改修\n2M: 試運用・条件最適化\n3M: 本格運用・効果測定',
+        risk: '・設備停止による生産影響 → 週末停止時に工事実施\n・条件誤設定リスク → ダブルチェック体制とアラート閾値'
+      },
+      kpi: {
+        title: '製造部 上期KPI達成状況報告',
+        meeting: '経営会議',
+        author: '製造部長',
+        conclusion: '主要KPI 6項目中4項目達成。未達の納期遵守率について下期巻き返し策を合わせて報告。',
+        ask: '下期施策の方向性ご承認',
+        problem: '・納期遵守率: 目標98% → 実績95%\n・主な原因: サプライヤ部材遅延 + 設計変更多発\n・このまま下期も同水準だと受注への影響懸念',
+        solution: '・サプライヤダッシュボード導入による先行アラート\n・ECR/ECO前倒し承認フロー導入\n・重要顧客への納期コミット見直し',
+        effectQ: '納期遵守率: 95% → 98% (目標復帰)\n調達リードタイム: 平均7日短縮\n設計変更起因の手戻り: 30%削減',
+        effectN: '・顧客信頼回復\n・部門内モチベーション向上',
+        costInit: 200, costRun: 30, benefit: 800, years: 2,
+        schedule: '10月: ダッシュボード導入\n11月: ECR/ECOフロー改修\n12月〜3月: 実績測定・調整',
+        risk: '・サプライヤ巻き込み不足 → 主要3社と個別協議済み\n・社内フロー抵抗 → 設計部門と合意済み'
+      },
+      risk: {
+        title: '設備Y 故障リスクへの対応',
+        meeting: '経営会議',
+        author: '製造部長',
+        approver: '工場長',
+        conclusion: '老朽化設備Yの突発故障リスクが顕在化。予防保全投資 800万円で事業継続性を確保。',
+        ask: '予防保全投資 800万円・緊急承認',
+        problem: '・設備Y（導入15年）で兆候的な振動増加を検知\n・突発故障が発生した場合、生産停止2週間・損失8,000万円見込み\n・代替設備入手リードタイム 3ヶ月',
+        solution: '・振動監視センサの常時監視化 + 予兆保全AI導入\n・主要部品（ベアリング・モーター）の予備在庫確保\n・計画停止時に重点部品を予防交換\n・中長期的には設備更新計画に組み込み',
+        effectQ: '想定損失回避: 8,000万円 (生産停止時)\n突発故障発生確率: 現状30% → 5%以下\n保全コスト: 計画的実施で年間100万円削減',
+        effectN: '・顧客への安定供給保証\n・現場の不安解消\n・他老朽設備への水平展開モデル',
+        costInit: 800, costRun: 120, benefit: 1500, years: 3,
+        schedule: '即時: センサ設置・監視開始\n1ヶ月: 予備部品発注\n3ヶ月: 計画停止で予防交換実施',
+        risk: '・予算超過 → 複数見積取得で競争環境維持\n・設備更新判断遅れ → 年次で更新計画レビュー'
+      },
+      blank: {
+        title:'', meeting:'', author:'', approver:'', conclusion:'', ask:'',
+        problem:'', solution:'', effectQ:'', effectN:'',
+        costInit:0, costRun:0, benefit:0, years:3, schedule:'', risk:''
+      }
+    };
+
+    const FIELDS = ['title','meeting','author','approver','conclusion','ask','problem','solution','effectQ','effectN','costInit','costRun','benefit','years','schedule','risk'];
+    const FIELD_IDS = {
+      title:'f-title', meeting:'f-meeting', author:'f-author', approver:'f-approver',
+      conclusion:'f-conclusion', ask:'f-ask',
+      problem:'f-problem', solution:'f-solution',
+      effectQ:'f-effect-q', effectN:'f-effect-n',
+      costInit:'f-cost-init', costRun:'f-cost-run', benefit:'f-benefit', years:'f-years',
+      schedule:'f-schedule', risk:'f-risk'
+    };
+
+    const $preview = document.getElementById('preview');
+    const $date = document.getElementById('f-date');
+    const today = new Date();
+    $date.value = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+
+    function applyTemplate(key) {
+      const t = TEMPLATES[key] || TEMPLATES.investment;
+      for (const f of FIELDS) {
+        const el = document.getElementById(FIELD_IDS[f]);
+        if (el) el.value = t[f] != null ? t[f] : '';
+      }
+      render();
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+    }
+
+    function bullets(text) {
+      const lines = text.split(/\r?\n/).map(l => l.replace(/^[・\-\*•]\s*/, '').trim()).filter(Boolean);
+      if (!lines.length) return '<p class="p-label" style="font-size:0.78rem;">（未記入）</p>';
+      return '<ul style="margin:0;padding-left:1.1rem;font-size:0.82rem;line-height:1.7;">' +
+             lines.map(l => '<li>' + escHtml(l) + '</li>').join('') + '</ul>';
+    }
+
+    function quantLines(text) {
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return '<p class="p-label" style="font-size:0.78rem;">（未記入）</p>';
+      return '<div style="display:flex;flex-direction:column;gap:0.35rem;">' + lines.map(l => {
+        const [k, v] = l.includes(':') ? [l.split(':')[0], l.split(':').slice(1).join(':').trim()] :
+                       l.includes('：') ? [l.split('：')[0], l.split('：').slice(1).join('：').trim()] :
+                       [l, ''];
+        return '<div style="display:flex;gap:0.75rem;font-size:0.82rem;">' +
+               '<span class="p-label" style="min-width:140px;">' + escHtml(k) + '</span>' +
+               '<strong class="p-accent">' + escHtml(v) + '</strong></div>';
+      }).join('') + '</div>';
+    }
+
+    function render() {
+      const d = {};
+      for (const f of FIELDS) d[f] = document.getElementById(FIELD_IDS[f]).value;
+      const date = $date.value;
+
+      const init = Number(d.costInit) || 0;
+      const run = Number(d.costRun) || 0;
+      const ben = Number(d.benefit) || 0;
+      const years = Math.max(1, Number(d.years) || 3);
+      const netYear = ben - run;
+      const payback = netYear > 0 ? (init / netYear) : null;
+      const cumulative = netYear * years - init;
+
+      const paybackStr = payback != null
+        ? (payback <= years ? payback.toFixed(1) + '年' : years + '年超')
+        : '算出不可';
+      const cumStr = ben ? (cumulative >= 0 ? '+' : '') + cumulative.toLocaleString() + ' 万円' : '—';
+
+      document.getElementById('calc-payback').textContent = '回収期間: ' + paybackStr;
+      document.getElementById('calc-roi').textContent = years + '年累積効果: ' + cumStr;
+
+      const dateStr = date ? date.replace(/-/g, '.') : '';
+
+      $preview.innerHTML = `
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;border-bottom:2px solid;padding-bottom:0.75rem;" class="p-divider">
+          <div>
+            <p class="p-sub" style="font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.3rem;">EXECUTIVE PROPOSAL</p>
+            <h1 class="p-title" style="font-size:1.45rem;font-weight:700;letter-spacing:0.02em;line-height:1.3;">${escHtml(d.title) || '（タイトル未入力）'}</h1>
+          </div>
+          <div style="text-align:right;font-size:0.72rem;" class="p-label">
+            <div>${escHtml(d.meeting) || '—'}</div>
+            <div>${escHtml(dateStr)}</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-bottom:1rem;font-size:0.74rem;" class="p-label">
+          <div>提案者: <strong class="p-title">${escHtml(d.author) || '—'}</strong></div>
+          <div>決裁者: <strong class="p-title">${escHtml(d.approver) || '—'}</strong></div>
+        </div>
+
+        <!-- Conclusion Box -->
+        <div class="p-highlight" style="padding:0.85rem 1.1rem;margin-bottom:1.1rem;">
+          <p class="p-accent" style="font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.35rem;font-weight:700;">CONCLUSION / 結論</p>
+          <p style="font-size:0.95rem;line-height:1.55;font-weight:500;margin-bottom:0.5rem;">${escHtml(d.conclusion) || '（結論を記入）'}</p>
+          <div style="display:flex;gap:0.5rem;align-items:center;font-size:0.8rem;margin-top:0.5rem;">
+            <span style="background:#a48344;color:white;padding:0.15rem 0.55rem;font-size:0.66rem;letter-spacing:0.15em;font-weight:700;">ASK</span>
+            <span style="font-weight:600;">${escHtml(d.ask) || '（承認事項を記入）'}</span>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;margin-bottom:1rem;">
+          <div class="p-box" style="padding:0.7rem 0.85rem;">
+            <p class="p-label" style="font-size:0.6rem;letter-spacing:0.12em;margin-bottom:0.25rem;">初期投資</p>
+            <p class="p-accent" style="font-size:1.25rem;font-weight:700;">${init.toLocaleString()}<span style="font-size:0.7rem;margin-left:0.2rem;">万円</span></p>
+          </div>
+          <div class="p-box" style="padding:0.7rem 0.85rem;">
+            <p class="p-label" style="font-size:0.6rem;letter-spacing:0.12em;margin-bottom:0.25rem;">年間効果</p>
+            <p class="p-accent" style="font-size:1.25rem;font-weight:700;">${ben.toLocaleString()}<span style="font-size:0.7rem;margin-left:0.2rem;">万円</span></p>
+          </div>
+          <div class="p-box" style="padding:0.7rem 0.85rem;">
+            <p class="p-label" style="font-size:0.6rem;letter-spacing:0.12em;margin-bottom:0.25rem;">回収期間</p>
+            <p class="p-accent" style="font-size:1.25rem;font-weight:700;">${paybackStr}</p>
+          </div>
+          <div class="p-box" style="padding:0.7rem 0.85rem;">
+            <p class="p-label" style="font-size:0.6rem;letter-spacing:0.12em;margin-bottom:0.25rem;">${years}年累積</p>
+            <p class="p-accent" style="font-size:1.25rem;font-weight:700;">${ben ? (cumulative >= 0 ? '+' : '') + cumulative.toLocaleString() : '—'}<span style="font-size:0.7rem;margin-left:0.2rem;">${ben ? '万円' : ''}</span></p>
+          </div>
+        </div>
+
+        <!-- Two column: Problem + Solution -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+          <div>
+            <div class="p-section" style="padding-left:0.7rem;margin-bottom:0.5rem;">
+              <p class="p-accent" style="font-size:0.66rem;letter-spacing:0.25em;font-weight:700;">① 背景・課題</p>
+            </div>
+            ${bullets(d.problem)}
+          </div>
+          <div>
+            <div class="p-section" style="padding-left:0.7rem;margin-bottom:0.5rem;">
+              <p class="p-accent" style="font-size:0.66rem;letter-spacing:0.25em;font-weight:700;">② 解決策</p>
+            </div>
+            ${bullets(d.solution)}
+          </div>
+        </div>
+
+        <!-- Effects -->
+        <div style="margin-bottom:1rem;">
+          <div class="p-section" style="padding-left:0.7rem;margin-bottom:0.5rem;">
+            <p class="p-accent" style="font-size:0.66rem;letter-spacing:0.25em;font-weight:700;">③ 期待効果</p>
+          </div>
+          <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:0.75rem;">
+            <div>
+              <p class="p-label" style="font-size:0.65rem;letter-spacing:0.1em;margin-bottom:0.3rem;">定量</p>
+              ${quantLines(d.effectQ)}
+            </div>
+            <div>
+              <p class="p-label" style="font-size:0.65rem;letter-spacing:0.1em;margin-bottom:0.3rem;">定性</p>
+              ${bullets(d.effectN)}
+            </div>
+          </div>
+        </div>
+
+        <!-- Schedule + Risk -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;">
+          <div>
+            <div class="p-section" style="padding-left:0.7rem;margin-bottom:0.5rem;">
+              <p class="p-accent" style="font-size:0.66rem;letter-spacing:0.25em;font-weight:700;">④ スケジュール</p>
+            </div>
+            ${bullets(d.schedule)}
+          </div>
+          <div>
+            <div class="p-section" style="padding-left:0.7rem;margin-bottom:0.5rem;">
+              <p class="p-accent" style="font-size:0.66rem;letter-spacing:0.25em;font-weight:700;">⑤ リスクと対策</p>
+            </div>
+            ${bullets(d.risk)}
+          </div>
+        </div>
+
+        <div style="margin-top:1.5rem;padding-top:0.5rem;border-top:1px solid;font-size:0.6rem;letter-spacing:0.1em;display:flex;justify-content:space-between;" class="p-divider p-label">
+          <span>Generated by NaNi Execution Lab · Executive Proposal Tool</span>
+          <span>${escHtml(dateStr)}</span>
+        </div>
+      `;
+    }
+
+    // Event handlers
+    document.getElementById('template-select').addEventListener('change', (e) => applyTemplate(e.target.value));
+    FIELDS.forEach(f => {
+      const el = document.getElementById(FIELD_IDS[f]);
+      if (el) el.addEventListener('input', render);
+    });
+    $date.addEventListener('change', render);
+
+    // Theme toggle
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const theme = btn.dataset.theme;
+        $preview.className = theme === 'dark' ? 'preview-dark' : 'preview-print';
+      });
+    });
+
+    // Reset
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (confirm('入力内容をリセットしますか？')) {
+        applyTemplate('blank');
+        document.getElementById('template-select').value = 'blank';
+      }
+    });
+
+    // Print
+    document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+    // PNG export
+    document.getElementById('btn-png').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-png');
+      const orig = btn.textContent;
+      btn.textContent = '処理中…';
+      try {
+        const dataUrl = await htmlToImage.toPng($preview, {
+          pixelRatio: 2,
+          backgroundColor: $preview.classList.contains('preview-dark') ? '#0f0f12' : '#ffffff',
+          style: { boxShadow: 'none' }
+        });
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'proposal-' + Date.now() + '.png';
+        a.click();
+        btn.textContent = '✓ 保存完了';
+      } catch (e) {
+        btn.textContent = '✗ エラー';
+        console.error(e);
+      }
+      setTimeout(() => btn.textContent = orig, 1200);
+    });
+
+    // Markdown export
+    document.getElementById('btn-md').addEventListener('click', async () => {
+      const d = {};
+      for (const f of FIELDS) d[f] = document.getElementById(FIELD_IDS[f]).value;
+      const date = $date.value;
+      const md = [
+        '# ' + (d.title || '役員提案書'),
+        '',
+        '- 対象会議: ' + (d.meeting || '—'),
+        '- 日付: ' + date,
+        '- 提案者: ' + (d.author || '—'),
+        '- 決裁者: ' + (d.approver || '—'),
+        '',
+        '## 結論',
+        d.conclusion || '',
+        '',
+        '**意思決定を求める事項:** ' + (d.ask || ''),
+        '',
+        '## 投資・効果',
+        '',
+        '| 項目 | 金額 |',
+        '|------|------|',
+        '| 初期投資 | ' + (d.costInit || 0) + ' 万円 |',
+        '| 年間運用費 | ' + (d.costRun || 0) + ' 万円 |',
+        '| 年間効果 | ' + (d.benefit || 0) + ' 万円 |',
+        '| 評価期間 | ' + (d.years || 3) + ' 年 |',
+        '',
+        '## ① 背景・課題',
+        d.problem || '',
+        '',
+        '## ② 解決策',
+        d.solution || '',
+        '',
+        '## ③ 期待効果',
+        '### 定量',
+        d.effectQ || '',
+        '### 定性',
+        d.effectN || '',
+        '',
+        '## ④ スケジュール',
+        d.schedule || '',
+        '',
+        '## ⑤ リスクと対策',
+        d.risk || ''
+      ].join('\n');
+      await navigator.clipboard.writeText(md);
+      const btn = document.getElementById('btn-md');
+      const orig = btn.textContent;
+      btn.textContent = '✓ コピー完了';
+      setTimeout(() => btn.textContent = orig, 1200);
+    });
+
+    // Initial
+    applyTemplate('investment');
+  </script>
+
+</BaseLayout>
