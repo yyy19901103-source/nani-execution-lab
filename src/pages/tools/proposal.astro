@@ -8,13 +8,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   description="製造部門の部長が経営会議・役員承認を得るためのA4一枚エグゼクティブサマリー作成ツール。投資提案・DXプロジェクト・改善施策のプレゼン資料を5分で生成。"
 >
 
-  <!-- ═══════════════ CINEMATIC OVERLAYS ═══════════════ -->
-  <div id="cinema-letterbox-top" class="letterbox"></div>
-  <div id="cinema-letterbox-bot" class="letterbox letterbox-bot"></div>
-  <div id="cinema-curtain"></div>
-  <div id="film-grain"></div>
-  <div id="vignette"></div>
-
   <!-- ═══════════════ HERO (CINEMATIC) ═══════════════ -->
   <div class="cinema-hero">
     <div class="hero-bg-gradient"></div>
@@ -181,64 +174,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </div>
 
   <style>
-    /* ═══════════════ CINEMATIC EFFECTS ═══════════════ */
-
-    /* Curtain (opening reveal) */
-    #cinema-curtain {
-      position: fixed; inset: 0; z-index: 9999;
-      background: #000;
-      pointer-events: none;
-      animation: curtainFade 1.2s cubic-bezier(0.83, 0, 0.17, 1) forwards;
-    }
-    @keyframes curtainFade {
-      0% { opacity: 1; }
-      70% { opacity: 1; }
-      100% { opacity: 0; visibility: hidden; }
-    }
-
-    /* Letterbox bars */
-    .letterbox {
-      position: fixed; left: 0; right: 0; height: 40vh; background: #000;
-      z-index: 9998; pointer-events: none;
-      top: 0;
-      animation: letterboxTop 2.6s cubic-bezier(0.83, 0, 0.17, 1) forwards;
-    }
-    .letterbox-bot {
-      top: auto; bottom: 0;
-      animation-name: letterboxBot;
-    }
-    @keyframes letterboxTop {
-      0% { transform: translateY(0); }
-      55% { transform: translateY(0); }
-      100% { transform: translateY(-100%); }
-    }
-    @keyframes letterboxBot {
-      0% { transform: translateY(0); }
-      55% { transform: translateY(0); }
-      100% { transform: translateY(100%); }
-    }
-
-    /* Film grain */
-    #film-grain {
-      position: fixed; inset: 0; z-index: 9990;
-      pointer-events: none; opacity: 0.06;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.8 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-      animation: grain 0.8s steps(4) infinite;
-      mix-blend-mode: overlay;
-    }
-    @keyframes grain {
-      0%,100% { transform: translate(0,0); }
-      25% { transform: translate(-3%,2%); }
-      50% { transform: translate(2%,-4%); }
-      75% { transform: translate(-4%,-2%); }
-    }
-
-    /* Vignette */
-    #vignette {
-      position: fixed; inset: 0; z-index: 9991;
-      pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
-    }
+    /* ═══════════════ PAGE CINEMATIC EFFECTS ═══════════════ */
+    /* Global overlays are in BaseLayout. This page adds hero-specific effects only. */
 
     /* Hero */
     .cinema-hero {

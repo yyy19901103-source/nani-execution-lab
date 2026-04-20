@@ -38,11 +38,221 @@ const siteName = 'NaNi Execution Lab';
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Inter:wght@300;400;500&display=optional"
       rel="stylesheet"
     />
-    <style>
+    <style is:global>
       .skip-link:focus { top: 0 !important; }
+
+      /* ═══════════════ CINEMATIC GLOBAL SYSTEM ═══════════════ */
+
+      /* Smooth global entry */
+      html { scroll-behavior: smooth; }
+      body {
+        opacity: 0;
+        animation: siteEntry 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+      }
+      @keyframes siteEntry {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Premium scrollbar */
+      * { scrollbar-width: thin; scrollbar-color: rgba(200,169,110,0.35) transparent; }
+      ::-webkit-scrollbar { width: 10px; height: 10px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, rgba(200,169,110,0.4), rgba(138,111,61,0.6));
+        border: 2px solid #0c0c0e;
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, rgba(200,169,110,0.7), rgba(200,169,110,0.5));
+      }
+
+      /* Selection color */
+      ::selection {
+        background: rgba(200,169,110,0.35);
+        color: #fff;
+      }
+
+      /* ═══ CINEMATIC OVERLAYS ═══ */
+      #site-curtain {
+        position: fixed; inset: 0;
+        background: #000;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 1;
+      }
+      #site-curtain.first-visit {
+        animation: curtainRise 1.8s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+      }
+      @keyframes curtainRise {
+        0% { opacity: 1; }
+        60% { opacity: 1; }
+        100% { opacity: 0; visibility: hidden; transform: translateY(-100%); }
+      }
+
+      /* Letterbox opening bars (first visit only) */
+      #site-letterbox-top, #site-letterbox-bot {
+        position: fixed; left: 0; right: 0; height: 38vh;
+        background: #000;
+        z-index: 9998;
+        pointer-events: none;
+        display: none;
+      }
+      #site-letterbox-top { top: 0; }
+      #site-letterbox-bot { bottom: 0; }
+      #site-letterbox-top.first-visit, #site-letterbox-bot.first-visit {
+        display: block;
+      }
+      #site-letterbox-top.first-visit {
+        animation: lbTop 2.6s cubic-bezier(0.83, 0, 0.17, 1) 0.3s forwards;
+      }
+      #site-letterbox-bot.first-visit {
+        animation: lbBot 2.6s cubic-bezier(0.83, 0, 0.17, 1) 0.3s forwards;
+      }
+      @keyframes lbTop {
+        0%,50% { transform: translateY(0); }
+        100% { transform: translateY(-100%); }
+      }
+      @keyframes lbBot {
+        0%,50% { transform: translateY(0); }
+        100% { transform: translateY(100%); }
+      }
+
+      /* Film grain (always on, subtle) */
+      #site-grain {
+        position: fixed; inset: 0;
+        z-index: 9995;
+        pointer-events: none;
+        opacity: 0.045;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+        animation: grainShift 0.9s steps(5) infinite;
+      }
+      @keyframes grainShift {
+        0%,100% { transform: translate(0,0); }
+        20% { transform: translate(-4%,3%); }
+        40% { transform: translate(3%,-4%); }
+        60% { transform: translate(-3%,-3%); }
+        80% { transform: translate(4%,2%); }
+      }
+
+      /* Vignette (always on, subtle) */
+      #site-vignette {
+        position: fixed; inset: 0;
+        z-index: 9996;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+      }
+
+      /* Ambient light (soft moving glow) */
+      #site-ambient {
+        position: fixed; inset: 0;
+        z-index: 9994;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(200,169,110,0.06) 0%, transparent 40%),
+          radial-gradient(circle at 80% 80%, rgba(200,169,110,0.04) 0%, transparent 40%);
+        animation: ambientDrift 20s ease-in-out infinite alternate;
+      }
+      @keyframes ambientDrift {
+        0% { opacity: 0.6; transform: translate(0,0); }
+        100% { opacity: 1; transform: translate(2%,-2%); }
+      }
+
+      /* ═══ GLOBAL REVEAL SYSTEM ═══ */
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(22px);
+        transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      [data-reveal="fade"] { transform: none; }
+      [data-reveal="scale"] { transform: scale(0.97); }
+      [data-reveal="left"] { transform: translateX(-30px); }
+      [data-reveal="right"] { transform: translateX(30px); }
+      [data-reveal].revealed {
+        opacity: 1;
+        transform: translate(0,0) scale(1);
+      }
+
+      /* Auto-reveal for major section elements */
+      .auto-reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .auto-reveal.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ═══ PREMIUM INTERACTION POLISH ═══ */
+
+      /* Gold shimmer on primary CTAs */
+      a[style*="border:1px solid #c8a96e"],
+      a[style*="border: 1px solid #c8a96e"],
+      button[class*="primary"] {
+        position: relative;
+        overflow: hidden;
+      }
+      a[style*="border:1px solid #c8a96e"]::after,
+      a[style*="border: 1px solid #c8a96e"]::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 50%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(200,169,110,0.35), transparent);
+        transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+      }
+      a[style*="border:1px solid #c8a96e"]:hover::after,
+      a[style*="border: 1px solid #c8a96e"]:hover::after {
+        left: 150%;
+      }
+
+      /* Enhanced heading typography */
+      h1, h2, h3 {
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Card hover lift */
+      [class*="card"],
+      .tool-card,
+      .form-section {
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                    border-color 0.3s ease;
+      }
+
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        body { animation: none; opacity: 1; }
+        #site-grain, #site-ambient { animation: none; }
+        #site-curtain, #site-letterbox-top, #site-letterbox-bot { display: none !important; }
+        [data-reveal], .auto-reveal {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        * { scroll-behavior: auto !important; }
+      }
+
+      /* Print — hide cinematic overlays */
+      @media print {
+        #site-curtain, #site-grain, #site-vignette, #site-ambient,
+        #site-letterbox-top, #site-letterbox-bot { display: none !important; }
+      }
     </style>
   </head>
   <body class="min-h-screen flex flex-col" style="background:#0c0c0e;color:#edede8;">
+
+    <!-- ═══ CINEMATIC OVERLAYS (global) ═══ -->
+    <div id="site-curtain" aria-hidden="true"></div>
+    <div id="site-letterbox-top" aria-hidden="true"></div>
+    <div id="site-letterbox-bot" aria-hidden="true"></div>
+    <div id="site-ambient" aria-hidden="true"></div>
+    <div id="site-grain" aria-hidden="true"></div>
+    <div id="site-vignette" aria-hidden="true"></div>
+
     <a
       href="#main-content"
       class="skip-link"
@@ -55,5 +265,99 @@ const siteName = 'NaNi Execution Lab';
       <slot />
     </main>
     <Footer />
+
+    <script is:inline>
+      (function() {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Opening curtain — only on first visit per session
+        const curtain = document.getElementById('site-curtain');
+        const lbTop = document.getElementById('site-letterbox-top');
+        const lbBot = document.getElementById('site-letterbox-bot');
+        const isFirstVisit = !sessionStorage.getItem('nani-visited');
+
+        if (reduceMotion) {
+          curtain.style.display = 'none';
+        } else if (isFirstVisit) {
+          sessionStorage.setItem('nani-visited', '1');
+          curtain.classList.add('first-visit');
+          lbTop.classList.add('first-visit');
+          lbBot.classList.add('first-visit');
+          setTimeout(() => { curtain.style.display = 'none'; }, 2000);
+          setTimeout(() => {
+            lbTop.style.display = 'none';
+            lbBot.style.display = 'none';
+          }, 3000);
+        } else {
+          // Subtle fade on subsequent pages
+          curtain.style.animation = 'none';
+          curtain.style.transition = 'opacity 0.4s ease-out';
+          curtain.style.opacity = '0';
+          setTimeout(() => { curtain.style.display = 'none'; }, 450);
+        }
+
+        // 2. Auto-reveal sections on scroll
+        if ('IntersectionObserver' in window && !reduceMotion) {
+          // Auto-tag major sections (skip the hero which usually has its own)
+          const sections = document.querySelectorAll('main > section, main > article, main > div > section');
+          sections.forEach((s, i) => {
+            if (i === 0) return; // skip first/hero
+            if (!s.hasAttribute('data-reveal')) {
+              s.classList.add('auto-reveal');
+            }
+          });
+
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                e.target.classList.add('revealed');
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+          document.querySelectorAll('[data-reveal], .auto-reveal').forEach(el => io.observe(el));
+        } else {
+          document.querySelectorAll('[data-reveal], .auto-reveal').forEach(el => el.classList.add('revealed'));
+        }
+
+        // 3. Parallax-lite on hero backgrounds (subtle)
+        if (!reduceMotion) {
+          let rafId = null;
+          const heroBackgrounds = document.querySelectorAll('section[style*="min-height:100vh"] img, section[style*="min-height: 100vh"] img');
+          function onScroll() {
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => {
+              const y = window.scrollY;
+              heroBackgrounds.forEach(el => {
+                if (y < 800) el.style.transform = 'translateY(' + (y * 0.15) + 'px) scale(1.05)';
+              });
+              rafId = null;
+            });
+          }
+          window.addEventListener('scroll', onScroll, { passive: true });
+        }
+
+        // 4. Smooth outgoing navigation fade
+        document.addEventListener('click', (e) => {
+          if (reduceMotion) return;
+          const a = e.target.closest('a');
+          if (!a) return;
+          const href = a.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+          if (a.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
+          try {
+            const url = new URL(a.href, location.href);
+            if (url.origin !== location.origin) return;
+            if (url.pathname === location.pathname) return;
+          } catch { return; }
+          e.preventDefault();
+          document.body.style.transition = 'opacity 0.32s ease-out';
+          document.body.style.opacity = '0';
+          setTimeout(() => { location.href = a.href; }, 300);
+        });
+
+      })();
+    </script>
   </body>
 </html>
