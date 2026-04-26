@@ -19,6 +19,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <li>データ投入・学習・予測中、追加の通信が <strong>一切発生しない</strong> ことを確認</li>
     </ol>
     <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">TensorFlow.js は WebGL/CPU を使ってブラウザ内で完結学習します。モデル重み・入力データは外部送信されません。</p>
+    <p style="margin-top:0.5rem;color:rgba(255,255,255,0.45);font-size:0.7rem;">※ TensorFlow.js / Chart.js は学習ボタンクリック時に CDN からダウンロードされます。データの送信ではありません。</p>
   </div>
 
   <!-- Hero -->
@@ -88,7 +89,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </label>
           </div>
           <div id="data-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;min-height:1.2em;"></div>
-          <div id="tf-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;">TensorFlow.js 読込中…</div>
+          <div id="tf-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;">学習ボタンクリックでAI起動準備</div>
           <button id="btn-run" class="m-btn" disabled>AI学習 &amp; 異常検知</button>
         </div>
       </div>
@@ -229,9 +230,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
   </style>
 
-  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script is:inline src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
-
   <script is:inline>
     // ---- Performance helpers ----
     function debounce(fn, wait) {
@@ -265,28 +263,52 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       d.style.display = d.style.display === 'none' ? 'block' : 'none';
     });
 
-    // ---- TF.js readiness ----
+    // ---- TF.js / Chart.js lazy loaders ----
     const tfStatusEl = document.getElementById('tf-status');
     const btnRun = document.getElementById('btn-run');
-    tfStatusEl.textContent = '⚙ TensorFlow.js 読込中...';
 
-    async function checkTf() {
-      if (typeof tf !== 'undefined') {
-        try {
-          await tf.setBackend('webgl');
-        } catch (e) {
-          try { await tf.setBackend('cpu'); } catch (_) {}
-        }
-        await tf.ready();
-        const backend = tf.getBackend();
-        tfStatusEl.textContent = '✓ TensorFlow.js v' + tf.version.tfjs + ' 準備完了 (Backend: ' + (backend === 'webgl' ? 'WebGL' : 'CPU') + ')';
-        tfStatusEl.style.color = '#c8a96e';
-        if (currentData) btnRun.disabled = false;
-      } else {
-        setTimeout(checkTf, 300);
-      }
+    let tfLoaded = false;
+    let tfLoadingPromise = null;
+    function loadTfJs() {
+      if (tfLoaded) return Promise.resolve();
+      if (tfLoadingPromise) return tfLoadingPromise;
+      tfLoadingPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js';
+        script.async = true;
+        script.onload = async () => {
+          try {
+            try { await tf.setBackend('webgl'); }
+            catch (e) { try { await tf.setBackend('cpu'); } catch (_) {} }
+            await tf.ready();
+            tfLoaded = true;
+            const backend = tf.getBackend();
+            tfStatusEl.textContent = '✓ TensorFlow.js v' + tf.version.tfjs + ' 準備完了 (Backend: ' + (backend === 'webgl' ? 'WebGL' : 'CPU') + ')';
+            tfStatusEl.style.color = '#c8a96e';
+            resolve();
+          } catch (e) { reject(e); }
+        };
+        script.onerror = () => reject(new Error('TensorFlow.js の読込に失敗しました'));
+        document.head.appendChild(script);
+      });
+      return tfLoadingPromise;
     }
-    checkTf();
+
+    let chartLoaded = false;
+    let chartLoadingPromise = null;
+    function loadChartJs() {
+      if (chartLoaded) return Promise.resolve();
+      if (chartLoadingPromise) return chartLoadingPromise;
+      chartLoadingPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+        script.async = true;
+        script.onload = () => { chartLoaded = true; resolve(); };
+        script.onerror = () => reject(new Error('Chart.js の読込に失敗しました'));
+        document.head.appendChild(script);
+      });
+      return chartLoadingPromise;
+    }
 
     // ---- Sample data generator ----
     function generateSampleData() {
@@ -350,7 +372,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       sensorKeys = ['v1', 'v2', 'v3'];
       sensorLabels = ['Sensor 1', 'Sensor 2', 'Sensor 3'];
       statusEl.textContent = 'サンプルデータ生成完了: ' + currentData.length + ' サンプル（3特徴量）異常3箇所注入済み';
-      if (typeof tf !== 'undefined') btnRun.disabled = false;
+      btnRun.disabled = false;
     });
 
     // ---- CSV upload ----
@@ -401,7 +423,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }
         currentData = rows;
         statusEl.textContent = 'CSV読込完了: ' + rows.length + ' サンプル・' + cols + ' 特徴量 (' + sensorLabels.join(' / ') + ')';
-        if (typeof tf !== 'undefined') btnRun.disabled = false;
+        btnRun.disabled = false;
       };
       reader.readAsText(file);
     });
@@ -514,9 +536,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     // ---- Run ----
     document.getElementById('btn-run').addEventListener('click', async () => {
-      if (!currentData || typeof tf === 'undefined') return;
+      if (!currentData) return;
 
       btnRun.disabled = true;
+
+      // Lazy-load TF.js + Chart.js on first click
+      if (!tfLoaded || !chartLoaded) {
+        tfStatusEl.textContent = '⚙ TensorFlow.js 起動中... (初回のみ・通常2-3秒)';
+        tfStatusEl.style.color = 'rgba(255,255,255,0.55)';
+        try {
+          await Promise.all([loadTfJs(), loadChartJs()]);
+        } catch (err) {
+          tfStatusEl.textContent = '✗ ' + (err.message || 'ライブラリの読込に失敗しました');
+          tfStatusEl.style.color = '#e87070';
+          btnRun.disabled = false;
+          return;
+        }
+      }
+
       progressSection.style.display = 'block';
       resultSection.style.display = 'none';
 
