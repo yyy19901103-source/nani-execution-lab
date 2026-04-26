@@ -97,9 +97,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <input id="csv-upload" type="file" accept=".csv,text/csv" style="display:none;">
             </label>
           </div>
+          <div id="csv-progress" style="display:none;margin-top:0.4rem;">
+            <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:0.3rem;">CSVを解析中...</div>
+            <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:6px;">
+              <div id="csv-progress-bar" style="background:#c8a96e;height:6px;border-radius:9999px;transition:width 0.1s;width:0%;"></div>
+            </div>
+          </div>
           <div id="data-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;min-height:1.2em;"></div>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
             <button id="btn-run" class="m-btn" disabled>予測実行</button>
+            <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
             <button id="btn-autotune" class="m-btn-ghost" disabled>自動最適化</button>
             <button id="btn-reset" class="m-btn-ghost">リセット</button>
           </div>
@@ -129,7 +136,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="position:relative;height:320px;">
           <canvas id="forecast-chart"></canvas>
         </div>
+        <button id="btn-png-forecast" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
+      <div id="perf-stats" style="display:none;margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;"></div>
 
       <!-- Metrics -->
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;" id="metrics-grid">
@@ -202,6 +211,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <script is:inline>
+    // ---- Round 8: Chunked CSV Parser ----
+    const CHUNK_ROWS = 1000;
+    async function parseCSVChunkedNew(file, onProgress) {
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = [];
+      const total = lines.length - 1;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        const obj = {};
+        headers.forEach((h, j) => { obj[h] = cols[j] ?? ''; });
+        rows.push(obj);
+        if (i % CHUNK_ROWS === 0) {
+          if (onProgress) onProgress(Math.round(i / total * 100));
+          await new Promise(r => setTimeout(r, 0));
+        }
+      }
+      if (onProgress) onProgress(100);
+      return { headers, rows };
+    }
+
+    // ---- Round 9: PNG export ----
+    function downloadChartPNG(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // ---- Round 10: Performance stats ----
+    function fmtMs(ms) { return ms < 1000 ? ms.toFixed(0)+'ms' : (ms/1000).toFixed(2)+'s'; }
+    function showPerfStats(ms, tfMemory) {
+      const el = document.getElementById('perf-stats');
+      if (!el) return;
+      let html = `⏱ 計算時間: ${fmtMs(ms)}`;
+      if (tfMemory) html += ` | 🧠 TF.jsメモリ: ${(tfMemory.numBytes/1024/1024).toFixed(1)}MB (テンソル${tfMemory.numTensors}個)`;
+      el.textContent = html;
+      el.style.display = 'block';
+    }
+
     // ---- Performance helpers ----
     function debounce(fn, wait) {
       let t;
@@ -480,23 +532,46 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       drawPreview();
     });
 
+    // 大規模CSV対応のチャンクパーサー
+    async function parseCSVChunked(file, onProgress, parseLineFn) {
+      const text = await file.text();
+      const lines = text.split(/\r?\n/);
+      const total = lines.length;
+      const result = [];
+      const CHUNK_SIZE = 1000;
+      for (let i = 0; i < total; i += CHUNK_SIZE) {
+        const end = Math.min(i + CHUNK_SIZE, total);
+        for (let j = i; j < end; j++) {
+          const line = lines[j].trim();
+          if (!line) continue;
+          const parsed = parseLineFn(line, j);
+          if (parsed) result.push(parsed);
+        }
+        if (onProgress) onProgress(end, total);
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+      return result;
+    }
+
     // ---- CSV upload ----
-    document.getElementById('csv-upload').addEventListener('change', function(e) {
+    document.getElementById('csv-upload').addEventListener('change', async function(e) {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const text = ev.target.result;
-        const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
-        const labels = [], values = [];
-        let skipped = 0;
-        for (const line of lines) {
-          const parts = line.split(',');
-          if (parts.length < 2) { skipped++; continue; }
-          const label = parts[0].trim();
-          const val = parseFloat(parts[1].trim());
-          if (isNaN(val)) { skipped++; continue; }
-          labels.push(label);
+      const csvProgress = document.getElementById('csv-progress');
+      const csvProgressBar = document.getElementById('csv-progress-bar');
+      let skipped = 0;
+      try {
+        csvProgress.style.display = 'block';
+        csvProgressBar.style.width = '0%';
+        const { rows: allRows } = await parseCSVChunkedNew(file, pct => { csvProgressBar.style.width = pct + '%'; });
+        csvProgress.style.display = 'none';
+        const labels = [];
+        const values = [];
+        for (const r of allRows) {
+          const key = Object.keys(r)[0];
+          const val = parseFloat(Object.values(r)[1]);
+          if (!key || isNaN(val)) { skipped++; continue; }
+          labels.push(r[key] || key);
           values.push(val);
         }
         if (values.length < 14) {
@@ -509,8 +584,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         btnRun.disabled = false;
         const at = document.getElementById('btn-autotune'); if (at) at.disabled = false;
         drawPreview();
-      };
-      reader.readAsText(file);
+      } catch (err) {
+        console.error('CSV parse error:', err);
+        csvProgress.style.display = 'none';
+        statusEl.textContent = 'CSV読込エラー: ' + err.message;
+      }
+    });
+
+    // ---- Round 9: PNG + keyboard shortcuts ----
+    document.getElementById('btn-png-forecast')?.addEventListener('click', () => downloadChartPNG('forecast-chart', 'demand-forecast-chart.png'));
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        const btn = document.getElementById('btn-run');
+        if (btn && !btn.disabled) btn.click();
+      }
     });
 
     // ---- Run forecast ----
@@ -529,6 +616,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     function runForecast() {
       if (!currentData) return;
+      const _t0 = performance.now();
       const alpha = parseFloat(document.getElementById('alpha').value);
       const beta = parseFloat(document.getElementById('beta').value);
       const gamma = parseFloat(document.getElementById('gamma').value);
@@ -773,6 +861,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       } catch (e) { console.error('compare table', e); }
 
       chartSection.style.display = 'block';
+      showPerfStats(performance.now() - _t0);
       chartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 

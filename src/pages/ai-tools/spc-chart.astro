@@ -60,6 +60,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <input type="file" id="csv-upload" accept=".csv" style="display:none;">
             </label>
           </div>
+          <div id="csv-progress" style="display:none;margin-top:0.4rem;">
+            <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:0.3rem;">CSVを解析中...</div>
+            <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:6px;">
+              <div id="csv-progress-bar" style="background:#c8a96e;height:6px;border-radius:9999px;transition:width 0.1s;width:0%;"></div>
+            </div>
+          </div>
           <p id="csv-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;margin-top:0.4rem;">CSV形式: <span id="csv-fmt">subgroup_id,value</span></p>
         </div>
 
@@ -83,6 +89,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
 
       <button id="btn-run" class="m-btn" style="min-width:160px;">分析実行 ▶</button>
+      <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;margin-left:0.5rem;">Ctrl+Enter で実行</span>
       <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;font-size:0.72rem;padding:0.5rem 1.25rem;">リセット</button>
 
       <p id="run-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.75rem;"></p>
@@ -101,6 +108,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="position:relative;height:300px;">
           <canvas id="x-chart"></canvas>
         </div>
+        <button id="btn-png-xchart" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
 
       <!-- R / MR chart -->
@@ -109,7 +117,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="position:relative;height:240px;">
           <canvas id="r-chart"></canvas>
         </div>
+        <button id="btn-png-rchart" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
+      <div id="perf-stats" style="display:none;margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;"></div>
 
       <!-- 違反一覧 -->
       <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-bottom:1rem;">
@@ -157,6 +167,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <script is:inline>
+    // ---- Round 8: Chunked CSV Parser ----
+    const CHUNK_ROWS = 1000;
+    async function parseCSVChunkedNew(file, onProgress) {
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = [];
+      const total = lines.length - 1;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        const obj = {};
+        headers.forEach((h, j) => { obj[h] = cols[j] ?? ''; });
+        rows.push(obj);
+        if (i % CHUNK_ROWS === 0) {
+          if (onProgress) onProgress(Math.round(i / total * 100));
+          await new Promise(r => setTimeout(r, 0));
+        }
+      }
+      if (onProgress) onProgress(100);
+      return { headers, rows };
+    }
+
+    // ---- Round 9: PNG export ----
+    function downloadChartPNG(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // ---- Round 10: Performance stats ----
+    function fmtMs(ms) { return ms < 1000 ? ms.toFixed(0)+'ms' : (ms/1000).toFixed(2)+'s'; }
+    function showPerfStats(ms, tfMemory) {
+      const el = document.getElementById('perf-stats');
+      if (!el) return;
+      let html = `⏱ 計算時間: ${fmtMs(ms)}`;
+      if (tfMemory) html += ` | 🧠 TF.jsメモリ: ${(tfMemory.numBytes/1024/1024).toFixed(1)}MB (テンソル${tfMemory.numTensors}個)`;
+      el.textContent = html;
+      el.style.display = 'block';
+    }
+
     // ---- Performance helpers ----
     function debounce(fn, wait) {
       let t;
@@ -490,6 +543,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     // ===== Main analysis =====
     function runAnalysis() {
+      const _t0 = performance.now();
       const status = document.getElementById('run-status');
       if (!inputData) {
         status.textContent = 'エラー: データが読み込まれていません。サンプルデータまたはCSVを指定してください。';
@@ -560,6 +614,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
 
       document.getElementById('result-section').style.display = 'block';
+      showPerfStats(performance.now() - _t0);
     }
 
     // ===== Mode switch =====
@@ -595,14 +650,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       document.getElementById('csv-status').style.color = '#6ec86e';
     });
 
-    document.getElementById('csv-upload').addEventListener('change', e => {
+    document.getElementById('csv-upload').addEventListener('change', async e => {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const text = ev.target.result;
+      const csvProgress = document.getElementById('csv-progress');
+      const csvProgressBar = document.getElementById('csv-progress-bar');
+      try {
+        csvProgress.style.display = 'block';
+        csvProgressBar.style.width = '0%';
+        const text = await file.text();
+        csvProgressBar.style.width = '50%';
+        await new Promise(r => setTimeout(r, 0));
         if (mode === 'xbar') {
           const parsed = parseCSVXbar(text);
+          csvProgress.style.display = 'none';
           if (!parsed) {
             document.getElementById('csv-status').textContent = 'エラー: CSV形式不正 (列: subgroup_id,value、各サブグループ同サイズ・n≥2)';
             document.getElementById('csv-status').style.color = '#e88080';
@@ -612,6 +673,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           document.getElementById('csv-status').textContent = `読込完了: ${parsed.length}サブグループ × n=${parsed[0].length}`;
         } else {
           const parsed = parseCSVXMR(text);
+          csvProgress.style.display = 'none';
           if (!parsed) {
             document.getElementById('csv-status').textContent = 'エラー: CSV形式不正 (列: value、5行以上必要)';
             document.getElementById('csv-status').style.color = '#e88080';
@@ -621,8 +683,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           document.getElementById('csv-status').textContent = `読込完了: ${parsed.length}個の測定値`;
         }
         document.getElementById('csv-status').style.color = '#6ec86e';
-      };
-      reader.readAsText(file);
+      } catch (err) {
+        csvProgress.style.display = 'none';
+        document.getElementById('csv-status').textContent = 'CSV読込エラー: ' + err.message;
+        document.getElementById('csv-status').style.color = '#e88080';
+      }
+    });
+
+    // ---- Round 9: PNG + keyboard shortcuts ----
+    document.getElementById('btn-png-xchart')?.addEventListener('click', () => downloadChartPNG('x-chart', 'spc-x-chart.png'));
+    document.getElementById('btn-png-rchart')?.addEventListener('click', () => downloadChartPNG('r-chart', 'spc-r-chart.png'));
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        const btn = document.getElementById('btn-run');
+        if (btn && !btn.disabled) btn.click();
+      }
     });
 
     document.getElementById('btn-run').addEventListener('click', runAnalysis);

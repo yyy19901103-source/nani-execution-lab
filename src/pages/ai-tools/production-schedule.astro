@@ -40,6 +40,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <input id="csv-upload" type="file" accept=".csv" style="display:none;">
       </label>
       <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;">CSV形式: job_name,m1_time,m2_time,m3_time,deadline</span>
+      <div id="csv-progress" class="hidden mt-2" style="display:none;margin-top:0.5rem;width:100%;">
+        <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:0.3rem;">CSVを解析中...</div>
+        <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:6px;">
+          <div id="csv-progress-bar" style="background:#c8a96e;height:6px;border-radius:9999px;transition:width 0.1s;width:0%;"></div>
+        </div>
+      </div>
     </div>
 
     <!-- ジョブテーブル -->
@@ -64,6 +70,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <!-- 実行ボタン -->
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
       <button id="btn-run" class="m-btn">最適化実行 (GA)</button>
+      <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
       <button id="btn-cancel" class="m-btn-ghost" style="display:none;">⏸ 中断</button>
       <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;">リセット</button>
       <div id="progress-wrap" style="display:none;flex:1;min-width:200px;">
@@ -87,8 +94,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="overflow-x:auto;">
           <canvas id="gantt-canvas" style="display:block;"></canvas>
         </div>
-        <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;" id="legend-area"></div>
+        <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;" id="legend-area"></div>
+        <button id="btn-png-gantt" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
+      <div id="perf-stats" style="display:none;margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;"></div>
       <div style="margin-top:1rem;text-align:right;">
         <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
       </div>
@@ -130,6 +139,51 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </style>
 
   <script>
+    // ============================================================
+    // Round 8: Chunked CSV Parser (canonical version)
+    // ============================================================
+    const CHUNK_ROWS = 1000;
+    async function parseCSVChunkedNew(file, onProgress) {
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = [];
+      const total = lines.length - 1;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        const obj = {};
+        headers.forEach((h, j) => { obj[h] = cols[j] ?? ''; });
+        rows.push(obj);
+        if (i % CHUNK_ROWS === 0) {
+          if (onProgress) onProgress(Math.round(i / total * 100));
+          await new Promise(r => setTimeout(r, 0));
+        }
+      }
+      if (onProgress) onProgress(100);
+      return { headers, rows };
+    }
+
+    // Round 9: PNG export
+    function downloadChartPNG(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Round 10: Performance stats
+    function fmtMs(ms) { return ms < 1000 ? ms.toFixed(0)+'ms' : (ms/1000).toFixed(2)+'s'; }
+    function showPerfStats(ms, tfMemory) {
+      const el = document.getElementById('perf-stats');
+      if (!el) return;
+      let html = `⏱ 計算時間: ${fmtMs(ms)}`;
+      if (tfMemory) html += ` | 🧠 TF.jsメモリ: ${(tfMemory.numBytes/1024/1024).toFixed(1)}MB (テンソル${tfMemory.numTensors}個)`;
+      el.textContent = html;
+      el.style.display = 'block';
+    }
+
     // ============================================================
     // Performance helpers
     // ============================================================
@@ -234,28 +288,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     });
     document.getElementById('btn-add-row').addEventListener('click', () => addRow());
 
+    // 大規模CSV対応のチャンクパーサー
+    async function parseCSVChunked(file, onProgress, parseLineFn) {
+      const text = await file.text();
+      const lines = text.split(/\r?\n/);
+      const total = lines.length;
+      const result = [];
+      const CHUNK_SIZE = 1000;
+      for (let i = 0; i < total; i += CHUNK_SIZE) {
+        const end = Math.min(i + CHUNK_SIZE, total);
+        for (let j = i; j < end; j++) {
+          const line = lines[j].trim();
+          if (!line) continue;
+          const parsed = parseLineFn(line, j);
+          if (parsed) result.push(parsed);
+        }
+        if (onProgress) onProgress(end, total);
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+      return result;
+    }
+
     // CSVアップロード
-    document.getElementById('csv-upload').addEventListener('change', (e) => {
+    document.getElementById('csv-upload').addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const lines = ev.target.result.split('\n').filter(l => l.trim());
-        const parsed = [];
-        for (const line of lines) {
-          const cols = line.split(',');
-          if (cols.length < 5) continue;
-          const name = cols[0].trim();
-          if (!name || name.toLowerCase() === 'job_name') continue;
-          parsed.push({
-            name,
-            times: [parseFloat(cols[1]) || 0, parseFloat(cols[2]) || 0, parseFloat(cols[3]) || 0],
-            deadline: parseFloat(cols[4]) || 999
-          });
-        }
+      const csvProgress = document.getElementById('csv-progress');
+      const progressBar = document.getElementById('csv-progress-bar');
+      try {
+        csvProgress.style.display = 'block';
+        progressBar.style.width = '0%';
+        const { rows } = await parseCSVChunkedNew(file, pct => { progressBar.style.width = pct + '%'; });
+        csvProgress.style.display = 'none';
+        const parsed = rows.filter(r => r.job_name && r.job_name.toLowerCase() !== 'job_name').map(r => ({
+          name: r.job_name || '',
+          times: [parseFloat(r.m1_time) || 0, parseFloat(r.m2_time) || 0, parseFloat(r.m3_time) || 0],
+          deadline: parseFloat(r.deadline) || 999
+        })).filter(r => r.name);
         if (parsed.length > 0) renderTable(parsed);
-      };
-      reader.readAsText(file);
+      } catch (err) {
+        console.error('CSV parse error:', err);
+        csvProgress.style.display = 'none';
+        alert('CSV読込エラー: ' + err.message);
+      }
       e.target.value = '';
     });
 
@@ -762,6 +837,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let cancelFlag = false;
     let currentWorker = null;
 
+    // Round 9: PNG export button
+    document.getElementById('btn-png-gantt').addEventListener('click', () => downloadChartPNG('gantt-canvas', 'production-schedule-chart.png'));
+
+    // Round 9: Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        const btn = document.getElementById('btn-run');
+        if (btn && !btn.disabled) btn.click();
+      }
+      if (e.key === 'Escape') {
+        const stopBtn = document.getElementById('btn-cancel');
+        if (stopBtn && stopBtn.style.display !== 'none') stopBtn.click();
+      }
+    });
+
     document.getElementById('btn-run').addEventListener('click', () => {
       const jobsData = getJobs();
       if (jobsData.length < 2) {
@@ -774,6 +864,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       btn.disabled = true;
       cancelBtn.style.display = 'inline-block';
       cancelFlag = false;
+      const _t0 = performance.now();
       const progressWrap = document.getElementById('progress-wrap');
       const progressBar = document.getElementById('progress-bar');
       const progressLabel = document.getElementById('progress-label');
@@ -808,6 +899,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             lastGanttTasks = ganttTasks;
             lastJobsData = jobsData;
             document.getElementById('result-area').style.display = 'block';
+            showPerfStats(performance.now() - _t0);
           } catch (e) {
             console.error(e);
             alert('描画中にエラーが発生しました: ' + e.message);

@@ -46,6 +46,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <input id="csv-upload" type="file" accept=".csv" style="display:none;">
       </label>
       <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;min-width:0;">CSV形式: process_name,cycle_time_sec,equipment_count,utilization_pct</span>
+      <div id="csv-progress" style="display:none;margin-top:0.5rem;width:100%;">
+        <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:0.3rem;">CSVを解析中...</div>
+        <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:6px;">
+          <div id="csv-progress-bar" style="background:#c8a96e;height:6px;border-radius:9999px;transition:width 0.1s;width:0%;"></div>
+        </div>
+      </div>
     </div>
 
     <!-- 工程テーブル -->
@@ -69,6 +75,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <!-- 分析実行ボタン -->
     <div style="margin-bottom:1.5rem;">
       <button id="btn-analyze" class="m-btn">分析実行</button>
+      <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;margin-left:0.5rem;">Ctrl+Enter で実行</span>
       <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;">リセット</button>
     </div>
 
@@ -83,7 +90,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="position:relative;max-height:400px;">
           <canvas id="bn-chart"></canvas>
         </div>
+        <button id="btn-png-bn" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
+      <div id="perf-stats" style="display:none;margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;"></div>
 
       <!-- ボトルネック詳細 + 改善提案 -->
       <div id="suggestion-area" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;"></div>
@@ -182,6 +191,51 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <script>
+    // ============================================================
+    // Round 8: Chunked CSV Parser
+    // ============================================================
+    const CHUNK_ROWS = 1000;
+    async function parseCSVChunkedNew(file, onProgress) {
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = [];
+      const total = lines.length - 1;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        const obj = {};
+        headers.forEach((h, j) => { obj[h] = cols[j] ?? ''; });
+        rows.push(obj);
+        if (i % CHUNK_ROWS === 0) {
+          if (onProgress) onProgress(Math.round(i / total * 100));
+          await new Promise(r => setTimeout(r, 0));
+        }
+      }
+      if (onProgress) onProgress(100);
+      return { headers, rows };
+    }
+
+    // Round 9: PNG export
+    function downloadChartPNG(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Round 10: Performance stats
+    function fmtMs(ms) { return ms < 1000 ? ms.toFixed(0)+'ms' : (ms/1000).toFixed(2)+'s'; }
+    function showPerfStats(ms, tfMemory) {
+      const el = document.getElementById('perf-stats');
+      if (!el) return;
+      let html = `⏱ 計算時間: ${fmtMs(ms)}`;
+      if (tfMemory) html += ` | 🧠 TF.jsメモリ: ${(tfMemory.numBytes/1024/1024).toFixed(1)}MB (テンソル${tfMemory.numTensors}個)`;
+      el.textContent = html;
+      el.style.display = 'block';
+    }
+
     // ============================================================
     // Performance helpers
     // ============================================================
@@ -303,23 +357,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     document.getElementById('btn-sample').addEventListener('click', () => renderTable(SAMPLE_PROCS));
     document.getElementById('btn-add-row').addEventListener('click', () => addRow());
 
-    document.getElementById('csv-upload').addEventListener('change', (e) => {
+    // 大規模CSV対応のチャンクパーサー
+    async function parseCSVChunked(file, onProgress, parseLineFn) {
+      const text = await file.text();
+      const lines = text.split(/\r?\n/);
+      const total = lines.length;
+      const result = [];
+      const CHUNK_SIZE = 1000;
+      for (let i = 0; i < total; i += CHUNK_SIZE) {
+        const end = Math.min(i + CHUNK_SIZE, total);
+        for (let j = i; j < end; j++) {
+          const line = lines[j].trim();
+          if (!line) continue;
+          const parsed = parseLineFn(line, j);
+          if (parsed) result.push(parsed);
+        }
+        if (onProgress) onProgress(end, total);
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+      return result;
+    }
+
+    document.getElementById('csv-upload').addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const lines = ev.target.result.split('\n').filter(l => l.trim());
-        const parsed = [];
-        for (const line of lines) {
-          const cols = line.split(',');
-          if (cols.length < 4) continue;
-          const name = cols[0].trim();
-          if (!name || name.toLowerCase() === 'process_name') continue;
-          parsed.push({ name, ct: parseFloat(cols[1]) || 0, eq: parseInt(cols[2]) || 1, util: parseFloat(cols[3]) || 100 });
-        }
+      const csvProgress = document.getElementById('csv-progress');
+      const progressBar = document.getElementById('csv-progress-bar');
+      try {
+        csvProgress.style.display = 'block';
+        progressBar.style.width = '0%';
+        const { rows } = await parseCSVChunkedNew(file, pct => { progressBar.style.width = pct + '%'; });
+        csvProgress.style.display = 'none';
+        const parsed = rows.filter(r => r.process_name && r.process_name.toLowerCase() !== 'process_name').map(r => ({
+          name: r.process_name,
+          ct: parseFloat(r.cycle_time_sec) || 0,
+          eq: parseInt(r.equipment_count) || 1,
+          util: parseFloat(r.utilization_pct) || 100
+        })).filter(r => r.name && r.ct > 0);
         if (parsed.length > 0) renderTable(parsed);
-      };
-      reader.readAsText(file);
+      } catch (err) {
+        console.error('CSV parse error:', err);
+        csvProgress.style.display = 'none';
+        alert('CSV読込エラー: ' + err.message);
+      }
       e.target.value = '';
     });
 
@@ -530,6 +610,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let lastBnIdx = null;
     let lastTargetQty = null;
 
+    // Round 9: PNG export + keyboard shortcuts
+    document.getElementById('btn-png-bn').addEventListener('click', () => downloadChartPNG('bn-chart', 'bottleneck-chart.png'));
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        const btn = document.getElementById('btn-analyze');
+        if (btn && !btn.disabled) btn.click();
+      }
+    });
+
     document.getElementById('btn-analyze').addEventListener('click', () => {
       const procs = getProcesses();
       if (procs.length < 2) {
@@ -537,6 +626,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         return;
       }
       const targetQty = parseFloat(document.getElementById('target-qty').value) || 100;
+      const _t0 = performance.now();
 
       const { results, bnIdx, throughput, leadTimeHours, wip, improvement } = analyze(procs, targetQty);
 
@@ -568,6 +658,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       suggArea.appendChild(suggFrag);
 
       document.getElementById('result-area').style.display = 'block';
+      showPerfStats(performance.now() - _t0);
       document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 

@@ -88,9 +88,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <input id="csv-upload" type="file" accept=".csv,text/csv" style="display:none;">
             </label>
           </div>
+          <div id="csv-progress" style="display:none;margin-top:0.4rem;">
+            <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:0.3rem;">CSVを解析中...</div>
+            <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:6px;">
+              <div id="csv-progress-bar" style="background:#c8a96e;height:6px;border-radius:9999px;transition:width 0.1s;width:0%;"></div>
+            </div>
+          </div>
           <div id="data-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;min-height:1.2em;"></div>
           <div id="tf-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;">学習ボタンクリックでAI起動準備</div>
-          <button id="btn-run" class="m-btn" disabled>AI学習 &amp; 異常検知</button>
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+            <button id="btn-run" class="m-btn" disabled>AI学習 &amp; 異常検知</button>
+            <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
+          </div>
         </div>
       </div>
 
@@ -157,6 +166,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="position:relative;height:240px;">
           <canvas id="sensor-chart"></canvas>
         </div>
+        <button id="btn-png-sensor" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
 
       <!-- Anomaly score chart -->
@@ -165,7 +175,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="position:relative;height:200px;">
           <canvas id="score-chart"></canvas>
         </div>
+        <button id="btn-png-score" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
+      <div id="perf-stats" style="display:none;margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;"></div>
 
       <!-- Summary metrics -->
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;" id="metrics-grid">
@@ -231,6 +243,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </style>
 
   <script is:inline>
+    // ---- Round 8: Chunked CSV Parser ----
+    const CHUNK_ROWS = 1000;
+    async function parseCSVChunkedNew(file, onProgress) {
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = [];
+      const total = lines.length - 1;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        const obj = {};
+        headers.forEach((h, j) => { obj[h] = cols[j] ?? ''; });
+        rows.push(obj);
+        if (i % CHUNK_ROWS === 0) {
+          if (onProgress) onProgress(Math.round(i / total * 100));
+          await new Promise(r => setTimeout(r, 0));
+        }
+      }
+      if (onProgress) onProgress(100);
+      return { headers, rows };
+    }
+
+    // ---- Round 9: PNG export ----
+    function downloadChartPNG(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // ---- Round 10: Performance stats ----
+    function fmtMs(ms) { return ms < 1000 ? ms.toFixed(0)+'ms' : (ms/1000).toFixed(2)+'s'; }
+    function showPerfStats(ms, tfMemory) {
+      const el = document.getElementById('perf-stats');
+      if (!el) return;
+      let html = `⏱ 計算時間: ${fmtMs(ms)}`;
+      if (tfMemory) html += ` | 🧠 TF.jsメモリ: ${(tfMemory.numBytes/1024/1024).toFixed(1)}MB (テンソル${tfMemory.numTensors}個)`;
+      el.textContent = html;
+      el.style.display = 'block';
+    }
+
     // ---- Performance helpers ----
     function debounce(fn, wait) {
       let t;
@@ -375,40 +430,55 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       btnRun.disabled = false;
     });
 
-    // ---- CSV upload ----
-    document.getElementById('csv-upload').addEventListener('change', function(e) {
+    // ---- CSV upload (大規模対応・チャンク処理) ----
+    document.getElementById('csv-upload').addEventListener('change', async function(e) {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const text = ev.target.result;
-        const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
-        if (lines.length < 2) { statusEl.textContent = 'エラー: データ行が不足しています'; return; }
+      const csvProgress = document.getElementById('csv-progress');
+      const csvProgressBar = document.getElementById('csv-progress-bar');
+      try {
+        csvProgress.style.display = 'block';
+        csvProgressBar.style.width = '0%';
+        const text = await file.text();
+        const lines = text.split(/\r?\n/);
+        while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+        if (lines.length < 2) { csvProgress.style.display = 'none'; statusEl.textContent = 'エラー: データ行が不足しています'; return; }
 
-        // Check if first row is header
         const firstParts = lines[0].split(',').map(s => s.trim());
         let startIdx = 0;
         let headerNames = null;
         if (isNaN(parseFloat(firstParts[1]))) {
           startIdx = 1;
-          // Skip first column (timestamp), keep next up to 5 as sensor names
           headerNames = firstParts.slice(1, 6);
         }
 
         const rows = [];
         let cols = 0;
-        for (let i = startIdx; i < lines.length; i++) {
-          const parts = lines[i].split(',').map(s => s.trim());
-          if (parts.length < 2) continue;
-          const t = i - startIdx;
-          const vals = {};
-          const numCols = Math.min(parts.length - 1, 5);
-          cols = Math.max(cols, numCols);
-          for (let j = 0; j < numCols; j++) {
-            vals['v' + (j + 1)] = parseFloat(parts[j + 1]);
+        const total = lines.length;
+        const CHUNK_SIZE = CHUNK_ROWS;
+        for (let i = startIdx; i < total; i += CHUNK_SIZE) {
+          const end = Math.min(i + CHUNK_SIZE, total);
+          for (let k = i; k < end; k++) {
+            const line = lines[k];
+            if (!line || !line.trim()) continue;
+            const parts = line.split(',').map(s => s.trim());
+            if (parts.length < 2) continue;
+            const t = k - startIdx;
+            const vals = {};
+            const numCols = Math.min(parts.length - 1, 5);
+            cols = Math.max(cols, numCols);
+            for (let j = 0; j < numCols; j++) {
+              vals['v' + (j + 1)] = parseFloat(parts[j + 1]);
+            }
+            rows.push({ t, ...vals });
           }
-          rows.push({ t, ...vals });
+          csvProgressBar.style.width = Math.round(end / total * 100) + '%';
+          if (total > 5000) {
+            statusEl.textContent = `読込中... ${end.toLocaleString()} / ${total.toLocaleString()} 行`;
+          }
+          await new Promise(resolve => setTimeout(resolve, 0));
         }
+        csvProgress.style.display = 'none';
 
         if (rows.length < 10) {
           statusEl.textContent = 'エラー: データが少なすぎます（最低10行必要）';
@@ -424,8 +494,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         currentData = rows;
         statusEl.textContent = 'CSV読込完了: ' + rows.length + ' サンプル・' + cols + ' 特徴量 (' + sensorLabels.join(' / ') + ')';
         btnRun.disabled = false;
-      };
-      reader.readAsText(file);
+      } catch (err) {
+        console.error('CSV parse error:', err);
+        document.getElementById('csv-progress').style.display = 'none';
+        statusEl.textContent = 'CSV読込エラー: ' + err.message;
+      }
+    });
+
+    // ---- Round 9: PNG + keyboard shortcuts ----
+    document.getElementById('btn-png-sensor')?.addEventListener('click', () => downloadChartPNG('sensor-chart', 'anomaly-sensor-chart.png'));
+    document.getElementById('btn-png-score')?.addEventListener('click', () => downloadChartPNG('score-chart', 'anomaly-score-chart.png'));
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        const btn = document.getElementById('btn-run');
+        if (btn && !btn.disabled) btn.click();
+      }
     });
 
     // ---- Autoencoder ----
@@ -556,6 +639,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       progressSection.style.display = 'block';
       resultSection.style.display = 'none';
+      const _t0 = performance.now();
 
       const trainPct = parseInt(document.getElementById('train-pct').value, 10) / 100;
       const epochs = parseInt(document.getElementById('epochs').value, 10);
@@ -723,6 +807,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }
 
         resultSection.style.display = 'block';
+        const tfMem = (typeof tf !== 'undefined') ? tf.memory() : null;
+        showPerfStats(performance.now() - _t0, tfMem);
         resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       } catch (err) {

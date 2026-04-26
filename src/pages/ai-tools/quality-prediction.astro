@@ -50,6 +50,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <input type="file" id="csv-upload" accept=".csv" style="display:none;">
             </label>
           </div>
+          <div id="csv-progress" style="display:none;margin-top:0.4rem;">
+            <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:0.3rem;">CSVを解析中...</div>
+            <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:6px;">
+              <div id="csv-progress-bar" style="background:#c8a96e;height:6px;border-radius:9999px;transition:width 0.1s;width:0%;"></div>
+            </div>
+          </div>
           <p id="csv-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;margin-top:0.4rem;">サンプルデータ: temperature,pressure,speed,humidity,quality_score</p>
         </div>
 
@@ -63,7 +69,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
       </div>
 
-      <button id="btn-train" class="m-btn" style="min-width:160px;">モデル学習 ▶</button>
+      <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+        <button id="btn-train" class="m-btn" style="min-width:160px;">モデル学習 ▶</button>
+        <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
+      </div>
+      <div id="perf-stats" style="display:none;margin-top:0.75rem;font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;"></div>
 
       <!-- プログレスバー -->
       <div id="progress-wrap" style="display:none;margin-top:1.25rem;">
@@ -103,6 +113,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="position:relative;height:120px;">
           <canvas id="loss-chart"></canvas>
         </div>
+        <button id="btn-png-loss" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.72rem;">📷 PNG保存</button>
       </div>
     </div>
 
@@ -249,6 +260,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </style>
 
   <script is:inline>
+    // ---- Round 8: Chunked CSV Parser ----
+    const CHUNK_ROWS = 1000;
+    async function parseCSVChunkedNew(file, onProgress) {
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = [];
+      const total = lines.length - 1;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        const obj = {};
+        headers.forEach((h, j) => { obj[h] = cols[j] ?? ''; });
+        rows.push(obj);
+        if (i % CHUNK_ROWS === 0) {
+          if (onProgress) onProgress(Math.round(i / total * 100));
+          await new Promise(r => setTimeout(r, 0));
+        }
+      }
+      if (onProgress) onProgress(100);
+      return { headers, rows };
+    }
+
+    // ---- Round 9: PNG export ----
+    function downloadChartPNG(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // ---- Round 10: Performance stats ----
+    function fmtMs(ms) { return ms < 1000 ? ms.toFixed(0)+'ms' : (ms/1000).toFixed(2)+'s'; }
+    function showPerfStats(ms, tfMemory) {
+      const el = document.getElementById('perf-stats');
+      if (!el) return;
+      let html = `⏱ 計算時間: ${fmtMs(ms)}`;
+      if (tfMemory) html += ` | 🧠 TF.jsメモリ: ${(tfMemory.numBytes/1024/1024).toFixed(1)}MB (テンソル${tfMemory.numTensors}個)`;
+      el.textContent = html;
+      el.style.display = 'block';
+    }
+
     // ---- Performance helpers ----
     function debounce(fn, wait) {
       let t;
@@ -602,6 +656,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // =========================================================
     async function trainModel() {
       const epochs = parseInt(document.getElementById('epoch-slider').value);
+      const _t0 = performance.now();
       document.getElementById('progress-wrap').style.display = 'block';
       document.getElementById('train-done').style.display = 'none';
       document.getElementById('btn-train').disabled = true;
@@ -736,6 +791,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       drawImportanceChart(imp);
       predict();
+      const tfMem = (typeof tf !== 'undefined') ? tf.memory() : null;
+      showPerfStats(performance.now() - _t0, tfMem);
     }
 
     // =========================================================
@@ -743,6 +800,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // =========================================================
     document.getElementById('epoch-slider').addEventListener('input', e => {
       document.getElementById('epoch-val').textContent = e.target.value;
+    });
+
+    // ---- Round 9: PNG + keyboard shortcuts ----
+    document.getElementById('btn-png-loss')?.addEventListener('click', () => downloadChartPNG('loss-chart', 'quality-loss-chart.png'));
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        const btn = document.getElementById('btn-train');
+        if (btn && !btn.disabled) btn.click();
+      }
     });
 
     document.getElementById('btn-train').addEventListener('click', () => {
@@ -759,24 +825,44 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       document.getElementById('csv-status').textContent = 'サンプルデータ: temperature,pressure,speed,humidity,quality_score';
     });
 
-    document.getElementById('csv-upload').addEventListener('change', e => {
+    document.getElementById('csv-upload').addEventListener('change', async e => {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const parsed = parseCSV(ev.target.result);
-        if (!parsed) {
-          document.getElementById('csv-status').textContent = 'エラー: CSV形式が不正です (必要列: temperature,pressure,speed,humidity,quality_score)';
+      const statusEl = document.getElementById('csv-status');
+      const csvProgress = document.getElementById('csv-progress');
+      const csvProgressBar = document.getElementById('csv-progress-bar');
+      try {
+        csvProgress.style.display = 'block';
+        csvProgressBar.style.width = '0%';
+        const { rows: allRows, headers } = await parseCSVChunkedNew(file, pct => { csvProgressBar.style.width = pct + '%'; });
+        csvProgress.style.display = 'none';
+        const hdr = headers.map(h => h.toLowerCase());
+        const idxT = hdr.indexOf('temperature');
+        const idxP = hdr.indexOf('pressure');
+        const idxS = hdr.indexOf('speed');
+        const idxH = hdr.indexOf('humidity');
+        const idxQ = hdr.indexOf('quality_score');
+        if ([idxT,idxP,idxS,idxH,idxQ].some(i => i < 0)) {
+          statusEl.textContent = 'エラー: CSV形式が不正です (必要列: temperature,pressure,speed,humidity,quality_score)';
           return;
         }
-        if (parsed.length < 20) {
-          document.getElementById('csv-status').textContent = `エラー: 学習には最低20行必要です（現在 ${parsed.length} 行）`;
+        const data = [];
+        for (const r of allRows) {
+          const vals = headers.map(h => parseFloat(r[h]));
+          if (vals.some(isNaN)) continue;
+          data.push({ inputs: [vals[idxT], vals[idxP], vals[idxS], vals[idxH]], output: vals[idxQ] });
+        }
+        if (data.length < 20) {
+          statusEl.textContent = `エラー: 学習には最低20行必要です（現在 ${data.length} 行）`;
           return;
         }
-        trainingData = parsed;
-        document.getElementById('csv-status').textContent = `CSV読込完了: ${parsed.length}行`;
-      };
-      reader.readAsText(file);
+        trainingData = data;
+        statusEl.textContent = `CSV読込完了: ${data.length}行`;
+      } catch (err) {
+        console.error('CSV parse error:', err);
+        document.getElementById('csv-progress').style.display = 'none';
+        statusEl.textContent = 'CSV読込エラー: ' + err.message;
+      }
     });
 
     document.querySelectorAll('.param-slider').forEach(sl => {
