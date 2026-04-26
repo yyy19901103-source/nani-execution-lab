@@ -6,9 +6,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <BaseLayout title="品質予測（AIプロセス最適化）" description="TensorFlow.jsを使ったブラウザ内AI品質予測。温度・圧力・速度・湿度のパラメータから品質スコアを予測。データは外部送信ゼロ。">
 
   <!-- 機密保護バナー -->
-  <div style="background:#0a1a0a;border-bottom:1px solid rgba(100,200,100,0.2);padding:0.6rem 1.5rem;text-align:center;">
-    <span style="color:#6ec86e;font-size:0.72rem;letter-spacing:0.2em;">🔒 すべてのデータはあなたのブラウザ内でのみ処理されます — 外部サーバーへの送信ゼロ</span>
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — TF.js モデル学習・推論もローカルで実行</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;">検証方法を見る ▼</button>
   </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;border-bottom:1px solid rgba(200,169,110,0.15);padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>DevTools (F12) → Network タブを開く</li>
+      <li>「Disable cache」をオン</li>
+      <li>ページをリロード → CDN ライブラリの読込のみ確認できる</li>
+      <li>データ投入・学習・予測中、追加の通信が <strong>一切発生しない</strong> ことを確認</li>
+    </ol>
+    <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">TensorFlow.js は WebGL/CPU を使ってブラウザ内で完結学習します。モデル重み・入力データは外部送信されません。</p>
+  </div>
+  <div id="tf-status-bar" style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.05);padding:0.5rem 1.25rem;font-size:0.7rem;color:rgba(255,255,255,0.5);text-align:right;">⚙ TensorFlow.js 読込中...</div>
 
   <!-- ヒーロー -->
   <div style="position:relative;height:14rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
@@ -67,6 +79,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div id="train-done" style="display:none;margin-top:1.25rem;color:#6ec86e;font-size:0.8rem;letter-spacing:0.1em;">
         ✓ 学習完了 — 予測フェーズを使用できます
       </div>
+
+      <!-- Training metrics -->
+      <div id="train-metrics" style="display:none;margin-top:1.25rem;grid-template-columns:repeat(3,1fr);gap:0.75rem;">
+        <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.75rem 1rem;text-align:center;">
+          <div style="color:#c8a96e;font-size:0.58rem;letter-spacing:0.25em;">最終 LOSS</div>
+          <div id="metric-loss" style="color:#edede8;font-size:1.1rem;font-weight:300;margin-top:0.35rem;">—</div>
+        </div>
+        <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.75rem 1rem;text-align:center;">
+          <div style="color:#c8a96e;font-size:0.58rem;letter-spacing:0.25em;">R² SCORE</div>
+          <div id="metric-r2" style="color:#edede8;font-size:1.1rem;font-weight:300;margin-top:0.35rem;">—</div>
+        </div>
+        <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.75rem 1rem;text-align:center;">
+          <div style="color:#c8a96e;font-size:0.58rem;letter-spacing:0.25em;">学習データ数</div>
+          <div id="metric-samples" style="color:#edede8;font-size:1.1rem;font-weight:300;margin-top:0.35rem;">—</div>
+        </div>
+      </div>
+
+      <!-- Loss chart -->
+      <div id="loss-chart-wrap" style="display:none;margin-top:1.25rem;background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;">
+        <p style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;margin-bottom:0.5rem;">LOSS CURVE</p>
+        <div style="position:relative;height:120px;">
+          <canvas id="loss-chart"></canvas>
+        </div>
+      </div>
     </div>
 
     <!-- 予測フェーズ（学習完了後に表示） -->
@@ -88,7 +124,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
               <div>
                 <label class="field-label">圧力: <span class="pval" id="val-pressure">3.0</span> MPa</label>
-                <input type="range" class="param-slider" id="sl-pressure" min="200" max="400" value="300" step="1" style="width:100%;accent-color:#c8a96e;">
+                <input type="range" class="param-slider" id="sl-pressure" min="200" max="400" value="300" step="10" style="width:100%;accent-color:#c8a96e;">
                 <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.35);font-size:0.65rem;"><span>2.0 MPa</span><span>4.0 MPa</span></div>
               </div>
 
@@ -106,9 +142,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             </div>
 
-            <div style="margin-top:1.25rem;">
+            <div style="margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:0.5rem;">
               <button id="btn-optimize" class="m-btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.25rem;">最適化提案を表示 ▼</button>
+              <button id="btn-auto-search" class="m-btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.25rem;">最適パラメータ自動探索</button>
+              <button id="btn-download-csv" class="m-btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.25rem;">学習結果CSV</button>
+              <button id="btn-reset" class="m-btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.25rem;">リセット</button>
             </div>
+            <div id="auto-search-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.6rem;"></div>
             <div id="optimize-result" style="display:none;margin-top:1rem;background:#0a1a0a;border:1px solid rgba(100,200,100,0.15);padding:1rem 1.25rem;">
               <p style="color:#6ec86e;font-size:0.65rem;letter-spacing:0.25em;margin-bottom:0.75rem;">OPTIMIZATION SUGGESTIONS</p>
               <div id="optimize-content" style="color:rgba(255,255,255,0.7);font-size:0.8rem;line-height:1.7;"></div>
@@ -173,6 +213,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <script is:inline>
+    // ---- Privacy verify toggle ----
+    document.getElementById('verify-privacy')?.addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // ---- TF.js readiness with backend ----
+    const tfStatusBar = document.getElementById('tf-status-bar');
+    async function initTfBackend() {
+      if (typeof tf === 'undefined') { setTimeout(initTfBackend, 200); return; }
+      try { await tf.setBackend('webgl'); } catch (e) {
+        try { await tf.setBackend('cpu'); } catch (_) {}
+      }
+      await tf.ready();
+      const backend = tf.getBackend();
+      tfStatusBar.textContent = '✓ TensorFlow.js v' + tf.version.tfjs + ' 準備完了 (Backend: ' + (backend === 'webgl' ? 'WebGL' : 'CPU') + ')';
+      tfStatusBar.style.color = '#c8a96e';
+    }
+    initTfBackend();
+
     // =========================================================
     //  Data generation
     // =========================================================
@@ -303,6 +363,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let trainedStats = null;
     let trainingData = null;
     let importanceChart = null;
+    let lossChart = null;
+    let predictRafId = null;
     let useSample = true;
 
     // =========================================================
@@ -325,6 +387,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (s < 60) return '要改善 (不良)';
       if (s < 80) return '普通 (要改善)';
       return '良好';
+    }
+
+    function predictDebounced() {
+      if (predictRafId) cancelAnimationFrame(predictRafId);
+      predictRafId = requestAnimationFrame(() => {
+        predictRafId = null;
+        predict().catch(e => console.error(e));
+      });
     }
 
     async function predict() {
@@ -426,6 +496,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       if (!trainingData) trainingData = generateTrainingData();
 
+      if (trainingData.length < 20) {
+        document.getElementById('train-log').textContent = 'エラー: 学習データが不足しています（最低 20 行必要・現在 ' + trainingData.length + ' 行）';
+        document.getElementById('btn-train').disabled = false;
+        return;
+      }
+
       const stats = computeStats(trainingData);
       trainedStats = stats;
 
@@ -436,6 +512,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const yT = tf.tensor2d(yArr);
 
       const model = await buildQualityModel();
+      const lossHistory = [];
 
       await model.fit(xT, yT, {
         epochs,
@@ -445,6 +522,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           onEpochEnd: async (epoch, logs) => {
             const pct = ((epoch + 1) / epochs) * 100;
             const loss = logs.loss.toFixed(5);
+            lossHistory.push(logs.loss);
             setProgress(pct, `学習中… (${epoch + 1}/${epochs})`, `loss: ${loss}`);
             if ((epoch + 1) % 20 === 0) await tf.nextFrame();
           }
@@ -453,6 +531,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       tf.dispose([xT, yT]);
       trainedModel = model;
+
+      // R² score
+      const predNormArr = await (async () => {
+        const xT2 = tf.tensor2d(xArr);
+        const p = model.predict(xT2);
+        const arr = await p.data();
+        tf.dispose([xT2, p]);
+        return arr;
+      })();
+      const yTrue = trainingData.map(d => d.output);
+      const yPred = Array.from(predNormArr).map(v => denormalizeOutput(v, stats));
+      const yMean = yTrue.reduce((a, b) => a + b, 0) / yTrue.length;
+      const ssRes = yTrue.reduce((s, y, i) => s + (y - yPred[i]) ** 2, 0);
+      const ssTot = yTrue.reduce((s, y) => s + (y - yMean) ** 2, 0);
+      const r2 = ssTot === 0 ? 0 : 1 - ssRes / ssTot;
+
+      document.getElementById('metric-loss').textContent = lossHistory.length ? lossHistory[lossHistory.length - 1].toFixed(5) : '—';
+      document.getElementById('metric-r2').textContent = r2.toFixed(3);
+      document.getElementById('metric-samples').textContent = trainingData.length;
+      document.getElementById('train-metrics').style.display = 'grid';
+
+      // Loss chart
+      document.getElementById('loss-chart-wrap').style.display = 'block';
+      const lossCtx = document.getElementById('loss-chart').getContext('2d');
+      if (lossChart) lossChart.destroy();
+      lossChart = new Chart(lossCtx, {
+        type: 'line',
+        data: {
+          labels: lossHistory.map((_, i) => i + 1),
+          datasets: [{
+            label: 'loss',
+            data: lossHistory,
+            borderColor: '#c8a96e',
+            backgroundColor: 'rgba(200,169,110,0.08)',
+            borderWidth: 1.5,
+            pointRadius: 0,
+            tension: 0.2,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+          }
+        }
+      });
+
+      // Save predictions for CSV download
+      window._trainPreds = yPred;
 
       // Compute feature importance
       setProgress(100, '特徴量重要度を計算中…', '');
@@ -499,6 +630,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           document.getElementById('csv-status').textContent = 'エラー: CSV形式が不正です (必要列: temperature,pressure,speed,humidity,quality_score)';
           return;
         }
+        if (parsed.length < 20) {
+          document.getElementById('csv-status').textContent = `エラー: 学習には最低20行必要です（現在 ${parsed.length} 行）`;
+          return;
+        }
         trainingData = parsed;
         document.getElementById('csv-status').textContent = `CSV読込完了: ${parsed.length}行`;
       };
@@ -516,11 +651,106 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.getElementById('val-pressure').textContent = pressure;
         document.getElementById('val-speed').textContent = speed;
         document.getElementById('val-humidity').textContent = humidity;
-        predict();
+        predictDebounced();
       });
     });
 
     document.getElementById('btn-optimize').addEventListener('click', showOptimize);
+
+    // ---- Auto search (random search 200 samples) ----
+    document.getElementById('btn-auto-search').addEventListener('click', async () => {
+      if (!trainedModel || !trainedStats) return;
+      const statusEl = document.getElementById('auto-search-status');
+      statusEl.textContent = '探索中... (200回ランダム評価)';
+      statusEl.style.color = 'rgba(255,255,255,0.6)';
+
+      try {
+        const N = 200;
+        const candidates = [];
+        for (let i = 0; i < N; i++) {
+          candidates.push([
+            180 + Math.random() * 40,   // temp
+            2.0 + Math.random() * 2.0,  // pressure
+            100 + Math.random() * 100,  // speed
+            30 + Math.random() * 40     // humidity
+          ]);
+        }
+        const normInputs = candidates.map(c => normalizeInput(c, trainedStats));
+        const xT = tf.tensor2d(normInputs);
+        const out = trainedModel.predict(xT);
+        const arr = await out.data();
+        tf.dispose([xT, out]);
+
+        let bestIdx = 0;
+        let bestScore = -Infinity;
+        for (let i = 0; i < N; i++) {
+          const s = denormalizeOutput(arr[i], trainedStats);
+          if (s > bestScore) { bestScore = s; bestIdx = i; }
+        }
+        const [bt, bp, bs, bh] = candidates[bestIdx];
+        // Set sliders
+        document.getElementById('sl-temp').value = Math.round(bt);
+        document.getElementById('sl-pressure').value = Math.round(bp * 100 / 10) * 10;
+        document.getElementById('sl-speed').value = Math.round(bs);
+        document.getElementById('sl-humidity').value = Math.round(bh);
+        // Trigger update
+        document.getElementById('sl-temp').dispatchEvent(new Event('input'));
+
+        statusEl.textContent = `✓ 最適候補: 温度 ${Math.round(bt)}°C / 圧力 ${bp.toFixed(1)} MPa / 速度 ${Math.round(bs)} rpm / 湿度 ${Math.round(bh)}% → 予測品質 ${Math.round(Math.max(0, Math.min(100, bestScore)))}`;
+        statusEl.style.color = '#6ec86e';
+      } catch (e) {
+        statusEl.textContent = 'エラー: ' + e.message;
+        statusEl.style.color = '#e88';
+        console.error(e);
+      }
+    });
+
+    // ---- CSV download ----
+    document.getElementById('btn-download-csv').addEventListener('click', () => {
+      if (!trainingData || !window._trainPreds) {
+        alert('学習を完了してからダウンロードしてください');
+        return;
+      }
+      const lines = ['temperature,pressure,speed,humidity,actual_quality,predicted_quality'];
+      for (let i = 0; i < trainingData.length; i++) {
+        const d = trainingData[i];
+        lines.push([
+          d.inputs[0].toFixed(2),
+          d.inputs[1].toFixed(3),
+          d.inputs[2].toFixed(2),
+          d.inputs[3].toFixed(2),
+          d.output.toFixed(2),
+          window._trainPreds[i].toFixed(2)
+        ].join(','));
+      }
+      const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'quality_prediction_result.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // ---- Reset ----
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (trainedModel) { try { trainedModel.dispose(); } catch (e) {} }
+      trainedModel = null;
+      trainedStats = null;
+      window._trainPreds = null;
+      if (importanceChart) { importanceChart.destroy(); importanceChart = null; }
+      if (lossChart) { lossChart.destroy(); lossChart = null; }
+      document.getElementById('predict-section').style.display = 'none';
+      document.getElementById('train-done').style.display = 'none';
+      document.getElementById('train-metrics').style.display = 'none';
+      document.getElementById('loss-chart-wrap').style.display = 'none';
+      document.getElementById('progress-wrap').style.display = 'none';
+      document.getElementById('auto-search-status').textContent = '';
+      document.getElementById('score-number').textContent = '--';
+      document.getElementById('score-number').style.color = '#edede8';
+      document.getElementById('score-gauge').style.width = '0%';
+      document.getElementById('score-label').textContent = '予測待機中';
+    });
   </script>
 
 </BaseLayout>

@@ -52,6 +52,14 @@ const faqs = [
   {
     q: '精度はどの程度ですか？',
     a: 'これらのツールはデモ・方向性確認・概算算出を目的として設計しています。サンプルデータや簡易モデルを使用しているため、実際の生産ラインへの本番導入前には専門家レビューと本格的なデータ検証を推奨します。'
+  },
+  {
+    q: '動作環境は？',
+    a: 'モダンブラウザ (Chrome/Edge/Firefox/Safari 最新版)。スマートフォンでも動作しますが、TensorFlow.js 系（異常検知・品質予測）はPC/タブレット推奨です。'
+  },
+  {
+    q: 'ツール間でデータは共有されますか？',
+    a: 'いいえ。各ツールはページ単位で独立しており、別ツールに移動するとデータはクリアされます。LocalStorageも使用していません。'
   }
 ];
 ---
@@ -105,6 +113,29 @@ const faqs = [
   </div>
 
   <div style="max-width:1280px;margin:0 auto;padding:3rem 1.5rem 6rem;">
+
+    <!-- クイックスタート -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.15);padding:1.5rem 1.75rem;margin-bottom:2.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:1rem;">QUICK START / 使い方</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;">
+        <div>
+          <p style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">① ツールを開く</p>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.6;">下から興味あるツールをクリック</p>
+        </div>
+        <div>
+          <p style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">② サンプル試行</p>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.6;">「サンプルデータを読み込む」で即体験</p>
+        </div>
+        <div>
+          <p style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">③ 自データ投入</p>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.6;">CSVアップロードで実データ分析</p>
+        </div>
+        <div>
+          <p style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">④ 結果保存</p>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.6;">「結果をCSVでダウンロード」</p>
+        </div>
+      </div>
+    </div>
 
     <!-- ツールカードグリッド -->
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:4rem;">

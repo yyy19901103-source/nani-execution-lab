@@ -6,8 +6,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <BaseLayout title="工程ボトルネック分析" description="サイクルタイム・設備数・稼働率から工程ボトルネックをAIで特定。Chart.jsで需要率を可視化。Little's Lawによるリードタイム推定。ブラウザ完結型。">
 
   <!-- 機密保護バナー -->
-  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;text-align:center;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
-    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 入力データは外部送信されません</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;border-radius:0;transition:all 0.15s;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;border-bottom:1px solid rgba(200,169,110,0.15);padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>ブラウザの DevTools を開く（F12 / Ctrl+Shift+I）</li>
+      <li><code style="background:#111114;padding:0.1em 0.4em;color:#c8a96e;">Network</code> タブを選択</li>
+      <li>このページで計算を実行</li>
+      <li>新規ネットワーク通信が <strong>発生しないこと</strong> を確認</li>
+    </ol>
+    <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">通信は CDN ライブラリ初回読込のみ（Chart.js / TF.js）。データを入れた後は完全ローカル処理です。</p>
   </div>
 
   <!-- ヒーロー -->
@@ -58,6 +69,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <!-- 分析実行ボタン -->
     <div style="margin-bottom:1.5rem;">
       <button id="btn-analyze" class="m-btn">分析実行</button>
+      <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;">リセット</button>
     </div>
 
     <!-- 結果エリア -->
@@ -75,6 +87,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <!-- ボトルネック詳細 + 改善提案 -->
       <div id="suggestion-area" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;"></div>
+
+      <!-- What-If 分析 -->
+      <div id="whatif-area" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-top:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">PHASE 2 — WHAT-IF 分析（オプション）</p>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+          <label style="color:rgba(255,255,255,0.6);font-size:0.78rem;white-space:nowrap;">ボトルネック能力向上</label>
+          <input id="whatif-slider" type="range" min="0" max="100" step="5" value="0" style="flex:1;min-width:200px;accent-color:#c8a96e;">
+          <span id="whatif-val" style="color:#c8a96e;font-size:0.85rem;font-variant-numeric:tabular-nums;min-width:50px;text-align:right;">+0%</span>
+        </div>
+        <div id="whatif-result" style="font-size:0.78rem;color:rgba(255,255,255,0.7);line-height:1.7;"></div>
+      </div>
+
+      <div style="margin-top:1rem;text-align:right;">
+        <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
+      </div>
     </div>
 
   </div>
@@ -368,14 +395,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ============================================================
     // メトリクスカード描画
     // ============================================================
-    function renderMetrics(throughput, leadTimeHours, wip, improvement, bnName) {
+    function renderMetrics(throughput, leadTimeHours, wip, improvement, bnName, procs, results) {
       const row = document.getElementById('metrics-row');
       row.innerHTML = '';
+      const totalEq = (procs || []).reduce((s, p) => s + (p.eq || 0), 0);
+      const avgUtil = (procs || []).length > 0
+        ? procs.reduce((s, p) => s + (p.util || 0), 0) / procs.length
+        : 0;
       const cards = [
         { label: 'スループット', value: throughput.toFixed(1) + ' 個/h', sub: 'ボトルネック制約後', highlight: false },
         { label: '現状リードタイム', value: (leadTimeHours * 60).toFixed(0) + ' 分', sub: 'Little\'s Law 推定', highlight: false },
         { label: 'WIP (推定)', value: wip.toFixed(1) + ' 個', sub: '同時在庫量', highlight: false },
         { label: 'BN解消後スループット改善', value: (improvement >= 0 ? '+' : '') + improvement + ' %', sub: bnName + ' を解消した場合', highlight: true },
+        { label: '設備総数', value: totalEq + ' 台', sub: '全工程合計', highlight: false },
+        { label: '平均稼働率', value: avgUtil.toFixed(1) + ' %', sub: '全工程平均', highlight: false },
       ];
       for (const c of cards) {
         const div = document.createElement('div');
@@ -388,6 +421,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ============================================================
     // 分析実行ボタン
     // ============================================================
+    // 状態保持
+    let lastResults = null;
+    let lastProcs = null;
+    let lastBnIdx = null;
+    let lastTargetQty = null;
+
     document.getElementById('btn-analyze').addEventListener('click', () => {
       const procs = getProcesses();
       if (procs.length < 2) {
@@ -398,8 +437,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       const { results, bnIdx, throughput, leadTimeHours, wip, improvement } = analyze(procs, targetQty);
 
-      renderMetrics(throughput, leadTimeHours, wip, improvement, procs[bnIdx].name);
+      renderMetrics(throughput, leadTimeHours, wip, improvement, procs[bnIdx].name, procs, results);
       renderChart(results, bnIdx);
+
+      lastResults = results;
+      lastProcs = procs;
+      lastBnIdx = bnIdx;
+      lastTargetQty = targetQty;
+      // What-If 初期化
+      const slider = document.getElementById('whatif-slider');
+      if (slider) { slider.value = '0'; }
+      updateWhatIf();
 
       // 改善提案
       const suggArea = document.getElementById('suggestion-area');
@@ -416,6 +464,80 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       document.getElementById('result-area').style.display = 'block';
       document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // ============================================================
+    // What-If 分析
+    // ============================================================
+    function updateWhatIf() {
+      const slider = document.getElementById('whatif-slider');
+      const valEl = document.getElementById('whatif-val');
+      const out = document.getElementById('whatif-result');
+      if (!slider || !out) return;
+      const pct = parseFloat(slider.value) || 0;
+      valEl.textContent = '+' + pct + '%';
+      if (!lastProcs || lastBnIdx === null) {
+        out.innerHTML = '<span style="color:rgba(255,255,255,0.4);">分析実行後に利用できます。</span>';
+        return;
+      }
+      try {
+        // ボトルネック工程のみ eq を (1 + pct/100) 倍にする
+        const modProcs = lastProcs.map((p, i) => i === lastBnIdx ? { ...p, eq: p.eq * (1 + pct / 100) } : p);
+        const r2 = analyze(modProcs, lastTargetQty);
+        const oldThroughput = Math.min(lastTargetQty, lastResults[lastBnIdx].capacity);
+        const delta = r2.throughput - oldThroughput;
+        const deltaPct = oldThroughput > 0 ? (delta / oldThroughput * 100) : 0;
+        const newBnName = modProcs[r2.bnIdx].name;
+        out.innerHTML =
+          '<div style="margin-bottom:0.5rem;">新スループット: <strong style="color:#c8a96e;">' + r2.throughput.toFixed(1) + ' 個/h</strong>' +
+          '（変化: ' + (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' 個/h, ' + (deltaPct >= 0 ? '+' : '') + deltaPct.toFixed(1) + '%）</div>' +
+          '<div>新ボトルネック: <strong style="color:#edede8;">' + newBnName + '</strong>' +
+          (r2.bnIdx === lastBnIdx ? '（変わらず — 同工程が依然制約）' : '（移動 — 別工程が新たな制約に）') + '</div>';
+      } catch (e) {
+        console.error(e);
+        out.innerHTML = '<span style="color:#ff6666;">計算エラー: ' + e.message + '</span>';
+      }
+    }
+    document.getElementById('whatif-slider')?.addEventListener('input', updateWhatIf);
+
+    // ============================================================
+    // リセットボタン
+    // ============================================================
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      try {
+        document.getElementById('result-area').style.display = 'none';
+        if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+        lastResults = null; lastProcs = null; lastBnIdx = null; lastTargetQty = null;
+        renderTable(SAMPLE_PROCS);
+      } catch (e) { console.error(e); }
+    });
+
+    // ============================================================
+    // CSVダウンロード
+    // ============================================================
+    document.getElementById('btn-download').addEventListener('click', () => {
+      try {
+        if (!lastResults || !lastProcs) { alert('結果がありません。先に分析を実行してください。'); return; }
+        const lines = ['process_name,capacity_per_h,demand_rate_pct,is_bottleneck'];
+        lastResults.forEach((r, i) => {
+          const isBn = i === lastBnIdx ? 1 : 0;
+          lines.push([r.name, r.capacity.toFixed(2), r.demandRate.toFixed(2), isBn].join(','));
+        });
+        const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'bottleneck-analysis.csv';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (e) { console.error(e); alert('ダウンロード失敗: ' + e.message); }
+    });
+
+    // ============================================================
+    // 機密保護検証トグル
+    // ============================================================
+    document.getElementById('verify-privacy')?.addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
     });
 
     // ============================================================

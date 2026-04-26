@@ -6,8 +6,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <BaseLayout title="異常検知デモ（AIオートエンコーダー）" description="TensorFlow.js オートエンコーダーによる工場センサー異常検知。完全ブラウザ内AI学習。再構成誤差で異常点を自動判定。">
 
   <!-- Security Banner -->
-  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
-    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — TF.js モデル学習・推論もローカルで実行</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;border-bottom:1px solid rgba(200,169,110,0.15);padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>DevTools (F12) → Network タブを開く</li>
+      <li>「Disable cache」をオン</li>
+      <li>ページをリロード → CDN ライブラリの読込のみ確認できる</li>
+      <li>データ投入・学習・予測中、追加の通信が <strong>一切発生しない</strong> ことを確認</li>
+    </ol>
+    <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">TensorFlow.js は WebGL/CPU を使ってブラウザ内で完結学習します。モデル重み・入力データは外部送信されません。</p>
   </div>
 
   <!-- Hero -->
@@ -43,6 +54,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <span id="epochs-val" style="color:#c8a96e;font-size:0.75rem;">50</span>
             </div>
             <input id="epochs" type="range" min="10" max="200" step="10" value="50" class="slider">
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+              <label class="field-label">異常閾値 (μ + k·σ)</label>
+              <span id="kappa-val" style="color:#c8a96e;font-size:0.75rem;">2.0</span>
+            </div>
+            <input id="kappa" type="range" min="1.0" max="3.0" step="0.1" value="2.0" class="slider">
+            <p style="color:rgba(255,255,255,0.35);font-size:0.65rem;margin-top:0.3rem;">学習後もスライダーで閾値変更可（再学習不要）</p>
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.55);font-size:0.7rem;cursor:pointer;">
+              <input id="early-stop" type="checkbox" style="accent-color:#c8a96e;">
+              早期停止（直近3エポック平均より改善しない場合）
+            </label>
           </div>
         </div>
       </div>
@@ -102,7 +127,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
 
       <!-- Summary metrics -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;" id="metrics-grid">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;" id="metrics-grid">
         <div class="metric-card">
           <div class="metric-label">異常点数</div>
           <div class="metric-value" id="anomaly-count" style="color:#e87070;">—</div>
@@ -118,6 +143,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="metric-value" id="max-score">—</div>
           <div class="metric-sub">最大再構成誤差</div>
         </div>
+        <div class="metric-card">
+          <div class="metric-label">平均誤差</div>
+          <div class="metric-value" id="mean-score">—</div>
+          <div class="metric-sub">学習データ平均</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">閾値</div>
+          <div class="metric-value" id="threshold-val">—</div>
+          <div class="metric-sub">μ + k·σ</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:1.25rem;justify-content:flex-end;">
+        <button id="btn-download" class="m-btn-ghost">結果をCSVでダウンロード</button>
+        <button id="btn-reset" class="m-btn-ghost">リセット</button>
       </div>
 
     </div>
@@ -139,6 +180,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     .metric-label { color:#c8a96e;font-size:0.6rem;letter-spacing:0.35em;margin-bottom:0.5rem; }
     .metric-value { color:#edede8;font-size:1.6rem;font-weight:200;letter-spacing:0.05em;margin-bottom:0.3rem; }
     .metric-sub { color:rgba(255,255,255,0.4);font-size:0.65rem; }
+    @media(max-width:1000px){
+      #metrics-grid { grid-template-columns:repeat(2,1fr) !important; }
+    }
     @media(max-width:700px){
       #ctrl-grid { grid-template-columns:1fr !important; }
       #metrics-grid { grid-template-columns:1fr !important; }
@@ -149,13 +193,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <script is:inline src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
 
   <script is:inline>
+    // ---- Privacy verify toggle ----
+    document.getElementById('verify-privacy')?.addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
     // ---- TF.js readiness ----
     const tfStatusEl = document.getElementById('tf-status');
     const btnRun = document.getElementById('btn-run');
+    tfStatusEl.textContent = '⚙ TensorFlow.js 読込中...';
 
-    function checkTf() {
+    async function checkTf() {
       if (typeof tf !== 'undefined') {
-        tfStatusEl.textContent = 'TensorFlow.js ' + tf.version.tfjs + ' 準備完了';
+        try {
+          await tf.setBackend('webgl');
+        } catch (e) {
+          try { await tf.setBackend('cpu'); } catch (_) {}
+        }
+        await tf.ready();
+        const backend = tf.getBackend();
+        tfStatusEl.textContent = '✓ TensorFlow.js v' + tf.version.tfjs + ' 準備完了 (Backend: ' + (backend === 'webgl' ? 'WebGL' : 'CPU') + ')';
         tfStatusEl.style.color = '#c8a96e';
         if (currentData) btnRun.disabled = false;
       } else {
@@ -183,8 +241,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ---- State ----
     let currentData = null;  // array of {t, v1, v2, v3, ...}
     let sensorKeys = ['v1', 'v2', 'v3'];
+    let sensorLabels = ['Sensor 1', 'Sensor 2', 'Sensor 3'];
     let sensorChart = null;
     let scoreChart = null;
+    let lastErrors = null;
+    let lastNormalErrors = null;
+    let lastTrainSplit = 0;
 
     const statusEl = document.getElementById('data-status');
     const progressSection = document.getElementById('progress-section');
@@ -197,11 +259,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     document.getElementById('epochs').addEventListener('input', function() {
       document.getElementById('epochs-val').textContent = this.value;
     });
+    document.getElementById('kappa').addEventListener('input', function() {
+      document.getElementById('kappa-val').textContent = parseFloat(this.value).toFixed(1);
+      // Recompute threshold without retraining
+      if (lastErrors && lastNormalErrors) recomputeThreshold();
+    });
 
     // ---- Sample load ----
     document.getElementById('btn-sample').addEventListener('click', () => {
       currentData = generateSampleData();
       sensorKeys = ['v1', 'v2', 'v3'];
+      sensorLabels = ['Sensor 1', 'Sensor 2', 'Sensor 3'];
       statusEl.textContent = 'サンプルデータ生成完了: ' + currentData.length + ' サンプル（3特徴量）異常3箇所注入済み';
       if (typeof tf !== 'undefined') btnRun.disabled = false;
     });
@@ -217,9 +285,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         if (lines.length < 2) { statusEl.textContent = 'エラー: データ行が不足しています'; return; }
 
         // Check if first row is header
-        const firstParts = lines[0].split(',');
+        const firstParts = lines[0].split(',').map(s => s.trim());
         let startIdx = 0;
-        if (isNaN(parseFloat(firstParts[1]))) startIdx = 1;
+        let headerNames = null;
+        if (isNaN(parseFloat(firstParts[1]))) {
+          startIdx = 1;
+          // Skip first column (timestamp), keep next up to 5 as sensor names
+          headerNames = firstParts.slice(1, 6);
+        }
 
         const rows = [];
         let cols = 0;
@@ -242,8 +315,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }
 
         sensorKeys = Array.from({length: cols}, (_, i) => 'v' + (i + 1));
+        if (headerNames && headerNames.length >= cols) {
+          sensorLabels = headerNames.slice(0, cols);
+        } else {
+          sensorLabels = Array.from({length: cols}, (_, i) => 'Sensor ' + (i + 1));
+        }
         currentData = rows;
-        statusEl.textContent = 'CSV読込完了: ' + rows.length + ' サンプル・' + cols + ' 特徴量';
+        statusEl.textContent = 'CSV読込完了: ' + rows.length + ' サンプル・' + cols + ' 特徴量 (' + sensorLabels.join(' / ') + ')';
         if (typeof tf !== 'undefined') btnRun.disabled = false;
       };
       reader.readAsText(file);
@@ -267,17 +345,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       document.getElementById('loss-text').textContent = 'Loss: ' + (loss ? loss.toFixed(6) : '—');
     }
 
-    async function trainAndDetect(normalData, allData, epochs) {
+    async function trainAndDetect(normalData, allData, epochs, kappa, useEarlyStop) {
       const inputDim = normalData[0].length;
       const model = await buildAutoencoder(inputDim);
 
+      // Dynamic batch size based on data volume
+      const n = normalData.length;
+      const batchSize = n < 50 ? 16 : (n < 200 ? 32 : 64);
+
       const xNormal = tf.tensor2d(normalData);
+      const lossHistory = [];
+      let stopped = false;
+
       await model.fit(xNormal, xNormal, {
         epochs,
-        batchSize: 16,
+        batchSize,
         shuffle: true,
         callbacks: {
-          onEpochEnd: (e, logs) => updateProgress(e, epochs, logs.loss)
+          onEpochEnd: (e, logs) => {
+            updateProgress(e, epochs, logs.loss);
+            lossHistory.push(logs.loss);
+            if (useEarlyStop && lossHistory.length >= 4) {
+              const recent3 = lossHistory.slice(-4, -1);
+              const avg = recent3.reduce((a, b) => a + b, 0) / 3;
+              if (logs.loss >= avg) {
+                stopped = true;
+                model.stopTraining = true;
+              }
+            }
+          }
         }
       });
 
@@ -286,11 +382,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const errors = tf.mean(tf.square(tf.sub(xAll, reconstructed)), 1);
       const errorsArr = await errors.array();
 
-      // Threshold: mean + 2σ of normal data errors
+      // Threshold: mean + kappa·σ of normal data errors
       const normalErrors = errorsArr.slice(0, normalData.length);
       const mean = normalErrors.reduce((a, b) => a + b, 0) / normalErrors.length;
       const std = Math.sqrt(normalErrors.reduce((s, e) => s + (e - mean) * (e - mean), 0) / normalErrors.length);
-      const threshold = mean + 2 * std;
+      const threshold = mean + kappa * std;
 
       xNormal.dispose();
       xAll.dispose();
@@ -298,7 +394,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       errors.dispose();
       model.dispose();
 
-      return { errors: errorsArr, threshold };
+      return { errors: errorsArr, threshold, mean, std, normalErrors, stopped };
+    }
+
+    function recomputeThreshold() {
+      if (!lastNormalErrors || !lastErrors) return;
+      const kappa = parseFloat(document.getElementById('kappa').value);
+      const mean = lastNormalErrors.reduce((a, b) => a + b, 0) / lastNormalErrors.length;
+      const std = Math.sqrt(lastNormalErrors.reduce((s, e) => s + (e - mean) * (e - mean), 0) / lastNormalErrors.length);
+      const threshold = mean + kappa * std;
+      // Update score chart (bar colors + threshold line)
+      if (scoreChart) {
+        scoreChart.data.datasets[0].backgroundColor = lastErrors.map(e => e > threshold ? 'rgba(232,112,112,0.85)' : 'rgba(200,169,110,0.5)');
+        scoreChart.data.datasets[1].data = Array(lastErrors.length).fill(threshold);
+        scoreChart.update('none');
+      }
+      const anomalyCount = lastErrors.filter(e => e > threshold).length;
+      document.getElementById('anomaly-count').textContent = anomalyCount;
+      document.getElementById('anomaly-rate').textContent = (anomalyCount / lastErrors.length * 100).toFixed(1) + '%';
+      document.getElementById('threshold-val').textContent = threshold.toFixed(4);
     }
 
     // ---- Normalize helper ----
@@ -328,6 +442,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       const trainPct = parseInt(document.getElementById('train-pct').value, 10) / 100;
       const epochs = parseInt(document.getElementById('epochs').value, 10);
+      const kappa = parseFloat(document.getElementById('kappa').value);
+      const useEarlyStop = document.getElementById('early-stop').checked;
       const n = currentData.length;
       const nTrain = Math.max(5, Math.floor(n * trainPct));
 
@@ -337,20 +453,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const normalData = normalizedMatrix.slice(0, nTrain);
 
       try {
-        const { errors, threshold } = await trainAndDetect(normalData, normalizedMatrix, epochs);
+        const { errors, threshold, mean: meanErr, normalErrors, stopped } = await trainAndDetect(normalData, normalizedMatrix, epochs, kappa, useEarlyStop);
+        lastErrors = errors;
+        lastNormalErrors = normalErrors;
+        lastTrainSplit = nTrain;
 
         // Sensor chart
         const labels = currentData.map(d => d.t.toString());
         const sensorColors = ['#c8a96e', '#7eb8c8', '#a8c87e'];
 
+        // Vertical line plugin for train/test boundary
+        const trainBoundaryPlugin = {
+          id: 'trainBoundary',
+          afterDraw(chart) {
+            const xScale = chart.scales.x;
+            const yScale = chart.scales.y;
+            if (!xScale || !yScale || lastTrainSplit <= 0) return;
+            const xPos = xScale.getPixelForValue(lastTrainSplit - 1);
+            const ctx = chart.ctx;
+            ctx.save();
+            ctx.strokeStyle = 'rgba(232,112,112,0.6)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath();
+            ctx.moveTo(xPos, yScale.top);
+            ctx.lineTo(xPos, yScale.bottom);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = 'rgba(232,112,112,0.85)';
+            ctx.font = '10px sans-serif';
+            ctx.fillText('train | eval', xPos + 4, yScale.top + 12);
+            ctx.restore();
+          }
+        };
+
         if (sensorChart) sensorChart.destroy();
         const sCtx = document.getElementById('sensor-chart').getContext('2d');
         sensorChart = new Chart(sCtx, {
           type: 'line',
+          plugins: [trainBoundaryPlugin],
           data: {
             labels,
             datasets: sensorKeys.map((k, i) => ({
-              label: 'Sensor ' + (i + 1),
+              label: sensorLabels[i] || ('Sensor ' + (i + 1)),
               data: currentData.map(d => d[k]),
               borderColor: sensorColors[i % sensorColors.length],
               backgroundColor: 'transparent',
@@ -392,7 +537,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 borderWidth: 0
               },
               {
-                label: '閾値 (μ+2σ)',
+                label: '閾値 (μ+' + kappa.toFixed(1) + 'σ)',
                 data: Array(n).fill(threshold),
                 type: 'line',
                 borderColor: '#e87070',
@@ -432,6 +577,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.getElementById('anomaly-count').textContent = anomalyCount;
         document.getElementById('anomaly-rate').textContent = (anomalyCount / n * 100).toFixed(1) + '%';
         document.getElementById('max-score').textContent = maxScore.toFixed(4);
+        document.getElementById('mean-score').textContent = meanErr.toFixed(4);
+        document.getElementById('threshold-val').textContent = threshold.toFixed(4);
+
+        if (stopped) {
+          document.getElementById('loss-text').textContent += ' (早期停止)';
+        }
 
         resultSection.style.display = 'block';
         resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -442,6 +593,45 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       } finally {
         btnRun.disabled = false;
       }
+    });
+
+    // ---- CSV Download ----
+    document.getElementById('btn-download').addEventListener('click', () => {
+      if (!lastErrors || !currentData) return;
+      const kappa = parseFloat(document.getElementById('kappa').value);
+      const mean = lastNormalErrors.reduce((a, b) => a + b, 0) / lastNormalErrors.length;
+      const std = Math.sqrt(lastNormalErrors.reduce((s, e) => s + (e - mean) * (e - mean), 0) / lastNormalErrors.length);
+      const threshold = mean + kappa * std;
+      const header = ['timestamp', ...sensorLabels, 'reconstruction_error', 'is_anomaly'].join(',');
+      const lines = [header];
+      for (let i = 0; i < currentData.length; i++) {
+        const row = currentData[i];
+        const vals = sensorKeys.map(k => row[k] != null ? row[k] : '');
+        const err = lastErrors[i];
+        lines.push([row.t, ...vals, err.toFixed(6), err > threshold ? '1' : '0'].join(','));
+      }
+      const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'anomaly_detection_result.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // ---- Reset ----
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      lastErrors = null;
+      lastNormalErrors = null;
+      lastTrainSplit = 0;
+      if (sensorChart) { sensorChart.destroy(); sensorChart = null; }
+      if (scoreChart) { scoreChart.destroy(); scoreChart = null; }
+      resultSection.style.display = 'none';
+      progressSection.style.display = 'none';
+      document.getElementById('progress-bar').style.width = '0%';
+      document.getElementById('progress-text').textContent = '';
+      document.getElementById('loss-text').textContent = '';
+      statusEl.textContent = 'リセット完了';
     });
   </script>
 

@@ -6,8 +6,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <BaseLayout title="生産スケジュール最適化" description="遺伝的アルゴリズムによる生産スケジュール最適化ツール。ジョブ・機械割り当てを自動最適化し、ガントチャートで可視化。ブラウザ完結型。">
 
   <!-- 機密保護バナー -->
-  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;text-align:center;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
-    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 入力データは外部送信されません</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;border-radius:0;transition:all 0.15s;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;border-bottom:1px solid rgba(200,169,110,0.15);padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>ブラウザの DevTools を開く（F12 / Ctrl+Shift+I）</li>
+      <li><code style="background:#111114;padding:0.1em 0.4em;color:#c8a96e;">Network</code> タブを選択</li>
+      <li>このページで計算を実行</li>
+      <li>新規ネットワーク通信が <strong>発生しないこと</strong> を確認</li>
+    </ol>
+    <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">通信は CDN ライブラリ初回読込のみ（Chart.js / TF.js）。データを入れた後は完全ローカル処理です。</p>
   </div>
 
   <!-- ヒーロー -->
@@ -53,6 +64,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <!-- 実行ボタン -->
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
       <button id="btn-run" class="m-btn">最適化実行 (GA)</button>
+      <button id="btn-cancel" class="m-btn-ghost" style="display:none;">⏸ 中断</button>
+      <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;">リセット</button>
       <div id="progress-wrap" style="display:none;flex:1;min-width:200px;">
         <div style="font-size:0.7rem;color:#c8a96e;margin-bottom:0.3rem;" id="progress-label">計算中… 0 / 200 世代</div>
         <div style="background:#1a1a1d;height:6px;border-radius:3px;overflow:hidden;">
@@ -72,6 +85,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <canvas id="gantt-canvas" style="display:block;"></canvas>
         </div>
         <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;" id="legend-area"></div>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
       </div>
     </div>
 
@@ -463,16 +479,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ============================================================
     // メトリクスカード
     // ============================================================
-    function renderMetrics(bestResult, naiveResult, jobsData) {
+    function renderMetrics(bestResult, naiveResult, jobsData, ganttTasks) {
       const { makespan, jobEnd } = bestResult;
       let onTimeCount = 0;
+      let totalLateHours = 0;
       jobsData.forEach((job, i) => {
         if (jobEnd[i] <= job.deadline) onTimeCount++;
+        totalLateHours += Math.max(0, jobEnd[i] - job.deadline);
       });
       const adherence = Math.round(onTimeCount / jobsData.length * 100);
       const improvement = naiveResult
         ? Math.round((1 - makespan / naiveResult.makespan) * 100)
         : null;
+
+      // 機械平均稼働率
+      let avgUtil = 0;
+      try {
+        const busyByMachine = new Array(MACHINE_COUNT).fill(0);
+        for (const t of (ganttTasks || [])) {
+          busyByMachine[t.machine] += (t.end - t.start);
+        }
+        const utils = busyByMachine.map(b => makespan > 0 ? (b / makespan) * 100 : 0);
+        avgUtil = utils.reduce((s, u) => s + u, 0) / utils.length;
+      } catch (e) { avgUtil = 0; }
 
       const row = document.getElementById('metrics-row');
       row.innerHTML = '';
@@ -483,6 +512,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           ? { label: '改善率 (vs FIFO)', value: (improvement >= 0 ? '+' : '') + improvement + ' %', sub: 'Makespan 比較' }
           : { label: '世代数', value: MAX_GEN, sub: '探索世代数' },
         { label: '個体数', value: POP_SIZE, sub: '集団サイズ' },
+        { label: '総遅延時間', value: totalLateHours.toFixed(1) + ' h', sub: '全ジョブ累積遅延' },
+        { label: '機械平均稼働率', value: avgUtil.toFixed(1) + ' %', sub: '各機械busy/makespan平均' },
       ];
       for (const c of cards) {
         const div = document.createElement('div');
@@ -495,6 +526,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ============================================================
     // 実行ボタン
     // ============================================================
+    // 状態保持（CSVダウンロード/リセット用）
+    let lastGanttTasks = null;
+    let lastJobsData = null;
+    let cancelFlag = false;
+
     document.getElementById('btn-run').addEventListener('click', () => {
       const jobsData = getJobs();
       if (jobsData.length < 2) {
@@ -503,7 +539,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
 
       const btn = document.getElementById('btn-run');
+      const cancelBtn = document.getElementById('btn-cancel');
       btn.disabled = true;
+      cancelBtn.style.display = 'inline-block';
+      cancelFlag = false;
       const progressWrap = document.getElementById('progress-wrap');
       const progressBar = document.getElementById('progress-bar');
       const progressLabel = document.getElementById('progress-label');
@@ -523,25 +562,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       let pop = Array.from({ length: POP_SIZE }, () => randomPermutation(n));
       let bestFit = Infinity;
       let bestIndiv = null;
+      let stagnation = 0;
+      const STAGNATION_LIMIT = 30;
 
-      function step() {
-        if (gen >= MAX_GEN) {
-          // 完了
-          const pct = 100;
-          progressBar.style.width = pct + '%';
-          progressLabel.textContent = '完了！ 最適解を描画中…';
-          setTimeout(() => {
-            progressWrap.style.display = 'none';
-            btn.disabled = false;
-
-            // ガント描画
+      function finish(reasonLabel) {
+        progressBar.style.width = '100%';
+        progressLabel.textContent = (reasonLabel || '完了') + ' 最適解を描画中…';
+        setTimeout(() => {
+          progressWrap.style.display = 'none';
+          btn.disabled = false;
+          cancelBtn.style.display = 'none';
+          if (!bestIndiv) return;
+          try {
             const ganttTasks = buildGanttData(bestIndiv.ind, jobsData);
             drawGantt(ganttTasks, jobsData, bestIndiv.makespan);
-            renderMetrics(bestIndiv, naiveResult, jobsData);
+            renderMetrics(bestIndiv, naiveResult, jobsData, ganttTasks);
+            lastGanttTasks = ganttTasks;
+            lastJobsData = jobsData;
             document.getElementById('result-area').style.display = 'block';
-          }, 100);
-          return;
-        }
+          } catch (e) {
+            console.error(e);
+            alert('描画中にエラーが発生しました: ' + e.message);
+          }
+        }, 80);
+      }
+
+      function step() {
+        if (cancelFlag) { finish('中断 —'); return; }
+        if (gen >= MAX_GEN) { finish('完了！'); return; }
+        if (stagnation >= STAGNATION_LIMIT) { finish('早期停止（' + STAGNATION_LIMIT + '世代改善なし） —'); return; }
 
         // 10世代ずつ処理
         const chunk = Math.min(10, MAX_GEN - gen);
@@ -554,6 +603,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           if (evaluated[0].fitness < bestFit) {
             bestFit = evaluated[0].fitness;
             bestIndiv = evaluated[0];
+            stagnation = 0;
+          } else {
+            stagnation++;
           }
           const eliteN = Math.max(2, Math.floor(POP_SIZE * 0.2));
           const newPop = evaluated.slice(0, eliteN).map(e => e.ind);
@@ -566,15 +618,66 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           }
           pop = newPop;
           gen++;
+          if (stagnation >= STAGNATION_LIMIT) break;
         }
 
         const pct = Math.round(gen / MAX_GEN * 100);
         progressBar.style.width = pct + '%';
-        progressLabel.textContent = `計算中… ${gen} / ${MAX_GEN} 世代 (最良 fitness: ${bestFit.toFixed(1)})`;
+        progressLabel.textContent = `計算中… ${gen} / ${MAX_GEN} 世代 (最良 fitness: ${bestFit.toFixed(1)}, 停滞: ${stagnation})`;
         requestAnimationFrame(step);
       }
 
       requestAnimationFrame(step);
+    });
+
+    // 中断ボタン
+    document.getElementById('btn-cancel').addEventListener('click', () => {
+      cancelFlag = true;
+    });
+
+    // リセットボタン
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      try {
+        cancelFlag = true;
+        document.getElementById('result-area').style.display = 'none';
+        document.getElementById('progress-wrap').style.display = 'none';
+        document.getElementById('btn-cancel').style.display = 'none';
+        document.getElementById('btn-run').disabled = false;
+        const canvas = document.getElementById('gantt-canvas');
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          ctx && ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        lastGanttTasks = null;
+        lastJobsData = null;
+        renderTable(SAMPLE_JOBS);
+      } catch (e) { console.error(e); }
+    });
+
+    // CSVダウンロード
+    document.getElementById('btn-download').addEventListener('click', () => {
+      try {
+        if (!lastGanttTasks || !lastJobsData) { alert('結果がありません。先に最適化を実行してください。'); return; }
+        const lines = ['job_name,machine,start_h,end_h,is_late'];
+        for (const t of lastGanttTasks) {
+          const job = lastJobsData[t.jobIdx];
+          const isLast = t.machine === MACHINE_COUNT - 1;
+          const isLate = isLast && t.end > job.deadline ? 1 : 0;
+          lines.push([job.name, 'M' + (t.machine + 1), t.start.toFixed(2), t.end.toFixed(2), isLate].join(','));
+        }
+        const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'production-schedule.csv';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (e) { console.error(e); alert('ダウンロード失敗: ' + e.message); }
+    });
+
+    // 機密保護検証トグル
+    document.getElementById('verify-privacy')?.addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
     });
 
     // ============================================================

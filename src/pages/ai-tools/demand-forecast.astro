@@ -6,8 +6,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <BaseLayout title="需要予測（AI時系列分析）" description="Holt-Winters三重指数平滑化による月次需要予測。トレンド・季節性を自動検出し、95%信頼区間つきで3〜12ヶ月先を予測。ブラウザ完結型。">
 
   <!-- Security Banner -->
-  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
-    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 入力データは外部送信されません</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;border-radius:0;transition:all 0.15s;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;border-bottom:1px solid rgba(200,169,110,0.15);padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>ブラウザの DevTools を開く（F12 / Ctrl+Shift+I）</li>
+      <li><code style="background:#111114;padding:0.1em 0.4em;color:#c8a96e;">Network</code> タブを選択</li>
+      <li>このページで計算を実行</li>
+      <li>新規ネットワーク通信が <strong>発生しないこと</strong> を確認</li>
+    </ol>
+    <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">通信は CDN ライブラリ初回読込のみ（Chart.js / TF.js）。データを入れた後は完全ローカル処理です。</p>
   </div>
 
   <!-- Hero -->
@@ -77,10 +88,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </label>
           </div>
           <div id="data-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;min-height:1.2em;"></div>
-          <button id="btn-run" class="m-btn" disabled>予測実行</button>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button id="btn-run" class="m-btn" disabled>予測実行</button>
+            <button id="btn-autotune" class="m-btn-ghost" disabled>自動最適化</button>
+            <button id="btn-reset" class="m-btn-ghost">リセット</button>
+          </div>
+          <div id="autotune-progress" style="display:none;">
+            <div id="autotune-label" style="color:#c8a96e;font-size:0.7rem;margin-bottom:0.3rem;">グリッド探索中…</div>
+            <div style="background:#1a1a1d;height:6px;border-radius:3px;overflow:hidden;">
+              <div id="autotune-bar" style="background:#c8a96e;height:100%;width:0%;transition:width 0.1s;"></div>
+            </div>
+          </div>
         </div>
       </div>
 
+    </div>
+
+    <!-- Data Preview -->
+    <div id="preview-section" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.8rem;">DATA PREVIEW</p>
+      <div style="position:relative;height:120px;">
+        <canvas id="preview-chart"></canvas>
+      </div>
     </div>
 
     <!-- Chart -->
@@ -117,6 +146,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="overflow-x:auto;">
           <table id="forecast-table" style="width:100%;border-collapse:collapse;font-size:0.78rem;"></table>
         </div>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
       </div>
     </div>
 
@@ -207,6 +239,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let currentData = null;
     let forecastPeriods = 3;
     let chartInstance = null;
+    let previewInstance = null;
+    let lastForecastResult = null;
+    let lastForecastLabels = null;
+    let lastCI = null;
 
     // ---- DOM refs ----
     const statusEl = document.getElementById('data-status');
@@ -236,6 +272,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       currentData = { labels: sampleData.labels.slice(), values: sampleData.values.slice() };
       statusEl.textContent = 'サンプルデータ読込完了: ' + currentData.values.length + ' ヶ月分';
       btnRun.disabled = false;
+      const at = document.getElementById('btn-autotune'); if (at) at.disabled = false;
+      drawPreview();
     });
 
     // ---- CSV upload ----
@@ -265,6 +303,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         currentData = { labels, values };
         statusEl.textContent = 'CSV読込完了: ' + values.length + ' ヶ月分' + (skipped ? '（' + skipped + '行スキップ）' : '');
         btnRun.disabled = false;
+        const at = document.getElementById('btn-autotune'); if (at) at.disabled = false;
+        drawPreview();
       };
       reader.readAsText(file);
     });
@@ -298,10 +338,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const ci = currentData.values.length > 12
         ? confidenceInterval(currentData.values, result.fitted, result.forecast, 1.96)
         : result.forecast.map(() => ({ lower: 0, upper: 0 }));
+      lastCI = ci;
 
       // Forecast labels
       const lastLabel = currentData.labels[currentData.labels.length - 1];
       const forecastLabels = Array.from({length: forecastPeriods}, (_, i) => nextMonthLabel(lastLabel, i + 1));
+      lastForecastResult = result;
+      lastForecastLabels = forecastLabels;
 
       // Update metrics
       document.getElementById('mape-val').textContent = result.mape.toFixed(1) + '%';
@@ -435,6 +478,141 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       chartSection.style.display = 'block';
       chartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    // ---- Data Preview (mini-chart) ----
+    function drawPreview() {
+      try {
+        if (!currentData) return;
+        const sec = document.getElementById('preview-section');
+        const cv = document.getElementById('preview-chart');
+        if (!cv || !sec) return;
+        sec.style.display = 'block';
+        if (previewInstance) previewInstance.destroy();
+        previewInstance = new Chart(cv.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: currentData.labels,
+            datasets: [{
+              label: '実績',
+              data: currentData.values,
+              borderColor: '#c8a96e',
+              backgroundColor: 'rgba(200,169,110,0.1)',
+              borderWidth: 1.5,
+              pointRadius: 1.5,
+              pointBackgroundColor: '#c8a96e',
+              tension: 0.25,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111114', titleColor: '#c8a96e', bodyColor: '#edede8' } },
+            scales: {
+              x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 }, grid: { display: false } },
+              y: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+            }
+          }
+        });
+      } catch (e) { console.error(e); }
+    }
+
+    // ---- Auto-tune (grid search) ----
+    document.getElementById('btn-autotune')?.addEventListener('click', () => {
+      if (!currentData) return;
+      const alphas = [0.1, 0.3, 0.5, 0.7];
+      const betas  = [0.05, 0.1, 0.2, 0.3];
+      const gammas = [0.1, 0.2, 0.3, 0.4];
+      const total = alphas.length * betas.length * gammas.length;
+      const wrap = document.getElementById('autotune-progress');
+      const bar = document.getElementById('autotune-bar');
+      const lbl = document.getElementById('autotune-label');
+      wrap.style.display = 'block';
+      bar.style.width = '0%';
+      lbl.textContent = 'グリッド探索中… 0 / ' + total;
+
+      let best = { mape: Infinity, a: 0.3, b: 0.1, g: 0.2 };
+      let count = 0;
+      const combos = [];
+      for (const a of alphas) for (const b of betas) for (const g of gammas) combos.push([a, b, g]);
+
+      function step() {
+        try {
+          const chunk = Math.min(8, combos.length - count);
+          for (let k = 0; k < chunk; k++) {
+            const [a, b, g] = combos[count];
+            const r = holtWinters(currentData.values, a, b, g, 12, forecastPeriods);
+            if (r && isFinite(r.mape) && r.mape < best.mape) { best = { mape: r.mape, a, b, g }; }
+            count++;
+          }
+          const pct = Math.round(count / total * 100);
+          bar.style.width = pct + '%';
+          lbl.textContent = 'グリッド探索中… ' + count + ' / ' + total + ' (最良 MAPE: ' + best.mape.toFixed(2) + '%)';
+          if (count < total) {
+            requestAnimationFrame(step);
+          } else {
+            // セット
+            document.getElementById('alpha').value = best.a;
+            document.getElementById('beta').value = best.b;
+            document.getElementById('gamma').value = best.g;
+            document.getElementById('alpha-val').textContent = best.a.toFixed(2);
+            document.getElementById('beta-val').textContent = best.b.toFixed(2);
+            document.getElementById('gamma-val').textContent = best.g.toFixed(2);
+            lbl.textContent = '完了 — 最適 α=' + best.a + ', β=' + best.b + ', γ=' + best.g + ' (MAPE ' + best.mape.toFixed(2) + '%)';
+            setTimeout(() => { wrap.style.display = 'none'; runForecast(); }, 600);
+          }
+        } catch (e) {
+          console.error(e);
+          lbl.textContent = 'エラー: ' + e.message;
+        }
+      }
+      requestAnimationFrame(step);
+    });
+
+    // ---- Reset ----
+    document.getElementById('btn-reset')?.addEventListener('click', () => {
+      try {
+        if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+        if (previewInstance) { previewInstance.destroy(); previewInstance = null; }
+        currentData = null;
+        lastForecastResult = null; lastForecastLabels = null; lastCI = null;
+        chartSection.style.display = 'none';
+        document.getElementById('preview-section').style.display = 'none';
+        statusEl.textContent = '';
+        btnRun.disabled = true;
+        const at = document.getElementById('btn-autotune'); if (at) at.disabled = true;
+      } catch (e) { console.error(e); }
+    });
+
+    // ---- CSV Download ----
+    document.getElementById('btn-download')?.addEventListener('click', () => {
+      try {
+        if (!lastForecastResult || !currentData) { alert('結果がありません。先に予測を実行してください。'); return; }
+        const lines = ['year_month,actual,fitted,forecast,ci_lower,ci_upper'];
+        currentData.labels.forEach((lab, i) => {
+          const fitted = lastForecastResult.fitted[i];
+          lines.push([lab, currentData.values[i], (fitted != null ? Math.round(fitted) : ''), '', '', ''].join(','));
+        });
+        lastForecastLabels.forEach((lab, i) => {
+          const fc = Math.round(lastForecastResult.forecast[i]);
+          const lo = lastCI ? Math.round(lastCI[i].lower) : '';
+          const hi = lastCI ? Math.round(lastCI[i].upper) : '';
+          lines.push([lab, '', '', fc, lo, hi].join(','));
+        });
+        const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'demand-forecast.csv';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (e) { console.error(e); alert('ダウンロード失敗: ' + e.message); }
+    });
+
+    // ---- Privacy verify toggle ----
+    document.getElementById('verify-privacy')?.addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
   </script>
 
 </BaseLayout>
