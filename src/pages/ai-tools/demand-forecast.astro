@@ -202,6 +202,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <script is:inline>
+    // ---- Performance helpers ----
+    function debounce(fn, wait) {
+      let t;
+      return function(...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+    function throttleRAF(fn) {
+      let scheduled = false;
+      return function(...args) {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(() => {
+          scheduled = false;
+          fn.apply(this, args);
+        });
+      };
+    }
+
     // ---- Sample data ----
     const sampleData = {
       labels: ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06',
@@ -598,7 +618,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         },
         options: {
           responsive: true,
+          resizeDelay: 100,
           maintainAspectRatio: false,
+          animation: false,
+          animations: { colors: false, x: false },
+          transitions: { active: { animation: { duration: 0 } } },
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: {
@@ -699,7 +723,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           },
           options: {
             responsive: true,
+            resizeDelay: 100,
             maintainAspectRatio: false,
+            animation: false,
+            animations: { colors: false, x: false },
+            transitions: { active: { animation: { duration: 0 } } },
             plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111114', titleColor: '#c8a96e', bodyColor: '#edede8' } },
             scales: {
               x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 }, grid: { display: false } },

@@ -131,6 +131,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   <script>
     // ============================================================
+    // Performance helpers
+    // ============================================================
+    function debounce(fn, wait) {
+      let t;
+      return function(...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+    function throttleRAF(fn) {
+      let scheduled = false;
+      return function(...args) {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(() => {
+          scheduled = false;
+          fn.apply(this, args);
+        });
+      };
+    }
+
+    // ============================================================
     // データ
     // ============================================================
     const SAMPLE_JOBS = [
