@@ -1,0 +1,440 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="需要予測（AI時系列分析）" description="Holt-Winters三重指数平滑化による月次需要予測。トレンド・季節性を自動検出し、95%信頼区間つきで3〜12ヶ月先を予測。ブラウザ完結型。">
+
+  <!-- Security Banner -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
+    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  </div>
+
+  <!-- Hero -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a12 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">AI Time-Series Analysis</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">需要予測</h1>
+      <p style="color:rgba(237,237,232,0.5);font-size:0.78rem;margin-top:0.6rem;letter-spacing:0.05em;">Holt-Winters 三重指数平滑化 · トレンド + 季節性 · 95% 信頼区間</p>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- Parameters & Controls -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" id="ctrl-grid">
+
+      <!-- Parameters -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">PARAMETERS</p>
+        <div style="display:flex;flex-direction:column;gap:0.85rem;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+              <label class="field-label">α (レベル平滑化)</label>
+              <span id="alpha-val" style="color:#c8a96e;font-size:0.75rem;font-variant-numeric:tabular-nums;">0.30</span>
+            </div>
+            <input id="alpha" type="range" min="0.05" max="0.95" step="0.05" value="0.3" class="slider">
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+              <label class="field-label">β (トレンド平滑化)</label>
+              <span id="beta-val" style="color:#c8a96e;font-size:0.75rem;font-variant-numeric:tabular-nums;">0.10</span>
+            </div>
+            <input id="beta" type="range" min="0.01" max="0.5" step="0.01" value="0.1" class="slider">
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+              <label class="field-label">γ (季節性平滑化)</label>
+              <span id="gamma-val" style="color:#c8a96e;font-size:0.75rem;font-variant-numeric:tabular-nums;">0.20</span>
+            </div>
+            <input id="gamma" type="range" min="0.01" max="0.5" step="0.01" value="0.2" class="slider">
+          </div>
+          <div>
+            <label class="field-label" style="margin-bottom:0.35rem;">予測期間</label>
+            <div style="display:flex;gap:0.5rem;">
+              <button class="period-btn active" data-period="3">3ヶ月</button>
+              <button class="period-btn" data-period="6">6ヶ月</button>
+              <button class="period-btn" data-period="12">12ヶ月</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data input -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">DATA</p>
+        <div style="display:flex;flex-direction:column;gap:0.65rem;">
+          <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.6;">
+            CSV形式: <code style="background:#0a0a0c;padding:0.1em 0.4em;color:#c8a96e;">year_month,quantity</code><br>
+            例: <code style="background:#0a0a0c;padding:0.1em 0.4em;color:rgba(255,255,255,0.6);">2024-01,820</code>（最低14ヶ月必要）
+          </p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button id="btn-sample" class="m-btn-ghost">サンプルデータ読込</button>
+            <label class="m-btn-ghost" style="cursor:pointer;">
+              CSV アップロード
+              <input id="csv-upload" type="file" accept=".csv,text/csv" style="display:none;">
+            </label>
+          </div>
+          <div id="data-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;min-height:1.2em;"></div>
+          <button id="btn-run" class="m-btn" disabled>予測実行</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Chart -->
+    <div id="chart-section" style="display:none;">
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">FORECAST CHART</p>
+        <div style="position:relative;height:320px;">
+          <canvas id="forecast-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;" id="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">MAPE</div>
+          <div class="metric-value" id="mape-val">—</div>
+          <div class="metric-sub">平均絶対パーセント誤差</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">MAE</div>
+          <div class="metric-value" id="mae-val">—</div>
+          <div class="metric-sub">平均絶対誤差</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">データ数</div>
+          <div class="metric-value" id="data-count">—</div>
+          <div class="metric-sub">実績データ月数</div>
+        </div>
+      </div>
+
+      <!-- Forecast table -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">FORECAST SUMMARY</p>
+        <div style="overflow-x:auto;">
+          <table id="forecast-table" style="width:100%;border-collapse:collapse;font-size:0.78rem;"></table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost, .period-btn {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.42rem 0.75rem;font-size:0.72rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover, .period-btn:hover { border-color:#c8a96e;color:#c8a96e; }
+    .period-btn.active { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover:not(:disabled) { background:#d4b87b; }
+    .m-btn:disabled { opacity:0.4;cursor:not-allowed; }
+    .field-label { display:block;color:rgba(255,255,255,0.55);font-size:0.68rem;letter-spacing:0.08em; }
+    .slider { width:100%;accent-color:#c8a96e;cursor:pointer; }
+    .metric-card { background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.25rem;text-align:center; }
+    .metric-label { color:#c8a96e;font-size:0.6rem;letter-spacing:0.35em;margin-bottom:0.5rem; }
+    .metric-value { color:#edede8;font-size:1.6rem;font-weight:200;letter-spacing:0.05em;margin-bottom:0.3rem; }
+    .metric-sub { color:rgba(255,255,255,0.4);font-size:0.65rem; }
+    table th { color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.5rem 1rem;border-bottom:1px solid rgba(255,255,255,0.07);text-align:left;font-weight:400; }
+    table td { color:#edede8;font-size:0.78rem;padding:0.5rem 1rem;border-bottom:1px solid rgba(255,255,255,0.04); }
+    table tr:last-child td { border-bottom:none; }
+    table td.gold { color:#c8a96e; }
+    @media(max-width:700px){
+      #ctrl-grid { grid-template-columns:1fr !important; }
+      #metrics-grid { grid-template-columns:1fr !important; }
+    }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script is:inline>
+    // ---- Sample data ----
+    const sampleData = {
+      labels: ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06',
+               '2024-07','2024-08','2024-09','2024-10','2024-11','2024-12',
+               '2025-01','2025-02','2025-03','2025-04','2025-05','2025-06',
+               '2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'],
+      values: [820, 760, 890, 950, 1020, 1150, 1280, 1350, 1100, 980, 850, 920,
+               870, 810, 950, 1010, 1090, 1220, 1360, 1430, 1180, 1050, 920, 990]
+    };
+
+    // ---- Holt-Winters ----
+    function holtWinters(data, alpha, beta, gamma, season, forecastPeriods) {
+      if (data.length < season + 2) return null;
+      let level = data[0];
+      let trend = (data[season] - data[0]) / season;
+      let seasonals = Array.from({length: season}, (_, i) => data[i] / (level + i * trend));
+
+      let fitted = [];
+      for (let i = 0; i < data.length; i++) {
+        let s = seasonals[i % season];
+        let prevLevel = level;
+        let prevTrend = trend;
+        level = alpha * (data[i] / s) + (1 - alpha) * (prevLevel + prevTrend);
+        trend = beta * (level - prevLevel) + (1 - beta) * prevTrend;
+        seasonals[i % season] = gamma * (data[i] / level) + (1 - gamma) * s;
+        fitted.push((level + trend) * seasonals[i % season]);
+      }
+
+      let forecast = [];
+      for (let h = 1; h <= forecastPeriods; h++) {
+        forecast.push((level + h * trend) * seasonals[(data.length + h - 1) % season]);
+      }
+
+      let mape = fitted.slice(season).reduce((sum, f, i) =>
+        sum + Math.abs((data[i + season] - f) / data[i + season]), 0) / (data.length - season) * 100;
+
+      let mae = fitted.slice(season).reduce((sum, f, i) =>
+        sum + Math.abs(data[i + season] - f), 0) / (data.length - season);
+
+      return { fitted, forecast, mape, mae };
+    }
+
+    function confidenceInterval(data, fitted, forecast, z) {
+      z = z || 1.96;
+      let errors = fitted.slice(12).map((f, i) => data[i + 12] - f);
+      let std = Math.sqrt(errors.reduce((s, e) => s + e * e, 0) / errors.length);
+      return forecast.map((f, h) => ({
+        lower: f - z * std * Math.sqrt(h + 1),
+        upper: f + z * std * Math.sqrt(h + 1)
+      }));
+    }
+
+    // ---- State ----
+    let currentData = null;
+    let forecastPeriods = 3;
+    let chartInstance = null;
+
+    // ---- DOM refs ----
+    const statusEl = document.getElementById('data-status');
+    const btnRun = document.getElementById('btn-run');
+    const chartSection = document.getElementById('chart-section');
+
+    // ---- Sliders ----
+    ['alpha','beta','gamma'].forEach(id => {
+      const slider = document.getElementById(id);
+      const display = document.getElementById(id + '-val');
+      slider.addEventListener('input', () => {
+        display.textContent = parseFloat(slider.value).toFixed(2);
+      });
+    });
+
+    // ---- Period buttons ----
+    document.querySelectorAll('.period-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        forecastPeriods = parseInt(btn.dataset.period, 10);
+      });
+    });
+
+    // ---- Sample load ----
+    document.getElementById('btn-sample').addEventListener('click', () => {
+      currentData = { labels: sampleData.labels.slice(), values: sampleData.values.slice() };
+      statusEl.textContent = 'サンプルデータ読込完了: ' + currentData.values.length + ' ヶ月分';
+      btnRun.disabled = false;
+    });
+
+    // ---- CSV upload ----
+    document.getElementById('csv-upload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const text = ev.target.result;
+        const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
+        const labels = [], values = [];
+        let skipped = 0;
+        for (const line of lines) {
+          const parts = line.split(',');
+          if (parts.length < 2) { skipped++; continue; }
+          const label = parts[0].trim();
+          const val = parseFloat(parts[1].trim());
+          if (isNaN(val)) { skipped++; continue; }
+          labels.push(label);
+          values.push(val);
+        }
+        if (values.length < 14) {
+          statusEl.textContent = 'エラー: 最低14ヶ月分のデータが必要です（現在: ' + values.length + '）';
+          btnRun.disabled = true;
+          return;
+        }
+        currentData = { labels, values };
+        statusEl.textContent = 'CSV読込完了: ' + values.length + ' ヶ月分' + (skipped ? '（' + skipped + '行スキップ）' : '');
+        btnRun.disabled = false;
+      };
+      reader.readAsText(file);
+    });
+
+    // ---- Run forecast ----
+    document.getElementById('btn-run').addEventListener('click', runForecast);
+
+    function nextMonthLabel(label, n) {
+      // label like "2025-12"
+      try {
+        const [y, m] = label.split('-').map(Number);
+        let date = new Date(y, m - 1 + n);
+        return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
+      } catch(e) {
+        return 'F+' + n;
+      }
+    }
+
+    function runForecast() {
+      if (!currentData) return;
+      const alpha = parseFloat(document.getElementById('alpha').value);
+      const beta = parseFloat(document.getElementById('beta').value);
+      const gamma = parseFloat(document.getElementById('gamma').value);
+
+      const result = holtWinters(currentData.values, alpha, beta, gamma, 12, forecastPeriods);
+      if (!result) {
+        statusEl.textContent = 'エラー: データが不足しています（最低14ヶ月必要）';
+        return;
+      }
+
+      const ci = currentData.values.length > 12
+        ? confidenceInterval(currentData.values, result.fitted, result.forecast, 1.96)
+        : result.forecast.map(() => ({ lower: 0, upper: 0 }));
+
+      // Forecast labels
+      const lastLabel = currentData.labels[currentData.labels.length - 1];
+      const forecastLabels = Array.from({length: forecastPeriods}, (_, i) => nextMonthLabel(lastLabel, i + 1));
+
+      // Update metrics
+      document.getElementById('mape-val').textContent = result.mape.toFixed(1) + '%';
+      document.getElementById('mae-val').textContent = Math.round(result.mae).toLocaleString();
+      document.getElementById('data-count').textContent = currentData.values.length;
+
+      // Build chart
+      const allLabels = [...currentData.labels, ...forecastLabels];
+
+      const actualData = currentData.values.map((v, i) => ({ x: currentData.labels[i], y: v }));
+      const fittedData = result.fitted.map((v, i) => ({ x: currentData.labels[i], y: Math.round(v) }));
+
+      const forecastDataPts = result.forecast.map((v, i) => ({ x: forecastLabels[i], y: Math.round(v) }));
+      // Connect last actual to first forecast
+      const forecastLine = [
+        { x: currentData.labels[currentData.labels.length - 1], y: currentData.values[currentData.values.length - 1] },
+        ...forecastDataPts
+      ];
+
+      const ciUpperData = [
+        { x: currentData.labels[currentData.labels.length - 1], y: currentData.values[currentData.values.length - 1] },
+        ...ci.map((c, i) => ({ x: forecastLabels[i], y: Math.round(c.upper) }))
+      ];
+      const ciLowerData = [
+        { x: currentData.labels[currentData.labels.length - 1], y: currentData.values[currentData.values.length - 1] },
+        ...ci.map((c, i) => ({ x: forecastLabels[i], y: Math.round(c.lower) }))
+      ];
+
+      if (chartInstance) chartInstance.destroy();
+
+      const ctx = document.getElementById('forecast-chart').getContext('2d');
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: allLabels,
+          datasets: [
+            {
+              label: '信頼区間 上限',
+              data: ciUpperData,
+              borderColor: 'transparent',
+              backgroundColor: 'rgba(200,169,110,0.15)',
+              fill: '+1',
+              pointRadius: 0,
+              tension: 0.3
+            },
+            {
+              label: '信頼区間 下限',
+              data: ciLowerData,
+              borderColor: 'transparent',
+              backgroundColor: 'rgba(200,169,110,0.15)',
+              fill: false,
+              pointRadius: 0,
+              tension: 0.3
+            },
+            {
+              label: '実績',
+              data: actualData,
+              borderColor: '#c8a96e',
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              pointRadius: 3,
+              pointBackgroundColor: '#c8a96e',
+              tension: 0.2
+            },
+            {
+              label: 'フィッティング',
+              data: fittedData,
+              borderColor: 'rgba(200,169,110,0.45)',
+              backgroundColor: 'transparent',
+              borderWidth: 1,
+              pointRadius: 0,
+              tension: 0.3,
+              borderDash: [4, 3]
+            },
+            {
+              label: '予測',
+              data: forecastLine,
+              borderColor: '#edede8',
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              pointRadius: 4,
+              pointBackgroundColor: '#edede8',
+              tension: 0.2,
+              borderDash: [6, 4]
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 18 }
+            },
+            tooltip: {
+              backgroundColor: '#111114',
+              borderColor: 'rgba(255,255,255,0.07)',
+              borderWidth: 1,
+              titleColor: '#c8a96e',
+              bodyColor: '#edede8'
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 }, maxRotation: 45 },
+              grid: { color: 'rgba(255,255,255,0.04)' }
+            },
+            y: {
+              ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
+              grid: { color: 'rgba(255,255,255,0.04)' }
+            }
+          }
+        }
+      });
+
+      // Build forecast table
+      const table = document.getElementById('forecast-table');
+      table.innerHTML = '<thead><tr><th>年月</th><th>予測値</th><th>下限 (95%)</th><th>上限 (95%)</th></tr></thead>';
+      const tbody = document.createElement('tbody');
+      result.forecast.forEach((v, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td class="gold">' + forecastLabels[i] + '</td>' +
+          '<td>' + Math.round(v).toLocaleString() + '</td>' +
+          '<td style="color:rgba(237,237,232,0.5);">' + Math.round(ci[i].lower).toLocaleString() + '</td>' +
+          '<td style="color:rgba(237,237,232,0.5);">' + Math.round(ci[i].upper).toLocaleString() + '</td>';
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+
+      chartSection.style.display = 'block';
+      chartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+
+</BaseLayout>

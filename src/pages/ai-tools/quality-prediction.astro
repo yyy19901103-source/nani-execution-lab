@@ -1,0 +1,526 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="品質予測（AIプロセス最適化）" description="TensorFlow.jsを使ったブラウザ内AI品質予測。温度・圧力・速度・湿度のパラメータから品質スコアを予測。データは外部送信ゼロ。">
+
+  <!-- 機密保護バナー -->
+  <div style="background:#0a1a0a;border-bottom:1px solid rgba(100,200,100,0.2);padding:0.6rem 1.5rem;text-align:center;">
+    <span style="color:#6ec86e;font-size:0.72rem;letter-spacing:0.2em;">🔒 すべてのデータはあなたのブラウザ内でのみ処理されます — 外部サーバーへの送信ゼロ</span>
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:14rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a0d 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">AI Quality Prediction</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.2rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:0.75rem;">品質予測（AIプロセス最適化）</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;font-weight:300;">TensorFlow.js Dense Neural Network — ブラウザ内学習・推論</p>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:2rem 1rem 5rem;">
+
+    <!-- 学習フェーズ -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-bottom:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1.25rem;">PHASE 1 — モデル学習</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;align-items:center;">
+        <div style="flex:1;min-width:200px;">
+          <label class="field-label">データソース</label>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button id="btn-use-sample" class="m-btn-ghost active" style="font-size:0.72rem;padding:0.45rem 1rem;">サンプル100行を使用</button>
+            <label class="m-btn-ghost" style="font-size:0.72rem;padding:0.45rem 1rem;cursor:pointer;">
+              CSVをアップロード
+              <input type="file" id="csv-upload" accept=".csv" style="display:none;">
+            </label>
+          </div>
+          <p id="csv-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;margin-top:0.4rem;">サンプルデータ: temperature,pressure,speed,humidity,quality_score</p>
+        </div>
+
+        <div style="min-width:200px;flex:1;">
+          <label class="field-label">エポック数: <span id="epoch-val">100</span></label>
+          <input type="range" id="epoch-slider" min="20" max="200" value="100" step="10"
+            style="width:100%;accent-color:#c8a96e;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.35);font-size:0.65rem;">
+            <span>20</span><span>200</span>
+          </div>
+        </div>
+      </div>
+
+      <button id="btn-train" class="m-btn" style="min-width:160px;">モデル学習 ▶</button>
+
+      <!-- プログレスバー -->
+      <div id="progress-wrap" style="display:none;margin-top:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem;">
+          <span style="color:rgba(255,255,255,0.55);font-size:0.72rem;" id="progress-label">学習中…</span>
+          <span style="color:#c8a96e;font-size:0.72rem;" id="progress-pct">0%</span>
+        </div>
+        <div style="background:#1a1a1e;height:6px;border-radius:0;">
+          <div id="progress-bar" style="background:#c8a96e;height:6px;width:0%;transition:width 0.2s;"></div>
+        </div>
+        <p id="train-log" style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-top:0.5rem;font-family:ui-monospace,Consolas,monospace;"></p>
+      </div>
+
+      <div id="train-done" style="display:none;margin-top:1.25rem;color:#6ec86e;font-size:0.8rem;letter-spacing:0.1em;">
+        ✓ 学習完了 — 予測フェーズを使用できます
+      </div>
+    </div>
+
+    <!-- 予測フェーズ（学習完了後に表示） -->
+    <div id="predict-section" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start;" class="predict-grid">
+
+        <!-- 左: パラメータ入力 -->
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;">
+            <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1.25rem;">PHASE 2 — パラメータ入力（リアルタイム予測）</p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+
+              <div>
+                <label class="field-label">温度: <span class="pval" id="val-temp">200</span> °C</label>
+                <input type="range" class="param-slider" id="sl-temp" min="180" max="220" value="200" step="1" style="width:100%;accent-color:#c8a96e;">
+                <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.35);font-size:0.65rem;"><span>180°C</span><span>220°C</span></div>
+              </div>
+
+              <div>
+                <label class="field-label">圧力: <span class="pval" id="val-pressure">3.0</span> MPa</label>
+                <input type="range" class="param-slider" id="sl-pressure" min="200" max="400" value="300" step="1" style="width:100%;accent-color:#c8a96e;">
+                <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.35);font-size:0.65rem;"><span>2.0 MPa</span><span>4.0 MPa</span></div>
+              </div>
+
+              <div>
+                <label class="field-label">速度: <span class="pval" id="val-speed">150</span> rpm</label>
+                <input type="range" class="param-slider" id="sl-speed" min="100" max="200" value="150" step="1" style="width:100%;accent-color:#c8a96e;">
+                <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.35);font-size:0.65rem;"><span>100 rpm</span><span>200 rpm</span></div>
+              </div>
+
+              <div>
+                <label class="field-label">湿度: <span class="pval" id="val-humidity">45</span> %</label>
+                <input type="range" class="param-slider" id="sl-humidity" min="30" max="70" value="45" step="1" style="width:100%;accent-color:#c8a96e;">
+                <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.35);font-size:0.65rem;"><span>30%</span><span>70%</span></div>
+              </div>
+
+            </div>
+
+            <div style="margin-top:1.25rem;">
+              <button id="btn-optimize" class="m-btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.25rem;">最適化提案を表示 ▼</button>
+            </div>
+            <div id="optimize-result" style="display:none;margin-top:1rem;background:#0a1a0a;border:1px solid rgba(100,200,100,0.15);padding:1rem 1.25rem;">
+              <p style="color:#6ec86e;font-size:0.65rem;letter-spacing:0.25em;margin-bottom:0.75rem;">OPTIMIZATION SUGGESTIONS</p>
+              <div id="optimize-content" style="color:rgba(255,255,255,0.7);font-size:0.8rem;line-height:1.7;"></div>
+            </div>
+          </div>
+
+          <!-- 特徴量重要度 -->
+          <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;">
+            <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1.25rem;">特徴量重要度 (Permutation Importance)</p>
+            <canvas id="importance-chart" height="140"></canvas>
+          </div>
+        </div>
+
+        <!-- 右: スコア表示 -->
+        <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;position:sticky;top:6rem;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1.5rem;">QUALITY SCORE</p>
+
+          <div style="text-align:center;margin-bottom:1.5rem;">
+            <div id="score-number" style="font-size:4.5rem;font-weight:100;letter-spacing:0.05em;color:#edede8;line-height:1;">--</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:0.72rem;margin-top:0.4rem;">/ 100</div>
+          </div>
+
+          <!-- カラーゲージ -->
+          <div style="margin-bottom:1.25rem;">
+            <div style="background:#1a1a1e;height:12px;position:relative;overflow:hidden;">
+              <div id="score-gauge" style="height:12px;width:0%;transition:width 0.4s,background 0.4s;background:#c8a96e;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:0.35rem;font-size:0.65rem;color:rgba(255,255,255,0.3);">
+              <span style="color:#e88;">不良</span>
+              <span style="color:#e8d060;">要改善</span>
+              <span style="color:#c8a96e;">良好</span>
+            </div>
+          </div>
+
+          <div id="score-label" style="text-align:center;font-size:0.8rem;letter-spacing:0.15em;color:rgba(255,255,255,0.5);margin-bottom:1.5rem;">予測待機中</div>
+
+          <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:1.25rem;">
+            <p style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.75rem;">入力パラメータ</p>
+            <div id="param-summary" style="color:rgba(255,255,255,0.55);font-size:0.75rem;line-height:1.7;font-family:ui-monospace,Consolas,monospace;"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.45rem 0.85rem;font-size:0.75rem;cursor:pointer;font-family:inherit;letter-spacing:0.06em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn-ghost.active { background:rgba(200,169,110,0.12);border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover { background:#d4b87b; }
+    .field-label { display:block;color:rgba(255,255,255,0.55);font-size:0.7rem;letter-spacing:0.08em;margin-bottom:0.5rem; }
+    @media(max-width:860px){ .predict-grid { grid-template-columns:1fr !important; } }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script is:inline>
+    // =========================================================
+    //  Data generation
+    // =========================================================
+    function generateTrainingData() {
+      const data = [];
+      for (let i = 0; i < 100; i++) {
+        const temp     = 180 + Math.random() * 40;
+        const pressure = 2.0 + Math.random() * 2.0;
+        const speed    = 100 + Math.random() * 100;
+        const humidity = 30  + Math.random() * 40;
+        const quality = Math.min(100, Math.max(0,
+          60
+          + (temp - 200) * -0.5
+          + (pressure - 3.0) * 8
+          + (speed - 150) * -0.1
+          + (humidity - 45) * -0.3
+          + (Math.random() - 0.5) * 10
+        ));
+        data.push({ inputs: [temp, pressure, speed, humidity], output: quality });
+      }
+      return data;
+    }
+
+    // =========================================================
+    //  CSV parsing
+    // =========================================================
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      if (lines.length < 2) return null;
+      const header = lines[0].toLowerCase().split(',').map(s => s.trim());
+      const idxT = header.indexOf('temperature');
+      const idxP = header.indexOf('pressure');
+      const idxS = header.indexOf('speed');
+      const idxH = header.indexOf('humidity');
+      const idxQ = header.indexOf('quality_score');
+      if ([idxT,idxP,idxS,idxH,idxQ].some(i => i < 0)) return null;
+      const data = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(s => parseFloat(s.trim()));
+        if (cols.some(isNaN)) continue;
+        data.push({ inputs: [cols[idxT], cols[idxP], cols[idxS], cols[idxH]], output: cols[idxQ] });
+      }
+      return data.length > 0 ? data : null;
+    }
+
+    // =========================================================
+    //  Normalization helpers
+    // =========================================================
+    function computeStats(data) {
+      // per-feature min/max for inputs, min/max for output
+      const n = data[0].inputs.length;
+      const mins = Array(n).fill(Infinity);
+      const maxs = Array(n).fill(-Infinity);
+      let qMin = Infinity, qMax = -Infinity;
+      for (const d of data) {
+        for (let f = 0; f < n; f++) {
+          if (d.inputs[f] < mins[f]) mins[f] = d.inputs[f];
+          if (d.inputs[f] > maxs[f]) maxs[f] = d.inputs[f];
+        }
+        if (d.output < qMin) qMin = d.output;
+        if (d.output > qMax) qMax = d.output;
+      }
+      return { mins, maxs, qMin, qMax };
+    }
+
+    function normalizeInput(inputs, stats) {
+      return inputs.map((v, i) => {
+        const range = stats.maxs[i] - stats.mins[i];
+        return range === 0 ? 0 : (v - stats.mins[i]) / range;
+      });
+    }
+
+    function normalizeOutput(q, stats) {
+      const range = stats.qMax - stats.qMin;
+      return range === 0 ? 0.5 : (q - stats.qMin) / range;
+    }
+
+    function denormalizeOutput(n, stats) {
+      return n * (stats.qMax - stats.qMin) + stats.qMin;
+    }
+
+    // =========================================================
+    //  Model
+    // =========================================================
+    async function buildQualityModel() {
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 16, activation: 'relu', inputShape: [4] }));
+      model.add(tf.layers.dense({ units: 8, activation: 'relu' }));
+      model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+      model.compile({
+        optimizer: tf.train.adam(0.01),
+        loss: 'meanSquaredError',
+        metrics: ['mse']
+      });
+      return model;
+    }
+
+    async function evalLoss(model, xArr, yArr) {
+      const xT = tf.tensor2d(xArr);
+      const yT = tf.tensor2d(yArr, [yArr.length, 1]);
+      const pred = model.predict(xT);
+      const diff = pred.sub(yT);
+      const mse  = diff.square().mean();
+      const val  = await mse.data();
+      tf.dispose([xT, yT, pred, diff, mse]);
+      return val[0];
+    }
+
+    async function featureImportance(model, xData, yData, featureNames) {
+      const baseLoss = await evalLoss(model, xData, yData);
+      const importances = [];
+      for (let f = 0; f < featureNames.length; f++) {
+        const shuffled = xData.map(row => {
+          const copy = [...row];
+          copy[f] = xData[Math.floor(Math.random() * xData.length)][f];
+          return copy;
+        });
+        const shuffledLoss = await evalLoss(model, shuffled, yData);
+        importances.push({ name: featureNames[f], importance: shuffledLoss - baseLoss });
+      }
+      return importances.sort((a, b) => b.importance - a.importance);
+    }
+
+    // =========================================================
+    //  State
+    // =========================================================
+    let trainedModel = null;
+    let trainedStats = null;
+    let trainingData = null;
+    let importanceChart = null;
+    let useSample = true;
+
+    // =========================================================
+    //  UI helpers
+    // =========================================================
+    function setProgress(pct, label, log) {
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-pct').textContent = Math.round(pct) + '%';
+      if (label) document.getElementById('progress-label').textContent = label;
+      if (log !== undefined) document.getElementById('train-log').textContent = log;
+    }
+
+    function scoreColor(s) {
+      if (s < 60) return '#e88080';
+      if (s < 80) return '#e8d060';
+      return '#c8a96e';
+    }
+
+    function scoreLabel(s) {
+      if (s < 60) return '要改善 (不良)';
+      if (s < 80) return '普通 (要改善)';
+      return '良好';
+    }
+
+    async function predict() {
+      if (!trainedModel || !trainedStats) return;
+      const temp     = parseFloat(document.getElementById('sl-temp').value);
+      const pressure = parseFloat(document.getElementById('sl-pressure').value) / 100;
+      const speed    = parseFloat(document.getElementById('sl-speed').value);
+      const humidity = parseFloat(document.getElementById('sl-humidity').value);
+
+      const normIn = normalizeInput([temp, pressure, speed, humidity], trainedStats);
+      const xT = tf.tensor2d([normIn]);
+      const out = trainedModel.predict(xT);
+      const raw = await out.data();
+      tf.dispose([xT, out]);
+
+      const score = Math.round(denormalizeOutput(raw[0], trainedStats));
+      const clamped = Math.max(0, Math.min(100, score));
+      const col = scoreColor(clamped);
+
+      document.getElementById('score-number').textContent = clamped;
+      document.getElementById('score-number').style.color = col;
+      document.getElementById('score-gauge').style.width = clamped + '%';
+      document.getElementById('score-gauge').style.background = col;
+      document.getElementById('score-label').textContent = scoreLabel(clamped);
+      document.getElementById('score-label').style.color = col;
+      document.getElementById('param-summary').innerHTML =
+        `温度:  ${temp} °C\n圧力:  ${pressure.toFixed(2)} MPa\n速度:  ${speed} rpm\n湿度: ${humidity} %`
+          .replace(/\n/g, '<br>');
+    }
+
+    function drawImportanceChart(importances) {
+      const ctx = document.getElementById('importance-chart').getContext('2d');
+      if (importanceChart) importanceChart.destroy();
+      const labels = importances.map(d => d.name);
+      const values = importances.map(d => Math.max(0, d.importance * 1000));
+      importanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            data: values,
+            backgroundColor: values.map((_, i) => i === 0 ? '#c8a96e' : 'rgba(200,169,110,0.4)'),
+            borderWidth: 0
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              ticks: { color: 'rgba(255,255,255,0.45)', font: { size: 10 } },
+              grid: { color: 'rgba(255,255,255,0.06)' }
+            },
+            y: {
+              ticks: { color: 'rgba(255,255,255,0.7)', font: { size: 11 } },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function showOptimize() {
+      const temp     = parseFloat(document.getElementById('sl-temp').value);
+      const pressure = parseFloat(document.getElementById('sl-pressure').value) / 100;
+      const speed    = parseFloat(document.getElementById('sl-speed').value);
+      const humidity = parseFloat(document.getElementById('sl-humidity').value);
+
+      const suggestions = [];
+      if (temp < 195) suggestions.push(`🌡 温度を <strong>${temp}°C → 200°C 付近</strong> に上げることで品質向上が期待できます（最適: 200°C）`);
+      else if (temp > 205) suggestions.push(`🌡 温度を <strong>${temp}°C → 200°C 付近</strong> に下げることで品質向上が期待できます（最適: 200°C）`);
+      else suggestions.push(`🌡 温度 ${temp}°C は最適範囲内です ✓`);
+
+      if (pressure < 2.8) suggestions.push(`⚡ 圧力を <strong>${pressure.toFixed(1)} → 3.0 MPa 付近</strong> に上げることを推奨します（最適: 3.0 MPa）`);
+      else if (pressure > 3.2) suggestions.push(`⚡ 圧力を <strong>${pressure.toFixed(1)} → 3.0 MPa 付近</strong> に下げることを推奨します（最適: 3.0 MPa）`);
+      else suggestions.push(`⚡ 圧力 ${pressure.toFixed(1)} MPa は最適範囲内です ✓`);
+
+      if (speed < 140) suggestions.push(`⚙ 速度を <strong>${speed} → 150 rpm 付近</strong> に上げることを推奨します（最適: 150 rpm）`);
+      else if (speed > 160) suggestions.push(`⚙ 速度を <strong>${speed} → 150 rpm 付近</strong> に下げることを推奨します（最適: 150 rpm）`);
+      else suggestions.push(`⚙ 速度 ${speed} rpm は最適範囲内です ✓`);
+
+      if (humidity > 50) suggestions.push(`💧 湿度を <strong>${humidity}% → 45% 以下</strong> に下げると品質改善が期待できます（低湿度が有利）`);
+      else suggestions.push(`💧 湿度 ${humidity}% は適正範囲内です ✓`);
+
+      document.getElementById('optimize-content').innerHTML = suggestions.join('<br>');
+      document.getElementById('optimize-result').style.display = 'block';
+    }
+
+    // =========================================================
+    //  Training
+    // =========================================================
+    async function trainModel() {
+      const epochs = parseInt(document.getElementById('epoch-slider').value);
+      document.getElementById('progress-wrap').style.display = 'block';
+      document.getElementById('train-done').style.display = 'none';
+      document.getElementById('btn-train').disabled = true;
+      setProgress(0, '学習中…', 'データを準備中…');
+
+      if (!trainingData) trainingData = generateTrainingData();
+
+      const stats = computeStats(trainingData);
+      trainedStats = stats;
+
+      const xArr = trainingData.map(d => normalizeInput(d.inputs, stats));
+      const yArr = trainingData.map(d => [normalizeOutput(d.output, stats)]);
+
+      const xT = tf.tensor2d(xArr);
+      const yT = tf.tensor2d(yArr);
+
+      const model = await buildQualityModel();
+
+      await model.fit(xT, yT, {
+        epochs,
+        batchSize: 16,
+        shuffle: true,
+        callbacks: {
+          onEpochEnd: async (epoch, logs) => {
+            const pct = ((epoch + 1) / epochs) * 100;
+            const loss = logs.loss.toFixed(5);
+            setProgress(pct, `学習中… (${epoch + 1}/${epochs})`, `loss: ${loss}`);
+            if ((epoch + 1) % 20 === 0) await tf.nextFrame();
+          }
+        }
+      });
+
+      tf.dispose([xT, yT]);
+      trainedModel = model;
+
+      // Compute feature importance
+      setProgress(100, '特徴量重要度を計算中…', '');
+      const featureNames = ['温度 (°C)', '圧力 (MPa)', '速度 (rpm)', '湿度 (%)'];
+      const imp = await featureImportance(model, xArr, yArr.map(d => d[0]), featureNames);
+
+      setProgress(100, '完了', `最終 loss: ${(await evalLoss(model, xArr, yArr.map(d=>d[0]))).toFixed(5)}`);
+      document.getElementById('train-done').style.display = 'block';
+      document.getElementById('predict-section').style.display = 'block';
+      document.getElementById('btn-train').disabled = false;
+
+      drawImportanceChart(imp);
+      predict();
+    }
+
+    // =========================================================
+    //  Event listeners
+    // =========================================================
+    document.getElementById('epoch-slider').addEventListener('input', e => {
+      document.getElementById('epoch-val').textContent = e.target.value;
+    });
+
+    document.getElementById('btn-train').addEventListener('click', () => {
+      trainModel().catch(err => {
+        console.error(err);
+        document.getElementById('train-log').textContent = 'エラー: ' + err.message;
+        document.getElementById('btn-train').disabled = false;
+      });
+    });
+
+    document.getElementById('btn-use-sample').addEventListener('click', () => {
+      useSample = true;
+      trainingData = null;
+      document.getElementById('csv-status').textContent = 'サンプルデータ: temperature,pressure,speed,humidity,quality_score';
+    });
+
+    document.getElementById('csv-upload').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const parsed = parseCSV(ev.target.result);
+        if (!parsed) {
+          document.getElementById('csv-status').textContent = 'エラー: CSV形式が不正です (必要列: temperature,pressure,speed,humidity,quality_score)';
+          return;
+        }
+        trainingData = parsed;
+        document.getElementById('csv-status').textContent = `CSV読込完了: ${parsed.length}行`;
+      };
+      reader.readAsText(file);
+    });
+
+    document.querySelectorAll('.param-slider').forEach(sl => {
+      sl.addEventListener('input', () => {
+        // Update display values
+        const temp     = document.getElementById('sl-temp').value;
+        const pressure = (parseFloat(document.getElementById('sl-pressure').value) / 100).toFixed(1);
+        const speed    = document.getElementById('sl-speed').value;
+        const humidity = document.getElementById('sl-humidity').value;
+        document.getElementById('val-temp').textContent = temp;
+        document.getElementById('val-pressure').textContent = pressure;
+        document.getElementById('val-speed').textContent = speed;
+        document.getElementById('val-humidity').textContent = humidity;
+        predict();
+      });
+    });
+
+    document.getElementById('btn-optimize').addEventListener('click', showOptimize);
+  </script>
+
+</BaseLayout>

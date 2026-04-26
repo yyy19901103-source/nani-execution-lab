@@ -1,0 +1,427 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="工程ボトルネック分析" description="サイクルタイム・設備数・稼働率から工程ボトルネックをAIで特定。Chart.jsで需要率を可視化。Little's Lawによるリードタイム推定。ブラウザ完結型。">
+
+  <!-- 機密保護バナー -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;text-align:center;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
+    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#130d1a 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Bottleneck Analysis · Little's Law</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">工程ボトルネック分析</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- 目標生産量 + コントロールバー -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+      <label style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;white-space:nowrap;">目標生産量</label>
+      <div style="display:flex;align-items:center;gap:0.5rem;">
+        <input id="target-qty" type="number" min="1" value="100" style="background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);padding:0.4rem 0.6rem;font-size:0.85rem;font-family:inherit;width:90px;outline:none;" />
+        <span style="color:rgba(255,255,255,0.4);font-size:0.78rem;">個/h</span>
+      </div>
+      <div style="width:1px;height:1.5rem;background:rgba(255,255,255,0.07);"></div>
+      <button id="btn-sample" class="m-btn-ghost">サンプルデータを読み込む</button>
+      <label class="m-btn-ghost" style="cursor:pointer;">
+        CSVアップロード
+        <input id="csv-upload" type="file" accept=".csv" style="display:none;">
+      </label>
+      <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;min-width:0;">CSV形式: process_name,cycle_time_sec,equipment_count,utilization_pct</span>
+    </div>
+
+    <!-- 工程テーブル -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;overflow-x:auto;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">PROCESSES</p>
+      <table id="proc-table" style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+        <thead>
+          <tr>
+            <th class="th">工程名</th>
+            <th class="th">サイクルタイム (秒)</th>
+            <th class="th">設備数</th>
+            <th class="th">稼働率 (%)</th>
+            <th class="th"></th>
+          </tr>
+        </thead>
+        <tbody id="proc-tbody"></tbody>
+      </table>
+      <button id="btn-add-row" class="m-btn-ghost" style="margin-top:0.75rem;font-size:0.72rem;">+ 行を追加</button>
+    </div>
+
+    <!-- 分析実行ボタン -->
+    <div style="margin-bottom:1.5rem;">
+      <button id="btn-analyze" class="m-btn">分析実行</button>
+    </div>
+
+    <!-- 結果エリア -->
+    <div id="result-area" style="display:none;">
+      <!-- メトリクス -->
+      <div id="metrics-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem;margin-bottom:1.25rem;"></div>
+
+      <!-- グラフ -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">DEMAND RATE (%)</p>
+        <div style="position:relative;max-height:400px;">
+          <canvas id="bn-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- ボトルネック詳細 + 改善提案 -->
+      <div id="suggestion-area" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;"></div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.5rem 1rem;font-size:0.75rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:700; }
+    .m-btn:hover { background:#d4b87b; }
+    .th {
+      text-align:left;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;
+      padding:0.4rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.07);font-weight:400;
+    }
+    .td { padding:0.3rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04); }
+    .cell-input {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.08);
+      padding:0.3rem 0.5rem;font-size:0.8rem;font-family:inherit;width:100%;outline:none;
+    }
+    .cell-input:focus { border-color:#c8a96e; }
+    .del-btn {
+      background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:1rem;line-height:1;padding:0.1rem 0.3rem;
+    }
+    .del-btn:hover { color:rgba(255,80,80,1); }
+    .metric-card {
+      background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;
+    }
+    .metric-card.highlight { border-color:#c8a96e;background:rgba(200,169,110,0.06); }
+    .metric-label { color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.4rem; }
+    .metric-value { color:#edede8;font-size:1.4rem;font-weight:200;letter-spacing:0.05em; }
+    .metric-sub { color:rgba(255,255,255,0.3);font-size:0.68rem;margin-top:0.25rem; }
+    .metric-value.gold { color:#c8a96e; }
+    #target-qty:focus { border-color:#c8a96e; }
+    .suggest-item {
+      padding:0.85rem 1rem;border-left:2px solid rgba(255,255,255,0.1);margin-bottom:0.6rem;
+    }
+    .suggest-item.critical { border-color:#ff4444; }
+    .suggest-item.warning { border-color:#c8a96e; }
+    .suggest-item.ok { border-color:rgba(110,200,151,0.6); }
+    .suggest-title { font-size:0.8rem;font-weight:600;margin-bottom:0.3rem; }
+    .suggest-body { font-size:0.75rem;color:rgba(255,255,255,0.55);line-height:1.6; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script>
+    // ============================================================
+    // サンプルデータ
+    // ============================================================
+    const SAMPLE_PROCS = [
+      { name: '受入検査', ct: 28, eq: 1, util: 95 },
+      { name: '加工A',   ct: 42, eq: 2, util: 90 },
+      { name: '加工B',   ct: 38, eq: 1, util: 88 },
+      { name: '組立',    ct: 25, eq: 3, util: 92 },
+      { name: '最終検査', ct: 20, eq: 1, util: 98 },
+      { name: '梱包出荷', ct: 15, eq: 2, util: 95 },
+    ];
+
+    // ============================================================
+    // テーブル管理
+    // ============================================================
+    function getProcesses() {
+      const rows = document.querySelectorAll('#proc-tbody tr');
+      const result = [];
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const name = inputs[0].value.trim();
+        const ct = parseFloat(inputs[1].value) || 0;
+        const eq = parseInt(inputs[2].value) || 1;
+        const util = parseFloat(inputs[3].value) || 100;
+        if (name && ct > 0) result.push({ name, ct, eq, util });
+      });
+      return result;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('proc-tbody');
+      tbody.innerHTML = '';
+      data.forEach(p => addRow(p));
+    }
+
+    function addRow(proc = null) {
+      const tbody = document.getElementById('proc-tbody');
+      const tr = document.createElement('tr');
+      const vals = proc
+        ? [proc.name, proc.ct, proc.eq, proc.util]
+        : ['新工程', 30, 1, 100];
+      const types = ['text', 'number', 'number', 'number'];
+      vals.forEach((v, ci) => {
+        const td = document.createElement('td');
+        td.className = 'td';
+        const inp = document.createElement('input');
+        inp.className = 'cell-input';
+        inp.value = v;
+        inp.type = types[ci];
+        if (ci > 0) { inp.min = '0'; inp.step = ci === 3 ? '1' : '0.5'; }
+        td.appendChild(inp);
+        tr.appendChild(td);
+      });
+      const delTd = document.createElement('td');
+      delTd.className = 'td';
+      const delBtn = document.createElement('button');
+      delBtn.className = 'del-btn';
+      delBtn.textContent = '✕';
+      delBtn.addEventListener('click', () => tr.remove());
+      delTd.appendChild(delBtn);
+      tr.appendChild(delTd);
+      tbody.appendChild(tr);
+    }
+
+    document.getElementById('btn-sample').addEventListener('click', () => renderTable(SAMPLE_PROCS));
+    document.getElementById('btn-add-row').addEventListener('click', () => addRow());
+
+    document.getElementById('csv-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const lines = ev.target.result.split('\n').filter(l => l.trim());
+        const parsed = [];
+        for (const line of lines) {
+          const cols = line.split(',');
+          if (cols.length < 4) continue;
+          const name = cols[0].trim();
+          if (!name || name.toLowerCase() === 'process_name') continue;
+          parsed.push({ name, ct: parseFloat(cols[1]) || 0, eq: parseInt(cols[2]) || 1, util: parseFloat(cols[3]) || 100 });
+        }
+        if (parsed.length > 0) renderTable(parsed);
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    // ============================================================
+    // 分析計算
+    // ============================================================
+    function analyze(procs, targetQty) {
+      // 各工程の実効能力 = 3600 / CT × 設備数 × 稼働率/100
+      const results = procs.map(p => {
+        const capacity = (3600 / p.ct) * p.eq * (p.util / 100);
+        const demandRate = (targetQty / capacity) * 100;
+        return { ...p, capacity, demandRate };
+      });
+
+      // ボトルネック = demandRate 最大
+      const maxDR = Math.max(...results.map(r => r.demandRate));
+      const bnIdx = results.findIndex(r => r.demandRate === maxDR);
+
+      // スループット = ボトルネックの実効能力（需要率でキャップ）
+      const throughput = Math.min(targetQty, results[bnIdx].capacity);
+
+      // Little's Law: WIP ≈ スループット × リードタイム
+      // 各工程の平均WIP = スループット × (CT / 3600 / 設備数) × 稼働率補正
+      const totalLeadTimeSec = results.reduce((sum, r) => sum + (r.ct / r.util * 100), 0);
+      const leadTimeHours = totalLeadTimeSec / 3600;
+      const wip = throughput * leadTimeHours;
+
+      // ボトルネック解消時のスループット（次のボトルネックが制約になると仮定して目標と比較）
+      const sorted = [...results].sort((a, b) => b.demandRate - a.demandRate);
+      const afterBNThroughput = sorted.length > 1
+        ? Math.min(targetQty, sorted[1].capacity)
+        : throughput;
+      const improvement = throughput > 0
+        ? Math.round((afterBNThroughput / throughput - 1) * 100)
+        : 0;
+
+      return { results, bnIdx, throughput, leadTimeHours, wip, improvement };
+    }
+
+    // ============================================================
+    // 改善提案ロジック
+    // ============================================================
+    function getSuggestion(proc, result, bnIdx, idx, improvement) {
+      const dr = result.demandRate;
+      const isBN = idx === bnIdx;
+      if (dr > 100) {
+        return {
+          level: 'critical',
+          title: `⚠ ${proc.name}：能力不足（需要率 ${dr.toFixed(1)}%）`,
+          body: `実効能力 ${result.capacity.toFixed(1)} 個/h に対して目標 ${(result.capacity * dr / 100).toFixed(0)} 個/h が求められています。` +
+                '設備増設または外注を検討してください。' +
+                (isBN ? ` このボトルネックを解消するとスループット +${improvement}% が見込めます。` : '')
+        };
+      } else if (dr >= 90) {
+        return {
+          level: 'warning',
+          title: `△ ${proc.name}：要注意（需要率 ${dr.toFixed(1)}%）`,
+          body: '余裕が少なくボトルネック化のリスクがあります。稼働率改善・段取り短縮が有効です。'
+        };
+      } else {
+        return {
+          level: 'ok',
+          title: `○ ${proc.name}：余裕あり（需要率 ${dr.toFixed(1)}%）`,
+          body: `実効能力 ${result.capacity.toFixed(1)} 個/h。現状ボトルネックではありません。`
+        };
+      }
+    }
+
+    // ============================================================
+    // Chart.js グラフ
+    // ============================================================
+    let chartInstance = null;
+
+    function renderChart(results, bnIdx) {
+      const canvas = document.getElementById('bn-chart');
+      if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+
+      const labels = results.map(r => r.name);
+      const data = results.map(r => parseFloat(r.demandRate.toFixed(1)));
+      const colors = results.map((r, i) =>
+        i === bnIdx ? '#c8a96e' : (r.demandRate > 100 ? 'rgba(255,68,68,0.7)' : 'rgba(110,168,200,0.65)')
+      );
+      const borders = results.map((r, i) =>
+        i === bnIdx ? '#c8a96e' : (r.demandRate > 100 ? '#ff4444' : 'rgba(110,168,200,1)')
+      );
+
+      chartInstance = new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: '需要率 (%)',
+            data,
+            backgroundColor: colors,
+            borderColor: borders,
+            borderWidth: 1.5,
+            borderRadius: 2,
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#111114',
+              borderColor: 'rgba(255,255,255,0.1)',
+              borderWidth: 1,
+              titleColor: '#c8a96e',
+              bodyColor: '#edede8',
+              callbacks: {
+                label: (ctx) => ` ${ctx.parsed.x.toFixed(1)} %`
+              }
+            },
+            annotation: {}
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255,255,255,0.06)' },
+              ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
+              title: { display: true, text: '需要率 (%)', color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
+              min: 0,
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: 'rgba(255,255,255,0.6)', font: { size: 12 } }
+            }
+          }
+        },
+        plugins: [{
+          // 100% ライン
+          id: 'line100',
+          afterDraw(chart) {
+            const { ctx, chartArea, scales } = chart;
+            const x = scales.x.getPixelForValue(100);
+            if (x < chartArea.left || x > chartArea.right) return;
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+            ctx.moveTo(x, chartArea.top);
+            ctx.lineTo(x, chartArea.bottom);
+            ctx.stroke();
+            ctx.fillStyle = '#ff6666';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('100%', x, chartArea.top - 6);
+            ctx.restore();
+          }
+        }]
+      });
+
+      // キャンバス高さ調整
+      canvas.style.height = Math.max(200, results.length * 52) + 'px';
+    }
+
+    // ============================================================
+    // メトリクスカード描画
+    // ============================================================
+    function renderMetrics(throughput, leadTimeHours, wip, improvement, bnName) {
+      const row = document.getElementById('metrics-row');
+      row.innerHTML = '';
+      const cards = [
+        { label: 'スループット', value: throughput.toFixed(1) + ' 個/h', sub: 'ボトルネック制約後', highlight: false },
+        { label: '現状リードタイム', value: (leadTimeHours * 60).toFixed(0) + ' 分', sub: 'Little\'s Law 推定', highlight: false },
+        { label: 'WIP (推定)', value: wip.toFixed(1) + ' 個', sub: '同時在庫量', highlight: false },
+        { label: 'BN解消後スループット改善', value: (improvement >= 0 ? '+' : '') + improvement + ' %', sub: bnName + ' を解消した場合', highlight: true },
+      ];
+      for (const c of cards) {
+        const div = document.createElement('div');
+        div.className = 'metric-card' + (c.highlight ? ' highlight' : '');
+        div.innerHTML = `<div class="metric-label">${c.label}</div><div class="metric-value${c.highlight ? ' gold' : ''}">${c.value}</div><div class="metric-sub">${c.sub}</div>`;
+        row.appendChild(div);
+      }
+    }
+
+    // ============================================================
+    // 分析実行ボタン
+    // ============================================================
+    document.getElementById('btn-analyze').addEventListener('click', () => {
+      const procs = getProcesses();
+      if (procs.length < 2) {
+        alert('工程を2件以上入力してください。');
+        return;
+      }
+      const targetQty = parseFloat(document.getElementById('target-qty').value) || 100;
+
+      const { results, bnIdx, throughput, leadTimeHours, wip, improvement } = analyze(procs, targetQty);
+
+      renderMetrics(throughput, leadTimeHours, wip, improvement, procs[bnIdx].name);
+      renderChart(results, bnIdx);
+
+      // 改善提案
+      const suggArea = document.getElementById('suggestion-area');
+      suggArea.innerHTML = '<p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">IMPROVEMENT SUGGESTIONS</p>';
+      // ボトルネックを先頭に
+      const order = [bnIdx, ...results.map((_, i) => i).filter(i => i !== bnIdx)];
+      for (const i of order) {
+        const s = getSuggestion(procs[i], results[i], bnIdx, i, improvement);
+        const div = document.createElement('div');
+        div.className = `suggest-item ${s.level}`;
+        div.innerHTML = `<div class="suggest-title" style="color:${s.level === 'critical' ? '#ff6666' : s.level === 'warning' ? '#c8a96e' : 'rgba(110,200,151,0.9)'}">${s.title}</div><div class="suggest-body">${s.body}</div>`;
+        suggArea.appendChild(div);
+      }
+
+      document.getElementById('result-area').style.display = 'block';
+      document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // ============================================================
+    // 初期表示
+    // ============================================================
+    renderTable(SAMPLE_PROCS);
+  </script>
+
+</BaseLayout>

@@ -1,0 +1,448 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="異常検知デモ（AIオートエンコーダー）" description="TensorFlow.js オートエンコーダーによる工場センサー異常検知。完全ブラウザ内AI学習。再構成誤差で異常点を自動判定。">
+
+  <!-- Security Banner -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
+    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  </div>
+
+  <!-- Hero -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d0d1a 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">AI Anomaly Detection</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">異常検知デモ</h1>
+      <p style="color:rgba(237,237,232,0.5);font-size:0.78rem;margin-top:0.6rem;letter-spacing:0.05em;">TF.js による完全ブラウザ内AI学習 · オートエンコーダー · 再構成誤差</p>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- Config & Data -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" id="ctrl-grid">
+
+      <!-- Settings -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">SETTINGS</p>
+        <div style="display:flex;flex-direction:column;gap:0.85rem;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+              <label class="field-label">正常データ割合（先頭 X%）</label>
+              <span id="train-pct-val" style="color:#c8a96e;font-size:0.75rem;">70%</span>
+            </div>
+            <input id="train-pct" type="range" min="30" max="90" step="5" value="70" class="slider">
+            <p style="color:rgba(255,255,255,0.35);font-size:0.65rem;margin-top:0.3rem;">先頭のデータを「正常」として学習に使用します</p>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+              <label class="field-label">エポック数</label>
+              <span id="epochs-val" style="color:#c8a96e;font-size:0.75rem;">50</span>
+            </div>
+            <input id="epochs" type="range" min="10" max="200" step="10" value="50" class="slider">
+          </div>
+        </div>
+      </div>
+
+      <!-- Data -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">DATA</p>
+        <div style="display:flex;flex-direction:column;gap:0.65rem;">
+          <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.6;">
+            CSV形式: <code style="background:#0a0a0c;padding:0.1em 0.4em;color:#c8a96e;">timestamp,sensor1,sensor2,sensor3</code><br>
+            センサーは最大5列。1行目はヘッダー行として自動スキップ。
+          </p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button id="btn-sample" class="m-btn-ghost">サンプルデータ生成</button>
+            <label class="m-btn-ghost" style="cursor:pointer;">
+              CSV アップロード
+              <input id="csv-upload" type="file" accept=".csv,text/csv" style="display:none;">
+            </label>
+          </div>
+          <div id="data-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;min-height:1.2em;"></div>
+          <div id="tf-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;">TensorFlow.js 読込中…</div>
+          <button id="btn-run" class="m-btn" disabled>AI学習 &amp; 異常検知</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Progress -->
+    <div id="progress-section" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">TRAINING PROGRESS</p>
+        <span id="progress-text" style="color:rgba(255,255,255,0.5);font-size:0.7rem;"></span>
+      </div>
+      <div style="background:#0a0a0c;height:6px;border-radius:3px;overflow:hidden;">
+        <div id="progress-bar" style="background:#c8a96e;height:100%;width:0%;transition:width 0.1s linear;"></div>
+      </div>
+      <div style="margin-top:0.5rem;color:rgba(255,255,255,0.35);font-size:0.68rem;" id="loss-text"></div>
+    </div>
+
+    <!-- Results -->
+    <div id="result-section" style="display:none;">
+
+      <!-- Sensor chart -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">SENSOR TIME-SERIES</p>
+        <div style="position:relative;height:240px;">
+          <canvas id="sensor-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Anomaly score chart -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">ANOMALY SCORE（再構成誤差）</p>
+        <div style="position:relative;height:200px;">
+          <canvas id="score-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Summary metrics -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;" id="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">異常点数</div>
+          <div class="metric-value" id="anomaly-count" style="color:#e87070;">—</div>
+          <div class="metric-sub">閾値超えサンプル数</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">異常率</div>
+          <div class="metric-value" id="anomaly-rate">—</div>
+          <div class="metric-sub">全サンプルに対する割合</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">最大スコア</div>
+          <div class="metric-value" id="max-score">—</div>
+          <div class="metric-sub">最大再構成誤差</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.42rem 0.75rem;font-size:0.72rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover:not(:disabled) { background:#d4b87b; }
+    .m-btn:disabled { opacity:0.4;cursor:not-allowed; }
+    .field-label { display:block;color:rgba(255,255,255,0.55);font-size:0.68rem;letter-spacing:0.08em; }
+    .slider { width:100%;accent-color:#c8a96e;cursor:pointer; }
+    .metric-card { background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.25rem;text-align:center; }
+    .metric-label { color:#c8a96e;font-size:0.6rem;letter-spacing:0.35em;margin-bottom:0.5rem; }
+    .metric-value { color:#edede8;font-size:1.6rem;font-weight:200;letter-spacing:0.05em;margin-bottom:0.3rem; }
+    .metric-sub { color:rgba(255,255,255,0.4);font-size:0.65rem; }
+    @media(max-width:700px){
+      #ctrl-grid { grid-template-columns:1fr !important; }
+      #metrics-grid { grid-template-columns:1fr !important; }
+    }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+
+  <script is:inline>
+    // ---- TF.js readiness ----
+    const tfStatusEl = document.getElementById('tf-status');
+    const btnRun = document.getElementById('btn-run');
+
+    function checkTf() {
+      if (typeof tf !== 'undefined') {
+        tfStatusEl.textContent = 'TensorFlow.js ' + tf.version.tfjs + ' 準備完了';
+        tfStatusEl.style.color = '#c8a96e';
+        if (currentData) btnRun.disabled = false;
+      } else {
+        setTimeout(checkTf, 300);
+      }
+    }
+    checkTf();
+
+    // ---- Sample data generator ----
+    function generateSampleData() {
+      const n = 100;
+      const data = [];
+      for (let i = 0; i < n; i++) {
+        let anomaly = (i >= 30 && i <= 33) || (i >= 65 && i <= 67) || i === 85;
+        data.push({
+          t: i,
+          v1: 50 + 5 * Math.sin(i * 0.3) + (anomaly ? 25 : 0) + (Math.random() - 0.5) * 3,
+          v2: 30 + 3 * Math.cos(i * 0.2) + (anomaly ? -15 : 0) + (Math.random() - 0.5) * 2,
+          v3: 20 + 2 * Math.sin(i * 0.5) + (anomaly ? 20 : 0) + (Math.random() - 0.5) * 1.5
+        });
+      }
+      return data;
+    }
+
+    // ---- State ----
+    let currentData = null;  // array of {t, v1, v2, v3, ...}
+    let sensorKeys = ['v1', 'v2', 'v3'];
+    let sensorChart = null;
+    let scoreChart = null;
+
+    const statusEl = document.getElementById('data-status');
+    const progressSection = document.getElementById('progress-section');
+    const resultSection = document.getElementById('result-section');
+
+    // ---- Sliders ----
+    document.getElementById('train-pct').addEventListener('input', function() {
+      document.getElementById('train-pct-val').textContent = this.value + '%';
+    });
+    document.getElementById('epochs').addEventListener('input', function() {
+      document.getElementById('epochs-val').textContent = this.value;
+    });
+
+    // ---- Sample load ----
+    document.getElementById('btn-sample').addEventListener('click', () => {
+      currentData = generateSampleData();
+      sensorKeys = ['v1', 'v2', 'v3'];
+      statusEl.textContent = 'サンプルデータ生成完了: ' + currentData.length + ' サンプル（3特徴量）異常3箇所注入済み';
+      if (typeof tf !== 'undefined') btnRun.disabled = false;
+    });
+
+    // ---- CSV upload ----
+    document.getElementById('csv-upload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const text = ev.target.result;
+        const lines = text.trim().split(/\r?\n/).filter(l => l.trim());
+        if (lines.length < 2) { statusEl.textContent = 'エラー: データ行が不足しています'; return; }
+
+        // Check if first row is header
+        const firstParts = lines[0].split(',');
+        let startIdx = 0;
+        if (isNaN(parseFloat(firstParts[1]))) startIdx = 1;
+
+        const rows = [];
+        let cols = 0;
+        for (let i = startIdx; i < lines.length; i++) {
+          const parts = lines[i].split(',').map(s => s.trim());
+          if (parts.length < 2) continue;
+          const t = i - startIdx;
+          const vals = {};
+          const numCols = Math.min(parts.length - 1, 5);
+          cols = Math.max(cols, numCols);
+          for (let j = 0; j < numCols; j++) {
+            vals['v' + (j + 1)] = parseFloat(parts[j + 1]);
+          }
+          rows.push({ t, ...vals });
+        }
+
+        if (rows.length < 10) {
+          statusEl.textContent = 'エラー: データが少なすぎます（最低10行必要）';
+          return;
+        }
+
+        sensorKeys = Array.from({length: cols}, (_, i) => 'v' + (i + 1));
+        currentData = rows;
+        statusEl.textContent = 'CSV読込完了: ' + rows.length + ' サンプル・' + cols + ' 特徴量';
+        if (typeof tf !== 'undefined') btnRun.disabled = false;
+      };
+      reader.readAsText(file);
+    });
+
+    // ---- Autoencoder ----
+    async function buildAutoencoder(inputDim) {
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 8, activation: 'relu', inputShape: [inputDim] }));
+      model.add(tf.layers.dense({ units: 4, activation: 'relu' }));
+      model.add(tf.layers.dense({ units: 8, activation: 'relu' }));
+      model.add(tf.layers.dense({ units: inputDim, activation: 'linear' }));
+      model.compile({ optimizer: tf.train.adam(0.01), loss: 'meanSquaredError' });
+      return model;
+    }
+
+    function updateProgress(epoch, totalEpochs, loss) {
+      const pct = ((epoch + 1) / totalEpochs * 100).toFixed(0);
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = 'Epoch ' + (epoch + 1) + ' / ' + totalEpochs;
+      document.getElementById('loss-text').textContent = 'Loss: ' + (loss ? loss.toFixed(6) : '—');
+    }
+
+    async function trainAndDetect(normalData, allData, epochs) {
+      const inputDim = normalData[0].length;
+      const model = await buildAutoencoder(inputDim);
+
+      const xNormal = tf.tensor2d(normalData);
+      await model.fit(xNormal, xNormal, {
+        epochs,
+        batchSize: 16,
+        shuffle: true,
+        callbacks: {
+          onEpochEnd: (e, logs) => updateProgress(e, epochs, logs.loss)
+        }
+      });
+
+      const xAll = tf.tensor2d(allData);
+      const reconstructed = model.predict(xAll);
+      const errors = tf.mean(tf.square(tf.sub(xAll, reconstructed)), 1);
+      const errorsArr = await errors.array();
+
+      // Threshold: mean + 2σ of normal data errors
+      const normalErrors = errorsArr.slice(0, normalData.length);
+      const mean = normalErrors.reduce((a, b) => a + b, 0) / normalErrors.length;
+      const std = Math.sqrt(normalErrors.reduce((s, e) => s + (e - mean) * (e - mean), 0) / normalErrors.length);
+      const threshold = mean + 2 * std;
+
+      xNormal.dispose();
+      xAll.dispose();
+      reconstructed.dispose();
+      errors.dispose();
+      model.dispose();
+
+      return { errors: errorsArr, threshold };
+    }
+
+    // ---- Normalize helper ----
+    function normalize(matrix) {
+      const cols = matrix[0].length;
+      const mins = Array(cols).fill(Infinity);
+      const maxs = Array(cols).fill(-Infinity);
+      for (const row of matrix) {
+        for (let j = 0; j < cols; j++) {
+          if (row[j] < mins[j]) mins[j] = row[j];
+          if (row[j] > maxs[j]) maxs[j] = row[j];
+        }
+      }
+      return matrix.map(row => row.map((v, j) => {
+        const range = maxs[j] - mins[j];
+        return range === 0 ? 0 : (v - mins[j]) / range;
+      }));
+    }
+
+    // ---- Run ----
+    document.getElementById('btn-run').addEventListener('click', async () => {
+      if (!currentData || typeof tf === 'undefined') return;
+
+      btnRun.disabled = true;
+      progressSection.style.display = 'block';
+      resultSection.style.display = 'none';
+
+      const trainPct = parseInt(document.getElementById('train-pct').value, 10) / 100;
+      const epochs = parseInt(document.getElementById('epochs').value, 10);
+      const n = currentData.length;
+      const nTrain = Math.max(5, Math.floor(n * trainPct));
+
+      // Build matrix from sensor keys
+      const allMatrix = currentData.map(row => sensorKeys.map(k => row[k] || 0));
+      const normalizedMatrix = normalize(allMatrix);
+      const normalData = normalizedMatrix.slice(0, nTrain);
+
+      try {
+        const { errors, threshold } = await trainAndDetect(normalData, normalizedMatrix, epochs);
+
+        // Sensor chart
+        const labels = currentData.map(d => d.t.toString());
+        const sensorColors = ['#c8a96e', '#7eb8c8', '#a8c87e'];
+
+        if (sensorChart) sensorChart.destroy();
+        const sCtx = document.getElementById('sensor-chart').getContext('2d');
+        sensorChart = new Chart(sCtx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: sensorKeys.map((k, i) => ({
+              label: 'Sensor ' + (i + 1),
+              data: currentData.map(d => d[k]),
+              borderColor: sensorColors[i % sensorColors.length],
+              backgroundColor: 'transparent',
+              borderWidth: 1.5,
+              pointRadius: 0,
+              tension: 0.3
+            }))
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 14 } },
+              tooltip: { backgroundColor: '#111114', borderColor: 'rgba(255,255,255,0.07)', borderWidth: 1, titleColor: '#c8a96e', bodyColor: '#edede8' }
+            },
+            scales: {
+              x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+              y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+            }
+          }
+        });
+
+        // Anomaly score chart - color bars by anomaly
+        const anomalies = errors.map(e => e > threshold);
+        const barColors = errors.map(e => e > threshold ? 'rgba(232,112,112,0.85)' : 'rgba(200,169,110,0.5)');
+
+        if (scoreChart) scoreChart.destroy();
+        const aCtx = document.getElementById('score-chart').getContext('2d');
+        scoreChart = new Chart(aCtx, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [
+              {
+                label: '異常スコア',
+                data: errors,
+                backgroundColor: barColors,
+                borderColor: 'transparent',
+                borderWidth: 0
+              },
+              {
+                label: '閾値 (μ+2σ)',
+                data: Array(n).fill(threshold),
+                type: 'line',
+                borderColor: '#e87070',
+                backgroundColor: 'transparent',
+                borderWidth: 1.5,
+                borderDash: [5, 4],
+                pointRadius: 0
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 14 } },
+              tooltip: {
+                backgroundColor: '#111114', borderColor: 'rgba(255,255,255,0.07)', borderWidth: 1, titleColor: '#c8a96e', bodyColor: '#edede8',
+                callbacks: {
+                  label: function(ctx) {
+                    if (ctx.dataset.type === 'line') return '閾値: ' + threshold.toFixed(4);
+                    const isAnom = ctx.raw > threshold;
+                    return 'スコア: ' + ctx.raw.toFixed(4) + (isAnom ? ' ⚠ 異常' : '');
+                  }
+                }
+              }
+            },
+            scales: {
+              x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+              y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+            }
+          }
+        });
+
+        // Summary
+        const anomalyCount = anomalies.filter(Boolean).length;
+        const maxScore = Math.max(...errors);
+        document.getElementById('anomaly-count').textContent = anomalyCount;
+        document.getElementById('anomaly-rate').textContent = (anomalyCount / n * 100).toFixed(1) + '%';
+        document.getElementById('max-score').textContent = maxScore.toFixed(4);
+
+        resultSection.style.display = 'block';
+        resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } catch (err) {
+        statusEl.textContent = 'エラー: ' + (err.message || '学習に失敗しました');
+        console.error(err);
+      } finally {
+        btnRun.disabled = false;
+      }
+    });
+  </script>
+
+</BaseLayout>

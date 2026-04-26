@@ -1,0 +1,586 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="生産スケジュール最適化" description="遺伝的アルゴリズムによる生産スケジュール最適化ツール。ジョブ・機械割り当てを自動最適化し、ガントチャートで可視化。ブラウザ完結型。">
+
+  <!-- 機密保護バナー -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.75rem 1.25rem;text-align:center;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;">
+    🔒 このツールはブラウザ完結型です。入力したデータはサーバーに送信されません。
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a12 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Genetic Algorithm · Production Scheduling</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">生産スケジュール最適化</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- コントロールバー -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+      <button id="btn-sample" class="m-btn-ghost">サンプルデータを読み込む</button>
+      <label class="m-btn-ghost" style="cursor:pointer;">
+        CSVアップロード
+        <input id="csv-upload" type="file" accept=".csv" style="display:none;">
+      </label>
+      <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;">CSV形式: job_name,m1_time,m2_time,m3_time,deadline</span>
+    </div>
+
+    <!-- ジョブテーブル -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;overflow-x:auto;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">JOBS</p>
+      <table id="job-table" style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+        <thead>
+          <tr>
+            <th class="th">ジョブ名</th>
+            <th class="th">M1 (h)</th>
+            <th class="th">M2 (h)</th>
+            <th class="th">M3 (h)</th>
+            <th class="th">納期 (h)</th>
+            <th class="th"></th>
+          </tr>
+        </thead>
+        <tbody id="job-tbody"></tbody>
+      </table>
+      <button id="btn-add-row" class="m-btn-ghost" style="margin-top:0.75rem;font-size:0.72rem;">+ 行を追加</button>
+    </div>
+
+    <!-- 実行ボタン -->
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+      <button id="btn-run" class="m-btn">最適化実行 (GA)</button>
+      <div id="progress-wrap" style="display:none;flex:1;min-width:200px;">
+        <div style="font-size:0.7rem;color:#c8a96e;margin-bottom:0.3rem;" id="progress-label">計算中… 0 / 200 世代</div>
+        <div style="background:#1a1a1d;height:6px;border-radius:3px;overflow:hidden;">
+          <div id="progress-bar" style="background:#c8a96e;height:100%;width:0%;transition:width 0.1s;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 結果エリア -->
+    <div id="result-area" style="display:none;">
+      <!-- メトリクス -->
+      <div id="metrics-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.75rem;margin-bottom:1.25rem;"></div>
+      <!-- ガントチャート -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">GANTT CHART</p>
+        <div style="overflow-x:auto;">
+          <canvas id="gantt-canvas" style="display:block;"></canvas>
+        </div>
+        <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;" id="legend-area"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.5rem 1rem;font-size:0.75rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:700; }
+    .m-btn:hover { background:#d4b87b; }
+    .m-btn:disabled { background:#555;border-color:#555;color:#999;cursor:not-allowed; }
+    .th {
+      text-align:left;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;
+      padding:0.4rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.07);font-weight:400;
+    }
+    .td {
+      padding:0.3rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .cell-input {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.08);
+      padding:0.3rem 0.5rem;font-size:0.8rem;font-family:inherit;width:100%;outline:none;
+    }
+    .cell-input:focus { border-color:#c8a96e; }
+    .del-btn {
+      background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:1rem;line-height:1;padding:0.1rem 0.3rem;
+    }
+    .del-btn:hover { color:rgba(255,80,80,1); }
+    .metric-card {
+      background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;
+    }
+    .metric-label { color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.4rem; }
+    .metric-value { color:#edede8;font-size:1.6rem;font-weight:200;letter-spacing:0.05em; }
+    .metric-sub { color:rgba(255,255,255,0.3);font-size:0.68rem;margin-top:0.25rem; }
+  </style>
+
+  <script>
+    // ============================================================
+    // データ
+    // ============================================================
+    const SAMPLE_JOBS = [
+      { name: 'Job A', times: [3, 2, 4], deadline: 12 },
+      { name: 'Job B', times: [2, 5, 1], deadline: 10 },
+      { name: 'Job C', times: [4, 1, 3], deadline: 15 },
+      { name: 'Job D', times: [1, 3, 5], deadline: 11 },
+      { name: 'Job E', times: [5, 2, 2], deadline: 14 },
+    ];
+    const MACHINE_COUNT = 3;
+
+    const JOB_COLORS = [
+      '#c8a96e','#6ea8c8','#6ec897','#c86e6e','#a96ec8',
+      '#c8b86e','#6e7fc8','#6ec8b8','#c89a6e','#8ec86e',
+    ];
+
+    let jobs = [];
+
+    // ============================================================
+    // テーブル管理
+    // ============================================================
+    function getJobs() {
+      const rows = document.querySelectorAll('#job-tbody tr');
+      const result = [];
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const name = inputs[0].value.trim();
+        const t1 = parseFloat(inputs[1].value) || 0;
+        const t2 = parseFloat(inputs[2].value) || 0;
+        const t3 = parseFloat(inputs[3].value) || 0;
+        const dl = parseFloat(inputs[4].value) || 999;
+        if (name) result.push({ name, times: [t1, t2, t3], deadline: dl });
+      });
+      return result;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('job-tbody');
+      tbody.innerHTML = '';
+      data.forEach((job, i) => addRow(job));
+    }
+
+    function addRow(job = null) {
+      const tbody = document.getElementById('job-tbody');
+      const tr = document.createElement('tr');
+      const vals = job
+        ? [job.name, job.times[0], job.times[1], job.times[2], job.deadline]
+        : ['新規ジョブ', 1, 1, 1, 10];
+      const tds = vals.map((v, ci) => {
+        const td = document.createElement('td');
+        td.className = 'td';
+        const inp = document.createElement('input');
+        inp.className = 'cell-input';
+        inp.value = v;
+        inp.type = ci === 0 ? 'text' : 'number';
+        if (ci > 0) { inp.min = '0'; inp.step = '0.5'; }
+        td.appendChild(inp);
+        return td;
+      });
+      tds.forEach(td => tr.appendChild(td));
+      const delTd = document.createElement('td');
+      delTd.className = 'td';
+      const delBtn = document.createElement('button');
+      delBtn.className = 'del-btn';
+      delBtn.textContent = '✕';
+      delBtn.addEventListener('click', () => tr.remove());
+      delTd.appendChild(delBtn);
+      tr.appendChild(delTd);
+      tbody.appendChild(tr);
+    }
+
+    document.getElementById('btn-sample').addEventListener('click', () => {
+      renderTable(SAMPLE_JOBS);
+    });
+    document.getElementById('btn-add-row').addEventListener('click', () => addRow());
+
+    // CSVアップロード
+    document.getElementById('csv-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const lines = ev.target.result.split('\n').filter(l => l.trim());
+        const parsed = [];
+        for (const line of lines) {
+          const cols = line.split(',');
+          if (cols.length < 5) continue;
+          const name = cols[0].trim();
+          if (!name || name.toLowerCase() === 'job_name') continue;
+          parsed.push({
+            name,
+            times: [parseFloat(cols[1]) || 0, parseFloat(cols[2]) || 0, parseFloat(cols[3]) || 0],
+            deadline: parseFloat(cols[4]) || 999
+          });
+        }
+        if (parsed.length > 0) renderTable(parsed);
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    // ============================================================
+    // 遺伝的アルゴリズム
+    // ============================================================
+    const POP_SIZE = 50;
+    const MAX_GEN = 200;
+    const CROSSOVER_RATE = 0.8;
+    const MUTATION_RATE = 0.05;
+
+    // ジョブ順列を機械スケジュールに変換して makespan + 遅延ペナルティを計算
+    function evaluate(permutation, jobsData) {
+      const n = jobsData.length;
+      const machineTime = new Array(MACHINE_COUNT).fill(0);
+      const jobEnd = new Array(n).fill(0); // 各ジョブの最終完了時刻
+      // job_finish[j][m] = ジョブ j の機械 m 終了時刻
+      const finish = jobsData.map(() => new Array(MACHINE_COUNT).fill(0));
+
+      for (const ji of permutation) {
+        const job = jobsData[ji];
+        let prevEnd = 0;
+        for (let m = 0; m < MACHINE_COUNT; m++) {
+          const start = Math.max(machineTime[m], prevEnd);
+          const end = start + job.times[m];
+          finish[ji][m] = end;
+          machineTime[m] = end;
+          prevEnd = end;
+        }
+        jobEnd[ji] = finish[ji][MACHINE_COUNT - 1];
+      }
+
+      const makespan = Math.max(...machineTime);
+      let latePenalty = 0;
+      for (let ji = 0; ji < n; ji++) {
+        const late = Math.max(0, jobEnd[ji] - jobsData[ji].deadline);
+        latePenalty += late * 10;
+      }
+      return { makespan, latePenalty, fitness: makespan + latePenalty, jobEnd };
+    }
+
+    function randomPermutation(n) {
+      const arr = Array.from({ length: n }, (_, i) => i);
+      for (let i = n - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // OX (Order Crossover)
+    function crossover(a, b) {
+      const n = a.length;
+      const [p1, p2] = [Math.floor(Math.random() * n), Math.floor(Math.random() * n)].sort((x, y) => x - y);
+      const child = new Array(n).fill(-1);
+      for (let i = p1; i <= p2; i++) child[i] = a[i];
+      let ci = (p2 + 1) % n;
+      for (let k = 0; k < n; k++) {
+        const bi = (p2 + 1 + k) % n;
+        if (!child.includes(b[bi])) {
+          child[ci] = b[bi];
+          ci = (ci + 1) % n;
+        }
+      }
+      return child;
+    }
+
+    function mutate(perm) {
+      const n = perm.length;
+      const i = Math.floor(Math.random() * n);
+      const j = Math.floor(Math.random() * n);
+      const c = [...perm];
+      [c[i], c[j]] = [c[j], c[i]];
+      return c;
+    }
+
+    function runGA(jobsData, onProgress) {
+      const n = jobsData.length;
+      // 初期集団
+      let pop = Array.from({ length: POP_SIZE }, () => randomPermutation(n));
+      let bestIndiv = null;
+      let bestFit = Infinity;
+
+      for (let gen = 0; gen < MAX_GEN; gen++) {
+        // 評価
+        const evaluated = pop.map(ind => {
+          const r = evaluate(ind, jobsData);
+          return { ind, ...r };
+        });
+        evaluated.sort((a, b) => a.fitness - b.fitness);
+        if (evaluated[0].fitness < bestFit) {
+          bestFit = evaluated[0].fitness;
+          bestIndiv = evaluated[0];
+        }
+
+        onProgress(gen + 1, MAX_GEN, bestFit);
+
+        // エリート選択 (上位 20%)
+        const eliteN = Math.max(2, Math.floor(POP_SIZE * 0.2));
+        const newPop = evaluated.slice(0, eliteN).map(e => e.ind);
+
+        // 残りを交叉・突然変異で生成
+        while (newPop.length < POP_SIZE) {
+          const pa = evaluated[Math.floor(Math.random() * eliteN)].ind;
+          const pb = evaluated[Math.floor(Math.random() * eliteN)].ind;
+          let child = Math.random() < CROSSOVER_RATE ? crossover(pa, pb) : [...pa];
+          if (Math.random() < MUTATION_RATE) child = mutate(child);
+          newPop.push(child);
+        }
+        pop = newPop;
+      }
+      return bestIndiv;
+    }
+
+    // ============================================================
+    // スケジュール→ガントデータ変換
+    // ============================================================
+    function buildGanttData(permutation, jobsData) {
+      const n = jobsData.length;
+      const machineTime = new Array(MACHINE_COUNT).fill(0);
+      const tasks = []; // { machine, job, start, end }
+
+      for (const ji of permutation) {
+        const job = jobsData[ji];
+        let prevEnd = 0;
+        for (let m = 0; m < MACHINE_COUNT; m++) {
+          const start = Math.max(machineTime[m], prevEnd);
+          const end = start + job.times[m];
+          tasks.push({ machine: m, jobIdx: ji, jobName: job.name, start, end });
+          machineTime[m] = end;
+          prevEnd = end;
+        }
+      }
+      return tasks;
+    }
+
+    // ============================================================
+    // ガントチャート描画
+    // ============================================================
+    function drawGantt(tasks, jobsData, makespan) {
+      const canvas = document.getElementById('gantt-canvas');
+      const LABEL_W = 90;
+      const ROW_H = 48;
+      const PAD_TOP = 30;
+      const PAD_BOT = 30;
+      const H = PAD_TOP + MACHINE_COUNT * ROW_H + PAD_BOT;
+      const CANVAS_W = Math.max(600, canvas.parentElement.clientWidth - 32);
+      canvas.width = CANVAS_W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      const CHART_W = CANVAS_W - LABEL_W - 20;
+      const scaleX = CHART_W / makespan;
+
+      ctx.clearRect(0, 0, CANVAS_W, H);
+
+      // 背景
+      ctx.fillStyle = '#111114';
+      ctx.fillRect(0, 0, CANVAS_W, H);
+
+      // 時間軸ライン & ラベル
+      const tickInterval = Math.ceil(makespan / 10);
+      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'center';
+      for (let t = 0; t <= makespan; t += tickInterval) {
+        const x = LABEL_W + t * scaleX;
+        ctx.beginPath();
+        ctx.moveTo(x, PAD_TOP);
+        ctx.lineTo(x, H - PAD_BOT);
+        ctx.stroke();
+        ctx.fillText(t + 'h', x, PAD_TOP - 8);
+      }
+
+      // 機械ラベル
+      ctx.textAlign = 'right';
+      ctx.fillStyle = 'rgba(200,169,110,0.8)';
+      ctx.font = '11px sans-serif';
+      for (let m = 0; m < MACHINE_COUNT; m++) {
+        const y = PAD_TOP + m * ROW_H + ROW_H / 2;
+        ctx.fillText('M' + (m + 1), LABEL_W - 8, y + 4);
+      }
+
+      // 行の区切り線
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      for (let m = 0; m <= MACHINE_COUNT; m++) {
+        const y = PAD_TOP + m * ROW_H;
+        ctx.beginPath();
+        ctx.moveTo(LABEL_W, y);
+        ctx.lineTo(CANVAS_W - 20, y);
+        ctx.stroke();
+      }
+
+      // タスクバー描画
+      for (const task of tasks) {
+        const x = LABEL_W + task.start * scaleX;
+        const w = Math.max(2, task.end * scaleX - task.start * scaleX);
+        const y = PAD_TOP + task.machine * ROW_H + 5;
+        const barH = ROW_H - 10;
+        const color = JOB_COLORS[task.jobIdx % JOB_COLORS.length];
+        const isLate = task.end > jobsData[task.jobIdx].deadline && task.machine === MACHINE_COUNT - 1;
+
+        // バー塗り
+        ctx.fillStyle = color + '99';
+        ctx.fillRect(x, y, w, barH);
+
+        // 枠
+        if (isLate) {
+          ctx.strokeStyle = '#ff4444';
+          ctx.lineWidth = 2;
+        } else {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1;
+        }
+        ctx.strokeRect(x, y, w, barH);
+        ctx.lineWidth = 1;
+
+        // ジョブ名（幅があれば）
+        if (w > 24) {
+          ctx.fillStyle = '#edede8';
+          ctx.font = '10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(x + 2, y, w - 4, barH);
+          ctx.clip();
+          ctx.fillText(task.jobName, x + w / 2, y + barH / 2 + 4);
+          ctx.restore();
+        }
+      }
+
+      // 凡例
+      const legendArea = document.getElementById('legend-area');
+      legendArea.innerHTML = '';
+      jobsData.forEach((job, i) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display:flex;align-items:center;gap:0.35rem;font-size:0.7rem;color:#edede8;';
+        const swatch = document.createElement('div');
+        swatch.style.cssText = `width:14px;height:14px;background:${JOB_COLORS[i % JOB_COLORS.length]};border-radius:2px;flex-shrink:0;`;
+        item.appendChild(swatch);
+        item.appendChild(document.createTextNode(job.name));
+        legendArea.appendChild(item);
+      });
+      const redNote = document.createElement('div');
+      redNote.style.cssText = 'display:flex;align-items:center;gap:0.35rem;font-size:0.7rem;color:#ff6666;';
+      redNote.innerHTML = '<div style="width:14px;height:14px;border:2px solid #ff4444;border-radius:2px;flex-shrink:0;"></div>納期超過';
+      legendArea.appendChild(redNote);
+    }
+
+    // ============================================================
+    // メトリクスカード
+    // ============================================================
+    function renderMetrics(bestResult, naiveResult, jobsData) {
+      const { makespan, jobEnd } = bestResult;
+      let onTimeCount = 0;
+      jobsData.forEach((job, i) => {
+        if (jobEnd[i] <= job.deadline) onTimeCount++;
+      });
+      const adherence = Math.round(onTimeCount / jobsData.length * 100);
+      const improvement = naiveResult
+        ? Math.round((1 - makespan / naiveResult.makespan) * 100)
+        : null;
+
+      const row = document.getElementById('metrics-row');
+      row.innerHTML = '';
+      const cards = [
+        { label: 'MAKESPAN', value: makespan.toFixed(1) + ' h', sub: '全ジョブ完了時間（最短）' },
+        { label: '納期遵守率', value: adherence + ' %', sub: onTimeCount + ' / ' + jobsData.length + ' ジョブ' },
+        improvement !== null
+          ? { label: '改善率 (vs FIFO)', value: (improvement >= 0 ? '+' : '') + improvement + ' %', sub: 'Makespan 比較' }
+          : { label: '世代数', value: MAX_GEN, sub: '探索世代数' },
+        { label: '個体数', value: POP_SIZE, sub: '集団サイズ' },
+      ];
+      for (const c of cards) {
+        const div = document.createElement('div');
+        div.className = 'metric-card';
+        div.innerHTML = `<div class="metric-label">${c.label}</div><div class="metric-value">${c.value}</div><div class="metric-sub">${c.sub}</div>`;
+        row.appendChild(div);
+      }
+    }
+
+    // ============================================================
+    // 実行ボタン
+    // ============================================================
+    document.getElementById('btn-run').addEventListener('click', () => {
+      const jobsData = getJobs();
+      if (jobsData.length < 2) {
+        alert('ジョブを2件以上入力してください。');
+        return;
+      }
+
+      const btn = document.getElementById('btn-run');
+      btn.disabled = true;
+      const progressWrap = document.getElementById('progress-wrap');
+      const progressBar = document.getElementById('progress-bar');
+      const progressLabel = document.getElementById('progress-label');
+      progressWrap.style.display = 'flex';
+      progressWrap.style.flexDirection = 'column';
+      progressWrap.style.gap = '0.3rem';
+      progressWrap.style.flex = '1';
+      document.getElementById('result-area').style.display = 'none';
+
+      // FIFO naive（入力順）
+      const fifoOrder = jobsData.map((_, i) => i);
+      const naiveResult = evaluate(fifoOrder, jobsData);
+
+      // 非同期でGA実行（UIをブロックしないようにチャンクで実行）
+      let gen = 0;
+      const n = jobsData.length;
+      let pop = Array.from({ length: POP_SIZE }, () => randomPermutation(n));
+      let bestFit = Infinity;
+      let bestIndiv = null;
+
+      function step() {
+        if (gen >= MAX_GEN) {
+          // 完了
+          const pct = 100;
+          progressBar.style.width = pct + '%';
+          progressLabel.textContent = '完了！ 最適解を描画中…';
+          setTimeout(() => {
+            progressWrap.style.display = 'none';
+            btn.disabled = false;
+
+            // ガント描画
+            const ganttTasks = buildGanttData(bestIndiv.ind, jobsData);
+            drawGantt(ganttTasks, jobsData, bestIndiv.makespan);
+            renderMetrics(bestIndiv, naiveResult, jobsData);
+            document.getElementById('result-area').style.display = 'block';
+          }, 100);
+          return;
+        }
+
+        // 10世代ずつ処理
+        const chunk = Math.min(10, MAX_GEN - gen);
+        for (let c = 0; c < chunk; c++) {
+          const evaluated = pop.map(ind => {
+            const r = evaluate(ind, jobsData);
+            return { ind, ...r };
+          });
+          evaluated.sort((a, b) => a.fitness - b.fitness);
+          if (evaluated[0].fitness < bestFit) {
+            bestFit = evaluated[0].fitness;
+            bestIndiv = evaluated[0];
+          }
+          const eliteN = Math.max(2, Math.floor(POP_SIZE * 0.2));
+          const newPop = evaluated.slice(0, eliteN).map(e => e.ind);
+          while (newPop.length < POP_SIZE) {
+            const pa = evaluated[Math.floor(Math.random() * eliteN)].ind;
+            const pb = evaluated[Math.floor(Math.random() * eliteN)].ind;
+            let child = Math.random() < CROSSOVER_RATE ? crossover(pa, pb) : [...pa];
+            if (Math.random() < MUTATION_RATE) child = mutate(child);
+            newPop.push(child);
+          }
+          pop = newPop;
+          gen++;
+        }
+
+        const pct = Math.round(gen / MAX_GEN * 100);
+        progressBar.style.width = pct + '%';
+        progressLabel.textContent = `計算中… ${gen} / ${MAX_GEN} 世代 (最良 fitness: ${bestFit.toFixed(1)})`;
+        requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+    });
+
+    // ============================================================
+    // 初期表示
+    // ============================================================
+    renderTable(SAMPLE_JOBS);
+  </script>
+
+</BaseLayout>
