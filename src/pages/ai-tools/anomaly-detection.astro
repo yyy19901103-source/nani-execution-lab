@@ -252,6 +252,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         });
       };
     }
+    function dynPointRadius(n) {
+      if (n <= 50) return 3;
+      if (n <= 200) return 1.5;
+      if (n <= 500) return 0.5;
+      return 0;
+    }
 
     // ---- Privacy verify toggle ----
     document.getElementById('verify-privacy')?.addEventListener('click', () => {
@@ -585,7 +591,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               backgroundColor: 'transparent',
               borderWidth: 1.5,
               pointRadius: 0,
-              tension: 0.3
+              tension: 0.3,
+              spanGaps: true
             }))
           },
           options: {
@@ -596,6 +603,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             animations: { colors: false, x: false },
             transitions: { active: { animation: { duration: 0 } } },
             plugins: {
+              decimation: { enabled: true, algorithm: 'lttb', samples: 200, threshold: 300 },
               legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 14 } },
               tooltip: { backgroundColor: '#111114', borderColor: 'rgba(255,255,255,0.07)', borderWidth: 1, titleColor: '#c8a96e', bodyColor: '#edede8' }
             },
@@ -644,6 +652,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             animations: { colors: false, x: false },
             transitions: { active: { animation: { duration: 0 } } },
             plugins: {
+              decimation: { enabled: true, algorithm: 'lttb', samples: 200, threshold: 300 },
               legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 14 } },
               tooltip: {
                 backgroundColor: '#111114', borderColor: 'rgba(255,255,255,0.07)', borderWidth: 1, titleColor: '#c8a96e', bodyColor: '#edede8',
@@ -782,7 +791,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 return (d && d.detected) ? '#e87070' : '#c8a96e';
               },
               tension: 0.25,
-              fill: true
+              fill: true,
+              spanGaps: true
             },
             {
               label: '閾値',
@@ -791,7 +801,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               borderWidth: 1,
               borderDash: [5, 4],
               pointRadius: 0,
-              fill: false
+              fill: false,
+              spanGaps: true
             }
           ]
         },
@@ -803,6 +814,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           animations: { colors: false, x: false },
           transitions: { active: { animation: { duration: 0 } } },
           plugins: {
+            decimation: { enabled: true, algorithm: 'lttb', samples: 200, threshold: 300 },
             legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 10 }, boxWidth: 14 } },
             tooltip: { backgroundColor: '#111114', titleColor: '#c8a96e', bodyColor: '#edede8' }
           },

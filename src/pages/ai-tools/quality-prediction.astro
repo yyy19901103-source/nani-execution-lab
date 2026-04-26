@@ -626,7 +626,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             borderWidth: 1.5,
             pointRadius: 0,
             tension: 0.2,
-            fill: true
+            fill: true,
+            spanGaps: true
           }]
         },
         options: {
@@ -636,7 +637,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           animation: false,
           animations: { colors: false, x: false },
           transitions: { active: { animation: { duration: 0 } } },
-          plugins: { legend: { display: false } },
+          plugins: {
+            decimation: { enabled: true, algorithm: 'lttb', samples: 200, threshold: 300 },
+            legend: { display: false }
+          },
           scales: {
             x: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
             y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' } }

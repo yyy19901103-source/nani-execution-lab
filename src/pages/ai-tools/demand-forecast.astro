@@ -221,6 +221,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         });
       };
     }
+    // Dynamic point radius based on dataset size
+    function dynPointRadius(n) {
+      if (n <= 50) return 3;
+      if (n <= 200) return 1.5;
+      if (n <= 500) return 0.5;
+      return 0;
+    }
 
     // ---- Sample data ----
     const sampleData = {
@@ -560,6 +567,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (chartInstance) chartInstance.destroy();
 
       const ctx = document.getElementById('forecast-chart').getContext('2d');
+      const _actualPR = dynPointRadius(actualData.length);
       chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
@@ -572,7 +580,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               backgroundColor: 'rgba(200,169,110,0.15)',
               fill: '+1',
               pointRadius: 0,
-              tension: 0.3
+              tension: 0.3,
+              spanGaps: true
             },
             {
               label: '信頼区間 下限',
@@ -581,7 +590,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               backgroundColor: 'rgba(200,169,110,0.15)',
               fill: false,
               pointRadius: 0,
-              tension: 0.3
+              tension: 0.3,
+              spanGaps: true
             },
             {
               label: '実績',
@@ -589,9 +599,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               borderColor: '#c8a96e',
               backgroundColor: 'transparent',
               borderWidth: 2,
-              pointRadius: 3,
+              pointRadius: _actualPR,
               pointBackgroundColor: '#c8a96e',
-              tension: 0.2
+              tension: 0.2,
+              spanGaps: true
             },
             {
               label: 'フィッティング',
@@ -601,7 +612,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               borderWidth: 1,
               pointRadius: 0,
               tension: 0.3,
-              borderDash: [4, 3]
+              borderDash: [4, 3],
+              spanGaps: true
             },
             {
               label: '予測',
@@ -609,10 +621,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               borderColor: '#edede8',
               backgroundColor: 'transparent',
               borderWidth: 2,
-              pointRadius: 4,
+              pointRadius: Math.max(2, Math.min(4, _actualPR + 1)),
               pointBackgroundColor: '#edede8',
               tension: 0.2,
-              borderDash: [6, 4]
+              borderDash: [6, 4],
+              spanGaps: true
             }
           ]
         },
@@ -625,6 +638,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           transitions: { active: { animation: { duration: 0 } } },
           interaction: { mode: 'index', intersect: false },
           plugins: {
+            decimation: {
+              enabled: true,
+              algorithm: 'lttb',
+              samples: 200,
+              threshold: 300
+            },
             legend: {
               labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 18 }
             },
@@ -715,10 +734,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               borderColor: '#c8a96e',
               backgroundColor: 'rgba(200,169,110,0.1)',
               borderWidth: 1.5,
-              pointRadius: 1.5,
+              pointRadius: dynPointRadius(currentData.values.length),
               pointBackgroundColor: '#c8a96e',
               tension: 0.25,
-              fill: true
+              fill: true,
+              spanGaps: true
             }]
           },
           options: {
@@ -728,7 +748,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             animation: false,
             animations: { colors: false, x: false },
             transitions: { active: { animation: { duration: 0 } } },
-            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111114', titleColor: '#c8a96e', bodyColor: '#edede8' } },
+            plugins: {
+              decimation: { enabled: true, algorithm: 'lttb', samples: 200, threshold: 300 },
+              legend: { display: false },
+              tooltip: { backgroundColor: '#111114', titleColor: '#c8a96e', bodyColor: '#edede8' }
+            },
             scales: {
               x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 }, grid: { display: false } },
               y: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
