@@ -76,6 +76,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <button class="model-btn" data-model="sma">季節MA</button>
               <button class="model-btn" data-model="linseason">線形+季節</button>
               <button class="model-btn" data-model="ensemble">アンサンブル</button>
+              <button class="model-btn" data-model="ar2">AR(2)</button>
               <button class="model-btn" data-model="best">自動ベスト</button>
             </div>
           </div>
@@ -174,8 +175,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <table id="forecast-table" style="width:100%;border-collapse:collapse;font-size:0.78rem;"></table>
         </div>
       </div>
-      <div style="margin-top:1rem;text-align:right;">
+      <div style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:flex-end;flex-wrap:wrap;">
         <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
+        <button id="btn-json" class="m-btn-ghost" style="font-size:0.7rem;">⬇ JSON</button>
       </div>
     </div>
 
@@ -207,6 +209,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       #metrics-grid { grid-template-columns:1fr !important; }
     }
   </style>
+
+  <section style="max-width:1100px;margin:0 auto;padding:3rem 1rem 5rem;">
+    <h2 style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;text-transform:uppercase;margin-bottom:2rem;">このツールについて</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-bottom:1.25rem;">
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">📈 搭載モデル一覧</div>
+        <ul style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.9;margin:0;padding-left:0;list-style:none;">
+          <li><strong style="color:rgba(237,237,232,0.75);">Holt-Winters</strong>: トレンド＋季節性を同時モデル化。季節変動のある製品に最適。</li>
+          <li><strong style="color:rgba(237,237,232,0.75);">季節MA</strong>: 同じ季節の過去値の平均。シンプルで安定。</li>
+          <li><strong style="color:rgba(237,237,232,0.75);">線形＋季節</strong>: 長期トレンドと季節パターンを分離して予測。</li>
+          <li><strong style="color:rgba(237,237,232,0.75);">AR(2)</strong>: 直前2期の値から次期を回帰予測。短期予測に強い。</li>
+          <li><strong style="color:rgba(237,237,232,0.75);">自動選択</strong>: 4モデルを比較し最良モデルを自動選択。</li>
+        </ul>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">📊 精度指標の見方</div>
+        <ul style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.9;margin:0;padding-left:0;list-style:none;">
+          <li><strong style="color:rgba(237,237,232,0.75);">MAPE</strong>: 平均絶対誤差率。10%以下なら良好、20%以上は要注意。</li>
+          <li><strong style="color:rgba(237,237,232,0.75);">MAE</strong>: 平均絶対誤差（実際の数量単位）。実務的なズレの大きさ。</li>
+          <li><strong style="color:rgba(237,237,232,0.75);">信頼区間</strong>: 予測の不確かさの幅。幅が広いほど不確実性が高い。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
   <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -430,6 +456,44 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       } catch (e) { console.error('linearSeasonal', e); return null; }
     }
 
+    // ---- AR(2) model ----
+    function ar2Forecast(values, horizon) {
+      const n = values.length;
+      if (n < 4) return null;
+      // Yule-Walker equations for AR(2)
+      const mean = values.reduce((a, b) => a + b, 0) / n;
+      const centered = values.map(v => v - mean);
+      const gamma0 = centered.reduce((s, v) => s + v * v, 0) / n;
+      const gamma1 = centered.slice(1).reduce((s, v, i) => s + v * centered[i], 0) / n;
+      const gamma2 = centered.slice(2).reduce((s, v, i) => s + v * centered[i], 0) / n;
+      const denom = gamma0 * gamma0 - gamma1 * gamma1;
+      if (Math.abs(denom) < 1e-10) return null;
+      const phi1 = (gamma1 * gamma0 - gamma2 * gamma1) / denom;
+      const phi2 = (gamma2 * gamma0 - gamma1 * gamma1) / denom;
+      const c = mean * (1 - phi1 - phi2);
+      // Generate forecast
+      const hist = [...values];
+      const forecasts = [];
+      for (let h = 0; h < horizon; h++) {
+        const pred = c + phi1 * hist[hist.length - 1] + phi2 * hist[hist.length - 2];
+        forecasts.push(Math.max(0, pred));
+        hist.push(pred);
+      }
+      // Fitted values and MAPE
+      const fitted = [];
+      for (let i = 0; i < n; i++) {
+        if (i < 2) { fitted.push(values[i]); continue; }
+        fitted.push(c + phi1 * values[i - 1] + phi2 * values[i - 2]);
+      }
+      let mapeSum = 0, mapeCount = 0;
+      for (let t = 2; t < n; t++) {
+        if (values[t] !== 0) { mapeSum += Math.abs((values[t] - fitted[t]) / values[t]); mapeCount++; }
+      }
+      const mape = mapeCount > 0 ? (mapeSum / mapeCount * 100) : 999;
+      const mae = fitted.slice(2).reduce((s, f, i) => s + Math.abs(values[i + 2] - f), 0) / Math.max(1, n - 2);
+      return { forecasts, forecast: forecasts, fitted, mape, mae, phi1, phi2, c };
+    }
+
     // ---- Memoize forecast functions ----
     const _hwOrig = holtWinters;
     holtWinters = function(data, alpha, beta, gamma, season, fp) {
@@ -477,7 +541,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let lastForecastResult = null;
     let lastForecastLabels = null;
     let lastCI = null;
-    let selectedModel = 'hw';     // 'hw' | 'sma' | 'linseason' | 'ensemble' | 'best'
+    let currentResult = null;
+    let selectedModel = 'hw';     // 'hw' | 'sma' | 'linseason' | 'ar2' | 'ensemble' | 'best'
     let lastModelComparison = null;
     let lastSelectedLabel = 'Holt-Winters';
 
@@ -506,7 +571,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     // ---- Model buttons ----
     function updateSliderEnabled() {
-      const enabled = (selectedModel === 'hw' || selectedModel === 'ensemble' || selectedModel === 'best');
+      const enabled = (selectedModel === 'hw' || selectedModel === 'ensemble' || selectedModel === 'best' || selectedModel === 'ar2');
       ['alpha','beta','gamma'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.disabled = !enabled;
@@ -629,8 +694,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       } catch (e) { console.error(e); candidates.hw = null; }
       try { candidates.sma = seasonalMA(vals, 12, forecastPeriods); } catch (e) { console.error(e); candidates.sma = null; }
       try { candidates.linseason = linearSeasonal(vals, 12, forecastPeriods); } catch (e) { console.error(e); candidates.linseason = null; }
+      try { candidates.ar2 = ar2Forecast(vals, forecastPeriods); } catch (e) { console.error(e); candidates.ar2 = null; }
 
-      const modelLabels = { hw: 'Holt-Winters', sma: '季節MA', linseason: '線形+季節', ensemble: 'アンサンブル平均', best: '自動ベスト選択' };
+      const modelLabels = { hw: 'Holt-Winters', sma: '季節MA', linseason: '線形+季節', ar2: 'AR(2)', ensemble: 'アンサンブル平均', best: '自動ベスト選択' };
       let result = null;
       let chosenKey = selectedModel;
 
@@ -640,6 +706,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         result = candidates.sma;
       } else if (selectedModel === 'linseason') {
         result = candidates.linseason;
+      } else if (selectedModel === 'ar2') {
+        result = candidates.ar2;
       } else if (selectedModel === 'ensemble') {
         const avail = ['hw','sma','linseason'].map(k => candidates[k]).filter(r => r && r.fitted && r.forecast);
         if (avail.length > 0) {
@@ -659,7 +727,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }
       } else if (selectedModel === 'best') {
         let bestKey = null, bestMape = Infinity;
-        ['hw','sma','linseason'].forEach(k => {
+        ['hw','sma','linseason','ar2'].forEach(k => {
           const r = candidates[k];
           if (r && isFinite(r.mape) && r.mape < bestMape) { bestMape = r.mape; bestKey = k; }
         });
@@ -683,6 +751,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const forecastLabels = Array.from({length: forecastPeriods}, (_, i) => nextMonthLabel(lastLabel, i + 1));
       lastForecastResult = result;
       lastForecastLabels = forecastLabels;
+      currentResult = {
+        model: lastSelectedLabel,
+        mape: result.mape,
+        labels: [...currentData.labels, ...forecastLabels],
+        actual: currentData.values,
+        forecast: result.forecast
+      };
 
       // Update metrics
       document.getElementById('mape-val').textContent = result.mape.toFixed(1) + '%';
@@ -836,7 +911,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const compareSec = document.getElementById('model-compare-section');
         const compareTbl = document.getElementById('model-compare-table');
         if (compareSec && compareTbl && lastModelComparison) {
-          const rows = [['hw','Holt-Winters'],['sma','季節MA'],['linseason','線形+季節']];
+          const rows = [['hw','Holt-Winters'],['sma','季節MA'],['linseason','線形+季節'],['ar2','AR(2)']];
           let html = '<thead><tr><th>モデル</th><th>MAPE</th><th>MAE</th><th>状態</th></tr></thead><tbody>';
           rows.forEach(([k, name]) => {
             const r = lastModelComparison.candidates[k];
@@ -1003,6 +1078,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } catch (e) { console.error(e); alert('ダウンロード失敗: ' + e.message); }
+    });
+
+    // ---- JSON Download ----
+    document.getElementById('btn-json')?.addEventListener('click', () => {
+      if (!currentResult) { alert('結果がありません。先に予測を実行してください。'); return; }
+      const data = {
+        exportedAt: new Date().toISOString(),
+        model: currentResult.model,
+        mape: currentResult.mape,
+        labels: currentResult.labels,
+        actual: currentResult.actual,
+        forecast: currentResult.forecast,
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'demand-forecast.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
     });
 
     // ---- Privacy verify toggle ----
