@@ -160,6 +160,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <button id="btn-download-csv" class="m-btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.25rem;">学習結果CSV</button>
               <button id="btn-reset" class="m-btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.25rem;">リセット</button>
             </div>
+
+            <!-- バッチ予測セクション -->
+            <div id="batch-section" style="display:none;margin-top:1.5rem;border:1px solid rgba(255,255,255,0.05);padding:1.25rem;background:#0f0f12;">
+              <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">バッチCSV予測</div>
+              <p style="color:rgba(255,255,255,0.4);font-size:0.72rem;margin-bottom:0.75rem;line-height:1.6;">複数のパラメータ組合せをCSVで一括予測。形式: temperature,pressure,speed,humidity</p>
+              <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+                <label class="m-btn-ghost" style="font-size:0.72rem;padding:0.45rem 0.85rem;cursor:pointer;">
+                  📂 CSVを選択
+                  <input type="file" id="batch-csv-input" accept=".csv" style="display:none;">
+                </label>
+                <button id="btn-batch-predict" class="m-btn" style="font-size:0.72rem;padding:0.45rem 1rem;">一括予測実行</button>
+                <button id="btn-batch-download" class="m-btn-ghost" style="font-size:0.72rem;padding:0.45rem 0.85rem;display:none;">⬇ 結果CSV</button>
+              </div>
+              <div id="batch-results" style="margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.45);"></div>
+            </div>
             <div id="auto-search-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.6rem;"></div>
             <div id="optimize-result" style="display:none;margin-top:1rem;background:#0a1a0a;border:1px solid rgba(100,200,100,0.15);padding:1rem 1.25rem;">
               <p style="color:#6ec86e;font-size:0.65rem;letter-spacing:0.25em;margin-bottom:0.75rem;">OPTIMIZATION SUGGESTIONS</p>
@@ -195,7 +210,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
           </div>
 
-          <div id="score-label" style="text-align:center;font-size:0.8rem;letter-spacing:0.15em;color:rgba(255,255,255,0.5);margin-bottom:1.5rem;">予測待機中</div>
+          <div id="score-label" style="text-align:center;font-size:0.8rem;letter-spacing:0.15em;color:rgba(255,255,255,0.5);margin-bottom:0.5rem;">予測待機中</div>
+          <div id="ci-display" style="display:none;text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:1rem;">
+            95%信頼区間: <span id="ci-low">-</span> 〜 <span id="ci-high">-</span>
+          </div>
 
           <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:1.25rem;">
             <p style="color:rgba(255,255,255,0.35);font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.75rem;">入力パラメータ</p>
@@ -586,6 +604,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       document.getElementById('param-summary').innerHTML =
         `温度:  ${temp} °C\n圧力:  ${pressure.toFixed(2)} MPa\n速度:  ${speed} rpm\n湿度: ${humidity} %`
           .replace(/\n/g, '<br>');
+
+      // Show CI (async, don't block UI)
+      predictWithInterval([temp, pressure, speed, humidity]).then(ci => {
+        if (!ci) return;
+        const ciEl = document.getElementById('ci-display');
+        if (ciEl) {
+          document.getElementById('ci-low').textContent = ci.low.toFixed(1);
+          document.getElementById('ci-high').textContent = ci.high.toFixed(1);
+          ciEl.style.display = 'block';
+        }
+      }).catch(() => {});
     }
 
     function drawImportanceChart(importances) {
@@ -787,6 +816,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       setProgress(100, '完了', `最終 loss: ${(await evalLoss(model, xArr, yArr.map(d=>d[0]))).toFixed(5)}`);
       document.getElementById('train-done').style.display = 'block';
       document.getElementById('predict-section').style.display = 'block';
+      document.getElementById('batch-section').style.display = 'block';
       document.getElementById('btn-train').disabled = false;
 
       drawImportanceChart(imp);
@@ -957,6 +987,87 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       URL.revokeObjectURL(url);
     });
 
+    // =========================================================
+    //  Confidence Interval (MC Dropout approximation)
+    // =========================================================
+    async function predictWithInterval(inputArr) {
+      if (!trainedModel || !trainedStats) return null;
+      const results = [];
+      const normIn = normalizeInput(inputArr, trainedStats);
+      for (let i = 0; i < 10; i++) {
+        const t = tf.tensor2d([normIn]);
+        const p = trainedModel.predict(t);
+        const v = (await p.data())[0];
+        results.push(denormalizeOutput(v, trainedStats));
+        t.dispose(); p.dispose();
+      }
+      const mean = results.reduce((a, b) => a + b, 0) / results.length;
+      const std = Math.sqrt(results.reduce((s, v) => s + (v - mean) ** 2, 0) / results.length);
+      return { mean, low: Math.max(0, mean - 1.96 * std), high: Math.min(100, mean + 1.96 * std) };
+    }
+
+    // =========================================================
+    //  Batch CSV Prediction
+    // =========================================================
+    let batchData = null;
+    let batchPredictions = null;
+
+    document.getElementById('batch-csv-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const { rows } = await parseCSVChunkedNew(file, null);
+        batchData = rows.map(r => [
+          parseFloat(r.temperature) || 0,
+          parseFloat(r.pressure) || 0,
+          parseFloat(r.speed) || 0,
+          parseFloat(r.humidity) || 0
+        ]);
+        document.getElementById('batch-results').textContent = `${batchData.length}行読込完了`;
+      } catch (err) {
+        document.getElementById('batch-results').textContent = 'CSV読込エラー: ' + err.message;
+      }
+      e.target.value = '';
+    });
+
+    document.getElementById('btn-batch-predict').addEventListener('click', async () => {
+      if (!trainedModel || !trainedStats) { alert('先にモデルを学習してください'); return; }
+      if (!batchData || batchData.length === 0) { alert('CSVを読み込んでください'); return; }
+      const t0 = performance.now();
+      const normInputs = batchData.map(d => normalizeInput(d, trainedStats));
+      const inputTensor = tf.tensor2d(normInputs);
+      const preds = trainedModel.predict(inputTensor);
+      const predValues = await preds.data();
+      inputTensor.dispose(); preds.dispose();
+
+      batchPredictions = batchData.map((d, i) => ({
+        temperature: d[0].toFixed(2),
+        pressure: d[1].toFixed(3),
+        speed: d[2].toFixed(2),
+        humidity: d[3].toFixed(2),
+        predicted_quality: Math.max(0, Math.min(100, denormalizeOutput(predValues[i], trainedStats))).toFixed(1)
+      }));
+
+      const elapsed = performance.now() - t0;
+      document.getElementById('batch-results').textContent =
+        `予測完了: ${batchPredictions.length}行 | ${fmtMs(elapsed)}`;
+      document.getElementById('btn-batch-download').style.display = 'inline-block';
+    });
+
+    document.getElementById('btn-batch-download').addEventListener('click', () => {
+      if (!batchPredictions) return;
+      const header = 'temperature,pressure,speed,humidity,predicted_quality\n';
+      const rows = batchPredictions.map(r =>
+        `${r.temperature},${r.pressure},${r.speed},${r.humidity},${r.predicted_quality}`
+      ).join('\n');
+      const blob = new Blob([header + rows], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'batch-predictions.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
     // ---- Reset ----
     document.getElementById('btn-reset').addEventListener('click', () => {
       if (trainedModel) { try { trainedModel.dispose(); } catch (e) {} }
@@ -964,9 +1075,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       trainedStats = null;
       _heatmapCache.clear();
       window._trainPreds = null;
+      batchData = null;
+      batchPredictions = null;
+      const brd = document.getElementById('batch-results'); if (brd) brd.textContent = '';
+      const bbd = document.getElementById('btn-batch-download'); if (bbd) bbd.style.display = 'none';
+      const ciEl = document.getElementById('ci-display'); if (ciEl) ciEl.style.display = 'none';
       if (importanceChart) { importanceChart.destroy(); importanceChart = null; }
       if (lossChart) { lossChart.destroy(); lossChart = null; }
       document.getElementById('predict-section').style.display = 'none';
+      document.getElementById('batch-section').style.display = 'none';
       document.getElementById('train-done').style.display = 'none';
       document.getElementById('train-metrics').style.display = 'none';
       document.getElementById('loss-chart-wrap').style.display = 'none';
@@ -1126,5 +1243,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
     });
   </script>
+
+  <section style="max-width:1200px;margin:0 auto;padding:3rem 1rem 5rem;">
+    <h2 style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;text-transform:uppercase;margin-bottom:2rem;">このツールについて</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;">
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">🧠 ニューラルネットワーク</div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;">4つの製造パラメータ（温度・圧力・速度・湿度）から品質スコアを予測。入力層→隠れ層(16→8ユニット)→出力層の3層構造。ブラウザ内で完結するためデータは外部に出ません。</p>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">📊 特徴量重要度の読み方</div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;">各パラメータをランダムに並べ替えたときの予測精度の低下量で重要度を算出（順列重要度法）。バーが長いほど品質への影響が大きいパラメータです。</p>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">🎯 バッチ予測の活用法</div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;">複数の生産条件パターンをCSVで一括入力し、品質スコアを一括予測できます。実験計画法と組み合わせて「最適条件の網羅的探索」に活用してください。</p>
+      </div>
+    </div>
+  </section>
 
 </BaseLayout>
