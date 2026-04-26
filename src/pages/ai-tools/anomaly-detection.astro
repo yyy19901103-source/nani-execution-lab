@@ -32,7 +32,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
+  <!-- USE CASES -->
+  <div style="max-width:1100px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">予知保全</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">振動・温度センサー逸脱を製品不良前に検知</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">不良流出防止</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">外観検査前段で異常パターンを自動アラート</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">工程逸脱モニタリング</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">プロセスパラメータの組合せ異常を捕捉</div>
+      </div>
+    </div>
+  </div>
+
   <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- 業界プリセットバー -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="auto" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚗 自動車部品(振動)</button>
+      <button class="preset-btn" data-preset="elec" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚙ 電子機器(温度)</button>
+      <button class="preset-btn" data-preset="food" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🥫 食品工場(殺菌)</button>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+    </div>
 
     <!-- Config & Data -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" id="ctrl-grid">
@@ -225,6 +255,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:1.25rem;justify-content:flex-end;">
         <button id="btn-download" class="m-btn-ghost">結果をCSVでダウンロード</button>
         <button id="btn-reset" class="m-btn-ghost">リセット</button>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div id="action-hints" style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;margin-top:1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS — 現場で次にすべきこと</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>検出された異常時刻のロット履歴・4M変化点を照合し、要因絞込み</li>
+          <li>センサー閾値（μ+kσ）の再設定を検討（誤検出多→k上げ／見逃し→下げ）</li>
+          <li>予兆段階での設備点検計画を策定し、予知保全を運用化</li>
+        </ol>
       </div>
 
     </div>
@@ -511,6 +551,56 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       sensorLabels = ['Sensor 1', 'Sensor 2', 'Sensor 3'];
       statusEl.textContent = 'サンプルデータ生成完了: ' + currentData.length + ' サンプル（3特徴量）異常3箇所注入済み';
       btnRun.disabled = false;
+    });
+
+    // 業界プリセット
+    function generateIndustryPreset(kind) {
+      const n = 120;
+      const data = [];
+      const cfg = {
+        auto: { labels:['振動X(mm/s)','振動Y(mm/s)','軸受温度(°C)'],
+                base:[2.5,2.0,55], amp:[0.8,0.6,3], anomBoost:[5,4,15] },
+        elec: { labels:['基板温度(°C)','電流(A)','電圧(V)'],
+                base:[60,1.2,3.3], amp:[2,0.1,0.05], anomBoost:[18,0.6,-0.2] },
+        food: { labels:['殺菌温度(°C)','蒸気圧(MPa)','流量(L/min)'],
+                base:[121,0.2,40], amp:[1,0.02,2], anomBoost:[-8,-0.05,8] },
+      }[kind];
+      const anomIdx = new Set([35,36,37,75,76,98]);
+      for (let i = 0; i < n; i++) {
+        const an = anomIdx.has(i);
+        data.push({
+          t: i,
+          v1: cfg.base[0] + cfg.amp[0]*Math.sin(i*0.3) + (an?cfg.anomBoost[0]:0) + (Math.random()-0.5)*cfg.amp[0]*0.4,
+          v2: cfg.base[1] + cfg.amp[1]*Math.cos(i*0.2) + (an?cfg.anomBoost[1]:0) + (Math.random()-0.5)*cfg.amp[1]*0.4,
+          v3: cfg.base[2] + cfg.amp[2]*Math.sin(i*0.5) + (an?cfg.anomBoost[2]:0) + (Math.random()-0.5)*cfg.amp[2]*0.4,
+        });
+      }
+      return { data, labels: cfg.labels };
+    }
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-preset');
+        const r = generateIndustryPreset(key);
+        currentData = r.data;
+        sensorKeys = ['v1','v2','v3'];
+        sensorLabels = r.labels;
+        statusEl.textContent = `${key}プリセット読込完了: ${currentData.length}サンプル（${r.labels.join('/')})異常注入済み`;
+        btnRun.disabled = false;
+      });
+    });
+    function downloadCSVTemplate(filename, header, sampleRows) {
+      const content = header + '\n' + sampleRows.join('\n');
+      const blob = new Blob([content], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      const r = generateIndustryPreset('auto');
+      const rows = r.data.slice(0,10).map(d => `${d.t},${d.v1.toFixed(2)},${d.v2.toFixed(2)},${d.v3.toFixed(2)}`);
+      downloadCSVTemplate('anomaly-detection-template.csv', 'timestamp,sensor1,sensor2,sensor3', rows);
     });
 
     // ---- CSV upload (大規模対応・チャンク処理) ----

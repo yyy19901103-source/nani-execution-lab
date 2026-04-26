@@ -32,7 +32,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
+  <!-- USE CASES -->
+  <div style="max-width:1200px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">工程能力評価</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">Cp/Cpk算出で顧客監査・ISO/IATF対応</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">異常傾向の早期発見</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">Western Electric Rulesで予兆を捕捉</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">4M変化点管理</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">材料・設備変更前後の統計検定</div>
+      </div>
+    </div>
+  </div>
+
   <div style="max-width:1200px;margin:0 auto;padding:2rem 1rem 5rem;">
+
+    <!-- 業界プリセットバー -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:1rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="auto" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚗 自動車部品(寸法)</button>
+      <button class="preset-btn" data-preset="elec" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚙ 電子機器(はんだ厚)</button>
+      <button class="preset-btn" data-preset="food" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🥫 食品工場(充填量)</button>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+    </div>
 
     <!-- 入力フェーズ -->
     <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-bottom:1.5rem;">
@@ -137,6 +167,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div><strong style="color:#edede8;">R2</strong>: 連続3点中2点が同一側2σ外（プロセスシフト）</div>
         <div><strong style="color:#edede8;">R3</strong>: 連続5点中4点が同一側1σ外（緩やかな偏り）</div>
         <div><strong style="color:#edede8;">R4</strong>: 連続8点が中心線の同一側（構造的偏り）</div>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div id="action-hints" style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;margin-top:1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS — 現場で次にすべきこと</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>違反点の時刻・ロット番号で4M変化記録（材料・設備・人・方法）を確認</li>
+          <li>工程能力 Cpk が目標 1.33 以上を達成しているか判定（未達なら工程改善計画起票）</li>
+          <li>監査資料・是正処置報告書（CAPA）に管理図PNGを添付して根拠を残す</li>
+        </ol>
       </div>
 
     </div>
@@ -648,6 +688,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.getElementById('csv-status').textContent = `サンプル読込完了: 50個の個別測定値`;
       }
       document.getElementById('csv-status').style.color = '#6ec86e';
+    });
+
+    // 業界プリセット
+    function generateIndustrySPC(kind, m) {
+      // [center, sigma]
+      const cfg = { auto:[10.00,0.05], elec:[0.15,0.01], food:[500,3] }[kind];
+      if (m === 'xbar') {
+        const groups = [];
+        for (let i = 0; i < 25; i++) {
+          const drift = (i > 18 ? cfg[1]*0.6 : 0);
+          const g = [];
+          for (let j = 0; j < 5; j++) {
+            g.push(+(cfg[0] + drift + (Math.random()-0.5)*cfg[1]*2).toFixed(4));
+          }
+          groups.push(g);
+        }
+        return groups;
+      } else {
+        const out = [];
+        for (let i = 0; i < 50; i++) {
+          const drift = (i > 38 ? cfg[1]*0.6 : 0);
+          out.push(+(cfg[0] + drift + (Math.random()-0.5)*cfg[1]*2).toFixed(4));
+        }
+        return out;
+      }
+    }
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-preset');
+        inputData = generateIndustrySPC(key, mode);
+        document.getElementById('csv-status').textContent = `${key}プリセット読込完了 (${mode === 'xbar' ? '25×n=5' : '50個'})`;
+        document.getElementById('csv-status').style.color = '#6ec86e';
+      });
+    });
+    function downloadCSVTemplate(filename, header, sampleRows) {
+      const content = header + '\n' + sampleRows.join('\n');
+      const blob = new Blob([content], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      if (mode === 'xbar') {
+        const data = generateIndustrySPC('auto', 'xbar').slice(0,5);
+        const rows = [];
+        data.forEach((g, i) => g.forEach(v => rows.push(`${i+1},${v}`)));
+        downloadCSVTemplate('spc-xbar-template.csv', 'subgroup_id,value', rows);
+      } else {
+        const data = generateIndustrySPC('auto', 'xmr').slice(0,10);
+        downloadCSVTemplate('spc-xmr-template.csv', 'value', data.map(String));
+      }
     });
 
     document.getElementById('csv-upload').addEventListener('change', async e => {

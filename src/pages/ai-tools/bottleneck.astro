@@ -30,7 +30,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
+  <!-- USE CASES -->
+  <div style="max-width:1100px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">ライン全体能力評価</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">Little's Lawで真の生産能力を即座に算出</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">投資判断</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">どこに設備追加すべきか・何台必要かを定量根拠で示す</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">改善優先順位</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">TOC理論に基づきボトルネック1箇所に集中投資</div>
+      </div>
+    </div>
+  </div>
+
   <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- 業界プリセットバー -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="auto" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚗 自動車部品</button>
+      <button class="preset-btn" data-preset="elec" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚙ 電子機器</button>
+      <button class="preset-btn" data-preset="food" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🥫 食品工場</button>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+    </div>
 
     <!-- 目標生産量 + コントロールバー -->
     <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
@@ -139,6 +169,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <div style="margin-top:1rem;text-align:right;">
         <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div id="action-hints" style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;margin-top:1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS — 現場で次にすべきこと</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>BN工程の段取り時間短縮（SMED）と予防保全強化を最優先</li>
+          <li>BN以外の工程の改善は後回し（TOC原則：BN以外を改善しても全体能力は上がらない）</li>
+          <li>BN解消後の次BN候補（CT・稼働率上位）を予測し、次の改善計画を準備</li>
+        </ol>
       </div>
     </div>
 
@@ -356,6 +396,65 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
 
     document.getElementById('btn-sample').addEventListener('click', () => renderTable(SAMPLE_PROCS));
+
+    // 業界プリセット
+    const INDUSTRY_PRESETS = {
+      auto: [
+        { name:'プレス成形', ct:45, eq:2, util:88 },
+        { name:'溶接', ct:60, eq:1, util:95 },
+        { name:'塗装', ct:30, eq:3, util:75 },
+        { name:'組立', ct:40, eq:2, util:85 },
+        { name:'検査', ct:25, eq:1, util:92 },
+      ],
+      elec: [
+        { name:'SMT実装', ct:18, eq:2, util:85 },
+        { name:'リフロー', ct:22, eq:1, util:97 },
+        { name:'AOI検査', ct:15, eq:2, util:78 },
+        { name:'ICT', ct:20, eq:1, util:90 },
+        { name:'梱包', ct:12, eq:2, util:70 },
+      ],
+      food: [
+        { name:'計量', ct:8, eq:1, util:80 },
+        { name:'混合', ct:15, eq:1, util:88 },
+        { name:'充填', ct:25, eq:1, util:96 },
+        { name:'殺菌', ct:18, eq:2, util:82 },
+        { name:'箱詰め', ct:10, eq:2, util:75 },
+      ],
+    };
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-preset');
+        const preset = INDUSTRY_PRESETS[key];
+        if (preset) renderTable(preset);
+      });
+    });
+    function downloadCSVTemplate(filename, header, sampleRows) {
+      const content = header + '\n' + sampleRows.join('\n');
+      const blob = new Blob([content], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      downloadCSVTemplate(
+        'bottleneck-template.csv',
+        'process_name,cycle_time_sec,equipment_count,utilization_pct',
+        [
+          'プレス成形,45,2,88',
+          '溶接,60,1,95',
+          '塗装,30,3,75',
+          '組立,40,2,85',
+          '検査,25,1,92',
+          'SMT実装,18,2,85',
+          'リフロー,22,1,97',
+          'AOI検査,15,2,78',
+          '充填,25,1,96',
+          '殺菌,18,2,82',
+        ]
+      );
+    });
     document.getElementById('btn-add-row').addEventListener('click', () => addRow());
 
     // 大規模CSV対応のチャンクパーサー

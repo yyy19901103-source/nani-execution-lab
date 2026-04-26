@@ -30,7 +30,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
+  <!-- USE CASES -->
+  <div style="max-width:1100px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">多品種少量ライン</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">ジョブ順序決定で総生産時間20-30%短縮</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">受注生産・納期管理</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">納期遵守率を55%→90%に改善</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">設備稼働率改善</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">機械待ち時間を可視化し、稼働率15%向上</div>
+      </div>
+    </div>
+  </div>
+
   <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- 業界プリセットバー -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="auto" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚗 自動車部品</button>
+      <button class="preset-btn" data-preset="elec" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚙ 電子機器</button>
+      <button class="preset-btn" data-preset="food" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🥫 食品工場</button>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+    </div>
 
     <!-- コントロールバー -->
     <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
@@ -133,6 +163,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div id="perf-stats" style="display:none;margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;"></div>
       <div style="margin-top:1rem;text-align:right;">
         <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div id="action-hints" style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;margin-top:1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS — 現場で次にすべきこと</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>上記順序でジョブ投入計画を更新（作業指示書・かんばん書き換え）</li>
+          <li>ボトルネック機械（M2想定）に予防保全を集中、段取り短縮SMEDを企画</li>
+          <li>納期遅延ジョブを再交渉対象として営業へエスカレーション</li>
+        </ol>
       </div>
     </div>
 
@@ -321,6 +361,66 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       renderTable(SAMPLE_JOBS);
     });
     document.getElementById('btn-add-row').addEventListener('click', () => addRow());
+
+    // 業界プリセット
+    const INDUSTRY_PRESETS = {
+      auto: [
+        { name:'シリンダーヘッド加工', times:[8,5,3], deadline:24 },
+        { name:'バルブ穴加工', times:[4,7,2], deadline:20 },
+        { name:'カム軸研磨', times:[6,3,5], deadline:18 },
+        { name:'シール圧入', times:[2,4,6], deadline:16 },
+        { name:'最終検査', times:[3,2,4], deadline:22 },
+      ],
+      elec: [
+        { name:'ECU基板SMT実装', times:[5,4,3], deadline:18 },
+        { name:'リフロー検査', times:[2,3,5], deadline:16 },
+        { name:'AOI外観検査', times:[3,5,2], deadline:14 },
+        { name:'ICT電気検査', times:[4,3,4], deadline:20 },
+        { name:'ファンクションテスト', times:[6,2,3], deadline:24 },
+      ],
+      food: [
+        { name:'原料計量', times:[3,2,1], deadline:8 },
+        { name:'混合・均質化', times:[5,4,2], deadline:12 },
+        { name:'充填', times:[2,6,3], deadline:14 },
+        { name:'殺菌', times:[4,3,5], deadline:18 },
+        { name:'箱詰め・検査', times:[3,3,4], deadline:16 },
+      ],
+    };
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-preset');
+        const preset = INDUSTRY_PRESETS[key];
+        if (preset) renderTable(preset);
+      });
+    });
+    // CSVテンプレートDL
+    function downloadCSVTemplate(filename, header, sampleRows) {
+      const content = header + '\n' + sampleRows.join('\n');
+      const blob = new Blob([content], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      downloadCSVTemplate(
+        'production-schedule-template.csv',
+        'job_name,m1_time,m2_time,m3_time,deadline',
+        [
+          'シリンダーヘッド加工,8,5,3,24',
+          'バルブ穴加工,4,7,2,20',
+          'カム軸研磨,6,3,5,18',
+          'シール圧入,2,4,6,16',
+          '最終検査,3,2,4,22',
+          'ECU基板SMT実装,5,4,3,18',
+          'リフロー検査,2,3,5,16',
+          'AOI外観検査,3,5,2,14',
+          'ICT電気検査,4,3,4,20',
+          'ファンクションテスト,6,2,3,24',
+        ]
+      );
+    });
 
     // 大規模CSV対応のチャンクパーサー
     async function parseCSVChunked(file, onProgress, parseLineFn) {

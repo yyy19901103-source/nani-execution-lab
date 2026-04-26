@@ -31,7 +31,40 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
+  <!-- USE CASES -->
+  <div style="max-width:1100px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">在庫計画</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">翌期需要予測でMRP連携・欠品防止</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">原材料発注</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">MAPE 10%以内で原材料安全在庫を最小化</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">設備投資判断</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">中期トレンドで設備増強・縮小の根拠資料を生成</div>
+      </div>
+    </div>
+  </div>
+
   <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- 業界プリセットバー -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="auto" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚗 自動車部品</button>
+      <button class="preset-btn" data-preset="elec" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚙ 電子機器</button>
+      <button class="preset-btn" data-preset="food" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🥫 食品工場</button>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:0 1rem 4rem;">
 
     <!-- Parameters & Controls -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" id="ctrl-grid">
@@ -178,6 +211,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:flex-end;flex-wrap:wrap;">
         <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
         <button id="btn-json" class="m-btn-ghost" style="font-size:0.7rem;">⬇ JSON</button>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div id="action-hints" style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;margin-top:1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS — 現場で次にすべきこと</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>安全在庫を予測値+95%信頼区間幅の半分に設定（リードタイム×需要変動考慮）</li>
+          <li>原材料発注ロットを月次予測値に合わせて調整（過剰在庫・欠品同時抑制）</li>
+          <li>MAPE > 20% なら他モデル（自動ベスト・アンサンブル）で再検証</li>
+        </ol>
       </div>
     </div>
 
@@ -595,6 +638,45 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       btnRun.disabled = false;
       const at = document.getElementById('btn-autotune'); if (at) at.disabled = false;
       drawPreview();
+    });
+
+    // 業界プリセット
+    function buildLabels24() {
+      const out = [];
+      for (let y=2024; y<=2025; y++) for (let m=1; m<=12; m++) out.push(`${y}-${String(m).padStart(2,'0')}`);
+      return out;
+    }
+    const INDUSTRY_PRESETS = {
+      auto: { labels: buildLabels24(), values: [120,135,150,140,155,170,165,180,160,145,130,125, 130,148,165,158,172,188,180,195,175,160,140,135] },
+      elec: { labels: buildLabels24(), values: [80,85,92,98,105,110,118,125,130,138,142,150, 155,162,170,178,185,192,200,208,215,222,230,238] },
+      food: { labels: buildLabels24(), values: [60,65,70,80,95,120,150,160,140,110,80,65, 65,68,75,85,100,128,162,170,148,115,82,68] },
+    };
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-preset');
+        const p = INDUSTRY_PRESETS[key];
+        if (!p) return;
+        currentData = { labels: p.labels.slice(), values: p.values.slice() };
+        statusEl.textContent = `${key}プリセット読込完了: ${currentData.values.length}ヶ月分`;
+        btnRun.disabled = false;
+        const at = document.getElementById('btn-autotune'); if (at) at.disabled = false;
+        drawPreview();
+      });
+    });
+    function downloadCSVTemplate(filename, header, sampleRows) {
+      const content = header + '\n' + sampleRows.join('\n');
+      const blob = new Blob([content], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      const labels = buildLabels24();
+      const vals = INDUSTRY_PRESETS.auto.values;
+      const rows = labels.map((l,i) => `${l},${vals[i]}`);
+      downloadCSVTemplate('demand-forecast-template.csv', 'year_month,quantity', rows);
     });
 
     // 大規模CSV対応のチャンクパーサー
