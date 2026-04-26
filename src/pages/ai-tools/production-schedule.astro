@@ -67,9 +67,42 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <button id="btn-add-row" class="m-btn-ghost" style="margin-top:0.75rem;font-size:0.72rem;">+ 行を追加</button>
     </div>
 
+    <!-- アルゴリズム選択 -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;display:flex;flex-wrap:wrap;gap:1.25rem;align-items:center;margin-bottom:1rem;">
+      <span style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.15em;">ALGORITHM</span>
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+        <input type="radio" name="algo" value="ga" id="algo-ga" checked style="accent-color:#c8a96e;">
+        <span style="font-size:0.8rem;color:rgba(237,237,232,0.75);">遺伝的アルゴリズム (GA)</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+        <input type="radio" name="algo" value="neh" id="algo-neh" style="accent-color:#c8a96e;">
+        <span style="font-size:0.8rem;color:rgba(237,237,232,0.75);">NEH法（高速）</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+        <input type="radio" name="algo" value="compare" id="algo-compare" style="accent-color:#c8a96e;">
+        <span style="font-size:0.8rem;color:rgba(237,237,232,0.75);">3手法比較</span>
+      </label>
+    </div>
+
+    <!-- 比較結果テーブル（compare モード時のみ表示） -->
+    <div id="compare-table" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <div style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">ALGORITHM COMPARISON</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.07);">
+            <th style="text-align:left;padding:0.4rem 0.75rem;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;font-weight:400;">手法</th>
+            <th style="text-align:right;padding:0.4rem 0.75rem;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;font-weight:400;">Makespan</th>
+            <th style="text-align:right;padding:0.4rem 0.75rem;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;font-weight:400;">納期遵守率</th>
+            <th style="text-align:right;padding:0.4rem 0.75rem;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;font-weight:400;">計算時間</th>
+          </tr></thead>
+          <tbody id="compare-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- 実行ボタン -->
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
-      <button id="btn-run" class="m-btn">最適化実行 (GA)</button>
+      <button id="btn-run" class="m-btn">最適化実行</button>
       <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
       <button id="btn-cancel" class="m-btn-ghost" style="display:none;">⏸ 中断</button>
       <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;">リセット</button>
@@ -334,6 +367,86 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
       e.target.value = '';
     });
+
+    // ============================================================
+    // NEH Heuristic for Flow Shop Scheduling
+    // ============================================================
+    function calcMakespan(jobList) {
+      const n = jobList.length;
+      const machineTime = new Array(MACHINE_COUNT).fill(0);
+      for (const job of jobList) {
+        let prevEnd = 0;
+        for (let m = 0; m < MACHINE_COUNT; m++) {
+          const start = Math.max(machineTime[m], prevEnd);
+          const end = start + job.times[m];
+          machineTime[m] = end;
+          prevEnd = end;
+        }
+      }
+      return Math.max(...machineTime);
+    }
+
+    function calcMakespanAndJobEnd(jobList) {
+      const n = jobList.length;
+      const machineTime = new Array(MACHINE_COUNT).fill(0);
+      const jobEndMap = new Map();
+      for (const job of jobList) {
+        let prevEnd = 0;
+        for (let m = 0; m < MACHINE_COUNT; m++) {
+          const start = Math.max(machineTime[m], prevEnd);
+          const end = start + job.times[m];
+          machineTime[m] = end;
+          prevEnd = end;
+        }
+        jobEndMap.set(job, machineTime[MACHINE_COUNT - 1]);
+      }
+      return { makespan: Math.max(...machineTime), jobEndMap };
+    }
+
+    function nehSchedule(jobsData) {
+      const sorted = [...jobsData].sort((a, b) =>
+        b.times.reduce((s, t) => s + t, 0) - a.times.reduce((s, t) => s + t, 0)
+      );
+      let seq = [sorted[0]];
+      for (let i = 1; i < sorted.length; i++) {
+        let best = Infinity, bestPos = 0;
+        for (let pos = 0; pos <= seq.length; pos++) {
+          const trial = [...seq.slice(0, pos), sorted[i], ...seq.slice(pos)];
+          const ms = calcMakespan(trial);
+          if (ms < best) { best = ms; bestPos = pos; }
+        }
+        seq.splice(bestPos, 0, sorted[i]);
+      }
+      const makespan = calcMakespan(seq);
+      const permutation = seq.map(job => jobsData.indexOf(job));
+      const { jobEnd } = (() => {
+        const machineTime = new Array(MACHINE_COUNT).fill(0);
+        const jobEnd = new Array(jobsData.length).fill(0);
+        for (const ji of permutation) {
+          const job = jobsData[ji];
+          let prevEnd = 0;
+          for (let m = 0; m < MACHINE_COUNT; m++) {
+            const start = Math.max(machineTime[m], prevEnd);
+            const end = start + job.times[m];
+            machineTime[m] = end;
+            prevEnd = end;
+          }
+          jobEnd[ji] = machineTime[MACHINE_COUNT - 1];
+        }
+        return { jobEnd };
+      })();
+      let latePenalty = 0;
+      for (let ji = 0; ji < jobsData.length; ji++) {
+        latePenalty += Math.max(0, jobEnd[ji] - jobsData[ji].deadline) * 10;
+      }
+      return { ind: permutation, makespan, jobEnd, latePenalty, fitness: makespan + latePenalty };
+    }
+
+    function fifoSchedule(jobsData) {
+      const permutation = jobsData.map((_, i) => i);
+      const { makespan, latePenalty, fitness, jobEnd } = evaluate(permutation, jobsData);
+      return { ind: permutation, makespan, jobEnd, latePenalty, fitness };
+    }
 
     // ============================================================
     // 遺伝的アルゴリズム
@@ -860,6 +973,91 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         return;
       }
 
+      const algoVal = document.querySelector('input[name="algo"]:checked')?.value || 'ga';
+
+      // NEH mode: immediate calculation, no Worker needed
+      if (algoVal === 'neh') {
+        const _t0 = performance.now();
+        const fifoResult = fifoSchedule(jobsData);
+        const nehResult = nehSchedule(jobsData);
+        document.getElementById('compare-table').style.display = 'none';
+        const ganttTasks = buildGanttData(nehResult.ind, jobsData);
+        drawGantt(ganttTasks, jobsData, nehResult.makespan);
+        renderMetrics(nehResult, fifoResult, jobsData, ganttTasks, null);
+        lastGanttTasks = ganttTasks;
+        lastJobsData = jobsData;
+        document.getElementById('result-area').style.display = 'block';
+        showPerfStats(performance.now() - _t0);
+        return;
+      }
+
+      // Compare mode: run GA + NEH + FIFO and show comparison table
+      if (algoVal === 'compare') {
+        const _t0 = performance.now();
+        const fifoResult = fifoSchedule(jobsData);
+        const nehResult = nehSchedule(jobsData);
+        // Quick GA (reduced generations for speed in compare mode)
+        const n = jobsData.length;
+        const quickPopSize = Math.min(50, POP_SIZE);
+        const quickMaxGen = Math.min(100, MAX_GEN);
+        let pop = Array.from({ length: quickPopSize }, () => randomPermutation(n));
+        let gaResult = null; let gaFit = Infinity;
+        for (let gen = 0; gen < quickMaxGen; gen++) {
+          const evaluated = pop.map(ind => { const r = evaluate(ind, jobsData); return { ind, ...r }; });
+          evaluated.sort((a, b) => a.fitness - b.fitness);
+          if (evaluated[0].fitness < gaFit) { gaFit = evaluated[0].fitness; gaResult = evaluated[0]; }
+          const eliteN = Math.max(2, Math.floor(quickPopSize * 0.2));
+          const newPop = evaluated.slice(0, eliteN).map(e => e.ind);
+          while (newPop.length < quickPopSize) {
+            const pa = evaluated[Math.floor(Math.random() * eliteN)].ind;
+            const pb = evaluated[Math.floor(Math.random() * eliteN)].ind;
+            let child = Math.random() < CROSSOVER_RATE ? crossover(pa, pb) : [...pa];
+            if (Math.random() < MUTATION_RATE) child = mutate(child);
+            newPop.push(child);
+          }
+          pop = newPop;
+        }
+        const elapsed = performance.now() - _t0;
+
+        // Build compare table
+        const tbody = document.getElementById('compare-tbody');
+        tbody.innerHTML = '';
+        const results = [
+          { name: '遺伝的アルゴリズム (GA)', res: gaResult },
+          { name: 'NEH法', res: nehResult },
+          { name: 'FIFO（投入順）', res: fifoResult }
+        ];
+        const bestMs = Math.min(...results.map(r => r.res ? r.res.makespan : Infinity));
+        results.forEach(({ name, res }) => {
+          if (!res) return;
+          let onTime = 0;
+          jobsData.forEach((job, i) => { if (res.jobEnd[i] <= job.deadline) onTime++; });
+          const adherence = Math.round(onTime / jobsData.length * 100);
+          const isBest = res.makespan === bestMs;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td style="padding:0.4rem 0.75rem;border-bottom:1px solid rgba(255,255,255,0.04);${isBest ? 'color:#c8a96e;' : 'color:#edede8;'}">${name}${isBest ? ' ✓' : ''}</td>
+            <td style="padding:0.4rem 0.75rem;border-bottom:1px solid rgba(255,255,255,0.04);text-align:right;${isBest ? 'color:#c8a96e;' : ''}">${res.makespan.toFixed(1)} h</td>
+            <td style="padding:0.4rem 0.75rem;border-bottom:1px solid rgba(255,255,255,0.04);text-align:right;">${adherence}%</td>
+            <td style="padding:0.4rem 0.75rem;border-bottom:1px solid rgba(255,255,255,0.04);text-align:right;color:rgba(255,255,255,0.4);">${name.includes('GA') ? fmtMs(elapsed) : '< 1ms'}</td>`;
+          tbody.appendChild(tr);
+        });
+        document.getElementById('compare-table').style.display = 'block';
+
+        // Show best result (NEH or GA, whichever is better) in Gantt
+        const best = (nehResult.makespan <= (gaResult ? gaResult.makespan : Infinity)) ? nehResult : gaResult;
+        if (best) {
+          const ganttTasks = buildGanttData(best.ind, jobsData);
+          drawGantt(ganttTasks, jobsData, best.makespan);
+          renderMetrics(best, fifoResult, jobsData, ganttTasks, null);
+          lastGanttTasks = ganttTasks;
+          lastJobsData = jobsData;
+          document.getElementById('result-area').style.display = 'block';
+          showPerfStats(elapsed);
+        }
+        return;
+      }
+
+      // Default: GA mode
       const btn = document.getElementById('btn-run');
       const cancelBtn = document.getElementById('btn-cancel');
       btn.disabled = true;
@@ -1045,6 +1243,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.getElementById('result-area').style.display = 'none';
         document.getElementById('progress-wrap').style.display = 'none';
         document.getElementById('btn-cancel').style.display = 'none';
+        document.getElementById('compare-table').style.display = 'none';
         document.getElementById('btn-run').disabled = false;
         const canvas = document.getElementById('gantt-canvas');
         if (canvas) {
@@ -1088,5 +1287,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ============================================================
     renderTable(SAMPLE_JOBS);
   </script>
+
+
+<section style="max-width:1100px;margin:0 auto;padding:4rem 1rem 5rem;">
+  <h2 style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;text-transform:uppercase;margin-bottom:2rem;">このツールについて</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;">
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;border-radius:0;">
+      <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">🧬 遺伝的アルゴリズム (GA)</div>
+      <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;">自然の「進化」を模倣した最適化手法。多数の解候補（個体）を世代ごとに交叉・突然変異させ、より良い順列を探索します。時間はかかりますが、複雑な問題でも高品質な解が得られます。</p>
+    </div>
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;border-radius:0;">
+      <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">⚡ NEH法</div>
+      <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;">Nawaz・Enscore・Ham が考案した決定論的ヒューリスティック。処理時間合計の長いジョブから順に、最もMakespanが短くなる位置に挿入していきます。GAより高速で、実用上十分な品質です。</p>
+    </div>
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;border-radius:0;">
+      <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">📊 結果の見方</div>
+      <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;"><strong style="color:rgba(237,237,232,0.75);">Makespan</strong>: 全ジョブ完了までの総時間（短いほど良い）。<strong style="color:rgba(237,237,232,0.75);">納期遵守率</strong>: 期限内に完了したジョブの割合。<strong style="color:rgba(237,237,232,0.75);">FIFO改善率</strong>: 投入順と比較してどれだけ短縮できたか。</p>
+    </div>
+  </div>
+</section>
 
 </BaseLayout>
