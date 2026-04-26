@@ -230,8 +230,15 @@ const faqs = [
       </div>
     </div>
 
-    <!-- ツールカードグリッド -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:4rem;">
+    <!-- 量産・繰り返し製造 セクションラベル -->
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+      <span style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;white-space:nowrap;">▸ 量産・繰り返し製造</span>
+      <span style="flex:1;height:1px;background:rgba(255,255,255,0.07);"></span>
+      <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">{tools.length} ツール</span>
+    </div>
+
+    <!-- 量産系ツールカードグリッド -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:3.5rem;">
       {tools.map(t => (
         <a href={t.href} class="tool-card">
           <div style="display:flex;align-items:flex-start;gap:0.9rem;margin-bottom:1rem;">
@@ -243,6 +250,40 @@ const faqs = [
           </div>
           <p style="color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.6;">{t.desc}</p>
           <div style="margin-top:1.25rem;color:#c8a96e;font-size:0.72rem;letter-spacing:0.25em;">
+            使ってみる →
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- ETO・一品一様製造 セクションラベル -->
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+      <span style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;white-space:nowrap;">▸ ETO・一品一様製造</span>
+      <span style="flex:1;height:1px;background:rgba(255,255,255,0.07);"></span>
+      <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">{etoTools.length} ツール</span>
+    </div>
+    <p style="color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.7;margin-bottom:1.5rem;max-width:780px;">
+      産業機械・プラント設備・特装車両など <strong style="color:#edede8;">受注設計生産</strong> 向け。過去案件の類似度ベース見積り・モンテカルロでの納期確度算出・Job Shop スケジューリングで、見積精度・納期確度・生産効率を実務レベルで改善します。
+    </p>
+
+    <!-- ETOツールカードグリッド -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:4rem;">
+      {etoTools.map(t => (
+        <a href={t.href} class="tool-card eto-card">
+          <div style="position:absolute;top:0.85rem;right:0.85rem;background:rgba(200,169,110,0.15);border:1px solid rgba(200,169,110,0.35);color:#c8a96e;font-size:0.58rem;letter-spacing:0.2em;padding:0.18rem 0.55rem;border-radius:2px;">ETO</div>
+          <div style="display:flex;align-items:flex-start;gap:0.9rem;margin-bottom:1rem;">
+            <div style="font-size:2rem;line-height:1;">{t.icon}</div>
+            <div style="flex:1;">
+              <p style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.3rem;">{t.tag}</p>
+              <h3 style="color:#edede8;font-size:1rem;font-weight:400;letter-spacing:0.04em;">{t.name}</h3>
+            </div>
+          </div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.6;">{t.desc}</p>
+          <div style="margin-top:1rem;padding-top:0.85rem;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:0.5rem;">
+            <span style="color:rgba(110,200,151,0.85);font-size:0.6rem;letter-spacing:0.2em;">USE</span>
+            <span style="color:rgba(237,237,232,0.7);font-size:0.74rem;">{t.when}</span>
+          </div>
+          <div style="margin-top:0.75rem;color:#c8a96e;font-size:0.72rem;letter-spacing:0.25em;">
             使ってみる →
           </div>
         </a>
