@@ -1,0 +1,536 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="ETO類似案件見積り" description="一品一様（ETO・受注設計生産）向け、過去案件マスタからコサイン類似度+k-NNで類似Top3を抽出し、工数・コスト・リードタイムを加重平均で予測。産業機械・プラント設備・特装車両プリセット内蔵。CSVアップロード対応・ブラウザ完結。">
+
+  <!-- 機密保護バナー -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 入力データは外部送信されません</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>DevTools (F12) → Network タブ</li>
+      <li>このページで類似検索を実行</li>
+      <li>新規ネットワーク通信が発生しないことを確認</li>
+    </ol>
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#1a1208 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">ETO · Similar Project Quote · k-NN Cosine</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">ETO類似案件見積り</h1>
+      <p style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.5rem;">過去案件から類似Top3 → 加重平均で工数・コスト・LTを予測</p>
+    </div>
+  </div>
+
+  <!-- USE CASES -->
+  <div style="max-width:1100px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">営業段階の概算見積</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">引合い時点で過去類似案件から即座に概算工数・コストを提示</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">類似案件参照で工数齟齬防止</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">類似Top3を確認し、工数読み違いの再発を防ぐ</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">受注可否の早期判断</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">確信度低い案件は追加情報収集 or 辞退判断に</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- プリセット -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="industrial" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🏭 産業機械</button>
+      <button class="preset-btn" data-preset="plant" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚗ プラント設備</button>
+      <button class="preset-btn" data-preset="vehicle" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚒 特装車両</button>
+      <span id="preset-status" style="color:#c8a96e;font-size:0.7rem;margin-left:0.5rem;"></span>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+      <label style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">
+        📤 過去案件CSVアップロード
+        <input id="csv-upload" type="file" accept=".csv" style="display:none;">
+      </label>
+    </div>
+
+    <!-- 入力フォーム -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">NEW PROJECT FEATURES — 新規案件特徴量</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;">
+        <div>
+          <label class="field-label">部品点数 (個)</label>
+          <input id="f-parts" type="number" min="1" value="500" class="field-input">
+        </div>
+        <div>
+          <label class="field-label">主要寸法 (mm)</label>
+          <input id="f-size" type="number" min="1" value="2000" class="field-input">
+        </div>
+        <div>
+          <label class="field-label">重量 (kg)</label>
+          <input id="f-weight" type="number" min="1" value="3000" class="field-input">
+        </div>
+        <div>
+          <label class="field-label">材質</label>
+          <select id="f-material" class="field-input">
+            <option>SS400</option><option>SUS304</option><option>SUS316</option>
+            <option>A5052</option><option>SCM440</option><option>その他</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">主工法</label>
+          <select id="f-process" class="field-input">
+            <option>機械加工</option><option>溶接</option><option>板金</option>
+            <option>鋳造</option><option>組立中心</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">加工難易度 (1〜5)</label>
+          <input id="f-difficulty" type="number" min="1" max="5" value="3" class="field-input">
+        </div>
+        <div>
+          <label class="field-label">設計新規率 (%)</label>
+          <input id="f-newdesign" type="number" min="0" max="100" value="40" class="field-input">
+        </div>
+        <div>
+          <label class="field-label">顧客カテゴリ</label>
+          <select id="f-customer" class="field-input">
+            <option>官公庁</option><option>民間大手</option><option>中堅</option>
+            <option>海外</option><option>新規</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
+        <button id="btn-search" class="m-btn">類似案件検索 ▶</button>
+        <label style="color:rgba(255,255,255,0.5);font-size:0.72rem;">k値 (上位何件)</label>
+        <select id="f-k" class="field-input" style="width:80px;">
+          <option value="3" selected>3</option><option value="5">5</option>
+        </select>
+        <span id="dataset-info" style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-left:auto;"></span>
+      </div>
+    </div>
+
+    <!-- 結果エリア -->
+    <div id="result-area" style="display:none;">
+      <!-- 予測値カード -->
+      <div id="pred-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;margin-bottom:1.25rem;"></div>
+
+      <!-- 確信度 -->
+      <div id="confidence-box" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;margin-bottom:1rem;"></div>
+
+      <!-- レーダーチャート -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">FEATURE RADAR — 自案件 vs 類似案件平均</p>
+        <div style="position:relative;max-width:520px;margin:0 auto;height:380px;">
+          <canvas id="radar-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- 類似Top -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;overflow-x:auto;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">SIMILAR PROJECTS — 類似案件Top</p>
+        <table id="sim-table" style="width:100%;border-collapse:collapse;font-size:0.78rem;">
+          <thead>
+            <tr>
+              <th class="th">案件名</th><th class="th">類似度</th>
+              <th class="th">工数(h)</th><th class="th">コスト(万円)</th><th class="th">LT(日)</th>
+              <th class="th">部品数</th><th class="th">寸法</th><th class="th">重量</th>
+              <th class="th">材質</th><th class="th">主工法</th>
+            </tr>
+          </thead>
+          <tbody id="sim-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>類似Top1〜3案件の設計図書・実績原価を参照して詳細見積りに展開</li>
+          <li>過去案件のハマりポイント（工数超過原因・トラブル履歴）を必ず確認</li>
+          <li>確信度「低」の場合は仕様書追加・現地調査・顧客ヒアリングで特徴量を確定させてから再計算</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.55rem 1.1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:700; }
+    .m-btn:hover { background:#d4b87b; }
+    .field-label { display:block;color:rgba(255,255,255,0.55);font-size:0.7rem;letter-spacing:0.1em;margin-bottom:0.35rem; }
+    .field-input {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.45rem 0.6rem;font-size:0.85rem;font-family:inherit;width:100%;outline:none;
+    }
+    .field-input:focus { border-color:#c8a96e; }
+    .th { text-align:left;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;padding:0.4rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.07);font-weight:400; }
+    .td { padding:0.45rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(237,237,232,0.85); }
+    .pred-card { background:#0f0f12;border:1px solid rgba(200,169,110,0.2);padding:1.1rem 1.3rem; }
+    .pred-card .lab { color:rgba(255,255,255,0.5);font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.4rem; }
+    .pred-card .val { color:#c8a96e;font-size:1.55rem;font-weight:300;letter-spacing:0.05em; }
+    .pred-card .sd { color:rgba(255,255,255,0.45);font-size:0.7rem;margin-top:0.25rem; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script>
+    // ============================================================
+    // データセット: 産業機械 / プラント設備 / 特装車両 各20件
+    // 8特徴量 + 工数h, コスト万円, LT日
+    // ============================================================
+    const DATASETS = {
+      industrial: [
+        // 産業機械: プレス機・組立機・搬送機・専用機 等
+        { name:'プレス機 200t', parts:850, size:3000, weight:8500,  material:'SS400',  process:'機械加工', difficulty:4, newDesign:30, customer:'民間大手', hours:1800, cost:2200, lt:140 },
+        { name:'プレス機 100t', parts:620, size:2400, weight:5200,  material:'SS400',  process:'機械加工', difficulty:3, newDesign:25, customer:'民間大手', hours:1300, cost:1500, lt:110 },
+        { name:'自動組立機 A型', parts:1200, size:4000, weight:3800, material:'SS400',  process:'組立中心', difficulty:5, newDesign:70, customer:'民間大手', hours:2800, cost:3400, lt:210 },
+        { name:'自動組立機 B型', parts:950,  size:3500, weight:3000, material:'SS400',  process:'組立中心', difficulty:4, newDesign:50, customer:'中堅',     hours:2100, cost:2500, lt:170 },
+        { name:'コンベア搬送機 大', parts:480, size:8000, weight:2500, material:'SS400', process:'溶接',    difficulty:2, newDesign:20, customer:'中堅',     hours:850,  cost:950,  lt:90 },
+        { name:'コンベア搬送機 中', parts:320, size:5000, weight:1500, material:'SS400', process:'溶接',    difficulty:2, newDesign:15, customer:'中堅',     hours:600,  cost:680,  lt:70 },
+        { name:'専用機 部品加工',  parts:1500, size:3200, weight:6500, material:'SCM440', process:'機械加工', difficulty:5, newDesign:80, customer:'民間大手', hours:3200, cost:4100, lt:240 },
+        { name:'検査装置',          parts:680, size:2000, weight:1200, material:'SUS304', process:'組立中心', difficulty:4, newDesign:60, customer:'官公庁',   hours:1500, cost:2000, lt:150 },
+        { name:'洗浄機 大型',      parts:540, size:3500, weight:2800, material:'SUS316', process:'溶接',    difficulty:3, newDesign:35, customer:'民間大手', hours:1100, cost:1450, lt:120 },
+        { name:'洗浄機 小型',      parts:280, size:1500, weight:800,  material:'SUS304', process:'板金',    difficulty:2, newDesign:15, customer:'中堅',     hours:480,  cost:560,  lt:55 },
+        { name:'食品加工機',        parts:780, size:2800, weight:2200, material:'SUS316', process:'溶接',    difficulty:4, newDesign:55, customer:'民間大手', hours:1750, cost:2100, lt:160 },
+        { name:'包装ライン',        parts:1100, size:6500, weight:3500, material:'SS400', process:'組立中心', difficulty:4, newDesign:45, customer:'民間大手', hours:2400, cost:2800, lt:190 },
+        { name:'木工機械 大',       parts:430, size:3000, weight:2400, material:'SS400', process:'機械加工', difficulty:3, newDesign:25, customer:'中堅',     hours:920,  cost:1100, lt:100 },
+        { name:'金属加工機',        parts:920, size:2500, weight:5000, material:'SCM440', process:'機械加工', difficulty:5, newDesign:65, customer:'民間大手', hours:2300, cost:3000, lt:200 },
+        { name:'精密分注機',        parts:520, size:1200, weight:600,  material:'SUS304', process:'組立中心', difficulty:5, newDesign:75, customer:'官公庁',   hours:1900, cost:2700, lt:180 },
+        { name:'試験装置 振動',     parts:380, size:2200, weight:1800, material:'SS400', process:'機械加工', difficulty:4, newDesign:60, customer:'官公庁',   hours:1400, cost:1900, lt:140 },
+        { name:'産業ロボセル',     parts:680, size:3500, weight:2000, material:'SS400', process:'組立中心', difficulty:4, newDesign:55, customer:'海外',     hours:1700, cost:2350, lt:165 },
+        { name:'押出成形機',       parts:920, size:5500, weight:6800, material:'SCM440', process:'機械加工', difficulty:5, newDesign:50, customer:'民間大手', hours:2600, cost:3200, lt:215 },
+        { name:'特殊治具(大)',     parts:180, size:1500, weight:900,  material:'SS400', process:'機械加工', difficulty:3, newDesign:90, customer:'民間大手', hours:520,  cost:600,  lt:60 },
+        { name:'産業オーブン',     parts:420, size:3000, weight:1900, material:'SUS304', process:'板金',    difficulty:3, newDesign:30, customer:'中堅',     hours:780,  cost:920,  lt:85 },
+      ],
+      plant: [
+        // プラント設備: タンク・熱交換器・配管ユニット 等
+        { name:'貯蔵タンク 50KL',  parts:220, size:6000,  weight:12000, material:'SS400',  process:'溶接', difficulty:3, newDesign:20, customer:'民間大手', hours:2400, cost:3500, lt:220 },
+        { name:'貯蔵タンク 20KL',  parts:160, size:4500,  weight:6500,  material:'SS400',  process:'溶接', difficulty:2, newDesign:15, customer:'民間大手', hours:1500, cost:2100, lt:160 },
+        { name:'貯蔵タンク SUS',   parts:200, size:5000,  weight:8000,  material:'SUS316', process:'溶接', difficulty:3, newDesign:25, customer:'民間大手', hours:2100, cost:3200, lt:200 },
+        { name:'熱交換器 シェル&チューブ大', parts:340, size:4000, weight:4500, material:'SUS316', process:'溶接', difficulty:4, newDesign:35, customer:'民間大手', hours:2200, cost:3400, lt:210 },
+        { name:'熱交換器 中型',    parts:240, size:2800,  weight:2500, material:'SUS304', process:'溶接', difficulty:3, newDesign:25, customer:'中堅',     hours:1400, cost:2000, lt:150 },
+        { name:'配管ユニット A',   parts:520, size:5500,  weight:1800, material:'SUS316', process:'溶接', difficulty:3, newDesign:40, customer:'民間大手', hours:1700, cost:2300, lt:170 },
+        { name:'配管ユニット B',   parts:380, size:4000,  weight:1300, material:'SUS304', process:'溶接', difficulty:2, newDesign:25, customer:'中堅',     hours:1100, cost:1400, lt:120 },
+        { name:'反応器 撹拌付き',   parts:420, size:3500,  weight:3800, material:'SUS316', process:'溶接', difficulty:5, newDesign:60, customer:'民間大手', hours:2900, cost:4500, lt:260 },
+        { name:'蒸留塔 中型',      parts:280, size:8000,  weight:5500, material:'SUS304', process:'溶接', difficulty:4, newDesign:45, customer:'民間大手', hours:2500, cost:3700, lt:230 },
+        { name:'スクラバー',        parts:320, size:4500,  weight:2200, material:'SUS316', process:'溶接', difficulty:3, newDesign:35, customer:'官公庁',   hours:1600, cost:2300, lt:170 },
+        { name:'排水処理ユニット',  parts:680, size:6000,  weight:3500, material:'SUS304', process:'組立中心', difficulty:4, newDesign:55, customer:'官公庁', hours:2300, cost:3100, lt:200 },
+        { name:'熱風炉',           parts:240, size:3500,  weight:3200, material:'SS400',  process:'溶接', difficulty:3, newDesign:30, customer:'民間大手', hours:1450, cost:2050, lt:155 },
+        { name:'ホッパー大型',      parts:140, size:4500,  weight:2800, material:'SS400',  process:'板金', difficulty:2, newDesign:15, customer:'中堅',     hours:780,  cost:1050, lt:90 },
+        { name:'攪拌タンク',        parts:180, size:3000,  weight:2400, material:'SUS316', process:'溶接', difficulty:3, newDesign:25, customer:'民間大手', hours:1250, cost:1850, lt:135 },
+        { name:'プロセス装置 一式', parts:920, size:7000,  weight:7500, material:'SUS316', process:'組立中心', difficulty:5, newDesign:70, customer:'民間大手', hours:4200, cost:6800, lt:330 },
+        { name:'冷却塔ユニット',   parts:280, size:5000,  weight:3000, material:'SUS304', process:'板金', difficulty:3, newDesign:30, customer:'民間大手', hours:1350, cost:1950, lt:140 },
+        { name:'バグフィルター',    parts:220, size:4000,  weight:1800, material:'SS400',  process:'板金', difficulty:2, newDesign:20, customer:'中堅',     hours:920,  cost:1200, lt:100 },
+        { name:'圧力容器 中型',    parts:160, size:2500,  weight:2200, material:'SUS316', process:'溶接', difficulty:4, newDesign:30, customer:'民間大手', hours:1500, cost:2400, lt:165 },
+        { name:'プラント配管 海外', parts:780, size:8500,  weight:4500, material:'SUS316', process:'溶接', difficulty:4, newDesign:50, customer:'海外',     hours:2800, cost:3900, lt:240 },
+        { name:'発酵タンク',        parts:240, size:3500,  weight:3500, material:'SUS316', process:'溶接', difficulty:4, newDesign:40, customer:'民間大手', hours:1800, cost:2700, lt:185 },
+      ],
+      vehicle: [
+        // 特装車両
+        { name:'消防車 ポンプ車',  parts:2200, size:7500,  weight:9500, material:'SS400', process:'組立中心', difficulty:4, newDesign:25, customer:'官公庁', hours:2800, cost:3500, lt:180 },
+        { name:'消防車 はしご車',  parts:3200, size:11000, weight:14000, material:'SS400', process:'組立中心', difficulty:5, newDesign:40, customer:'官公庁', hours:4500, cost:5800, lt:260 },
+        { name:'救急車 高規格',    parts:1800, size:5800,  weight:3800, material:'SS400', process:'板金',    difficulty:3, newDesign:20, customer:'官公庁', hours:1900, cost:2400, lt:140 },
+        { name:'タンクローリー 化学品', parts:1100, size:9500, weight:8000, material:'SUS316', process:'溶接', difficulty:4, newDesign:30, customer:'民間大手', hours:2500, cost:3200, lt:175 },
+        { name:'タンクローリー 燃料', parts:950,  size:9000,  weight:7000, material:'SS400', process:'溶接',  difficulty:3, newDesign:20, customer:'民間大手', hours:2000, cost:2600, lt:150 },
+        { name:'高所作業車',        parts:1500, size:8000,  weight:6500, material:'SS400', process:'組立中心', difficulty:4, newDesign:30, customer:'民間大手', hours:2600, cost:3300, lt:170 },
+        { name:'クレーン車 中型',  parts:2400, size:9500,  weight:11000, material:'SCM440', process:'機械加工', difficulty:5, newDesign:35, customer:'民間大手', hours:3800, cost:5200, lt:230 },
+        { name:'ダンプトラック改造', parts:780,  size:7000,  weight:6000, material:'SS400', process:'溶接',  difficulty:2, newDesign:15, customer:'中堅',     hours:1100, cost:1400, lt:90 },
+        { name:'冷凍・冷蔵車',     parts:980,  size:6500,  weight:4200, material:'A5052', process:'板金',    difficulty:3, newDesign:25, customer:'民間大手', hours:1700, cost:2200, lt:130 },
+        { name:'清掃車 ロードスイーパー', parts:1700, size:6800, weight:7500, material:'SS400', process:'組立中心', difficulty:4, newDesign:35, customer:'官公庁', hours:2700, cost:3500, lt:180 },
+        { name:'バキューム車',     parts:850,  size:7000,  weight:5800, material:'SS400', process:'溶接',    difficulty:3, newDesign:20, customer:'官公庁',   hours:1500, cost:2000, lt:120 },
+        { name:'特殊作業車 電力',  parts:1900, size:8500,  weight:7000, material:'SS400', process:'組立中心', difficulty:4, newDesign:40, customer:'民間大手', hours:2900, cost:3700, lt:190 },
+        { name:'自衛隊向け輸送車', parts:2600, size:9500,  weight:12000, material:'SS400', process:'組立中心', difficulty:5, newDesign:55, customer:'官公庁', hours:4200, cost:5500, lt:240 },
+        { name:'移動電源車',        parts:1400, size:7500,  weight:8500, material:'SS400', process:'組立中心', difficulty:4, newDesign:35, customer:'官公庁', hours:2400, cost:3200, lt:165 },
+        { name:'飼料運搬車',        parts:680,  size:7500,  weight:5500, material:'SS400', process:'板金',    difficulty:2, newDesign:15, customer:'中堅',     hours:1050, cost:1300, lt:90 },
+        { name:'除雪車 ロータリー', parts:1300, size:8000,  weight:9000, material:'SCM440', process:'機械加工', difficulty:4, newDesign:30, customer:'官公庁', hours:2500, cost:3300, lt:175 },
+        { name:'重機運搬トレーラ',  parts:580,  size:13000, weight:8500, material:'SS400', process:'溶接',    difficulty:3, newDesign:20, customer:'民間大手', hours:1400, cost:1750, lt:115 },
+        { name:'路面標示車',        parts:1100, size:6500,  weight:4500, material:'SS400', process:'組立中心', difficulty:3, newDesign:30, customer:'官公庁',   hours:1700, cost:2150, lt:130 },
+        { name:'コンクリートミキサ車',parts:920,  size:7500,  weight:8500, material:'SS400', process:'機械加工', difficulty:3, newDesign:15, customer:'民間大手', hours:1450, cost:1850, lt:115 },
+        { name:'移動式衛星通信車', parts:1700, size:7000,  weight:5500, material:'A5052', process:'組立中心', difficulty:5, newDesign:60, customer:'官公庁',   hours:3200, cost:4500, lt:220 },
+      ],
+    };
+
+    let dataset = DATASETS.industrial.slice();
+    const MATERIALS = ['SS400','SUS304','SUS316','A5052','SCM440','その他'];
+    const PROCESSES = ['機械加工','溶接','板金','鋳造','組立中心'];
+    const CUSTOMERS = ['官公庁','民間大手','中堅','海外','新規'];
+
+    // ============================================================
+    // 特徴量ベクトル化（数値Z-score+カテゴリOne-hot）
+    // ============================================================
+    function buildVectors(records, query) {
+      const all = records.concat([query]);
+      const numericKeys = ['parts','size','weight','difficulty','newDesign'];
+      const stats = {};
+      numericKeys.forEach(k => {
+        const arr = all.map(r => r[k]);
+        const mean = arr.reduce((a,b)=>a+b,0)/arr.length;
+        const variance = arr.reduce((s,v)=>s+(v-mean)**2,0)/arr.length;
+        const std = Math.sqrt(variance) || 1;
+        stats[k] = { mean, std };
+      });
+      function vec(r) {
+        const v = [];
+        numericKeys.forEach(k => v.push((r[k]-stats[k].mean)/stats[k].std));
+        MATERIALS.forEach(m => v.push(r.material === m ? 1 : 0));
+        PROCESSES.forEach(p => v.push(r.process === p ? 1 : 0));
+        CUSTOMERS.forEach(c => v.push(r.customer === c ? 1 : 0));
+        return v;
+      }
+      return { recordVecs: records.map(vec), queryVec: vec(query) };
+    }
+
+    function cosineSim(a, b) {
+      let dot=0, na=0, nb=0;
+      for (let i=0; i<a.length; i++){ dot += a[i]*b[i]; na += a[i]*a[i]; nb += b[i]*b[i]; }
+      const denom = Math.sqrt(na)*Math.sqrt(nb);
+      return denom < 1e-12 ? 0 : dot/denom;
+    }
+
+    function knnSearch(query, k) {
+      const { recordVecs, queryVec } = buildVectors(dataset, query);
+      const sims = dataset.map((rec, i) => ({ rec, sim: cosineSim(queryVec, recordVecs[i]) }));
+      sims.sort((a,b) => b.sim - a.sim);
+      return sims.slice(0, k);
+    }
+
+    function predict(top) {
+      // 加重平均（類似度を重み）+ SD
+      const weights = top.map(t => Math.max(0, t.sim));
+      const wsum = weights.reduce((a,b)=>a+b,0) || 1;
+      const fields = ['hours','cost','lt'];
+      const result = {};
+      fields.forEach(f => {
+        const mean = top.reduce((s,t,i) => s + t.rec[f]*weights[i], 0) / wsum;
+        const variance = top.reduce((s,t,i) => s + weights[i]*(t.rec[f]-mean)**2, 0) / wsum;
+        const sd = Math.sqrt(variance);
+        result[f] = { mean, sd };
+      });
+      return result;
+    }
+
+    function confidenceLevel(maxSim) {
+      if (maxSim >= 0.85) return { lv:'高', color:'#6ec897', detail:'類似度0.85以上 — 高信頼。同種案件あり。' };
+      if (maxSim >= 0.70) return { lv:'中', color:'#c8a96e', detail:'類似度0.70〜0.85 — 中信頼。標準偏差を確認の上で見積り提示。' };
+      return { lv:'低', color:'#ff6666', detail:'類似度0.70未満 — 低信頼。仕様確定後の再計算を推奨。' };
+    }
+
+    // ============================================================
+    // UI
+    // ============================================================
+    function getQuery() {
+      return {
+        name: '新規案件',
+        parts: parseFloat(document.getElementById('f-parts').value) || 0,
+        size: parseFloat(document.getElementById('f-size').value) || 0,
+        weight: parseFloat(document.getElementById('f-weight').value) || 0,
+        material: document.getElementById('f-material').value,
+        process: document.getElementById('f-process').value,
+        difficulty: parseFloat(document.getElementById('f-difficulty').value) || 1,
+        newDesign: parseFloat(document.getElementById('f-newdesign').value) || 0,
+        customer: document.getElementById('f-customer').value,
+      };
+    }
+
+    let radarChart = null;
+    function renderRadar(query, top) {
+      const canvas = document.getElementById('radar-chart');
+      if (radarChart) { radarChart.destroy(); radarChart = null; }
+      // 5数値特徴量を0-1正規化
+      const all = dataset.concat([query]);
+      const norm = (v, k) => {
+        const arr = all.map(r => r[k]);
+        const min = Math.min(...arr), max = Math.max(...arr);
+        return max === min ? 0.5 : (v-min)/(max-min);
+      };
+      const labels = ['部品点数','寸法','重量','難易度','設計新規率'];
+      const keys = ['parts','size','weight','difficulty','newDesign'];
+      const queryData = keys.map(k => parseFloat((norm(query[k],k)).toFixed(3)));
+      const topAvg = keys.map(k => {
+        const m = top.reduce((s,t)=>s+t.rec[k],0)/top.length;
+        return parseFloat(norm(m,k).toFixed(3));
+      });
+      radarChart = new Chart(canvas, {
+        type: 'radar',
+        data: {
+          labels,
+          datasets: [
+            { label:'自案件', data:queryData, backgroundColor:'rgba(200,169,110,0.25)', borderColor:'#c8a96e', borderWidth:2, pointBackgroundColor:'#c8a96e' },
+            { label:'類似Top平均', data:topAvg, backgroundColor:'rgba(110,200,151,0.18)', borderColor:'#6ec897', borderWidth:2, pointBackgroundColor:'#6ec897' },
+          ]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false, animation:false,
+          plugins: { legend:{ labels:{ color:'#edede8' } } },
+          scales: {
+            r: {
+              min:0, max:1,
+              grid:{ color:'rgba(255,255,255,0.1)' },
+              angleLines:{ color:'rgba(255,255,255,0.1)' },
+              pointLabels:{ color:'#edede8', font:{ size:11 } },
+              ticks:{ color:'rgba(255,255,255,0.4)', backdropColor:'transparent', stepSize:0.25 }
+            }
+          }
+        }
+      });
+    }
+
+    function renderResult() {
+      const query = getQuery();
+      const k = parseInt(document.getElementById('f-k').value) || 3;
+      const top = knnSearch(query, k);
+      const pred = predict(top);
+      const maxSim = top[0]?.sim ?? 0;
+      const conf = confidenceLevel(maxSim);
+
+      // 予測カード
+      const cards = document.getElementById('pred-cards');
+      cards.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      [
+        { lab:'予測 工数', val: pred.hours.mean.toFixed(0)+' h', sd:'±'+pred.hours.sd.toFixed(0)+' h (1σ)' },
+        { lab:'予測 コスト', val: pred.cost.mean.toFixed(0)+' 万円', sd:'±'+pred.cost.sd.toFixed(0)+' 万円' },
+        { lab:'予測 リードタイム', val: pred.lt.mean.toFixed(0)+' 日', sd:'±'+pred.lt.sd.toFixed(0)+' 日' },
+      ].forEach(c => {
+        const d = document.createElement('div');
+        d.className = 'pred-card';
+        d.innerHTML = `<div class="lab">${c.lab}</div><div class="val">${c.val}</div><div class="sd">${c.sd}</div>`;
+        frag.appendChild(d);
+      });
+      cards.appendChild(frag);
+
+      // 確信度
+      const cb = document.getElementById('confidence-box');
+      cb.innerHTML = `
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <div style="color:rgba(255,255,255,0.5);font-size:0.62rem;letter-spacing:0.25em;">CONFIDENCE</div>
+          <div style="color:${conf.color};font-size:1.4rem;font-weight:300;">${conf.lv}</div>
+          <div style="color:rgba(255,255,255,0.4);font-size:0.7rem;">最高類似度 ${(maxSim*100).toFixed(1)}%</div>
+          <div style="color:rgba(237,237,232,0.7);font-size:0.78rem;flex:1;min-width:200px;">${conf.detail}</div>
+        </div>`;
+
+      // 類似テーブル
+      const tbody = document.getElementById('sim-tbody');
+      tbody.innerHTML = '';
+      const tFrag = document.createDocumentFragment();
+      top.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="td">${t.rec.name}</td>
+          <td class="td" style="color:#c8a96e;">${(t.sim*100).toFixed(1)}%</td>
+          <td class="td">${t.rec.hours}</td>
+          <td class="td">${t.rec.cost}</td>
+          <td class="td">${t.rec.lt}</td>
+          <td class="td">${t.rec.parts}</td>
+          <td class="td">${t.rec.size}</td>
+          <td class="td">${t.rec.weight}</td>
+          <td class="td">${t.rec.material}</td>
+          <td class="td">${t.rec.process}</td>`;
+        tFrag.appendChild(tr);
+      });
+      tbody.appendChild(tFrag);
+
+      // レーダー
+      renderRadar(query, top);
+
+      document.getElementById('result-area').style.display = 'block';
+      document.getElementById('result-area').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    document.getElementById('btn-search').addEventListener('click', renderResult);
+
+    // プリセット
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.getAttribute('data-preset');
+        if (DATASETS[k]) {
+          dataset = DATASETS[k].slice();
+          updateDatasetInfo();
+          document.getElementById('preset-status').textContent = `✓ ${btn.textContent.trim()} ${dataset.length}件 読込`;
+          setTimeout(() => { document.getElementById('preset-status').textContent = ''; }, 2500);
+        }
+      });
+    });
+
+    function updateDatasetInfo() {
+      document.getElementById('dataset-info').textContent = `過去案件マスタ: ${dataset.length}件`;
+    }
+    updateDatasetInfo();
+
+    // CSVテンプレート
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      const header = 'name,parts,size,weight,material,process,difficulty,newDesign,customer,hours,cost,lt';
+      const sample = DATASETS.industrial.slice(0,5).map(r => [
+        r.name,r.parts,r.size,r.weight,r.material,r.process,r.difficulty,r.newDesign,r.customer,r.hours,r.cost,r.lt
+      ].join(','));
+      const blob = new Blob([header+'\n'+sample.join('\n')], { type:'text/csv;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'eto-similar-template.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    // CSVアップロード
+    document.getElementById('csv-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const lines = text.split(/\r?\n/).filter(l => l.trim());
+        const headers = lines[0].split(',').map(h => h.trim());
+        const idx = (k) => headers.indexOf(k);
+        const required = ['name','parts','size','weight','material','process','difficulty','newDesign','customer','hours','cost','lt'];
+        for (const r of required) if (idx(r) < 0) throw new Error('列不足: '+r);
+        const recs = [];
+        for (let i=1; i<lines.length; i++) {
+          const cols = lines[i].split(',').map(c => c.trim());
+          recs.push({
+            name: cols[idx('name')],
+            parts: parseFloat(cols[idx('parts')]) || 0,
+            size: parseFloat(cols[idx('size')]) || 0,
+            weight: parseFloat(cols[idx('weight')]) || 0,
+            material: cols[idx('material')],
+            process: cols[idx('process')],
+            difficulty: parseFloat(cols[idx('difficulty')]) || 1,
+            newDesign: parseFloat(cols[idx('newDesign')]) || 0,
+            customer: cols[idx('customer')],
+            hours: parseFloat(cols[idx('hours')]) || 0,
+            cost: parseFloat(cols[idx('cost')]) || 0,
+            lt: parseFloat(cols[idx('lt')]) || 0,
+          });
+        }
+        dataset = recs.filter(r => r.name && r.hours > 0);
+        updateDatasetInfo();
+        document.getElementById('preset-status').textContent = `✓ CSV読込 ${dataset.length}件`;
+      } catch (err) {
+        alert('CSV読込エラー: '+err.message);
+      }
+      e.target.value = '';
+    });
+
+    document.getElementById('verify-privacy').addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+  </script>
+
+</BaseLayout>

@@ -1,0 +1,611 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="ETO Job Shopスケジューラ" description="一品一様製造のJob Shop問題を、ジョブごとに異なる工程経路でディスパッチングルール(EDD/SPT/CR)スケジューリング。Canvasガントチャートで機械別稼働を可視化、メイクスパン・納期遵守率・機械稼働率を算出。3ルール比較対応。">
+
+  <!-- 機密保護バナー -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 入力データは外部送信されません</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;"><li>F12 → Network</li><li>スケジューリング実行</li><li>新規通信なしを確認</li></ol>
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#1a160d 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">ETO Job Shop · EDD / SPT / CR Dispatch</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">ETO Job Shopスケジューラ</h1>
+      <p style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.5rem;">ジョブ毎異経路 × 機械リソース × ディスパッチングルール</p>
+    </div>
+  </div>
+
+  <!-- USE CASES -->
+  <div style="max-width:1200px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">一品一様でも順序最適化</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">案件毎に異なる工程経路でも自動スケジュール</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">納期遵守率向上</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">EDD/CRで納期重視のディスパッチに切替可</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">機械別稼働率可視化</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">どの機械が遊んでいるか・何が詰まるかが一目</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- プリセット -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="industrial" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🏭 産業機械</button>
+      <button class="preset-btn" data-preset="plant" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚗ プラント設備</button>
+      <button class="preset-btn" data-preset="vehicle" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚒 特装車両</button>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" class="grid-2">
+      <!-- 機械リソース -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;overflow-x:auto;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">MACHINES — 機械リソース</p>
+        <table style="width:100%;border-collapse:collapse;font-size:0.78rem;">
+          <thead><tr><th class="th">機械名</th><th class="th">台数</th><th class="th"></th></tr></thead>
+          <tbody id="mach-tbody"></tbody>
+        </table>
+        <button id="btn-add-mach" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.7rem;">+ 機械追加</button>
+      </div>
+      <!-- ジョブ -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;overflow-x:auto;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">JOBS — ジョブ + 工程経路</p>
+        <table style="width:100%;border-collapse:collapse;font-size:0.75rem;">
+          <thead><tr><th class="th">ジョブ名</th><th class="th">納期(h)</th><th class="th">優先度</th><th class="th">工程経路 (機械:時間, …)</th><th class="th"></th></tr></thead>
+          <tbody id="job-tbody"></tbody>
+        </table>
+        <button id="btn-add-job" class="m-btn-ghost" style="margin-top:0.5rem;font-size:0.7rem;">+ ジョブ追加</button>
+      </div>
+    </div>
+
+    <!-- 実行 -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+      <label style="color:rgba(255,255,255,0.6);font-size:0.72rem;">ディスパッチルール</label>
+      <select id="rule" class="field-input" style="width:160px;">
+        <option value="EDD">EDD - 納期最早優先</option>
+        <option value="SPT">SPT - 処理時間最短</option>
+        <option value="CR">CR - クリティカルレシオ</option>
+        <option value="ALL" selected>3ルール比較</option>
+      </select>
+      <button id="btn-run" class="m-btn">スケジューリング実行 ▶</button>
+      <span id="run-status" style="color:rgba(255,255,255,0.5);font-size:0.72rem;"></span>
+    </div>
+
+    <!-- 結果 -->
+    <div id="result-area" style="display:none;"></div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.55rem 1.1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:700; }
+    .m-btn:hover { background:#d4b87b; }
+    .field-input { background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);padding:0.4rem 0.55rem;font-size:0.82rem;font-family:inherit;outline:none; }
+    .field-input:focus { border-color:#c8a96e; }
+    .th { text-align:left;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;padding:0.4rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.07);font-weight:400; }
+    .td { padding:0.3rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04); }
+    .cell-input { background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.08);padding:0.3rem 0.5rem;font-size:0.78rem;font-family:inherit;width:100%;outline:none; }
+    .cell-input:focus { border-color:#c8a96e; }
+    .del-btn { background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:1rem;line-height:1; }
+    .del-btn:hover { color:rgba(255,80,80,1); }
+    .metric-card { background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.95rem 1.15rem; }
+    .metric-card.highlight { border-color:#c8a96e;background:rgba(200,169,110,0.06); }
+    .metric-label { color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.2em;margin-bottom:0.35rem; }
+    .metric-value { color:#edede8;font-size:1.2rem;font-weight:200; }
+    .metric-value.gold { color:#c8a96e; }
+    .metric-sub { color:rgba(255,255,255,0.35);font-size:0.66rem;margin-top:0.2rem; }
+    @media (max-width:900px) { .grid-2 { grid-template-columns: 1fr !important; } }
+  </style>
+
+  <script>
+    // ============================================================
+    // プリセット
+    // ============================================================
+    const PRESETS = {
+      industrial: {
+        machines: [
+          { name:'プレス機', count:1 },
+          { name:'溶接機', count:2 },
+          { name:'塗装機', count:1 },
+          { name:'機械加工機', count:2 },
+          { name:'組立スペース', count:2 },
+          { name:'検査台', count:1 },
+        ],
+        jobs: [
+          { name:'ジョブA(プレス機)', due:80, priority:2, route:[ ['プレス機',8], ['溶接機',12], ['塗装機',6], ['組立スペース',10] ] },
+          { name:'ジョブB(検査機)', due:60, priority:1, route:[ ['機械加工機',10], ['組立スペース',8], ['検査台',4] ] },
+          { name:'ジョブC(配管)', due:70, priority:2, route:[ ['溶接機',14], ['塗装機',5], ['組立スペース',9] ] },
+          { name:'ジョブD(専用機)', due:120, priority:3, route:[ ['プレス機',6], ['機械加工機',12], ['溶接機',10], ['塗装機',5], ['組立スペース',12] ] },
+          { name:'ジョブE(治具)', due:40, priority:1, route:[ ['機械加工機',6], ['検査台',3] ] },
+        ],
+      },
+      plant: {
+        machines: [
+          { name:'切断機', count:1 },
+          { name:'ロール曲げ', count:1 },
+          { name:'溶接機', count:3 },
+          { name:'X線検査', count:1 },
+          { name:'内面研磨', count:1 },
+          { name:'組立スペース', count:2 },
+        ],
+        jobs: [
+          { name:'タンク50KL', due:120, priority:2, route:[ ['切断機',10], ['ロール曲げ',12], ['溶接機',30], ['X線検査',6], ['組立スペース',8] ] },
+          { name:'熱交換器', due:90, priority:1, route:[ ['切断機',8], ['溶接機',24], ['内面研磨',10], ['X線検査',5] ] },
+          { name:'配管ユニットA', due:70, priority:2, route:[ ['切断機',6], ['溶接機',18], ['組立スペース',10] ] },
+          { name:'配管ユニットB', due:65, priority:2, route:[ ['切断機',5], ['溶接機',15], ['組立スペース',9] ] },
+          { name:'反応器', due:140, priority:3, route:[ ['切断機',10], ['ロール曲げ',10], ['溶接機',32], ['X線検査',8], ['内面研磨',12], ['組立スペース',10] ] },
+        ],
+      },
+      vehicle: {
+        machines: [
+          { name:'シャシ受入', count:1 },
+          { name:'板金加工', count:2 },
+          { name:'塗装ブース', count:1 },
+          { name:'装艤装組付', count:2 },
+          { name:'電装配線', count:2 },
+          { name:'検査ライン', count:1 },
+        ],
+        jobs: [
+          { name:'消防車ポンプ', due:100, priority:1, route:[ ['シャシ受入',4], ['板金加工',16], ['塗装ブース',8], ['装艤装組付',24], ['電装配線',12], ['検査ライン',6] ] },
+          { name:'救急車', due:80, priority:1, route:[ ['シャシ受入',3], ['板金加工',12], ['塗装ブース',6], ['装艤装組付',16], ['電装配線',10], ['検査ライン',5] ] },
+          { name:'タンクローリー', due:90, priority:2, route:[ ['シャシ受入',3], ['塗装ブース',5], ['装艤装組付',20], ['検査ライン',5] ] },
+          { name:'高所作業車', due:120, priority:2, route:[ ['シャシ受入',4], ['板金加工',14], ['塗装ブース',8], ['装艤装組付',22], ['電装配線',14], ['検査ライン',6] ] },
+          { name:'ダンプ改造', due:50, priority:3, route:[ ['シャシ受入',2], ['板金加工',8], ['塗装ブース',4], ['検査ライン',3] ] },
+        ],
+      },
+    };
+
+    let machines = JSON.parse(JSON.stringify(PRESETS.industrial.machines));
+    let jobs = JSON.parse(JSON.stringify(PRESETS.industrial.jobs));
+
+    // ============================================================
+    // 描画 - 機械
+    // ============================================================
+    function renderMachines() {
+      const tbody = document.getElementById('mach-tbody');
+      tbody.innerHTML = '';
+      const f = document.createDocumentFragment();
+      machines.forEach((m, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="td"><input class="cell-input m-name" value="${m.name}"></td>
+          <td class="td"><input class="cell-input m-count" type="number" min="1" value="${m.count}" style="width:60px;"></td>
+          <td class="td"><button class="del-btn" data-mdel="${i}">✕</button></td>`;
+        f.appendChild(tr);
+      });
+      tbody.appendChild(f);
+      tbody.querySelectorAll('.del-btn').forEach(b => b.addEventListener('click', e => {
+        readMachines();
+        machines.splice(parseInt(e.target.getAttribute('data-mdel')), 1);
+        renderMachines();
+      }));
+    }
+    function readMachines() {
+      const rows = document.querySelectorAll('#mach-tbody tr');
+      machines = [];
+      rows.forEach(r => {
+        const name = r.querySelector('.m-name').value.trim();
+        const count = parseInt(r.querySelector('.m-count').value) || 1;
+        if (name) machines.push({ name, count });
+      });
+    }
+
+    // ============================================================
+    // 描画 - ジョブ
+    // ============================================================
+    function routeToStr(route) { return route.map(([m,t]) => `${m}:${t}`).join(', '); }
+    function strToRoute(s) {
+      return s.split(',').map(seg => {
+        const [m,t] = seg.split(':').map(x=>x.trim());
+        return [m, parseFloat(t) || 0];
+      }).filter(p => p[0] && p[1] > 0);
+    }
+
+    function renderJobs() {
+      const tbody = document.getElementById('job-tbody');
+      tbody.innerHTML = '';
+      const f = document.createDocumentFragment();
+      jobs.forEach((j, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="td"><input class="cell-input j-name" value="${j.name}" style="min-width:100px;"></td>
+          <td class="td"><input class="cell-input j-due" type="number" min="0" value="${j.due}" style="width:70px;"></td>
+          <td class="td"><input class="cell-input j-prio" type="number" min="1" max="5" value="${j.priority}" style="width:50px;"></td>
+          <td class="td"><input class="cell-input j-route" value="${routeToStr(j.route)}" style="min-width:240px;"></td>
+          <td class="td"><button class="del-btn" data-jdel="${i}">✕</button></td>`;
+        f.appendChild(tr);
+      });
+      tbody.appendChild(f);
+      tbody.querySelectorAll('.del-btn').forEach(b => b.addEventListener('click', e => {
+        readJobs();
+        jobs.splice(parseInt(e.target.getAttribute('data-jdel')), 1);
+        renderJobs();
+      }));
+    }
+    function readJobs() {
+      const rows = document.querySelectorAll('#job-tbody tr');
+      jobs = [];
+      rows.forEach(r => {
+        const name = r.querySelector('.j-name').value.trim();
+        const due = parseFloat(r.querySelector('.j-due').value) || 0;
+        const priority = parseInt(r.querySelector('.j-prio').value) || 3;
+        const route = strToRoute(r.querySelector('.j-route').value);
+        if (name && route.length) jobs.push({ name, due, priority, route });
+      });
+    }
+
+    document.getElementById('btn-add-mach').addEventListener('click', () => {
+      readMachines(); machines.push({ name:'新機械', count:1 }); renderMachines();
+    });
+    document.getElementById('btn-add-job').addEventListener('click', () => {
+      readJobs(); jobs.push({ name:'新ジョブ', due:50, priority:3, route:[['機械加工機',5],['組立スペース',5]] }); renderJobs();
+    });
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.getAttribute('data-preset');
+        if (PRESETS[k]) {
+          machines = JSON.parse(JSON.stringify(PRESETS[k].machines));
+          jobs = JSON.parse(JSON.stringify(PRESETS[k].jobs));
+          renderMachines(); renderJobs();
+        }
+      });
+    });
+
+    // ============================================================
+    // スケジューラ
+    // ============================================================
+    function schedule(machines, jobs, rule) {
+      // 機械単位の利用可能時刻配列（同名で台数分）
+      const machSlots = {};
+      machines.forEach(m => { machSlots[m.name] = new Array(m.count).fill(0); });
+
+      // 各ジョブの状態
+      const jobState = jobs.map(j => ({
+        ...j,
+        opIdx: 0,             // 次の工程番号
+        readyAt: 0,           // この工程開始可能時刻
+        ops: [],              // 確定したops
+      }));
+
+      // 全工程数
+      let remainingOps = jobs.reduce((s,j) => s + j.route.length, 0);
+
+      // ガント記録
+      const gantt = []; // { jobName, machine, slotIdx, start, end }
+
+      while (remainingOps > 0) {
+        // 「次の工程が未割当」かつ「ジョブが ready」なものから候補を構成
+        // 各候補について、対象機械の最早利用可能時刻も考慮
+        const candidates = [];
+        jobState.forEach((j, ji) => {
+          if (j.opIdx >= j.route.length) return;
+          const [machName, dur] = j.route[j.opIdx];
+          const slots = machSlots[machName];
+          if (!slots) return; // 機械が定義されていない
+          // 最早スロット
+          let bestSlot = 0;
+          for (let s=1; s<slots.length; s++) if (slots[s] < slots[bestSlot]) bestSlot = s;
+          const machReady = slots[bestSlot];
+          const earliestStart = Math.max(j.readyAt, machReady);
+          candidates.push({ ji, machName, dur, slotIdx:bestSlot, earliestStart, end: earliestStart + dur });
+        });
+
+        if (candidates.length === 0) break;
+
+        // 最早開始時刻 = グローバル時計
+        const tNow = Math.min(...candidates.map(c => c.earliestStart));
+
+        // tNow で開始可能なものに絞る
+        const eligible = candidates.filter(c => c.earliestStart <= tNow + 1e-9);
+
+        // ルールでスコアリング → 最良を選択
+        function score(c) {
+          const job = jobState[c.ji];
+          if (rule === 'SPT') return c.dur;
+          if (rule === 'EDD') return job.due;
+          if (rule === 'CR') {
+            const remDur = job.route.slice(job.opIdx).reduce((s,[,d]) => s+d, 0);
+            const slack = job.due - tNow;
+            // CR = slack / remDur, 小さいほど緊急
+            return remDur < 1e-9 ? Infinity : slack / remDur;
+          }
+          return c.dur;
+        }
+        eligible.sort((a,b) => {
+          const sa = score(a), sb = score(b);
+          if (sa !== sb) return sa - sb;
+          // タイブレーク: 優先度
+          return jobState[a.ji].priority - jobState[b.ji].priority;
+        });
+        const chosen = eligible[0];
+
+        // 確定
+        const job = jobState[chosen.ji];
+        const start = chosen.earliestStart;
+        const end = start + chosen.dur;
+        machSlots[chosen.machName][chosen.slotIdx] = end;
+        job.readyAt = end;
+        job.opIdx++;
+        job.ops.push({ machine: chosen.machName, slotIdx: chosen.slotIdx, start, end });
+        gantt.push({ jobName: job.name, jobIdx: chosen.ji, machine: chosen.machName, slotIdx: chosen.slotIdx, start, end });
+        remainingOps--;
+      }
+
+      // メトリクス
+      const makespan = jobState.reduce((m, j) => Math.max(m, j.readyAt), 0);
+      const tardiness = jobState.map(j => Math.max(0, j.readyAt - j.due));
+      const onTime = jobState.filter(j => j.readyAt <= j.due).length;
+      const onTimeRate = jobState.length > 0 ? onTime / jobState.length : 0;
+      const flowTimes = jobState.map(j => j.readyAt);
+      const meanFlow = flowTimes.reduce((a,b)=>a+b,0) / (flowTimes.length || 1);
+
+      // 機械稼働率
+      const machUtil = {};
+      machines.forEach(m => {
+        const slots = machSlots[m.name];
+        const totalBusy = gantt.filter(g => g.machine === m.name).reduce((s,g) => s + (g.end-g.start), 0);
+        const totalCap = makespan * m.count;
+        machUtil[m.name] = totalCap > 0 ? totalBusy / totalCap : 0;
+      });
+
+      return {
+        gantt, makespan, onTimeRate, meanFlow,
+        tardiness, machUtil,
+        jobsFinish: jobState.map(j => ({ name:j.name, due:j.due, finish:j.readyAt })),
+      };
+    }
+
+    // ============================================================
+    // ガント描画 (Canvas)
+    // ============================================================
+    function drawGantt(canvas, machines, gantt, makespan) {
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const W = canvas.clientWidth;
+      const machRows = [];
+      machines.forEach(m => {
+        for (let i=0; i<m.count; i++) machRows.push({ name:m.name+(m.count>1?` #${i+1}`:''), src:m.name, slot:i });
+      });
+      const rowH = 28;
+      const padL = 130, padT = 36, padR = 16, padB = 28;
+      const H = padT + machRows.length * rowH + padB;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.height = H + 'px';
+      ctx.scale(dpr, dpr);
+      ctx.fillStyle = '#0c0c0e';
+      ctx.fillRect(0, 0, W, H);
+
+      const plotW = W - padL - padR;
+      const xScale = plotW / Math.max(1, makespan);
+
+      // 軸
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('時間 (h)', padL, 16);
+      // 目盛り
+      const ticks = 10;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 1;
+      for (let i=0; i<=ticks; i++) {
+        const x = padL + (plotW * i / ticks);
+        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H-padB); ctx.stroke();
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.fillText((makespan*i/ticks).toFixed(0), x-8, padT - 6);
+      }
+
+      // 機械行
+      machRows.forEach((m, i) => {
+        const y = padT + i*rowH;
+        ctx.fillStyle = i%2===0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.0)';
+        ctx.fillRect(padL, y, plotW, rowH);
+        ctx.fillStyle = '#edede8';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(m.name, 8, y + rowH/2 + 4);
+      });
+
+      // ジョブ色
+      const palette = ['#c8a96e','#6ec897','#6ea8c8','#c86e9b','#9bc86e','#c89b6e','#aa6ec8','#6ec8c8'];
+      function jobColor(idx) { return palette[idx % palette.length]; }
+
+      // バー
+      gantt.forEach(g => {
+        const rowIdx = machRows.findIndex(m => m.src === g.machine && m.slot === g.slotIdx);
+        if (rowIdx < 0) return;
+        const y = padT + rowIdx*rowH + 4;
+        const x = padL + g.start * xScale;
+        const w = Math.max(2, (g.end-g.start) * xScale);
+        ctx.fillStyle = jobColor(g.jobIdx);
+        ctx.fillRect(x, y, w, rowH - 8);
+        ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x+0.5, y+0.5, w-1, rowH-9);
+        // ラベル
+        if (w > 40) {
+          ctx.fillStyle = '#0c0c0e';
+          ctx.font = 'bold 10px sans-serif';
+          ctx.textAlign = 'left';
+          const label = g.jobName.length > Math.floor(w/7) ? g.jobName.slice(0, Math.max(1, Math.floor(w/7))) : g.jobName;
+          ctx.fillText(label, x+4, y + (rowH-8)/2 + 3);
+        }
+      });
+    }
+
+    // ============================================================
+    // 結果レンダリング
+    // ============================================================
+    function metricsHtml(stats, ruleLabel) {
+      const onPct = (stats.onTimeRate*100).toFixed(1);
+      const utilAvg = Object.values(stats.machUtil).reduce((a,b)=>a+b,0) / Math.max(1, Object.keys(stats.machUtil).length);
+      return `
+        <div class="metric-card highlight"><div class="metric-label">${ruleLabel} メイクスパン</div><div class="metric-value gold">${stats.makespan.toFixed(1)} h</div><div class="metric-sub">最終ジョブ完了時刻</div></div>
+        <div class="metric-card"><div class="metric-label">納期遵守率</div><div class="metric-value">${onPct}%</div></div>
+        <div class="metric-card"><div class="metric-label">平均フロータイム</div><div class="metric-value">${stats.meanFlow.toFixed(1)} h</div></div>
+        <div class="metric-card"><div class="metric-label">平均機械稼働率</div><div class="metric-value">${(utilAvg*100).toFixed(1)}%</div></div>
+      `;
+    }
+
+    function machUtilTable(stats) {
+      const rows = Object.entries(stats.machUtil).map(([n,u]) => {
+        const pct = (u*100).toFixed(1);
+        const c = u >= 0.85 ? '#ff6666' : u >= 0.6 ? '#c8a96e' : '#6ec897';
+        return `<tr><td class="td">${n}</td><td class="td" style="color:${c};">${pct}%</td></tr>`;
+      }).join('');
+      return `<table style="width:100%;border-collapse:collapse;font-size:0.78rem;"><thead><tr><th class="th">機械</th><th class="th">稼働率</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    function jobsFinishTable(stats) {
+      const rows = stats.jobsFinish.map(j => {
+        const tard = j.finish - j.due;
+        const c = tard <= 0 ? '#6ec897' : '#ff6666';
+        return `<tr><td class="td">${j.name}</td><td class="td">${j.due}</td><td class="td">${j.finish.toFixed(1)}</td><td class="td" style="color:${c};">${tard <= 0 ? '✓ 達成' : '+'+tard.toFixed(1)+' h 遅延'}</td></tr>`;
+      }).join('');
+      return `<table style="width:100%;border-collapse:collapse;font-size:0.78rem;"><thead><tr><th class="th">ジョブ</th><th class="th">納期</th><th class="th">完了</th><th class="th">納期判定</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    function nextActionsHtml() {
+      return `
+        <div style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;margin-top:1.5rem;">
+          <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS</div>
+          <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+            <li>稼働率 <strong>60%未満</strong> の機械は段取り改善より、別案件・他工程転用を検討</li>
+            <li>稼働率 <strong>85%超</strong> のボトルネック機械は段取り短縮(SMED)・予防保全を最優先</li>
+            <li>納期遅延ジョブは早期に顧客と再交渉。EDDで再シミュレーションし優先順位を見直す</li>
+          </ol>
+        </div>`;
+    }
+
+    function renderSingle(rule) {
+      const stats = schedule(machines, jobs, rule);
+      const area = document.getElementById('result-area');
+      area.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.75rem;margin-bottom:1.25rem;">${metricsHtml(stats, rule)}</div>
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;margin-bottom:1rem;overflow-x:auto;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">GANTT — ${rule}</p>
+          <canvas id="gantt-canvas" style="width:100%;display:block;"></canvas>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" class="grid-2">
+          <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+            <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">MACHINE UTILIZATION</p>
+            ${machUtilTable(stats)}
+          </div>
+          <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;overflow-x:auto;">
+            <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">JOB FINISH</p>
+            ${jobsFinishTable(stats)}
+          </div>
+        </div>
+        ${nextActionsHtml()}`;
+      area.style.display = 'block';
+      // canvas後描画
+      requestAnimationFrame(() => {
+        const c = document.getElementById('gantt-canvas');
+        if (c) drawGantt(c, machines, stats.gantt, stats.makespan);
+      });
+    }
+
+    function renderCompare() {
+      const rules = ['EDD','SPT','CR'];
+      const all = rules.map(r => ({ rule:r, stats: schedule(machines, jobs, r) }));
+      const area = document.getElementById('result-area');
+      let blocks = '';
+      // 比較サマリ
+      blocks += `<div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">COMPARE — 3ルール比較</p>
+        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+          <thead><tr><th class="th">ルール</th><th class="th">メイクスパン</th><th class="th">納期遵守率</th><th class="th">平均フロー</th><th class="th">平均稼働率</th></tr></thead>
+          <tbody>
+            ${all.map(a => {
+              const onPct = (a.stats.onTimeRate*100).toFixed(1);
+              const utilAvg = Object.values(a.stats.machUtil).reduce((s,b)=>s+b,0) / Math.max(1, Object.keys(a.stats.machUtil).length);
+              return `<tr><td class="td" style="color:#c8a96e;font-weight:600;">${a.rule}</td><td class="td">${a.stats.makespan.toFixed(1)} h</td><td class="td">${onPct}%</td><td class="td">${a.stats.meanFlow.toFixed(1)} h</td><td class="td">${(utilAvg*100).toFixed(1)}%</td></tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-top:0.6rem;line-height:1.6;">📌 EDD=納期重視、SPT=短工程優先で WIP削減、CR=動的緊急度。納期遵守率優先なら EDD/CR、メイクスパン短縮優先なら SPT が一般的。</p>
+      </div>`;
+      // 各ルールガント
+      all.forEach((a, idx) => {
+        blocks += `<div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;margin-bottom:0.75rem;overflow-x:auto;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.5rem;">GANTT — ${a.rule}</p>
+          <canvas id="gantt-${idx}" style="width:100%;display:block;"></canvas>
+        </div>`;
+      });
+      blocks += nextActionsHtml();
+      area.innerHTML = blocks;
+      area.style.display = 'block';
+      requestAnimationFrame(() => {
+        all.forEach((a, idx) => {
+          const c = document.getElementById('gantt-'+idx);
+          if (c) drawGantt(c, machines, a.stats.gantt, a.stats.makespan);
+        });
+      });
+    }
+
+    document.getElementById('btn-run').addEventListener('click', () => {
+      try {
+        readMachines(); readJobs();
+        if (jobs.length === 0) { alert('ジョブを1件以上入力してください'); return; }
+        const status = document.getElementById('run-status');
+        const t0 = performance.now();
+        const rule = document.getElementById('rule').value;
+        if (rule === 'ALL') renderCompare();
+        else renderSingle(rule);
+        status.textContent = `完了 (${(performance.now()-t0).toFixed(0)} ms)`;
+        document.getElementById('result-area').scrollIntoView({ behavior:'smooth', block:'start' });
+      } catch (e) {
+        console.error(e);
+        alert('エラー: '+e.message);
+      }
+    });
+
+    // CSVテンプレート（ジョブのみ）
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      const header = 'job_name,due_h,priority,route';
+      const rows = PRESETS.industrial.jobs.map(j => `${j.name},${j.due},${j.priority},"${routeToStr(j.route)}"`);
+      const machHeader = 'machine_name,count';
+      const machRows = PRESETS.industrial.machines.map(m => `${m.name},${m.count}`);
+      const text = '# JOBS\n'+header+'\n'+rows.join('\n')+'\n# MACHINES\n'+machHeader+'\n'+machRows.join('\n');
+      const blob = new Blob([text], { type:'text/csv;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'eto-job-shop-template.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    document.getElementById('verify-privacy').addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
+    renderMachines();
+    renderJobs();
+  </script>
+
+</BaseLayout>

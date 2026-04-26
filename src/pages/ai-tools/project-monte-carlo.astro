@@ -1,0 +1,603 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="プロジェクトモンテカルロ・スケジュールリスク" description="ETO（一品一様・受注設計生産）案件のWBS（タスク・依存・3点見積り）から1万回モンテカルロシミュレーションで完了日確率分布・P50/P80/P95納期・クリティカル度を算出。産業機械・プラント・特装車両プリセット内蔵。ブラウザ完結。">
+
+  <!-- 機密保護バナー -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 入力データは外部送信されません</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;"><li>F12 → Network</li><li>シミュレーション実行</li><li>新規通信なしを確認</li></ol>
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a18 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">Project Monte Carlo · CPM · PERT</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">プロジェクト納期リスク・モンテカルロ</h1>
+      <p style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.5rem;">3点見積り → 1万回シミュレーション → P50/P80/P95納期</p>
+    </div>
+  </div>
+
+  <!-- USE CASES -->
+  <div style="max-width:1100px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">納期コミット前のリスク評価</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">受注前にP80確率納期で顧客提案</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">バッファ配置決定</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">P80-P50差分をプロジェクトバッファに</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">重点管理タスク特定</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">クリティカル率上位を週次レビュー対象に</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- プリセット -->
+    <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.1);padding:0.7rem 1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+      <span style="color:rgba(200,169,110,0.7);font-size:0.62rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="industrial" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🏭 産業機械</button>
+      <button class="preset-btn" data-preset="plant" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚗ プラント設備</button>
+      <button class="preset-btn" data-preset="vehicle" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚒 特装車両</button>
+      <button id="btn-template-csv" style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-left:auto;">📥 CSVテンプレートDL</button>
+      <label style="background:transparent;border:1px solid rgba(110,200,151,0.3);color:rgba(110,200,151,0.85);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">
+        📤 WBS CSVアップロード
+        <input id="csv-upload" type="file" accept=".csv" style="display:none;">
+      </label>
+    </div>
+
+    <!-- WBSテーブル -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;overflow-x:auto;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">WBS — 3-POINT ESTIMATE</p>
+      <table id="wbs-table" style="width:100%;border-collapse:collapse;font-size:0.8rem;min-width:760px;">
+        <thead>
+          <tr>
+            <th class="th" style="width:32px;">#</th>
+            <th class="th">タスク名</th>
+            <th class="th">楽観 (a)</th>
+            <th class="th">最尤 (m)</th>
+            <th class="th">悲観 (b)</th>
+            <th class="th">先行タスク (#カンマ区切)</th>
+            <th class="th"></th>
+          </tr>
+        </thead>
+        <tbody id="wbs-tbody"></tbody>
+      </table>
+      <button id="btn-add-row" class="m-btn-ghost" style="margin-top:0.75rem;font-size:0.72rem;">+ タスク追加</button>
+    </div>
+
+    <!-- パラメータ・実行 -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+      <label style="color:rgba(255,255,255,0.6);font-size:0.72rem;">試行回数</label>
+      <select id="iter" class="field-input" style="width:120px;">
+        <option value="2000">2,000</option>
+        <option value="5000">5,000</option>
+        <option value="10000" selected>10,000</option>
+        <option value="20000">20,000</option>
+      </select>
+      <label style="color:rgba(255,255,255,0.6);font-size:0.72rem;">分布</label>
+      <select id="dist" class="field-input" style="width:130px;">
+        <option value="triangular" selected>三角分布</option>
+        <option value="pert">PERT (β近似)</option>
+      </select>
+      <button id="btn-run" class="m-btn">シミュレーション実行 ▶</button>
+      <span id="run-status" style="color:rgba(255,255,255,0.5);font-size:0.72rem;"></span>
+    </div>
+
+    <!-- 結果 -->
+    <div id="result-area" style="display:none;">
+      <!-- メトリクス -->
+      <div id="metrics-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0.75rem;margin-bottom:1.25rem;"></div>
+
+      <!-- ヒストグラム -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">COMPLETION DAYS HISTOGRAM</p>
+        <div style="position:relative;height:280px;">
+          <canvas id="hist-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- 累積 -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">CUMULATIVE PROBABILITY (S-CURVE)</p>
+        <div style="position:relative;height:240px;">
+          <canvas id="cdf-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- クリティカル度 -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;overflow-x:auto;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">CRITICALITY RANKING — クリティカルパス出現率</p>
+        <table style="width:100%;border-collapse:collapse;font-size:0.8rem;">
+          <thead>
+            <tr><th class="th">タスク</th><th class="th">クリティカル率</th><th class="th">平均所要日数</th><th class="th">推奨対応</th></tr>
+          </thead>
+          <tbody id="crit-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>顧客には <strong>P80</strong> 日数を納期コミットとして提案（社内目標は P50）</li>
+          <li>クリティカル率 <strong>50%以上</strong> のタスクに人員・段取り集中。週次フォロー対象に</li>
+          <li>P80-P50差分（不確実性バッファ）をチェイン末尾に確保。途中タスクのバッファは削減</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.55rem 1.1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:700; }
+    .m-btn:hover { background:#d4b87b; }
+    .field-input { background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);padding:0.4rem 0.55rem;font-size:0.82rem;font-family:inherit;outline:none; }
+    .field-input:focus { border-color:#c8a96e; }
+    .th { text-align:left;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;padding:0.4rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.07);font-weight:400; }
+    .td { padding:0.3rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04); }
+    .cell-input { background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.08);padding:0.3rem 0.5rem;font-size:0.8rem;font-family:inherit;width:100%;outline:none; }
+    .cell-input:focus { border-color:#c8a96e; }
+    .del-btn { background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:1rem;line-height:1; }
+    .del-btn:hover { color:rgba(255,80,80,1); }
+    .metric-card { background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.25rem; }
+    .metric-card.highlight { border-color:#c8a96e;background:rgba(200,169,110,0.06); }
+    .metric-label { color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.2em;margin-bottom:0.4rem; }
+    .metric-value { color:#edede8;font-size:1.3rem;font-weight:200; }
+    .metric-value.gold { color:#c8a96e; }
+    .metric-sub { color:rgba(255,255,255,0.35);font-size:0.66rem;margin-top:0.2rem; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script>
+    // ============================================================
+    // プリセット
+    // ============================================================
+    const PRESETS = {
+      industrial: [
+        { name:'基本設計', a:10, m:15, b:30, deps:[] },
+        { name:'詳細設計', a:15, m:25, b:40, deps:[1] },
+        { name:'部品手配', a:30, m:45, b:90, deps:[2] },
+        { name:'製缶・機械加工', a:20, m:30, b:50, deps:[3] },
+        { name:'板金加工', a:10, m:15, b:25, deps:[2] },
+        { name:'組立', a:15, m:25, b:45, deps:[4,5] },
+        { name:'試運転調整', a:5, m:10, b:20, deps:[6] },
+        { name:'出荷検査', a:3, m:5, b:10, deps:[7] },
+      ],
+      plant: [
+        { name:'プロセス設計', a:15, m:25, b:50, deps:[] },
+        { name:'機器仕様確定', a:10, m:20, b:35, deps:[1] },
+        { name:'長納期機器手配', a:60, m:90, b:180, deps:[2] },
+        { name:'配管設計', a:20, m:30, b:50, deps:[2] },
+        { name:'据付工事', a:25, m:40, b:70, deps:[3,4] },
+        { name:'計装配線', a:15, m:25, b:40, deps:[5] },
+        { name:'試運転(コミッショニング)', a:10, m:20, b:45, deps:[6] },
+        { name:'引渡', a:3, m:7, b:14, deps:[7] },
+      ],
+      vehicle: [
+        { name:'車体改造設計', a:7, m:12, b:25, deps:[] },
+        { name:'シャシ手配', a:30, m:60, b:120, deps:[1] },
+        { name:'装艤装設計', a:10, m:18, b:30, deps:[1] },
+        { name:'部品手配', a:20, m:35, b:60, deps:[3] },
+        { name:'車体加工・板金', a:10, m:18, b:30, deps:[4] },
+        { name:'装艤装組付', a:15, m:25, b:45, deps:[2,5] },
+        { name:'電装・配線', a:7, m:12, b:25, deps:[6] },
+        { name:'検査・登録', a:5, m:8, b:18, deps:[7] },
+      ],
+    };
+
+    let tasks = PRESETS.industrial.map(t => ({...t, deps:t.deps.slice()}));
+
+    // ============================================================
+    // 表描画
+    // ============================================================
+    function depsToStr(arr) { return arr.join(','); }
+    function strToDeps(s) {
+      return s.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x) && x > 0);
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('wbs-tbody');
+      tbody.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      tasks.forEach((t, i) => {
+        const tr = document.createElement('tr');
+        const idx = i+1;
+        tr.innerHTML = `
+          <td class="td" style="color:rgba(200,169,110,0.7);text-align:center;">${idx}</td>
+          <td class="td"><input class="cell-input" data-f="name" value="${t.name}"></td>
+          <td class="td"><input class="cell-input" data-f="a" type="number" min="0" step="0.5" value="${t.a}" style="width:80px;"></td>
+          <td class="td"><input class="cell-input" data-f="m" type="number" min="0" step="0.5" value="${t.m}" style="width:80px;"></td>
+          <td class="td"><input class="cell-input" data-f="b" type="number" min="0" step="0.5" value="${t.b}" style="width:80px;"></td>
+          <td class="td"><input class="cell-input" data-f="deps" value="${depsToStr(t.deps)}" placeholder="例: 1,2"></td>
+          <td class="td"><button class="del-btn" data-del="${i}">✕</button></td>`;
+        frag.appendChild(tr);
+      });
+      tbody.appendChild(frag);
+      tbody.querySelectorAll('.del-btn').forEach(b => b.addEventListener('click', e => {
+        const i = parseInt(e.target.getAttribute('data-del'));
+        readBack();
+        tasks.splice(i, 1);
+        // depsの番号調整: 削除した番号より大きいものを-1、削除番号は除外
+        tasks.forEach(t => {
+          t.deps = t.deps.filter(d => d !== i+1).map(d => d > i+1 ? d-1 : d);
+        });
+        renderTable();
+      }));
+    }
+
+    function readBack() {
+      const rows = document.querySelectorAll('#wbs-tbody tr');
+      const next = [];
+      rows.forEach(row => {
+        const name = row.querySelector('[data-f="name"]').value.trim();
+        const a = parseFloat(row.querySelector('[data-f="a"]').value) || 0;
+        const m = parseFloat(row.querySelector('[data-f="m"]').value) || 0;
+        const b = parseFloat(row.querySelector('[data-f="b"]').value) || 0;
+        const deps = strToDeps(row.querySelector('[data-f="deps"]').value);
+        if (name) next.push({ name, a, m, b, deps });
+      });
+      tasks = next;
+    }
+
+    document.getElementById('btn-add-row').addEventListener('click', () => {
+      readBack();
+      tasks.push({ name:'新タスク', a:5, m:10, b:20, deps:[] });
+      renderTable();
+    });
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.getAttribute('data-preset');
+        if (PRESETS[k]) {
+          tasks = PRESETS[k].map(t => ({...t, deps:t.deps.slice()}));
+          renderTable();
+        }
+      });
+    });
+
+    // ============================================================
+    // 分布サンプリング
+    // ============================================================
+    function sampleTriangular(a, m, b) {
+      if (a > m) [a, m] = [m, a];
+      if (m > b) [m, b] = [b, m];
+      if (a > m) [a, m] = [m, a];
+      const u = Math.random();
+      const fc = (m - a) / Math.max(1e-9, b - a);
+      if (u < fc) return a + Math.sqrt(u * (b-a) * (m-a));
+      return b - Math.sqrt((1-u) * (b-a) * (b-m));
+    }
+    // PERT近似: ベータ分布の代わりに4分散補正
+    function samplePert(a, m, b) {
+      // sample = Beta(α,β) scaled to [a,b], with α=1+4(m-a)/(b-a), β=1+4(b-m)/(b-a)
+      if (b <= a) return m;
+      const alpha = 1 + 4*(m-a)/(b-a);
+      const beta = 1 + 4*(b-m)/(b-a);
+      // Gamma分布近似によるBeta生成（軽量実装）
+      function gammaSample(k) {
+        // Marsaglia & Tsang (k>=1) / fallback
+        if (k < 1) k += 1;
+        const d = k - 1/3, c = 1/Math.sqrt(9*d);
+        while (true) {
+          let x, v;
+          do {
+            // 標準正規
+            let u1=Math.random(), u2=Math.random();
+            if (u1<1e-12) u1=1e-12;
+            x = Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
+            v = 1 + c*x;
+          } while (v <= 0);
+          v = v*v*v;
+          const u = Math.random();
+          if (u < 1 - 0.0331*x*x*x*x) return d*v;
+          if (Math.log(u) < 0.5*x*x + d*(1-v+Math.log(v))) return d*v;
+        }
+      }
+      const ga = gammaSample(alpha);
+      const gb = gammaSample(beta);
+      const beta01 = ga/(ga+gb);
+      return a + beta01 * (b-a);
+    }
+
+    // ============================================================
+    // CPMフォワードパス
+    // ============================================================
+    function topoSort(t) {
+      const n = t.length;
+      const indeg = new Array(n).fill(0);
+      t.forEach((task, i) => {
+        task.deps.forEach(d => { if (d>=1 && d<=n) indeg[i]++; });
+      });
+      const order = [];
+      const queue = [];
+      for (let i=0; i<n; i++) if (indeg[i]===0) queue.push(i);
+      while (queue.length) {
+        const u = queue.shift();
+        order.push(u);
+        // u+1 番が deps に含まれるタスクの indeg を減らす
+        for (let i=0; i<n; i++) {
+          if (t[i].deps.includes(u+1)) {
+            indeg[i]--;
+            if (indeg[i]===0) queue.push(i);
+          }
+        }
+      }
+      return order.length === n ? order : null;
+    }
+
+    function simulate(tasks, iterations, dist) {
+      const order = topoSort(tasks);
+      if (!order) throw new Error('依存関係に循環があります');
+      const n = tasks.length;
+      const sampler = dist === 'pert' ? samplePert : sampleTriangular;
+      const completions = new Array(iterations);
+      const critCount = new Array(n).fill(0);
+      const durSum = new Array(n).fill(0);
+
+      for (let it=0; it<iterations; it++) {
+        const dur = new Array(n);
+        const ef = new Array(n).fill(0); // earliest finish
+        for (const idx of order) {
+          const t = tasks[idx];
+          const d = sampler(t.a, t.m, t.b);
+          dur[idx] = d;
+          durSum[idx] += d;
+          let es = 0;
+          t.deps.forEach(dep => {
+            const di = dep - 1;
+            if (di>=0 && di<n && ef[di] > es) es = ef[di];
+          });
+          ef[idx] = es + d;
+        }
+        // プロジェクト完了 = 最大EF
+        let maxEf = 0, maxIdx = -1;
+        for (let i=0; i<n; i++) if (ef[i] > maxEf) { maxEf = ef[i]; maxIdx = i; }
+        completions[it] = maxEf;
+
+        // クリティカルパス: 終了タスクから逆向きに、ESがちょうどEF-d となる先行を辿る
+        const inCrit = new Array(n).fill(false);
+        const stack = [maxIdx];
+        while (stack.length) {
+          const u = stack.pop();
+          if (u<0 || inCrit[u]) continue;
+          inCrit[u] = true;
+          // ES_u = EF_u - dur_u
+          const es_u = ef[u] - dur[u];
+          // 先行で ef[dep-1] が es_u に近いものをクリティカル先行に
+          const t = tasks[u];
+          t.deps.forEach(dep => {
+            const di = dep - 1;
+            if (di>=0 && di<n && Math.abs(ef[di] - es_u) < 1e-6) stack.push(di);
+          });
+        }
+        for (let i=0; i<n; i++) if (inCrit[i]) critCount[i]++;
+      }
+
+      const sorted = completions.slice().sort((a,b)=>a-b);
+      const pct = q => sorted[Math.min(sorted.length-1, Math.max(0, Math.floor(iterations*q)))];
+      const mean = completions.reduce((a,b)=>a+b,0) / iterations;
+      return {
+        completions, sorted, mean,
+        min: sorted[0], max: sorted[sorted.length-1],
+        p50: pct(0.50), p80: pct(0.80), p95: pct(0.95),
+        critRate: critCount.map(c => c/iterations),
+        avgDur: durSum.map(s => s/iterations),
+      };
+    }
+
+    // ============================================================
+    // 描画
+    // ============================================================
+    let histChart=null, cdfChart=null;
+    function renderResult(stats) {
+      // メトリクス
+      const row = document.getElementById('metrics-row');
+      row.innerHTML = '';
+      const cards = [
+        { lab:'平均完了日数', v: stats.mean.toFixed(1)+' 日', highlight:false },
+        { lab:'P50 (中央値)', v: stats.p50.toFixed(0)+' 日', sub:'社内目標推奨', highlight:false },
+        { lab:'P80 (顧客提案)', v: stats.p80.toFixed(0)+' 日', sub:'80%確率で達成', highlight:true },
+        { lab:'P95 (最悪想定)', v: stats.p95.toFixed(0)+' 日', sub:'保険的バッファ', highlight:false },
+        { lab:'最早 / 最遅', v: stats.min.toFixed(0)+' / '+stats.max.toFixed(0)+' 日', highlight:false },
+      ];
+      const f = document.createDocumentFragment();
+      cards.forEach(c => {
+        const d = document.createElement('div');
+        d.className = 'metric-card' + (c.highlight ? ' highlight' : '');
+        d.innerHTML = `<div class="metric-label">${c.lab}</div><div class="metric-value${c.highlight?' gold':''}">${c.v}</div>${c.sub?`<div class="metric-sub">${c.sub}</div>`:''}`;
+        f.appendChild(d);
+      });
+      row.appendChild(f);
+
+      // ヒストグラム
+      const histCanvas = document.getElementById('hist-chart');
+      if (histChart) { histChart.destroy(); histChart=null; }
+      const BINS = 30;
+      const min = stats.min, max = stats.max, range = max-min || 1;
+      const bin = range / BINS;
+      const binCounts = new Array(BINS).fill(0);
+      const labels = [];
+      for (let i=0; i<BINS; i++) labels.push((min + bin*i).toFixed(0));
+      stats.completions.forEach(c => {
+        let i = Math.floor((c-min)/bin);
+        if (i>=BINS) i=BINS-1;
+        if (i<0) i=0;
+        binCounts[i]++;
+      });
+      const colors = labels.map(l => {
+        const v = parseFloat(l);
+        if (v >= stats.p95) return 'rgba(255,68,68,0.55)';
+        if (v >= stats.p80) return 'rgba(200,169,110,0.55)';
+        if (v >= stats.p50) return 'rgba(110,200,151,0.55)';
+        return 'rgba(110,168,200,0.55)';
+      });
+      histChart = new Chart(histCanvas, {
+        type:'bar',
+        data:{ labels, datasets:[{ label:'頻度', data:binCounts, backgroundColor:colors, borderColor:colors.map(c=>c.replace('0.55','0.9')), borderWidth:1 }] },
+        options:{
+          responsive:true, maintainAspectRatio:false, animation:false,
+          plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#111114', titleColor:'#c8a96e', bodyColor:'#edede8' } },
+          scales:{
+            x:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{ color:'rgba(255,255,255,0.4)', font:{size:9}, autoSkip:true, maxTicksLimit:12 }, title:{display:true,text:'完了日数 (日)',color:'rgba(255,255,255,0.4)'} },
+            y:{ grid:{color:'rgba(255,255,255,0.06)'}, ticks:{ color:'rgba(255,255,255,0.4)' }, title:{display:true,text:'頻度',color:'rgba(255,255,255,0.4)'} }
+          }
+        }
+      });
+
+      // 累積
+      const cdfCanvas = document.getElementById('cdf-chart');
+      if (cdfChart) { cdfChart.destroy(); cdfChart=null; }
+      const cdfPoints = 50;
+      const cdfLabels = [];
+      const cdfData = [];
+      for (let i=0; i<=cdfPoints; i++) {
+        const d = min + (range)*i/cdfPoints;
+        cdfLabels.push(d.toFixed(0));
+        const cnt = stats.completions.filter(c => c <= d).length;
+        cdfData.push((cnt/stats.completions.length*100).toFixed(2));
+      }
+      cdfChart = new Chart(cdfCanvas, {
+        type:'line',
+        data:{ labels:cdfLabels, datasets:[{ label:'累積確率(%)', data:cdfData, borderColor:'#c8a96e', backgroundColor:'rgba(200,169,110,0.1)', fill:true, tension:0.2, pointRadius:0, borderWidth:2 }] },
+        options:{
+          responsive:true, maintainAspectRatio:false, animation:false,
+          plugins:{ legend:{ labels:{color:'#edede8'}}, tooltip:{ backgroundColor:'#111114', titleColor:'#c8a96e', bodyColor:'#edede8' } },
+          scales:{
+            x:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'rgba(255,255,255,0.4)',font:{size:9},autoSkip:true,maxTicksLimit:12}, title:{display:true,text:'完了日数',color:'rgba(255,255,255,0.4)'} },
+            y:{ min:0, max:100, grid:{color:'rgba(255,255,255,0.06)'}, ticks:{color:'rgba(255,255,255,0.4)'}, title:{display:true,text:'確率 (%)',color:'rgba(255,255,255,0.4)'} }
+          }
+        }
+      });
+
+      // クリティカル度ランキング
+      const critTbody = document.getElementById('crit-tbody');
+      critTbody.innerHTML = '';
+      const ranking = stats.critRate.map((r, i) => ({ i, r, name: tasks[i].name, dur: stats.avgDur[i] }))
+        .sort((a,b) => b.r - a.r);
+      const cf = document.createDocumentFragment();
+      ranking.forEach(r => {
+        const tr = document.createElement('tr');
+        const pct = (r.r*100).toFixed(1);
+        const color = r.r >= 0.5 ? '#ff6666' : r.r >= 0.2 ? '#c8a96e' : 'rgba(110,200,151,0.8)';
+        const action = r.r >= 0.5 ? '⚠ 重点監視・人員集中・段取り短縮' : r.r >= 0.2 ? '△ 週次レビュー対象' : '○ 通常管理';
+        tr.innerHTML = `
+          <td class="td" style="color:#edede8;">${r.name}</td>
+          <td class="td" style="color:${color};font-weight:600;">${pct}%</td>
+          <td class="td" style="color:rgba(237,237,232,0.7);">${r.dur.toFixed(1)} 日</td>
+          <td class="td" style="color:rgba(237,237,232,0.7);font-size:0.78rem;">${action}</td>`;
+        cf.appendChild(tr);
+      });
+      critTbody.appendChild(cf);
+
+      document.getElementById('result-area').style.display = 'block';
+      document.getElementById('result-area').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    document.getElementById('btn-run').addEventListener('click', () => {
+      try {
+        readBack();
+        if (tasks.length < 2) { alert('タスクを2件以上入力してください'); return; }
+        const it = parseInt(document.getElementById('iter').value) || 10000;
+        const dist = document.getElementById('dist').value;
+        const status = document.getElementById('run-status');
+        const t0 = performance.now();
+        status.textContent = 'シミュレーション中...';
+        // 次フレームで実行（UI更新のため）
+        setTimeout(() => {
+          try {
+            const stats = simulate(tasks, it, dist);
+            renderResult(stats);
+            status.textContent = `完了 (${(performance.now()-t0).toFixed(0)} ms, ${it.toLocaleString()}試行)`;
+          } catch (e) {
+            console.error(e);
+            status.textContent = 'エラー';
+            alert('実行エラー: '+e.message);
+          }
+        }, 30);
+      } catch (e) {
+        alert('エラー: '+e.message);
+      }
+    });
+
+    // CSV
+    document.getElementById('btn-template-csv').addEventListener('click', () => {
+      const header = 'task_name,optimistic,most_likely,pessimistic,predecessors';
+      const rows = PRESETS.industrial.map((t,i) => `${t.name},${t.a},${t.m},${t.b},"${t.deps.join(',')}"`);
+      const blob = new Blob([header+'\n'+rows.join('\n')], { type:'text/csv;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'project-monte-carlo-template.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    document.getElementById('csv-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        // CSV: 引用符内のカンマ対応の簡易パーサー
+        function parseLine(line) {
+          const out = [];
+          let cur='', q=false;
+          for (let i=0; i<line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') { q = !q; }
+            else if (ch === ',' && !q) { out.push(cur); cur=''; }
+            else cur += ch;
+          }
+          out.push(cur);
+          return out.map(s => s.trim());
+        }
+        const lines = text.split(/\r?\n/).filter(l => l.trim());
+        const headers = parseLine(lines[0]);
+        const idx = k => headers.indexOf(k);
+        const next = [];
+        for (let i=1; i<lines.length; i++) {
+          const c = parseLine(lines[i]);
+          const name = c[idx('task_name')];
+          const a = parseFloat(c[idx('optimistic')]) || 0;
+          const m = parseFloat(c[idx('most_likely')]) || 0;
+          const b = parseFloat(c[idx('pessimistic')]) || 0;
+          const depsStr = c[idx('predecessors')] || '';
+          const deps = depsStr.split(',').map(s => parseInt(s.trim())).filter(x => !isNaN(x) && x>0);
+          if (name) next.push({ name, a, m, b, deps });
+        }
+        if (next.length) { tasks = next; renderTable(); }
+      } catch (err) {
+        alert('CSV読込エラー: '+err.message);
+      }
+      e.target.value = '';
+    });
+
+    document.getElementById('verify-privacy').addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
+    renderTable();
+  </script>
+
+</BaseLayout>

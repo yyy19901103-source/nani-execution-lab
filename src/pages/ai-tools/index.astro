@@ -47,6 +47,33 @@ const tools = [
   }
 ];
 
+const etoTools = [
+  {
+    name: 'ETO類似案件見積り',
+    icon: '🎯',
+    desc: '過去案件マスタから k-NN コサイン類似度で類似Top3を抽出し、加重平均で工数・コスト・LTを予測。産業機械/プラント/特装車両プリセット内蔵。',
+    href: `${base}/ai-tools/eto-similar-quote/`,
+    tag: 'k-NN · 類似度検索',
+    when: '営業・受注前の概算見積'
+  },
+  {
+    name: 'プロジェクト納期リスク・モンテカルロ',
+    icon: '🎲',
+    desc: 'WBS+3点見積りから1万回モンテカルロでP50/P80/P95納期を算出。クリティカル度ランキングでバッファ配置・重点監視タスクを判断。',
+    href: `${base}/ai-tools/project-monte-carlo/`,
+    tag: 'Monte Carlo · CPM',
+    when: 'PM・受注後の納期コミット'
+  },
+  {
+    name: 'ETO Job Shopスケジューラ',
+    icon: '🛠',
+    desc: 'ジョブ毎に異なる工程経路にディスパッチングルール(EDD/SPT/CR)を適用してスケジューリング。ガントチャート・機械稼働率・3ルール比較。',
+    href: `${base}/ai-tools/eto-job-shop/`,
+    tag: 'Job Shop · Dispatching',
+    when: '生管・受注後の生産計画'
+  }
+];
+
 const faqs = [
   {
     q: '実際の工場データを入力しても大丈夫ですか？',
