@@ -327,6 +327,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return c;
     }
 
+    // 2-opt 局所探索 (メインスレッドフォールバック用)
+    function twoOptImproveMain(perm, jobsData) {
+      let best = [...perm];
+      let bestEval = evaluate(best, jobsData);
+      let improved = true;
+      let iter = 0;
+      const maxIter = 50;
+      while (improved && iter < maxIter) {
+        improved = false;
+        for (let i = 0; i < best.length - 1; i++) {
+          for (let j = i + 1; j < best.length; j++) {
+            const candidate = [...best];
+            const sliced = candidate.slice(i, j + 1).reverse();
+            for (let k = 0; k < sliced.length; k++) {
+              candidate[i + k] = sliced[k];
+            }
+            const candEval = evaluate(candidate, jobsData);
+            if (candEval.fitness < bestEval.fitness) {
+              best = candidate;
+              bestEval = candEval;
+              improved = true;
+            }
+          }
+        }
+        iter++;
+      }
+      return { ind: best, ...bestEval };
+    }
+
     function runGA(jobsData, onProgress) {
       const n = jobsData.length;
       // 初期集団
@@ -504,7 +533,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ============================================================
     // メトリクスカード
     // ============================================================
-    function renderMetrics(bestResult, naiveResult, jobsData, ganttTasks) {
+    function renderMetrics(bestResult, naiveResult, jobsData, ganttTasks, gaFitness) {
       const { makespan, jobEnd } = bestResult;
       let onTimeCount = 0;
       let totalLateHours = 0;
@@ -540,6 +569,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { label: '総遅延時間', value: totalLateHours.toFixed(1) + ' h', sub: '全ジョブ累積遅延' },
         { label: '機械平均稼働率', value: avgUtil.toFixed(1) + ' %', sub: '各機械busy/makespan平均' },
       ];
+      // 2-opt 改善量
+      if (typeof gaFitness === 'number' && isFinite(gaFitness)) {
+        const finalFit = bestResult.fitness;
+        const delta = gaFitness - finalFit;
+        const sign = delta > 0 ? '▲' : (delta < 0 ? '▼' : '–');
+        cards.push({
+          label: '2-opt 改善量',
+          value: sign + Math.abs(delta).toFixed(1),
+          sub: 'GA: ' + gaFitness.toFixed(1) + ' → 最終: ' + finalFit.toFixed(1),
+        });
+      }
       for (const c of cards) {
         const div = document.createElement('div');
         div.className = 'metric-card';
@@ -609,6 +649,33 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const t = c[i]; c[i] = c[j]; c[j] = t;
         return c;
       }
+      function twoOptImprove(perm, jobsData, MACHINE_COUNT) {
+        let best = perm.slice();
+        let bestEval = evaluate(best, jobsData, MACHINE_COUNT);
+        let improved = true;
+        let iter = 0;
+        const maxIter = 50;
+        while (improved && iter < maxIter) {
+          improved = false;
+          for (let i = 0; i < best.length - 1; i++) {
+            for (let j = i + 1; j < best.length; j++) {
+              const candidate = best.slice();
+              const sliced = candidate.slice(i, j + 1).reverse();
+              for (let k = 0; k < sliced.length; k++) {
+                candidate[i + k] = sliced[k];
+              }
+              const candEval = evaluate(candidate, jobsData, MACHINE_COUNT);
+              if (candEval.fitness < bestEval.fitness) {
+                best = candidate;
+                bestEval = candEval;
+                improved = true;
+              }
+            }
+          }
+          iter++;
+        }
+        return { ind: best, makespan: bestEval.makespan, latePenalty: bestEval.latePenalty, fitness: bestEval.fitness, jobEnd: bestEval.jobEnd };
+      }
       self.addEventListener('message', function(e) {
         const params = e.data;
         const jobsData = params.jobsData;
@@ -621,6 +688,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const n = jobsData.length;
         let pop = Array.from({ length: POP_SIZE }, function() { return randomPermutation(n); });
         let bestFit = Infinity, bestIndiv = null, stagnation = 0;
+        let currentMutationRate = MUTATION_RATE;
         for (let gen = 0; gen < MAX_GEN; gen++) {
           const evaluated = pop.map(function(ind) {
             const r = evaluate(ind, jobsData, MACHINE_COUNT);
@@ -631,14 +699,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             bestFit = evaluated[0].fitness;
             bestIndiv = evaluated[0];
             stagnation = 0;
+            currentMutationRate = MUTATION_RATE;
           } else {
             stagnation++;
           }
+          // 適応的突然変異率
+          if (stagnation > 20) currentMutationRate = Math.min(0.5, MUTATION_RATE * 4);
+          else if (stagnation > 10) currentMutationRate = Math.min(0.3, MUTATION_RATE * 2);
+          else currentMutationRate = MUTATION_RATE;
+
           if (gen % 5 === 0 || gen === MAX_GEN - 1) {
-            self.postMessage({ type: 'progress', gen: gen + 1, total: MAX_GEN, bestFit: bestFit, stagnation: stagnation });
+            self.postMessage({ type: 'progress', gen: gen + 1, total: MAX_GEN, bestFit: bestFit, stagnation: stagnation, mutationRate: currentMutationRate });
           }
           if (stagnation >= EARLY_STOP) {
-            self.postMessage({ type: 'progress', gen: gen + 1, total: MAX_GEN, bestFit: bestFit, stagnation: stagnation, earlyStop: true });
+            self.postMessage({ type: 'progress', gen: gen + 1, total: MAX_GEN, bestFit: bestFit, stagnation: stagnation, mutationRate: currentMutationRate, earlyStop: true });
             break;
           }
           const eliteN = Math.max(2, Math.floor(POP_SIZE * 0.2));
@@ -647,12 +721,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             const pa = evaluated[Math.floor(Math.random() * eliteN)].ind;
             const pb = evaluated[Math.floor(Math.random() * eliteN)].ind;
             let child = Math.random() < CROSSOVER_RATE ? crossover(pa, pb) : pa.slice();
-            if (Math.random() < MUTATION_RATE) child = mutate(child);
+            if (Math.random() < currentMutationRate) child = mutate(child);
             newPop.push(child);
           }
           pop = newPop;
         }
-        self.postMessage({ type: 'done', best: bestIndiv });
+        // 2-opt 局所探索
+        const gaFitness = bestIndiv ? bestIndiv.fitness : Infinity;
+        if (bestIndiv) {
+          self.postMessage({ type: 'progress', gen: MAX_GEN, total: MAX_GEN, bestFit: bestFit, stagnation: 0, mutationRate: MUTATION_RATE, localSearch: true });
+          const refined = twoOptImprove(bestIndiv.ind, jobsData, MACHINE_COUNT);
+          if (refined.fitness < bestIndiv.fitness) {
+            bestIndiv = refined;
+          }
+        }
+        self.postMessage({ type: 'done', best: bestIndiv, gaFitness: gaFitness });
       });
     `;
     let workerBlobUrl = null;
@@ -701,7 +784,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const dynMaxGen = nJobs <= 10 ? 200 : (nJobs <= 20 ? 300 : 400);
       const STAGNATION_LIMIT = 30;
 
-      function finalize(bestIndiv, reasonLabel) {
+      function finalize(bestIndiv, reasonLabel, gaFitness) {
         progressBar.style.width = '100%';
         progressLabel.textContent = (reasonLabel || '完了') + ' 最適解を描画中…';
         setTimeout(() => {
@@ -712,7 +795,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           try {
             const ganttTasks = buildGanttData(bestIndiv.ind, jobsData);
             drawGantt(ganttTasks, jobsData, bestIndiv.makespan);
-            renderMetrics(bestIndiv, naiveResult, jobsData, ganttTasks);
+            renderMetrics(bestIndiv, naiveResult, jobsData, ganttTasks, gaFitness);
             lastGanttTasks = ganttTasks;
             lastJobsData = jobsData;
             document.getElementById('result-area').style.display = 'block';
@@ -733,11 +816,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             if (msg.type === 'progress') {
               const pct = Math.round(msg.gen / msg.total * 100);
               progressBar.style.width = pct + '%';
-              progressLabel.textContent = `計算中… ${msg.gen} / ${msg.total} 世代 (最良 fitness: ${msg.bestFit.toFixed(1)}, 停滞: ${msg.stagnation})`;
+              if (msg.localSearch) {
+                progressLabel.textContent = `2-opt 局所探索中… (GA最良 fitness: ${msg.bestFit.toFixed(1)})`;
+              } else {
+                const mr = typeof msg.mutationRate === 'number' ? `, 突然変異率: ${(msg.mutationRate*100).toFixed(1)}%` : '';
+                progressLabel.textContent = `計算中… ${msg.gen} / ${msg.total} 世代 (最良 fitness: ${msg.bestFit.toFixed(1)}, 停滞: ${msg.stagnation}${mr})`;
+              }
             } else if (msg.type === 'done') {
               try { worker.terminate(); } catch (_) {}
               currentWorker = null;
-              finalize(msg.best, '完了！');
+              finalize(msg.best, '完了！', msg.gaFitness);
             }
           };
           worker.onerror = (err) => {
@@ -767,13 +855,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       let bestFit = Infinity;
       let bestIndiv = null;
       let stagnation = 0;
+      let currentMutationRate = MUTATION_RATE;
       const workerBadge = document.getElementById('worker-badge');
       if (workerBadge) workerBadge.textContent = '⚙ メインスレッド計算';
 
+      function finalizeWithLocalSearch(bestIndivLocal, reasonLabel) {
+        const gaFitness = bestIndivLocal ? bestIndivLocal.fitness : Infinity;
+        let finalBest = bestIndivLocal;
+        if (bestIndivLocal) {
+          progressLabel.textContent = '2-opt 局所探索中…';
+          const refined = twoOptImproveMain(bestIndivLocal.ind, jobsData);
+          if (refined.fitness < bestIndivLocal.fitness) {
+            finalBest = refined;
+          }
+        }
+        finalize(finalBest, reasonLabel, gaFitness);
+      }
+
       function step() {
-        if (cancelFlag) { finalize(bestIndiv, '中断 —'); return; }
-        if (gen >= dynMaxGen) { finalize(bestIndiv, '完了！'); return; }
-        if (stagnation >= STAGNATION_LIMIT) { finalize(bestIndiv, '早期停止（' + STAGNATION_LIMIT + '世代改善なし） —'); return; }
+        if (cancelFlag) { finalizeWithLocalSearch(bestIndiv, '中断 —'); return; }
+        if (gen >= dynMaxGen) { finalizeWithLocalSearch(bestIndiv, '完了！'); return; }
+        if (stagnation >= STAGNATION_LIMIT) { finalizeWithLocalSearch(bestIndiv, '早期停止（' + STAGNATION_LIMIT + '世代改善なし） —'); return; }
 
         const chunk = Math.min(10, dynMaxGen - gen);
         for (let c = 0; c < chunk; c++) {
@@ -786,16 +888,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             bestFit = evaluated[0].fitness;
             bestIndiv = evaluated[0];
             stagnation = 0;
+            currentMutationRate = MUTATION_RATE;
           } else {
             stagnation++;
           }
+          // 適応的突然変異率
+          if (stagnation > 20) currentMutationRate = Math.min(0.5, MUTATION_RATE * 4);
+          else if (stagnation > 10) currentMutationRate = Math.min(0.3, MUTATION_RATE * 2);
+          else currentMutationRate = MUTATION_RATE;
+
           const eliteN = Math.max(2, Math.floor(dynPopSize * 0.2));
           const newPop = evaluated.slice(0, eliteN).map(e => e.ind);
           while (newPop.length < dynPopSize) {
             const pa = evaluated[Math.floor(Math.random() * eliteN)].ind;
             const pb = evaluated[Math.floor(Math.random() * eliteN)].ind;
             let child = Math.random() < CROSSOVER_RATE ? crossover(pa, pb) : [...pa];
-            if (Math.random() < MUTATION_RATE) child = mutate(child);
+            if (Math.random() < currentMutationRate) child = mutate(child);
             newPop.push(child);
           }
           pop = newPop;
@@ -805,7 +913,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         const pct = Math.round(gen / dynMaxGen * 100);
         progressBar.style.width = pct + '%';
-        progressLabel.textContent = `計算中… ${gen} / ${dynMaxGen} 世代 (最良 fitness: ${bestFit.toFixed(1)}, 停滞: ${stagnation})`;
+        progressLabel.textContent = `計算中… ${gen} / ${dynMaxGen} 世代 (最良 fitness: ${bestFit.toFixed(1)}, 停滞: ${stagnation}, 突然変異率: ${(currentMutationRate*100).toFixed(1)}%)`;
         requestAnimationFrame(step);
       }
 
