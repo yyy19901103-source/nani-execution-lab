@@ -94,6 +94,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <!-- 結果 -->
     <div id="result-area" style="display:none;"></div>
 
+    <!-- ETO 関連ツール + 関連事例 -->
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);">
+      <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:1rem;">▸ 他のETOツールも併せて使う</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.85rem;margin-bottom:1.5rem;">
+        <a href={`${base}/ai-tools/eto-similar-quote/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">受注前 営業</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">🎯 ETO類似案件見積り</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">過去案件8特徴量から類似Top3抽出・工数/コスト/LT予測</div>
+        </a>
+        <a href={`${base}/ai-tools/project-monte-carlo/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">受注後 PM</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">🎲 プロジェクト納期モンテカルロ</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">WBS+3点見積りから1万回シミュレーションで P50/P80/P95 算出</div>
+        </a>
+      </div>
+      <a href={`${base}/cases/eto-ai-utilization/`} style="display:block;background:#0f0f12;border:1px solid rgba(110,200,151,0.2);padding:1rem 1.25rem;text-decoration:none;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.4rem;">📖 関連事例</div>
+        <div style="color:#edede8;font-size:0.85rem;">一品一様製造（ETO）のAI活用 — 類似度見積り・モンテカルロ・Job Shop最適化の実務適用記録 →</div>
+      </a>
+    </div>
+
   </div>
 
   <style>
