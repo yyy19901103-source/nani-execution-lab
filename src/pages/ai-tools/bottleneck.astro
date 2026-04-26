@@ -263,7 +263,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     function renderTable(data) {
       const tbody = document.getElementById('proc-tbody');
       tbody.innerHTML = '';
+      // detach-reattach to limit reflow to once
+      const parent = tbody.parentNode;
+      const next = tbody.nextSibling;
+      if (parent) parent.removeChild(tbody);
       data.forEach(p => addRow(p));
+      if (parent) parent.insertBefore(tbody, next);
     }
 
     function addRow(proc = null) {
@@ -506,12 +511,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { label: '設備総数', value: totalEq + ' 台', sub: '全工程合計', highlight: false },
         { label: '平均稼働率', value: avgUtil.toFixed(1) + ' %', sub: '全工程平均', highlight: false },
       ];
+      const frag = document.createDocumentFragment();
       for (const c of cards) {
         const div = document.createElement('div');
         div.className = 'metric-card' + (c.highlight ? ' highlight' : '');
         div.innerHTML = `<div class="metric-label">${c.label}</div><div class="metric-value${c.highlight ? ' gold' : ''}">${c.value}</div><div class="metric-sub">${c.sub}</div>`;
-        row.appendChild(div);
+        frag.appendChild(div);
       }
+      row.appendChild(frag);
     }
 
     // ============================================================
@@ -550,13 +557,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       suggArea.innerHTML = '<p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">IMPROVEMENT SUGGESTIONS</p>';
       // ボトルネックを先頭に
       const order = [bnIdx, ...results.map((_, i) => i).filter(i => i !== bnIdx)];
+      const suggFrag = document.createDocumentFragment();
       for (const i of order) {
         const s = getSuggestion(procs[i], results[i], bnIdx, i, improvement);
         const div = document.createElement('div');
         div.className = `suggest-item ${s.level}`;
         div.innerHTML = `<div class="suggest-title" style="color:${s.level === 'critical' ? '#ff6666' : s.level === 'warning' ? '#c8a96e' : 'rgba(110,200,151,0.9)'}">${s.title}</div><div class="suggest-body">${s.body}</div>`;
-        suggArea.appendChild(div);
+        suggFrag.appendChild(div);
       }
+      suggArea.appendChild(suggFrag);
 
       document.getElementById('result-area').style.display = 'block';
       document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -689,12 +698,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { label: 'P5 / P50 / P95', value: stats.p05.toFixed(1) + ' / ' + stats.p50.toFixed(1) + ' / ' + stats.p95.toFixed(1), sub: '90%信頼区間' },
         { label: '目標達成確率', value: (stats.onTimeProb * 100).toFixed(1) + ' %', sub: '≥ ' + stats.target + ' 個/h' },
       ];
+      const mcFrag = document.createDocumentFragment();
       cards.forEach(c => {
         const div = document.createElement('div');
         div.className = 'metric-card';
         div.innerHTML = `<div class="metric-label">${c.label}</div><div class="metric-value" style="font-size:1.2rem;">${c.value}</div><div class="metric-sub">${c.sub}</div>`;
-        metricsEl.appendChild(div);
+        mcFrag.appendChild(div);
       });
+      metricsEl.appendChild(mcFrag);
 
       // ヒストグラム
       const canvas = document.getElementById('mc-histogram');

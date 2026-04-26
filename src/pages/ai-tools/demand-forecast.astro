@@ -731,14 +731,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const table = document.getElementById('forecast-table');
       table.innerHTML = '<thead><tr><th>年月</th><th>予測値</th><th>下限 (95%)</th><th>上限 (95%)</th></tr></thead>';
       const tbody = document.createElement('tbody');
+      const frag = document.createDocumentFragment();
       result.forecast.forEach((v, i) => {
         const tr = document.createElement('tr');
         tr.innerHTML = '<td class="gold">' + forecastLabels[i] + '</td>' +
           '<td>' + Math.round(v).toLocaleString() + '</td>' +
           '<td style="color:rgba(237,237,232,0.5);">' + Math.round(ci[i].lower).toLocaleString() + '</td>' +
           '<td style="color:rgba(237,237,232,0.5);">' + Math.round(ci[i].upper).toLocaleString() + '</td>';
-        tbody.appendChild(tr);
+        frag.appendChild(tr);
       });
+      tbody.appendChild(frag);
       table.appendChild(tbody);
 
       // Build model comparison table

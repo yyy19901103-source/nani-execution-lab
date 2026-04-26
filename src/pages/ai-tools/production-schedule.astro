@@ -192,7 +192,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     function renderTable(data) {
       const tbody = document.getElementById('job-tbody');
       tbody.innerHTML = '';
+      // detach-reattach: addRow appends to tbody; detach to avoid reflow per row
+      const parent = tbody.parentNode;
+      const next = tbody.nextSibling;
+      if (parent) parent.removeChild(tbody);
       data.forEach((job, i) => addRow(job));
+      if (parent) parent.insertBefore(tbody, next);
     }
 
     function addRow(job = null) {
@@ -515,6 +520,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       // 凡例
       const legendArea = document.getElementById('legend-area');
       legendArea.innerHTML = '';
+      const legendFrag = document.createDocumentFragment();
       jobsData.forEach((job, i) => {
         const item = document.createElement('div');
         item.style.cssText = 'display:flex;align-items:center;gap:0.35rem;font-size:0.7rem;color:#edede8;';
@@ -522,12 +528,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         swatch.style.cssText = `width:14px;height:14px;background:${JOB_COLORS[i % JOB_COLORS.length]};border-radius:2px;flex-shrink:0;`;
         item.appendChild(swatch);
         item.appendChild(document.createTextNode(job.name));
-        legendArea.appendChild(item);
+        legendFrag.appendChild(item);
       });
       const redNote = document.createElement('div');
       redNote.style.cssText = 'display:flex;align-items:center;gap:0.35rem;font-size:0.7rem;color:#ff6666;';
       redNote.innerHTML = '<div style="width:14px;height:14px;border:2px solid #ff4444;border-radius:2px;flex-shrink:0;"></div>納期超過';
-      legendArea.appendChild(redNote);
+      legendFrag.appendChild(redNote);
+      legendArea.appendChild(legendFrag);
     }
 
     // ============================================================
@@ -580,12 +587,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           sub: 'GA: ' + gaFitness.toFixed(1) + ' → 最終: ' + finalFit.toFixed(1),
         });
       }
+      const frag = document.createDocumentFragment();
       for (const c of cards) {
         const div = document.createElement('div');
         div.className = 'metric-card';
         div.innerHTML = `<div class="metric-label">${c.label}</div><div class="metric-value">${c.value}</div><div class="metric-sub">${c.sub}</div>`;
-        row.appendChild(div);
+        frag.appendChild(div);
       }
+      row.appendChild(frag);
     }
 
     // ============================================================
