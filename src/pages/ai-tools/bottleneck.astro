@@ -314,19 +314,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return result;
     }
 
-    function renderTable(data) {
-      const tbody = document.getElementById('proc-tbody');
-      tbody.innerHTML = '';
-      // detach-reattach to limit reflow to once
-      const parent = tbody.parentNode;
-      const next = tbody.nextSibling;
-      if (parent) parent.removeChild(tbody);
-      data.forEach(p => addRow(p));
-      if (parent) parent.insertBefore(tbody, next);
-    }
-
-    function addRow(proc = null) {
-      const tbody = document.getElementById('proc-tbody');
+    function buildRow(proc = null) {
       const tr = document.createElement('tr');
       const vals = proc
         ? [proc.name, proc.ct, proc.eq, proc.util]
@@ -351,7 +339,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       delBtn.addEventListener('click', () => tr.remove());
       delTd.appendChild(delBtn);
       tr.appendChild(delTd);
-      tbody.appendChild(tr);
+      return tr;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('proc-tbody');
+      tbody.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      data.forEach(p => frag.appendChild(buildRow(p)));
+      tbody.appendChild(frag);
+    }
+
+    function addRow(proc = null) {
+      const tbody = document.getElementById('proc-tbody');
+      tbody.appendChild(buildRow(proc));
     }
 
     document.getElementById('btn-sample').addEventListener('click', () => renderTable(SAMPLE_PROCS));
