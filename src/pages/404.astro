@@ -55,12 +55,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </p>
 
       <!-- Navigation links -->
-      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-bottom:3rem;">
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-bottom:2rem;">
         {[
           { label: 'TOP', href: `${base}/` },
           { label: '事例', href: `${base}/cases` },
           { label: 'BLOG', href: `${base}/blog` },
           { label: 'LEARNING', href: `${base}/learning` },
+          { label: 'AI Tools', href: `${base}/ai-tools` },
           { label: '用語集', href: `${base}/glossary` },
         ].map(nav => (
           <a
@@ -71,6 +72,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             {nav.label}
           </a>
         ))}
+      </div>
+
+      <!-- ETO新ツール推奨 -->
+      <div style="max-width:680px;margin:0 auto 2rem;background:#0f0f12;border:1px solid rgba(200,169,110,0.18);padding:1.25rem 1.5rem;text-align:left;">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ もしかしてこちらをお探し？</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.5rem;">
+          <a href={`${base}/ai-tools/eto-similar-quote/`} style="color:rgba(237,237,232,0.85);font-size:0.78rem;text-decoration:none;padding:0.5rem 0.7rem;border-left:2px solid #c8a96e;background:rgba(200,169,110,0.04);">🎯 ETO類似案件見積り</a>
+          <a href={`${base}/ai-tools/project-monte-carlo/`} style="color:rgba(237,237,232,0.85);font-size:0.78rem;text-decoration:none;padding:0.5rem 0.7rem;border-left:2px solid #c8a96e;background:rgba(200,169,110,0.04);">🎲 納期モンテカルロ</a>
+          <a href={`${base}/ai-tools/eto-job-shop/`} style="color:rgba(237,237,232,0.85);font-size:0.78rem;text-decoration:none;padding:0.5rem 0.7rem;border-left:2px solid #c8a96e;background:rgba(200,169,110,0.04);">🛠 Job Shopスケジューラ</a>
+          <a href={`${base}/cases/eto-ai-utilization/`} style="color:rgba(237,237,232,0.85);font-size:0.78rem;text-decoration:none;padding:0.5rem 0.7rem;border-left:2px solid #6ec897;background:rgba(110,200,151,0.04);">📖 ETO実務適用事例</a>
+        </div>
       </div>
 
       <!-- Back to top -->
