@@ -229,6 +229,36 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return 0;
     }
 
+    // ---- LRU Cache ----
+    function createLRU(maxSize) {
+      const map = new Map();
+      return {
+        get(key) {
+          if (!map.has(key)) return undefined;
+          const v = map.get(key);
+          map.delete(key);
+          map.set(key, v);
+          return v;
+        },
+        set(key, value) {
+          if (map.has(key)) map.delete(key);
+          else if (map.size >= maxSize) {
+            const firstKey = map.keys().next().value;
+            map.delete(firstKey);
+          }
+          map.set(key, value);
+        },
+        clear() { map.clear(); },
+        size() { return map.size; }
+      };
+    }
+    function _dataHash(data) {
+      return data.slice(0, 5).join(',') + ':' + data.slice(-5).join(',') + ':' + data.length;
+    }
+    const _hwCache = createLRU(50);
+    const _smaCache = createLRU(50);
+    const _lsCache = createLRU(50);
+
     // ---- Sample data ----
     const sampleData = {
       labels: ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06',
@@ -347,6 +377,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         return { fitted, forecast, mape, mae };
       } catch (e) { console.error('linearSeasonal', e); return null; }
     }
+
+    // ---- Memoize forecast functions ----
+    const _hwOrig = holtWinters;
+    holtWinters = function(data, alpha, beta, gamma, season, fp) {
+      const key = data.length + ':' + alpha + ':' + beta + ':' + gamma + ':' + season + ':' + fp + ':' + _dataHash(data);
+      const c = _hwCache.get(key);
+      if (c !== undefined) return c;
+      const r = _hwOrig(data, alpha, beta, gamma, season, fp);
+      if (r) _hwCache.set(key, r);
+      return r;
+    };
+    const _smaOrig = seasonalMA;
+    seasonalMA = function(data, season, fp) {
+      const key = data.length + ':' + season + ':' + fp + ':' + _dataHash(data);
+      const c = _smaCache.get(key);
+      if (c !== undefined) return c;
+      const r = _smaOrig(data, season, fp);
+      if (r) _smaCache.set(key, r);
+      return r;
+    };
+    const _lsOrig = linearSeasonal;
+    linearSeasonal = function(data, season, fp) {
+      const key = data.length + ':' + season + ':' + fp + ':' + _dataHash(data);
+      const c = _lsCache.get(key);
+      if (c !== undefined) return c;
+      const r = _lsOrig(data, season, fp);
+      if (r) _lsCache.set(key, r);
+      return r;
+    };
 
     function confidenceInterval(data, fitted, forecast, z) {
       z = z || 1.96;

@@ -269,6 +269,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       };
     }
 
+    // ---- LRU Cache ----
+    function createLRU(maxSize) {
+      const map = new Map();
+      return {
+        get(key) {
+          if (!map.has(key)) return undefined;
+          const v = map.get(key);
+          map.delete(key);
+          map.set(key, v);
+          return v;
+        },
+        set(key, value) {
+          if (map.has(key)) map.delete(key);
+          else if (map.size >= maxSize) {
+            const firstKey = map.keys().next().value;
+            map.delete(firstKey);
+          }
+          map.set(key, value);
+        },
+        clear() { map.clear(); },
+        size() { return map.size; }
+      };
+    }
+    const _heatmapCache = createLRU(10);
+
     // ---- Privacy verify toggle ----
     document.getElementById('verify-privacy')?.addEventListener('click', () => {
       const d = document.getElementById('privacy-detail');
@@ -636,6 +661,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       tf.dispose([xT, yT]);
       trainedModel = model;
+      _heatmapCache.clear();
 
       // R² score
       const predNormArr = await (async () => {
@@ -850,6 +876,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (trainedModel) { try { trainedModel.dispose(); } catch (e) {} }
       trainedModel = null;
       trainedStats = null;
+      _heatmapCache.clear();
       window._trainPreds = null;
       if (importanceChart) { importanceChart.destroy(); importanceChart = null; }
       if (lossChart) { lossChart.destroy(); lossChart = null; }
@@ -887,6 +914,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         parseFloat(document.getElementById('sl-humidity').value)
       ];
 
+      // Check cache
+      const cacheKey = xAxis + ':' + yAxis + ':' + cur.join(',');
+      const cached = _heatmapCache.get(cacheKey);
+      if (cached) {
+        drawHeatmap(cached, ranges, xAxis, yAxis);
+        return;
+      }
+
       const inputs = [];
       for (let i = 0; i < GRID; i++) {
         for (let j = 0; j < GRID; j++) {
@@ -913,6 +948,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         grid.push(row);
       }
 
+      _heatmapCache.set(cacheKey, grid);
       drawHeatmap(grid, ranges, xAxis, yAxis);
     }
 

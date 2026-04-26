@@ -205,6 +205,33 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
 
     // ============================================================
+    // LRU Cache
+    // ============================================================
+    function createLRU(maxSize) {
+      const map = new Map();
+      return {
+        get(key) {
+          if (!map.has(key)) return undefined;
+          const v = map.get(key);
+          map.delete(key);
+          map.set(key, v);
+          return v;
+        },
+        set(key, value) {
+          if (map.has(key)) map.delete(key);
+          else if (map.size >= maxSize) {
+            const firstKey = map.keys().next().value;
+            map.delete(firstKey);
+          }
+          map.set(key, value);
+        },
+        clear() { map.clear(); },
+        size() { return map.size; }
+      };
+    }
+    const _analyzeCache = createLRU(30);
+
+    // ============================================================
     // サンプルデータ
     // ============================================================
     const SAMPLE_PROCS = [
@@ -326,6 +353,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       return { results, bnIdx, throughput, leadTimeHours, wip, improvement };
     }
+
+    // ---- Memoize analyze ----
+    const _analyzeOrig = analyze;
+    analyze = function(procs, targetQty) {
+      const key = JSON.stringify(procs) + ':' + targetQty;
+      const c = _analyzeCache.get(key);
+      if (c !== undefined) return c;
+      const r = _analyzeOrig(procs, targetQty);
+      if (r) _analyzeCache.set(key, r);
+      return r;
+    };
 
     // ============================================================
     // 改善提案ロジック
