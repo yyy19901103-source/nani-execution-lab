@@ -96,6 +96,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </div>
           <div id="data-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;min-height:1.2em;"></div>
           <div id="tf-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;">学習ボタンクリックでAI起動準備</div>
+          <div style="margin-bottom:0.5rem;">
+            <div style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.15em;margin-bottom:0.5rem;">検知モデル</div>
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                <input type="radio" name="det-model" value="autoencoder" id="model-ae" checked style="accent-color:#c8a96e;">
+                <span style="font-size:0.78rem;color:rgba(237,237,232,0.75);">Autoencoder (TF.js)</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                <input type="radio" name="det-model" value="iforest" id="model-if" style="accent-color:#c8a96e;">
+                <span style="font-size:0.78rem;color:rgba(237,237,232,0.75);">Isolation Forest（高速）</span>
+              </label>
+            </div>
+          </div>
           <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
             <button id="btn-run" class="m-btn" disabled>AI学習 &amp; 異常検知</button>
             <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
@@ -317,6 +330,76 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const d = document.getElementById('privacy-detail');
       d.style.display = d.style.display === 'none' ? 'block' : 'none';
     });
+
+    // ---- Isolation Forest (pure JS, no TF.js needed) ----
+    class IsolationForest {
+      constructor(nTrees, subsampleSize) {
+        this.nTrees = nTrees || 50;
+        this.subsampleSize = subsampleSize || 64;
+        this.trees = [];
+        this._cn = 1;
+      }
+
+      buildTree(data, depth, maxDepth) {
+        if (data.length <= 1 || depth >= maxDepth) {
+          return { isLeaf: true, size: data.length };
+        }
+        const nFeatures = data[0].length;
+        const feat = Math.floor(Math.random() * nFeatures);
+        const vals = data.map(d => d[feat]);
+        const min = Math.min.apply(null, vals);
+        const max = Math.max.apply(null, vals);
+        if (min === max) return { isLeaf: true, size: data.length };
+        const split = min + Math.random() * (max - min);
+        const left = data.filter(d => d[feat] < split);
+        const right = data.filter(d => d[feat] >= split);
+        return {
+          isLeaf: false, feat, split,
+          left: this.buildTree(left, depth + 1, maxDepth),
+          right: this.buildTree(right, depth + 1, maxDepth)
+        };
+      }
+
+      pathLength(node, point, depth) {
+        if (node.isLeaf) return depth + this._cFunc(node.size);
+        return point[node.feat] < node.split
+          ? this.pathLength(node.left, point, depth + 1)
+          : this.pathLength(node.right, point, depth + 1);
+      }
+
+      _cFunc(n) {
+        if (n <= 1) return 0;
+        return 2 * (Math.log(n - 1) + 0.5772156649) - 2 * (n - 1) / n;
+      }
+
+      fit(data) {
+        const maxDepth = Math.ceil(Math.log2(this.subsampleSize));
+        this.trees = [];
+        const sz = Math.min(this.subsampleSize, data.length);
+        for (let i = 0; i < this.nTrees; i++) {
+          const indices = [];
+          const pool = data.length;
+          for (let j = 0; j < sz; j++) indices.push(Math.floor(Math.random() * pool));
+          const sample = indices.map(idx => data[idx]);
+          this.trees.push(this.buildTree(sample, 0, maxDepth));
+        }
+        this._cn = this._cFunc(sz);
+      }
+
+      scorePoint(point) {
+        if (this.trees.length === 0) return 0;
+        const avgPath = this.trees.reduce((s, t) => s + this.pathLength(t, point, 0), 0) / this.trees.length;
+        return Math.pow(2, -avgPath / this._cn);
+      }
+
+      predict(data, threshold) {
+        threshold = threshold || 0.6;
+        return data.map(d => {
+          const score = this.scorePoint(d);
+          return { score, isAnomaly: score >= threshold };
+        });
+      }
+    }
 
     // ---- TF.js / Chart.js lazy loaders ----
     const tfStatusEl = document.getElementById('tf-status');
@@ -622,9 +705,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (!currentData) return;
 
       btnRun.disabled = true;
+      const detModel = document.querySelector('input[name="det-model"]:checked')?.value || 'autoencoder';
 
-      // Lazy-load TF.js + Chart.js on first click
-      if (!tfLoaded || !chartLoaded) {
+      // Lazy-load Chart.js always; TF.js only for autoencoder
+      if (!chartLoaded) {
+        try { await loadChartJs(); } catch (err) {
+          tfStatusEl.textContent = '✗ Chart.js の読込に失敗しました';
+          tfStatusEl.style.color = '#e87070';
+          btnRun.disabled = false;
+          return;
+        }
+      }
+
+      if (detModel === 'autoencoder' && (!tfLoaded || !chartLoaded)) {
         tfStatusEl.textContent = '⚙ TensorFlow.js 起動中... (初回のみ・通常2-3秒)';
         tfStatusEl.style.color = 'rgba(255,255,255,0.55)';
         try {
@@ -656,6 +749,123 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       // Save stats for streaming
       streamStats = { mins: normResult.mins, maxs: normResult.maxs };
 
+      // ---- Isolation Forest path ----
+      if (detModel === 'iforest') {
+        try {
+          tfStatusEl.textContent = '⚙ Isolation Forest 実行中...';
+          tfStatusEl.style.color = 'rgba(255,255,255,0.55)';
+          document.getElementById('progress-bar').style.width = '50%';
+          document.getElementById('progress-text').textContent = 'Isolation Forest 学習中…';
+          // Give UI a chance to update
+          await new Promise(r => setTimeout(r, 10));
+
+          const iforest = new IsolationForest(100, Math.min(64, nTrain));
+          iforest.fit(normalData);
+          const iForestThreshold = 0.55 + (kappa - 2.0) * 0.05; // map kappa to IF threshold
+          const results = iforest.predict(normalizedMatrix, iForestThreshold);
+          const errors = results.map(r => r.score);
+          const normalErrors = errors.slice(0, nTrain);
+          const mean = normalErrors.reduce((a, b) => a + b, 0) / normalErrors.length;
+          const std = Math.sqrt(normalErrors.reduce((s, e) => s + (e - mean) ** 2, 0) / normalErrors.length);
+          const threshold = mean + kappa * std;
+
+          document.getElementById('progress-bar').style.width = '100%';
+          document.getElementById('progress-text').textContent = '完了';
+          document.getElementById('loss-text').textContent = `Isolation Forest (nTrees=100) | 閾値: ${threshold.toFixed(4)}`;
+
+          lastErrors = errors;
+          lastNormalErrors = normalErrors;
+          lastTrainSplit = nTrain;
+          streamModel = null; // IF doesn't support streaming mode
+          tfStatusEl.textContent = '✓ Isolation Forest 完了';
+          tfStatusEl.style.color = '#c8a96e';
+
+          // Render charts (reuse existing chart rendering code)
+          const labels = currentData.map(d => d.t.toString());
+          const sensorColors = ['#c8a96e', '#7eb8c8', '#a8c87e'];
+
+          if (sensorChart) sensorChart.destroy();
+          const sCtx2 = document.getElementById('sensor-chart').getContext('2d');
+          sensorChart = new Chart(sCtx2, {
+            type: 'line',
+            data: {
+              labels,
+              datasets: sensorKeys.map((k, i) => ({
+                label: sensorLabels[i] || ('Sensor ' + (i + 1)),
+                data: currentData.map(d => d[k]),
+                borderColor: sensorColors[i % sensorColors.length],
+                backgroundColor: 'transparent',
+                borderWidth: 1.5,
+                pointRadius: 0,
+                tension: 0.3,
+                spanGaps: true
+              }))
+            },
+            options: {
+              responsive: true, resizeDelay: 100, maintainAspectRatio: false,
+              animation: false, animations: { colors: false, x: false },
+              transitions: { active: { animation: { duration: 0 } } },
+              plugins: {
+                decimation: { enabled: true, algorithm: 'lttb', samples: 200, threshold: 300 },
+                legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 14 } },
+                tooltip: { backgroundColor: '#111114', borderColor: 'rgba(255,255,255,0.07)', borderWidth: 1, titleColor: '#c8a96e', bodyColor: '#edede8' }
+              },
+              scales: {
+                x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+              }
+            }
+          });
+
+          const anomalies2 = errors.map(e => e > threshold);
+          const barColors2 = errors.map(e => e > threshold ? 'rgba(232,112,112,0.85)' : 'rgba(200,169,110,0.5)');
+          if (scoreChart) scoreChart.destroy();
+          const aCtx2 = document.getElementById('score-chart').getContext('2d');
+          scoreChart = new Chart(aCtx2, {
+            type: 'bar',
+            data: {
+              labels,
+              datasets: [
+                { label: '異常スコア (IF)', data: errors, backgroundColor: barColors2, borderWidth: 0 },
+                { label: '閾値', data: Array(n).fill(threshold), type: 'line', borderColor: '#e87070', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [5, 4], pointRadius: 0 }
+              ]
+            },
+            options: {
+              responsive: true, resizeDelay: 100, maintainAspectRatio: false,
+              animation: false, animations: { colors: false, x: false },
+              transitions: { active: { animation: { duration: 0 } } },
+              plugins: {
+                decimation: { enabled: true, algorithm: 'lttb', samples: 200, threshold: 300 },
+                legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 11 }, boxWidth: 14 } },
+                tooltip: { backgroundColor: '#111114', borderColor: 'rgba(255,255,255,0.07)', borderWidth: 1, titleColor: '#c8a96e', bodyColor: '#edede8' }
+              },
+              scales: {
+                x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+              }
+            }
+          });
+
+          const anomalyCount2 = anomalies2.filter(Boolean).length;
+          document.getElementById('anomaly-count').textContent = anomalyCount2;
+          document.getElementById('anomaly-rate').textContent = (anomalyCount2 / n * 100).toFixed(1) + '%';
+          document.getElementById('max-score').textContent = Math.max.apply(null, errors).toFixed(4);
+          document.getElementById('mean-score').textContent = mean.toFixed(4);
+          document.getElementById('threshold-val').textContent = threshold.toFixed(4);
+
+          resultSection.style.display = 'block';
+          showPerfStats(performance.now() - _t0);
+          resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          statusEl.textContent = 'エラー: ' + (err.message || 'Isolation Forest 実行失敗');
+          console.error(err);
+        } finally {
+          btnRun.disabled = false;
+        }
+        return;
+      }
+
+      // ---- Autoencoder path (original) ----
       try {
         // Dispose previous stream model if exists
         if (streamModel) { try { streamModel.dispose(); } catch (_) {} streamModel = null; }
@@ -1051,5 +1261,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       statusEl.textContent = 'リセット完了';
     });
   </script>
+
+  <section style="max-width:1100px;margin:0 auto;padding:3rem 1rem 5rem;">
+    <h2 style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;text-transform:uppercase;margin-bottom:2rem;">このツールについて</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;">
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">🤖 Autoencoder</div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;">ニューラルネットワークで「正常データのパターン」を学習し、そこから大きく外れたデータを異常と判定。複雑な相関関係を捉えられるが、学習に時間がかかる。TF.js使用。</p>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">🌲 Isolation Forest</div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;">「異常なデータは少数の分岐で孤立しやすい」という性質を利用。ランダムな木構造でデータを分割し、孤立しやすさで異常スコアを算出。学習不要で超高速。</p>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);padding:1.5rem;">
+        <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.85rem;">📊 しきい値の意味</div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.7;margin:0;"><strong style="color:rgba(237,237,232,0.75);">低め（1.5σ）</strong>: 敏感に検知。誤検知が増える。<strong style="color:rgba(237,237,232,0.75);">標準（2.0σ）</strong>: バランス型。<strong style="color:rgba(237,237,232,0.75);">高め（3.0σ）</strong>: 確実な異常のみ。製造ラインでは用途に応じて調整。</p>
+      </div>
+    </div>
+  </section>
 
 </BaseLayout>
