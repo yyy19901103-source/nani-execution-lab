@@ -243,19 +243,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return result;
     }
 
-    function renderTable(data) {
-      const tbody = document.getElementById('job-tbody');
-      tbody.innerHTML = '';
-      // detach-reattach: addRow appends to tbody; detach to avoid reflow per row
-      const parent = tbody.parentNode;
-      const next = tbody.nextSibling;
-      if (parent) parent.removeChild(tbody);
-      data.forEach((job, i) => addRow(job));
-      if (parent) parent.insertBefore(tbody, next);
-    }
-
-    function addRow(job = null) {
-      const tbody = document.getElementById('job-tbody');
+    function buildRow(job = null) {
       const tr = document.createElement('tr');
       const vals = job
         ? [job.name, job.times[0], job.times[1], job.times[2], job.deadline]
@@ -280,7 +268,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       delBtn.addEventListener('click', () => tr.remove());
       delTd.appendChild(delBtn);
       tr.appendChild(delTd);
-      tbody.appendChild(tr);
+      return tr;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('job-tbody');
+      tbody.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      data.forEach(job => frag.appendChild(buildRow(job)));
+      tbody.appendChild(frag);
+    }
+
+    function addRow(job = null) {
+      const tbody = document.getElementById('job-tbody');
+      tbody.appendChild(buildRow(job));
     }
 
     document.getElementById('btn-sample').addEventListener('click', () => {
