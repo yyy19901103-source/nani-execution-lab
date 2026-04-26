@@ -99,6 +99,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="whatif-result" style="font-size:0.78rem;color:rgba(255,255,255,0.7);line-height:1.7;"></div>
       </div>
 
+      <!-- モンテカルロシミュレーション -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-top:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">PHASE 3 — モンテカルロシミュレーション</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" class="mc-grid">
+          <div>
+            <label class="field-label" style="color:rgba(255,255,255,0.6);font-size:0.72rem;display:block;margin-bottom:0.4rem;">サイクルタイム変動係数 (CV)</label>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <input type="range" id="mc-cv" min="0" max="30" step="1" value="10" style="flex:1;accent-color:#c8a96e;">
+              <span id="mc-cv-val" style="color:#c8a96e;font-size:0.78rem;min-width:40px;">10%</span>
+            </div>
+          </div>
+          <div>
+            <label class="field-label" style="color:rgba(255,255,255,0.6);font-size:0.72rem;display:block;margin-bottom:0.4rem;">シミュレーション回数</label>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <input type="range" id="mc-iter" min="100" max="5000" step="100" value="1000" style="flex:1;accent-color:#c8a96e;">
+              <span id="mc-iter-val" style="color:#c8a96e;font-size:0.78rem;min-width:50px;">1,000</span>
+            </div>
+          </div>
+        </div>
+        <button id="btn-mc" class="m-btn-ghost">モンテカルロ実行</button>
+        <span id="mc-status" style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-left:0.75rem;"></span>
+        <div id="mc-result" style="display:none;margin-top:1.25rem;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1rem;" id="mc-metrics"></div>
+          <div style="position:relative;height:220px;">
+            <canvas id="mc-histogram"></canvas>
+          </div>
+        </div>
+      </div>
+
       <div style="margin-top:1rem;text-align:right;">
         <button id="btn-download" class="m-btn-ghost" style="font-size:0.7rem;">📥 結果をCSVでダウンロード</button>
       </div>
@@ -145,6 +174,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     .suggest-item.ok { border-color:rgba(110,200,151,0.6); }
     .suggest-title { font-size:0.8rem;font-weight:600;margin-bottom:0.3rem; }
     .suggest-body { font-size:0.75rem;color:rgba(255,255,255,0.55);line-height:1.6; }
+    @media (max-width:700px) {
+      .mc-grid { grid-template-columns: 1fr !important; }
+    }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -507,6 +539,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       try {
         document.getElementById('result-area').style.display = 'none';
         if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+        if (mcChart) { mcChart.destroy(); mcChart = null; }
+        const mcResult = document.getElementById('mc-result');
+        if (mcResult) mcResult.style.display = 'none';
         lastResults = null; lastProcs = null; lastBnIdx = null; lastTargetQty = null;
         renderTable(SAMPLE_PROCS);
       } catch (e) { console.error(e); }
@@ -530,6 +565,197 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } catch (e) { console.error(e); alert('ダウンロード失敗: ' + e.message); }
+    });
+
+    // ============================================================
+    // モンテカルロシミュレーション
+    // ============================================================
+    let mcChart = null;
+
+    function gaussian() {
+      // Box-Muller
+      let u1 = Math.random();
+      let u2 = Math.random();
+      if (u1 < 1e-12) u1 = 1e-12;
+      return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    }
+
+    function runMonteCarloChunked(procs, targetQty, cvPct, iterations, onProgress, onDone) {
+      const cv = cvPct / 100;
+      const throughputs = new Array(iterations);
+      let i = 0;
+      const CHUNK = 500;
+      function runChunk() {
+        const end = Math.min(i + CHUNK, iterations);
+        for (; i < end; i++) {
+          const sampled = procs.map(p => {
+            const z = gaussian();
+            const noisyCt = Math.max(0.1, p.ct * (1 + z * cv));
+            return { name: p.name, ct: noisyCt, eq: p.eq, util: p.util };
+          });
+          try {
+            const r = analyze(sampled, targetQty);
+            throughputs[i] = r.throughput;
+          } catch (e) {
+            throughputs[i] = 0;
+          }
+        }
+        if (onProgress) onProgress(i, iterations);
+        if (i < iterations) {
+          requestAnimationFrame(runChunk);
+        } else {
+          // 統計
+          const sorted = throughputs.slice().sort((a, b) => a - b);
+          const mean = throughputs.reduce((a, b) => a + b, 0) / throughputs.length;
+          const variance = throughputs.reduce((s, t) => s + (t - mean) ** 2, 0) / throughputs.length;
+          const std = Math.sqrt(variance);
+          const pct = (q) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.floor(iterations * q)))];
+          const onTimeProb = throughputs.filter(t => t >= targetQty).length / iterations;
+          onDone({ throughputs, sorted, mean, std, p05: pct(0.05), p50: pct(0.50), p95: pct(0.95), onTimeProb, target: targetQty });
+        }
+      }
+      requestAnimationFrame(runChunk);
+    }
+
+    function renderMcResult(stats) {
+      const metricsEl = document.getElementById('mc-metrics');
+      metricsEl.innerHTML = '';
+      const cards = [
+        { label: '平均スループット', value: stats.mean.toFixed(1) + ' 個/h', sub: '± ' + stats.std.toFixed(2) + ' 個/h (1σ)' },
+        { label: 'P5 / P50 / P95', value: stats.p05.toFixed(1) + ' / ' + stats.p50.toFixed(1) + ' / ' + stats.p95.toFixed(1), sub: '90%信頼区間' },
+        { label: '目標達成確率', value: (stats.onTimeProb * 100).toFixed(1) + ' %', sub: '≥ ' + stats.target + ' 個/h' },
+      ];
+      cards.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'metric-card';
+        div.innerHTML = `<div class="metric-label">${c.label}</div><div class="metric-value" style="font-size:1.2rem;">${c.value}</div><div class="metric-sub">${c.sub}</div>`;
+        metricsEl.appendChild(div);
+      });
+
+      // ヒストグラム
+      const canvas = document.getElementById('mc-histogram');
+      if (mcChart) { mcChart.destroy(); mcChart = null; }
+      const BIN_COUNT = 30;
+      const sorted = stats.sorted;
+      const minV = sorted[0];
+      const maxV = sorted[sorted.length - 1];
+      const range = maxV - minV || 1;
+      const binSize = range / BIN_COUNT;
+      const bins = new Array(BIN_COUNT).fill(0);
+      const labels = new Array(BIN_COUNT).fill('');
+      for (let i = 0; i < BIN_COUNT; i++) {
+        labels[i] = (minV + binSize * i).toFixed(1);
+      }
+      stats.throughputs.forEach(t => {
+        let idx = Math.floor((t - minV) / binSize);
+        if (idx >= BIN_COUNT) idx = BIN_COUNT - 1;
+        if (idx < 0) idx = 0;
+        bins[idx]++;
+      });
+      const target = stats.target;
+      mcChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: '頻度',
+            data: bins,
+            backgroundColor: labels.map(l => parseFloat(l) >= target ? 'rgba(110,200,151,0.55)' : 'rgba(200,169,110,0.55)'),
+            borderColor: labels.map(l => parseFloat(l) >= target ? 'rgba(110,200,151,0.9)' : 'rgba(200,169,110,0.9)'),
+            borderWidth: 1,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#111114',
+              borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1,
+              titleColor: '#c8a96e', bodyColor: '#edede8',
+              callbacks: {
+                title: (items) => 'スループット ' + items[0].label + '〜',
+                label: (ctx) => '  ' + ctx.parsed.y + ' 回',
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255,255,255,0.04)' },
+              ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 },
+              title: { display: true, text: 'スループット (個/h)', color: 'rgba(255,255,255,0.4)', font: { size: 10 } },
+            },
+            y: {
+              grid: { color: 'rgba(255,255,255,0.06)' },
+              ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 } },
+              title: { display: true, text: '頻度', color: 'rgba(255,255,255,0.4)', font: { size: 10 } },
+            }
+          }
+        },
+        plugins: [{
+          id: 'targetLine',
+          afterDraw(chart) {
+            const { ctx, chartArea, scales } = chart;
+            // target値に最も近いラベル位置を線として描画
+            const tIdx = Math.max(0, Math.min(BIN_COUNT - 1, Math.floor((target - minV) / binSize)));
+            const x = scales.x.getPixelForValue(tIdx);
+            if (x < chartArea.left || x > chartArea.right) return;
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+            ctx.moveTo(x, chartArea.top);
+            ctx.lineTo(x, chartArea.bottom);
+            ctx.stroke();
+            ctx.fillStyle = '#ff6666';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('目標 ' + target, x, chartArea.top - 4);
+            ctx.restore();
+          }
+        }]
+      });
+    }
+
+    // スライダー値表示
+    const mcCv = document.getElementById('mc-cv');
+    const mcCvVal = document.getElementById('mc-cv-val');
+    const mcIter = document.getElementById('mc-iter');
+    const mcIterVal = document.getElementById('mc-iter-val');
+    if (mcCv && mcCvVal) mcCv.addEventListener('input', () => { mcCvVal.textContent = mcCv.value + '%'; });
+    if (mcIter && mcIterVal) mcIter.addEventListener('input', () => { mcIterVal.textContent = parseInt(mcIter.value).toLocaleString(); });
+
+    document.getElementById('btn-mc')?.addEventListener('click', () => {
+      try {
+        if (!lastProcs || lastTargetQty === null) {
+          alert('先に「分析実行」を行ってください。');
+          return;
+        }
+        const cvPct = parseFloat(mcCv.value) || 0;
+        const iterations = parseInt(mcIter.value) || 1000;
+        const btn = document.getElementById('btn-mc');
+        const status = document.getElementById('mc-status');
+        btn.disabled = true;
+        document.getElementById('mc-result').style.display = 'none';
+        const t0 = performance.now();
+        runMonteCarloChunked(
+          lastProcs, lastTargetQty, cvPct, iterations,
+          (done, total) => { status.textContent = `${done.toLocaleString()} / ${total.toLocaleString()} 試行中…`; },
+          (stats) => {
+            const elapsed = (performance.now() - t0).toFixed(0);
+            status.textContent = `完了 (${elapsed} ms, ${iterations.toLocaleString()} 試行)`;
+            renderMcResult(stats);
+            document.getElementById('mc-result').style.display = 'block';
+            btn.disabled = false;
+          }
+        );
+      } catch (e) {
+        console.error(e);
+        alert('モンテカルロ実行エラー: ' + e.message);
+        document.getElementById('btn-mc').disabled = false;
+      }
     });
 
     // ============================================================

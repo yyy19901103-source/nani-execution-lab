@@ -192,10 +192,48 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
 
       </div>
+
+      <!-- PHASE 3 — 2D感度ヒートマップ -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-top:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1.25rem;">PHASE 3 — 2D感度ヒートマップ</p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:end;margin-bottom:1.25rem;">
+          <div style="flex:1;min-width:140px;">
+            <label class="field-label">X軸</label>
+            <select id="heatmap-x" class="hm-select">
+              <option value="0">温度</option>
+              <option value="1">圧力</option>
+              <option value="2" selected>速度</option>
+              <option value="3">湿度</option>
+            </select>
+          </div>
+          <div style="flex:1;min-width:140px;">
+            <label class="field-label">Y軸</label>
+            <select id="heatmap-y" class="hm-select">
+              <option value="0" selected>温度</option>
+              <option value="1">圧力</option>
+              <option value="2">速度</option>
+              <option value="3">湿度</option>
+            </select>
+          </div>
+          <button id="btn-heatmap" class="m-btn-ghost">ヒートマップ生成</button>
+        </div>
+        <div style="position:relative;height:340px;">
+          <canvas id="heatmap-canvas"></canvas>
+        </div>
+        <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-top:0.75rem;text-align:center;">
+          他の2軸は現在のスライダー値を固定。色: 緑=高品質, 黄=中, 赤=低品質
+        </p>
+      </div>
     </div>
 
   </div>
 
+  <style>
+    .hm-select {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.4rem 0.6rem;font-size:0.78rem;font-family:inherit;width:100%;
+    }
+  </style>
   <style>
     .m-btn, .m-btn-ghost {
       background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
@@ -750,6 +788,145 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       document.getElementById('score-number').style.color = '#edede8';
       document.getElementById('score-gauge').style.width = '0%';
       document.getElementById('score-label').textContent = '予測待機中';
+    });
+
+    // ===== PHASE 3: 2D Sensitivity Heatmap =====
+    async function generateHeatmap() {
+      if (!trainedModel || !trainedStats) return;
+      const xAxis = parseInt(document.getElementById('heatmap-x').value);
+      const yAxis = parseInt(document.getElementById('heatmap-y').value);
+      if (xAxis === yAxis) { alert('X軸とY軸は別の特徴量を選択してください'); return; }
+
+      const GRID = 20;
+      const ranges = [
+        {min: 180, max: 220},
+        {min: 2.0, max: 4.0},
+        {min: 100, max: 200},
+        {min: 30,  max: 70}
+      ];
+
+      const cur = [
+        parseFloat(document.getElementById('sl-temp').value),
+        parseFloat(document.getElementById('sl-pressure').value) / 100,
+        parseFloat(document.getElementById('sl-speed').value),
+        parseFloat(document.getElementById('sl-humidity').value)
+      ];
+
+      const inputs = [];
+      for (let i = 0; i < GRID; i++) {
+        for (let j = 0; j < GRID; j++) {
+          const xVal = ranges[xAxis].min + (ranges[xAxis].max - ranges[xAxis].min) * j / (GRID - 1);
+          const yVal = ranges[yAxis].min + (ranges[yAxis].max - ranges[yAxis].min) * i / (GRID - 1);
+          const row = [...cur];
+          row[xAxis] = xVal;
+          row[yAxis] = yVal;
+          inputs.push(normalizeInput(row, trainedStats));
+        }
+      }
+
+      const xT = tf.tensor2d(inputs);
+      const out = trainedModel.predict(xT);
+      const arr = await out.data();
+      tf.dispose([xT, out]);
+
+      const grid = [];
+      for (let i = 0; i < GRID; i++) {
+        const row = [];
+        for (let j = 0; j < GRID; j++) {
+          row.push(denormalizeOutput(arr[i * GRID + j], trainedStats));
+        }
+        grid.push(row);
+      }
+
+      drawHeatmap(grid, ranges, xAxis, yAxis);
+    }
+
+    function drawHeatmap(grid, ranges, xAxis, yAxis) {
+      const canvas = document.getElementById('heatmap-canvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.parentElement.clientWidth;
+      canvas.width = W;
+      canvas.height = 340;
+
+      const PAD_L = 60, PAD_B = 40, PAD_T = 20, PAD_R = 20;
+      const plotW = W - PAD_L - PAD_R;
+      const plotH = 340 - PAD_T - PAD_B;
+      const GRID = grid.length;
+      const cellW = plotW / GRID;
+      const cellH = plotH / GRID;
+
+      ctx.clearRect(0, 0, W, 340);
+      ctx.fillStyle = '#111114';
+      ctx.fillRect(0, 0, W, 340);
+
+      function colorFor(score) {
+        score = Math.max(0, Math.min(100, score));
+        if (score < 60) {
+          const t = score / 60;
+          return `rgb(${Math.round(232 - t*40)}, ${Math.round(112 + t*80)}, ${Math.round(112 - t*40)})`;
+        } else if (score < 80) {
+          const t = (score - 60) / 20;
+          return `rgb(${Math.round(232 - t*32)}, ${Math.round(192 - t*23)}, ${Math.round(72 + t*30)})`;
+        } else {
+          return `rgb(200, 169, 110)`;
+        }
+      }
+
+      for (let i = 0; i < GRID; i++) {
+        for (let j = 0; j < GRID; j++) {
+          ctx.fillStyle = colorFor(grid[GRID - 1 - i][j]);
+          ctx.fillRect(PAD_L + j * cellW, PAD_T + i * cellH, cellW + 1, cellH + 1);
+        }
+      }
+
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'center';
+      const axisNames = ['温度 (°C)', '圧力 (MPa)', '速度 (rpm)', '湿度 (%)'];
+      ctx.fillText(axisNames[xAxis], PAD_L + plotW/2, 340 - 10);
+      ctx.save();
+      ctx.translate(15, PAD_T + plotH/2);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText(axisNames[yAxis], 0, 0);
+      ctx.restore();
+
+      ctx.font = '10px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.textAlign = 'center';
+      for (let k = 0; k <= 4; k++) {
+        const xv = ranges[xAxis].min + (ranges[xAxis].max - ranges[xAxis].min) * k / 4;
+        ctx.fillText(xv.toFixed(1), PAD_L + plotW * k / 4, 340 - PAD_B + 16);
+      }
+      ctx.textAlign = 'right';
+      for (let k = 0; k <= 4; k++) {
+        const yv = ranges[yAxis].min + (ranges[yAxis].max - ranges[yAxis].min) * k / 4;
+        ctx.fillText(yv.toFixed(1), PAD_L - 8, PAD_T + plotH - plotH * k / 4 + 4);
+      }
+
+      const cur = [
+        parseFloat(document.getElementById('sl-temp').value),
+        parseFloat(document.getElementById('sl-pressure').value) / 100,
+        parseFloat(document.getElementById('sl-speed').value),
+        parseFloat(document.getElementById('sl-humidity').value)
+      ];
+      const xPx = PAD_L + plotW * (cur[xAxis] - ranges[xAxis].min) / (ranges[xAxis].max - ranges[xAxis].min);
+      const yPx = PAD_T + plotH - plotH * (cur[yAxis] - ranges[yAxis].min) / (ranges[yAxis].max - ranges[yAxis].min);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(xPx, yPx, 5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    document.getElementById('btn-heatmap')?.addEventListener('click', () => {
+      generateHeatmap().catch(e => console.error(e));
+    });
+    window.addEventListener('resize', () => {
+      // Redraw heatmap on resize if it has content
+      if (trainedModel && trainedStats) {
+        const canvas = document.getElementById('heatmap-canvas');
+        if (canvas && canvas.width > 0) generateHeatmap().catch(()=>{});
+      }
     });
   </script>
 

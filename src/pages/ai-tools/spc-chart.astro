@@ -1,0 +1,614 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="SPC管理図（統計的工程管理）" description="X̄-R / X-MR管理図を自動生成し、Western Electricルールで管理外れを検出。Cp/Cpk算出にも対応。データは外部送信ゼロ。">
+
+  <!-- Security Banner -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 統計計算・違反検出すべてローカル実行</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;border-bottom:1px solid rgba(200,169,110,0.15);padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>DevTools (F12) → Network タブを開く</li>
+      <li>「Disable cache」をオン</li>
+      <li>ページをリロード → CDN ライブラリの読込のみ確認できる</li>
+      <li>データ投入・分析中、追加の通信が <strong>一切発生しない</strong> ことを確認</li>
+    </ol>
+    <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">統計計算（管理限界・違反検出・Cp/Cpk）は全てブラウザ内 JavaScript で実行されます。投入データは外部送信されません。</p>
+  </div>
+
+  <!-- Hero -->
+  <div style="position:relative;height:14rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a14 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">SPC Control Chart</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.2rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:0.75rem;">SPC管理図</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;font-weight:300;">Statistical Process Control · X̄-R · X-MR · Western Electric Rules</p>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:2rem 1rem 5rem;">
+
+    <!-- 入力フェーズ -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-bottom:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1.25rem;">PHASE 1 — データ入力</p>
+
+      <!-- モード選択 -->
+      <div style="margin-bottom:1.25rem;">
+        <label class="field-label">管理図タイプ</label>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+          <button id="mode-xbar" class="m-btn-ghost active" style="font-size:0.72rem;padding:0.45rem 1rem;">X̄-R 管理図 (n≥2)</button>
+          <button id="mode-xmr" class="m-btn-ghost" style="font-size:0.72rem;padding:0.45rem 1rem;">X-MR 管理図 (個別値)</button>
+        </div>
+        <p id="mode-desc" style="color:rgba(255,255,255,0.4);font-size:0.68rem;margin-top:0.4rem;">
+          サブグループサイズ固定でロット内ばらつき(R)とロット間ばらつき(X̄)を同時管理
+        </p>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;align-items:center;">
+        <div style="flex:1;min-width:220px;">
+          <label class="field-label">データソース</label>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button id="btn-sample" class="m-btn-ghost" style="font-size:0.72rem;padding:0.45rem 1rem;">サンプルデータ読込</button>
+            <label class="m-btn-ghost" style="font-size:0.72rem;padding:0.45rem 1rem;cursor:pointer;">
+              CSVをアップロード
+              <input type="file" id="csv-upload" accept=".csv" style="display:none;">
+            </label>
+          </div>
+          <p id="csv-status" style="color:rgba(255,255,255,0.4);font-size:0.68rem;margin-top:0.4rem;">CSV形式: <span id="csv-fmt">subgroup_id,value</span></p>
+        </div>
+
+        <div id="n-wrap" style="min-width:140px;">
+          <label class="field-label">サンプルサイズ n: <span id="n-val">5</span></label>
+          <input type="range" id="n-slider" min="2" max="10" value="5" step="1" style="width:100%;accent-color:#c8a96e;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.35);font-size:0.65rem;"><span>2</span><span>10</span></div>
+        </div>
+      </div>
+
+      <!-- 規格上下限 -->
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;">
+        <div style="flex:1;min-width:140px;">
+          <label class="field-label">USL (規格上限・任意)</label>
+          <input type="number" id="usl-input" step="0.01" placeholder="例: 60" style="width:100%;background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);padding:0.45rem 0.6rem;font-size:0.78rem;font-family:inherit;">
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <label class="field-label">LSL (規格下限・任意)</label>
+          <input type="number" id="lsl-input" step="0.01" placeholder="例: 40" style="width:100%;background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);padding:0.45rem 0.6rem;font-size:0.78rem;font-family:inherit;">
+        </div>
+      </div>
+
+      <button id="btn-run" class="m-btn" style="min-width:160px;">分析実行 ▶</button>
+      <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;font-size:0.72rem;padding:0.5rem 1.25rem;">リセット</button>
+
+      <p id="run-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.75rem;"></p>
+    </div>
+
+    <!-- 結果フェーズ -->
+    <div id="result-section" style="display:none;">
+
+      <!-- メトリクス -->
+      <div id="metrics-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;margin-bottom:1.5rem;">
+      </div>
+
+      <!-- X / X̄ chart -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;" id="x-chart-title">X̄ MANAGEMENT CHART</p>
+        <div style="position:relative;height:300px;">
+          <canvas id="x-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- R / MR chart -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;" id="r-chart-title">R MANAGEMENT CHART</p>
+        <div style="position:relative;height:240px;">
+          <canvas id="r-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- 違反一覧 -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.75rem;margin-bottom:1rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">WESTERN ELECTRIC ルール違反</p>
+          <button id="btn-download" class="m-btn-ghost" style="font-size:0.72rem;padding:0.45rem 1rem;">CSVダウンロード</button>
+        </div>
+        <div id="violations-content" style="color:rgba(255,255,255,0.7);font-size:0.78rem;line-height:1.7;"></div>
+      </div>
+
+      <!-- ルール解説 -->
+      <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.15);padding:1.25rem 1.5rem;font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.7;">
+        <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.25em;margin-bottom:0.6rem;">RULES REFERENCE</p>
+        <div><strong style="color:#edede8;">R1</strong>: 1点が3σ管理限界を外れる（突発異常）</div>
+        <div><strong style="color:#edede8;">R2</strong>: 連続3点中2点が同一側2σ外（プロセスシフト）</div>
+        <div><strong style="color:#edede8;">R3</strong>: 連続5点中4点が同一側1σ外（緩やかな偏り）</div>
+        <div><strong style="color:#edede8;">R4</strong>: 連続8点が中心線の同一側（構造的偏り）</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.45rem 0.85rem;font-size:0.75rem;cursor:pointer;font-family:inherit;letter-spacing:0.06em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn-ghost.active { background:rgba(200,169,110,0.12);border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
+    .m-btn:hover { background:#d4b87b; }
+    .field-label { display:block;color:rgba(255,255,255,0.55);font-size:0.7rem;letter-spacing:0.08em;margin-bottom:0.5rem; }
+    .metric-card {
+      background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;text-align:center;
+    }
+    .metric-card .lbl { color:#c8a96e;font-size:0.58rem;letter-spacing:0.25em; }
+    .metric-card .val { color:#edede8;font-size:1.15rem;font-weight:300;margin-top:0.35rem; }
+    .v-table { width:100%;border-collapse:collapse;font-size:0.75rem; }
+    .v-table th, .v-table td { padding:0.5rem 0.75rem;border-bottom:1px solid rgba(255,255,255,0.06);text-align:left; }
+    .v-table th { color:#c8a96e;font-size:0.62rem;letter-spacing:0.25em;font-weight:400; }
+    .v-table td { color:rgba(255,255,255,0.75); }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script is:inline>
+    document.getElementById('verify-privacy')?.addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // ===== Constants =====
+    const A2 = [null, null, 1.880, 1.023, 0.729, 0.577, 0.483, 0.419, 0.373, 0.337, 0.308];
+    const D3 = [null, null, 0,     0,     0,     0,     0,     0.076, 0.136, 0.184, 0.223];
+    const D4 = [null, null, 3.267, 2.575, 2.282, 2.115, 2.004, 1.924, 1.864, 1.816, 1.777];
+    const D2 = { 2: 1.128, 3: 1.693, 4: 2.059, 5: 2.326, 6: 2.534, 7: 2.704, 8: 2.847, 9: 2.970, 10: 3.078 };
+
+    // ===== State =====
+    let mode = 'xbar';   // 'xbar' or 'xmr'
+    let inputData = null; // for xbar: array of subgroups [[v,...],...]; for xmr: array of values
+    let lastResult = null;
+    let xChart = null;
+    let rChart = null;
+
+    // ===== Sample data =====
+    function sampleXbarR() {
+      const data = [];
+      for (let i = 0; i < 25; i++) {
+        const subgroup = [];
+        const baseShift = i > 18 ? 1.5 : 0;
+        for (let j = 0; j < 5; j++) {
+          subgroup.push(50 + baseShift + (Math.random() - 0.5) * 4);
+        }
+        data.push(subgroup);
+      }
+      return data;
+    }
+
+    function sampleXMR() {
+      const values = [];
+      for (let i = 0; i < 50; i++) {
+        let v = 100 + (Math.random() - 0.5) * 8;
+        if (i === 25) v = 115;
+        if (i >= 35) v += 3;
+        values.push(v);
+      }
+      return values;
+    }
+
+    // ===== CSV parse =====
+    function parseCSVXbar(text) {
+      const lines = text.trim().split(/\r?\n/);
+      if (lines.length < 2) return null;
+      const header = lines[0].toLowerCase().split(',').map(s => s.trim());
+      const idxId = header.indexOf('subgroup_id');
+      const idxV  = header.indexOf('value');
+      if (idxId < 0 || idxV < 0) return null;
+      const groups = new Map();
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(s => s.trim());
+        if (cols.length < 2) continue;
+        const id = cols[idxId];
+        const v = parseFloat(cols[idxV]);
+        if (isNaN(v)) continue;
+        if (!groups.has(id)) groups.set(id, []);
+        groups.get(id).push(v);
+      }
+      const arr = Array.from(groups.values()).filter(g => g.length >= 2);
+      if (arr.length === 0) return null;
+      const n = arr[0].length;
+      return arr.filter(g => g.length === n);
+    }
+
+    function parseCSVXMR(text) {
+      const lines = text.trim().split(/\r?\n/);
+      if (lines.length < 2) return null;
+      const header = lines[0].toLowerCase().split(',').map(s => s.trim());
+      const idxV = header.indexOf('value');
+      const values = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(s => s.trim());
+        const raw = idxV >= 0 ? cols[idxV] : cols[0];
+        const v = parseFloat(raw);
+        if (!isNaN(v)) values.push(v);
+      }
+      return values.length >= 5 ? values : null;
+    }
+
+    // ===== Calculations =====
+    function xbarRChart(subgroups) {
+      const n = subgroups[0].length;
+      const xbars = subgroups.map(sg => sg.reduce((a,b) => a+b, 0) / sg.length);
+      const ranges = subgroups.map(sg => Math.max(...sg) - Math.min(...sg));
+      const xbarbar = xbars.reduce((a,b) => a+b, 0) / xbars.length;
+      const rbar = ranges.reduce((a,b) => a+b, 0) / ranges.length;
+
+      const xUcl = xbarbar + A2[n] * rbar;
+      const xLcl = xbarbar - A2[n] * rbar;
+      const rUcl = D4[n] * rbar;
+      const rLcl = D3[n] * rbar;
+      const sigma = rbar / D2[n];
+
+      return { xbars, ranges, xbarbar, rbar, xUcl, xLcl, rUcl, rLcl, sigma, n };
+    }
+
+    function xMrChart(values) {
+      const mr = values.slice(1).map((v, i) => Math.abs(v - values[i]));
+      const xbar = values.reduce((a,b) => a+b, 0) / values.length;
+      const mrBar = mr.reduce((a,b) => a+b, 0) / mr.length;
+      const xUcl = xbar + 2.66 * mrBar;
+      const xLcl = xbar - 2.66 * mrBar;
+      const mrUcl = 3.267 * mrBar;
+      const sigma = mrBar / 1.128;
+      return { values, mr, xbar, mrBar, xUcl, xLcl, mrUcl, sigma };
+    }
+
+    function checkWERules(values, mean, sigma) {
+      const violations = [];
+      const sUcl = mean + sigma, sLcl = mean - sigma;
+      const ssUcl = mean + 2 * sigma, ssLcl = mean - 2 * sigma;
+      const tUcl = mean + 3 * sigma, tLcl = mean - 3 * sigma;
+
+      values.forEach((v, i) => {
+        const reasons = [];
+        if (v > tUcl || v < tLcl) reasons.push('R1: 3σ外');
+        if (i >= 2) {
+          const last3 = [values[i-2], values[i-1], v];
+          const above2 = last3.filter(x => x > ssUcl).length;
+          const below2 = last3.filter(x => x < ssLcl).length;
+          if (above2 >= 2 || below2 >= 2) reasons.push('R2: 2σ超え連発');
+        }
+        if (i >= 4) {
+          const last5 = values.slice(i-4, i+1);
+          const above1 = last5.filter(x => x > sUcl).length;
+          const below1 = last5.filter(x => x < sLcl).length;
+          if (above1 >= 4 || below1 >= 4) reasons.push('R3: 1σ偏り');
+        }
+        if (i >= 7) {
+          const last8 = values.slice(i-7, i+1);
+          const allAbove = last8.every(x => x > mean);
+          const allBelow = last8.every(x => x < mean);
+          if (allAbove || allBelow) reasons.push('R4: 8点偏り');
+        }
+        if (reasons.length > 0) violations.push({ idx: i, reasons });
+      });
+      return violations;
+    }
+
+    function processCapability(mean, sigma, usl, lsl) {
+      if (sigma <= 0) return null;
+      const cp = (usl - lsl) / (6 * sigma);
+      const cpkU = (usl - mean) / (3 * sigma);
+      const cpkL = (mean - lsl) / (3 * sigma);
+      const cpk = Math.min(cpkU, cpkL);
+      return { cp, cpk, cpkU, cpkL };
+    }
+
+    // ===== Render =====
+    function renderMetrics(r, mode, capability) {
+      const grid = document.getElementById('metrics-grid');
+      const cards = [];
+      if (mode === 'xbar') {
+        cards.push(['x̄̄ (中心)', r.xbarbar.toFixed(3)]);
+        cards.push(['R̄', r.rbar.toFixed(3)]);
+        cards.push(['σ (R̄/d2)', r.sigma.toFixed(3)]);
+        cards.push(['n', r.n]);
+      } else {
+        cards.push(['x̄ (中心)', r.xbar.toFixed(3)]);
+        cards.push(['MR̄', r.mrBar.toFixed(3)]);
+        cards.push(['σ (MR̄/1.128)', r.sigma.toFixed(3)]);
+        cards.push(['データ数', r.values.length]);
+      }
+      cards.push(['違反点数', r._violationCount]);
+      if (capability) {
+        cards.push(['Cp', capability.cp.toFixed(3)]);
+        cards.push(['Cpk', capability.cpk.toFixed(3)]);
+      }
+      grid.innerHTML = cards.map(c =>
+        `<div class="metric-card"><div class="lbl">${c[0]}</div><div class="val">${c[1]}</div></div>`
+      ).join('');
+    }
+
+    function buildPointColors(values, violationIndices) {
+      return values.map((_, i) => violationIndices.has(i) ? '#e88080' : '#c8a96e');
+    }
+    function buildPointRadii(values, violationIndices) {
+      return values.map((_, i) => violationIndices.has(i) ? 5 : 2.5);
+    }
+
+    function drawChart(canvasId, values, mean, ucl, lcl, violationIndices, label, sigma) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      const labels = values.map((_, i) => i + 1);
+      const meanLine = values.map(() => mean);
+      const uclLine = values.map(() => ucl);
+      const lclLine = values.map(() => lcl);
+      const datasets = [
+        {
+          label,
+          data: values,
+          borderColor: '#c8a96e',
+          backgroundColor: 'rgba(200,169,110,0.05)',
+          borderWidth: 1.5,
+          pointBackgroundColor: buildPointColors(values, violationIndices),
+          pointBorderColor: buildPointColors(values, violationIndices),
+          pointRadius: buildPointRadii(values, violationIndices),
+          tension: 0.1,
+          fill: false
+        },
+        { label: 'CL', data: meanLine, borderColor: 'rgba(255,255,255,0.5)', borderWidth: 1, borderDash: [4,3], pointRadius: 0, fill: false },
+        { label: 'UCL', data: uclLine, borderColor: '#e88080', borderWidth: 1, borderDash: [6,3], pointRadius: 0, fill: false }
+      ];
+      if (lcl !== null && lcl !== undefined) {
+        datasets.push({ label: 'LCL', data: lclLine, borderColor: '#e88080', borderWidth: 1, borderDash: [6,3], pointRadius: 0, fill: false });
+      }
+
+      return new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: 'rgba(255,255,255,0.6)', font: { size: 10 } } },
+            tooltip: {
+              callbacks: {
+                afterLabel: (item) => {
+                  if (item.datasetIndex !== 0) return '';
+                  const i = item.dataIndex;
+                  if (violationIndices.has(i)) return '⚠ 管理外れ';
+                  return '';
+                }
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+          }
+        }
+      });
+    }
+
+    function renderViolations(xViolations, rViolations, mode) {
+      const xLabel = mode === 'xbar' ? 'X̄' : 'X';
+      const rLabel = mode === 'xbar' ? 'R' : 'MR';
+      const total = xViolations.length + rViolations.length;
+      const el = document.getElementById('violations-content');
+      if (total === 0) {
+        el.innerHTML = '<p style="color:#6ec86e;">✓ 違反点なし — プロセスは統計的に管理状態にあります</p>';
+        return;
+      }
+      let html = `<p style="margin-bottom:0.75rem;">合計 <strong style="color:#e88080;">${total}件</strong> の違反点を検出（${xLabel}図: ${xViolations.length}件 / ${rLabel}図: ${rViolations.length}件）</p>`;
+      html += '<table class="v-table"><thead><tr><th>図</th><th>位置</th><th>違反ルール</th></tr></thead><tbody>';
+      for (const v of xViolations) {
+        html += `<tr><td>${xLabel}</td><td>#${v.idx + 1}</td><td>${v.reasons.join(' / ')}</td></tr>`;
+      }
+      for (const v of rViolations) {
+        html += `<tr><td>${rLabel}</td><td>#${v.idx + 1}</td><td>${v.reasons.join(' / ')}</td></tr>`;
+      }
+      html += '</tbody></table>';
+      el.innerHTML = html;
+    }
+
+    // ===== Main analysis =====
+    function runAnalysis() {
+      const status = document.getElementById('run-status');
+      if (!inputData) {
+        status.textContent = 'エラー: データが読み込まれていません。サンプルデータまたはCSVを指定してください。';
+        status.style.color = '#e88080';
+        return;
+      }
+
+      const usl = parseFloat(document.getElementById('usl-input').value);
+      const lsl = parseFloat(document.getElementById('lsl-input').value);
+      const hasSpec = !isNaN(usl) && !isNaN(lsl) && usl > lsl;
+
+      if (mode === 'xbar') {
+        if (!Array.isArray(inputData) || inputData.length < 2 || !Array.isArray(inputData[0])) {
+          status.textContent = 'エラー: X̄-Rモードのデータ形式が不正です。';
+          status.style.color = '#e88080';
+          return;
+        }
+        const r = xbarRChart(inputData);
+        const xViolations = checkWERules(r.xbars, r.xbarbar, r.sigma / Math.sqrt(r.n));
+        const rViolations = checkWERules(r.ranges, r.rbar, (r.rUcl - r.rbar) / 3);
+        r._violationCount = xViolations.length + rViolations.length;
+        const capability = hasSpec ? processCapability(r.xbarbar, r.sigma, usl, lsl) : null;
+
+        document.getElementById('x-chart-title').textContent = 'X̄ MANAGEMENT CHART';
+        document.getElementById('r-chart-title').textContent = 'R MANAGEMENT CHART';
+
+        if (xChart) xChart.destroy();
+        if (rChart) rChart.destroy();
+        const xVioSet = new Set(xViolations.map(v => v.idx));
+        const rVioSet = new Set(rViolations.map(v => v.idx));
+        xChart = drawChart('x-chart', r.xbars, r.xbarbar, r.xUcl, r.xLcl, xVioSet, 'X̄', r.sigma / Math.sqrt(r.n));
+        rChart = drawChart('r-chart', r.ranges, r.rbar, r.rUcl, r.rLcl, rVioSet, 'R', (r.rUcl - r.rbar) / 3);
+
+        renderMetrics(r, 'xbar', capability);
+        renderViolations(xViolations, rViolations, 'xbar');
+
+        lastResult = { mode, r, xViolations, rViolations, capability };
+        status.textContent = `✓ 分析完了: ${inputData.length}サブグループ × n=${r.n}`;
+        status.style.color = '#6ec86e';
+      } else {
+        if (!Array.isArray(inputData) || inputData.length < 5 || Array.isArray(inputData[0])) {
+          status.textContent = 'エラー: X-MRモードのデータ形式が不正です。';
+          status.style.color = '#e88080';
+          return;
+        }
+        const r = xMrChart(inputData);
+        const xViolations = checkWERules(r.values, r.xbar, r.sigma);
+        const mrViolations = checkWERules(r.mr, r.mrBar, (r.mrUcl - r.mrBar) / 3);
+        r._violationCount = xViolations.length + mrViolations.length;
+        const capability = hasSpec ? processCapability(r.xbar, r.sigma, usl, lsl) : null;
+
+        document.getElementById('x-chart-title').textContent = 'X (INDIVIDUALS) CHART';
+        document.getElementById('r-chart-title').textContent = 'MR (MOVING RANGE) CHART';
+
+        if (xChart) xChart.destroy();
+        if (rChart) rChart.destroy();
+        const xVioSet = new Set(xViolations.map(v => v.idx));
+        const mrVioSet = new Set(mrViolations.map(v => v.idx));
+        xChart = drawChart('x-chart', r.values, r.xbar, r.xUcl, r.xLcl, xVioSet, 'X', r.sigma);
+        rChart = drawChart('r-chart', r.mr, r.mrBar, r.mrUcl, 0, mrVioSet, 'MR', (r.mrUcl - r.mrBar) / 3);
+
+        renderMetrics(r, 'xmr', capability);
+        renderViolations(xViolations, mrViolations, 'xmr');
+
+        lastResult = { mode, r, xViolations, rViolations: mrViolations, capability };
+        status.textContent = `✓ 分析完了: ${inputData.length}個の個別測定値`;
+        status.style.color = '#6ec86e';
+      }
+
+      document.getElementById('result-section').style.display = 'block';
+    }
+
+    // ===== Mode switch =====
+    function setMode(m) {
+      mode = m;
+      document.getElementById('mode-xbar').classList.toggle('active', m === 'xbar');
+      document.getElementById('mode-xmr').classList.toggle('active', m === 'xmr');
+      document.getElementById('n-wrap').style.display = m === 'xbar' ? 'block' : 'none';
+      document.getElementById('csv-fmt').textContent = m === 'xbar' ? 'subgroup_id,value' : 'value';
+      document.getElementById('mode-desc').textContent = m === 'xbar'
+        ? 'サブグループサイズ固定でロット内ばらつき(R)とロット間ばらつき(X̄)を同時管理'
+        : '個別測定値（n=1）を移動範囲MRで管理。低生産量プロセス向け';
+      inputData = null;
+      document.getElementById('csv-status').textContent = `CSV形式: ${m === 'xbar' ? 'subgroup_id,value' : 'value'}`;
+    }
+
+    // ===== Events =====
+    document.getElementById('mode-xbar').addEventListener('click', () => setMode('xbar'));
+    document.getElementById('mode-xmr').addEventListener('click', () => setMode('xmr'));
+
+    document.getElementById('n-slider').addEventListener('input', e => {
+      document.getElementById('n-val').textContent = e.target.value;
+    });
+
+    document.getElementById('btn-sample').addEventListener('click', () => {
+      if (mode === 'xbar') {
+        inputData = sampleXbarR();
+        document.getElementById('csv-status').textContent = `サンプル読込完了: 25サブグループ × n=5`;
+      } else {
+        inputData = sampleXMR();
+        document.getElementById('csv-status').textContent = `サンプル読込完了: 50個の個別測定値`;
+      }
+      document.getElementById('csv-status').style.color = '#6ec86e';
+    });
+
+    document.getElementById('csv-upload').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const text = ev.target.result;
+        if (mode === 'xbar') {
+          const parsed = parseCSVXbar(text);
+          if (!parsed) {
+            document.getElementById('csv-status').textContent = 'エラー: CSV形式不正 (列: subgroup_id,value、各サブグループ同サイズ・n≥2)';
+            document.getElementById('csv-status').style.color = '#e88080';
+            return;
+          }
+          inputData = parsed;
+          document.getElementById('csv-status').textContent = `読込完了: ${parsed.length}サブグループ × n=${parsed[0].length}`;
+        } else {
+          const parsed = parseCSVXMR(text);
+          if (!parsed) {
+            document.getElementById('csv-status').textContent = 'エラー: CSV形式不正 (列: value、5行以上必要)';
+            document.getElementById('csv-status').style.color = '#e88080';
+            return;
+          }
+          inputData = parsed;
+          document.getElementById('csv-status').textContent = `読込完了: ${parsed.length}個の測定値`;
+        }
+        document.getElementById('csv-status').style.color = '#6ec86e';
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('btn-run').addEventListener('click', runAnalysis);
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      inputData = null;
+      lastResult = null;
+      if (xChart) { xChart.destroy(); xChart = null; }
+      if (rChart) { rChart.destroy(); rChart = null; }
+      document.getElementById('result-section').style.display = 'none';
+      document.getElementById('csv-status').textContent = `CSV形式: ${mode === 'xbar' ? 'subgroup_id,value' : 'value'}`;
+      document.getElementById('csv-status').style.color = 'rgba(255,255,255,0.4)';
+      document.getElementById('run-status').textContent = '';
+      document.getElementById('usl-input').value = '';
+      document.getElementById('lsl-input').value = '';
+    });
+
+    document.getElementById('btn-download').addEventListener('click', () => {
+      if (!lastResult) { alert('先に分析を実行してください'); return; }
+      let lines = [];
+      if (lastResult.mode === 'xbar') {
+        lines.push('subgroup_idx,xbar,range,xbar_violation,range_violation,xbar_rules,range_rules');
+        const xMap = new Map(lastResult.xViolations.map(v => [v.idx, v.reasons.join(';')]));
+        const rMap = new Map(lastResult.rViolations.map(v => [v.idx, v.reasons.join(';')]));
+        for (let i = 0; i < lastResult.r.xbars.length; i++) {
+          lines.push([
+            i + 1,
+            lastResult.r.xbars[i].toFixed(4),
+            lastResult.r.ranges[i].toFixed(4),
+            xMap.has(i) ? 1 : 0,
+            rMap.has(i) ? 1 : 0,
+            xMap.get(i) || '',
+            rMap.get(i) || ''
+          ].join(','));
+        }
+      } else {
+        lines.push('idx,value,mr,x_violation,mr_violation,x_rules,mr_rules');
+        const xMap = new Map(lastResult.xViolations.map(v => [v.idx, v.reasons.join(';')]));
+        const mrMap = new Map(lastResult.rViolations.map(v => [v.idx, v.reasons.join(';')]));
+        for (let i = 0; i < lastResult.r.values.length; i++) {
+          const mr = i === 0 ? '' : lastResult.r.mr[i - 1].toFixed(4);
+          lines.push([
+            i + 1,
+            lastResult.r.values[i].toFixed(4),
+            mr,
+            xMap.has(i) ? 1 : 0,
+            mrMap.has(i - 1) ? 1 : 0,
+            xMap.get(i) || '',
+            mrMap.get(i - 1) || ''
+          ].join(','));
+        }
+      }
+      const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'spc_chart_result.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+
+</BaseLayout>

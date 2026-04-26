@@ -69,6 +69,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <button class="period-btn" data-period="12">12ヶ月</button>
             </div>
           </div>
+          <div>
+            <label class="field-label" style="margin-bottom:0.35rem;">予測モデル</label>
+            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+              <button class="model-btn active" data-model="hw">Holt-Winters</button>
+              <button class="model-btn" data-model="sma">季節MA</button>
+              <button class="model-btn" data-model="linseason">線形+季節</button>
+              <button class="model-btn" data-model="ensemble">アンサンブル</button>
+              <button class="model-btn" data-model="best">自動ベスト</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -140,6 +150,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
       </div>
 
+      <!-- Model comparison -->
+      <div id="model-compare-section" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin-bottom:1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">MODEL COMPARISON</p>
+        <div style="overflow-x:auto;">
+          <table id="model-compare-table" style="width:100%;border-collapse:collapse;font-size:0.78rem;"></table>
+        </div>
+      </div>
+
       <!-- Forecast table -->
       <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;">
         <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">FORECAST SUMMARY</p>
@@ -155,12 +173,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </div>
 
   <style>
-    .m-btn, .m-btn-ghost, .period-btn {
+    .m-btn, .m-btn-ghost, .period-btn, .model-btn {
       background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
       padding:0.42rem 0.75rem;font-size:0.72rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
     }
-    .m-btn-ghost:hover, .period-btn:hover { border-color:#c8a96e;color:#c8a96e; }
-    .period-btn.active { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
+    .m-btn-ghost:hover, .period-btn:hover, .model-btn:hover { border-color:#c8a96e;color:#c8a96e; }
+    .period-btn.active, .model-btn.active { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
+    .slider:disabled { opacity:0.35;cursor:not-allowed; }
     .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:600; }
     .m-btn:hover:not(:disabled) { background:#d4b87b; }
     .m-btn:disabled { opacity:0.4;cursor:not-allowed; }
@@ -225,6 +244,83 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return { fitted, forecast, mape, mae };
     }
 
+    // ---- Seasonal Moving Average ----
+    function seasonalMA(data, season, forecastPeriods) {
+      try {
+        if (data.length < season + 1) return null;
+        const seasonals = Array(season).fill(0);
+        const counts = Array(season).fill(0);
+        const overallMean = data.reduce((a,b) => a+b, 0) / data.length;
+        if (overallMean === 0) return null;
+        for (let i = 0; i < data.length; i++) {
+          seasonals[i % season] += data[i] / overallMean;
+          counts[i % season]++;
+        }
+        for (let i = 0; i < season; i++) {
+          seasonals[i] = counts[i] > 0 ? seasonals[i] / counts[i] : 1;
+        }
+        const earlyMean = data.slice(0, season).reduce((a,b) => a+b, 0) / season;
+        const lateMean = data.slice(-season).reduce((a,b) => a+b, 0) / season;
+        const trendPerPeriod = (lateMean - earlyMean) / Math.max(1, data.length - season);
+
+        const fitted = data.map((_, i) => {
+          if (i < season) return data[i];
+          return overallMean * seasonals[i % season] + trendPerPeriod * (i - season/2);
+        });
+
+        const forecast = [];
+        const baseRatio = lateMean / overallMean;
+        for (let h = 1; h <= forecastPeriods; h++) {
+          const seasIdx = (data.length + h - 1) % season;
+          const v = (lateMean + trendPerPeriod * h) * (baseRatio === 0 ? 1 : seasonals[seasIdx] / baseRatio);
+          forecast.push(v);
+        }
+
+        const tail = fitted.slice(season);
+        const denom = data.length - season;
+        let mape = denom > 0 ? tail.reduce((sum, f, i) =>
+          sum + (data[i+season] !== 0 ? Math.abs((data[i+season] - f) / data[i+season]) : 0), 0) / denom * 100 : NaN;
+        let mae = denom > 0 ? tail.reduce((sum, f, i) =>
+          sum + Math.abs(data[i+season] - f), 0) / denom : NaN;
+        return { fitted, forecast, mape, mae };
+      } catch (e) { console.error('seasonalMA', e); return null; }
+    }
+
+    // ---- Linear Trend + Seasonal ----
+    function linearSeasonal(data, season, forecastPeriods) {
+      try {
+        if (data.length < season + 2) return null;
+        const n = data.length;
+        const overallMean = data.reduce((a,b) => a+b, 0) / n;
+        if (overallMean === 0) return null;
+        const seasonals = Array(season).fill(0);
+        const counts = Array(season).fill(0);
+        for (let i = 0; i < n; i++) {
+          seasonals[i % season] += data[i];
+          counts[i % season]++;
+        }
+        for (let i = 0; i < season; i++) {
+          seasonals[i] = counts[i] > 0 ? (seasonals[i] / counts[i]) / overallMean : 1;
+        }
+        let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+        for (let i = 0; i < n; i++) {
+          sumX += i; sumY += data[i]; sumXY += i * data[i]; sumXX += i * i;
+        }
+        const denomR = (n * sumXX - sumX * sumX);
+        const slope = denomR === 0 ? 0 : (n * sumXY - sumX * sumY) / denomR;
+        const intercept = (sumY - slope * sumX) / n;
+        const fitted = data.map((_, i) => (intercept + slope * i) * seasonals[i % season]);
+        const forecast = [];
+        for (let h = 1; h <= forecastPeriods; h++) {
+          forecast.push((intercept + slope * (n + h - 1)) * seasonals[(n + h - 1) % season]);
+        }
+        let mape = fitted.reduce((sum, f, i) =>
+          sum + (data[i] !== 0 ? Math.abs((data[i] - f) / data[i]) : 0), 0) / n * 100;
+        let mae = fitted.reduce((sum, f, i) => sum + Math.abs(data[i] - f), 0) / n;
+        return { fitted, forecast, mape, mae };
+      } catch (e) { console.error('linearSeasonal', e); return null; }
+    }
+
     function confidenceInterval(data, fitted, forecast, z) {
       z = z || 1.96;
       let errors = fitted.slice(12).map((f, i) => data[i + 12] - f);
@@ -243,6 +339,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let lastForecastResult = null;
     let lastForecastLabels = null;
     let lastCI = null;
+    let selectedModel = 'hw';     // 'hw' | 'sma' | 'linseason' | 'ensemble' | 'best'
+    let lastModelComparison = null;
+    let lastSelectedLabel = 'Holt-Winters';
 
     // ---- DOM refs ----
     const statusEl = document.getElementById('data-status');
@@ -264,6 +363,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         forecastPeriods = parseInt(btn.dataset.period, 10);
+      });
+    });
+
+    // ---- Model buttons ----
+    function updateSliderEnabled() {
+      const enabled = (selectedModel === 'hw' || selectedModel === 'ensemble' || selectedModel === 'best');
+      ['alpha','beta','gamma'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = !enabled;
+      });
+      const at = document.getElementById('btn-autotune');
+      if (at) at.disabled = !enabled || !currentData;
+    }
+    document.querySelectorAll('.model-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedModel = btn.dataset.model;
+        updateSliderEnabled();
       });
     });
 
@@ -329,11 +447,57 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const beta = parseFloat(document.getElementById('beta').value);
       const gamma = parseFloat(document.getElementById('gamma').value);
 
-      const result = holtWinters(currentData.values, alpha, beta, gamma, 12, forecastPeriods);
+      // Compute all candidate models for comparison
+      const vals = currentData.values;
+      const candidates = {};
+      try {
+        candidates.hw = holtWinters(vals, alpha, beta, gamma, 12, forecastPeriods);
+      } catch (e) { console.error(e); candidates.hw = null; }
+      try { candidates.sma = seasonalMA(vals, 12, forecastPeriods); } catch (e) { console.error(e); candidates.sma = null; }
+      try { candidates.linseason = linearSeasonal(vals, 12, forecastPeriods); } catch (e) { console.error(e); candidates.linseason = null; }
+
+      const modelLabels = { hw: 'Holt-Winters', sma: '季節MA', linseason: '線形+季節', ensemble: 'アンサンブル平均', best: '自動ベスト選択' };
+      let result = null;
+      let chosenKey = selectedModel;
+
+      if (selectedModel === 'hw') {
+        result = candidates.hw;
+      } else if (selectedModel === 'sma') {
+        result = candidates.sma;
+      } else if (selectedModel === 'linseason') {
+        result = candidates.linseason;
+      } else if (selectedModel === 'ensemble') {
+        const avail = ['hw','sma','linseason'].map(k => candidates[k]).filter(r => r && r.fitted && r.forecast);
+        if (avail.length > 0) {
+          const fLen = avail[0].fitted.length;
+          const fcLen = avail[0].forecast.length;
+          const fitted = Array(fLen).fill(0);
+          const forecast = Array(fcLen).fill(0);
+          for (const r of avail) {
+            for (let i = 0; i < fLen; i++) fitted[i] += r.fitted[i] / avail.length;
+            for (let i = 0; i < fcLen; i++) forecast[i] += r.forecast[i] / avail.length;
+          }
+          let mape = fitted.slice(12).reduce((s, f, i) =>
+            s + (vals[i+12] !== 0 ? Math.abs((vals[i+12] - f) / vals[i+12]) : 0), 0) / Math.max(1, vals.length - 12) * 100;
+          let mae = fitted.slice(12).reduce((s, f, i) =>
+            s + Math.abs(vals[i+12] - f), 0) / Math.max(1, vals.length - 12);
+          result = { fitted, forecast, mape, mae };
+        }
+      } else if (selectedModel === 'best') {
+        let bestKey = null, bestMape = Infinity;
+        ['hw','sma','linseason'].forEach(k => {
+          const r = candidates[k];
+          if (r && isFinite(r.mape) && r.mape < bestMape) { bestMape = r.mape; bestKey = k; }
+        });
+        if (bestKey) { result = candidates[bestKey]; chosenKey = bestKey; }
+      }
+
       if (!result) {
-        statusEl.textContent = 'エラー: データが不足しています（最低14ヶ月必要）';
+        statusEl.textContent = 'エラー: データが不足しています（最低14ヶ月必要）または選択モデルで計算失敗';
         return;
       }
+      lastSelectedLabel = modelLabels[selectedModel] + (selectedModel === 'best' && chosenKey !== 'best' ? ' (' + modelLabels[chosenKey] + ')' : '');
+      lastModelComparison = { candidates, chosenKey, selectedMode: selectedModel };
 
       const ci = currentData.values.length > 12
         ? confidenceInterval(currentData.values, result.fitted, result.forecast, 1.96)
@@ -475,6 +639,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       });
       table.appendChild(tbody);
 
+      // Build model comparison table
+      try {
+        const compareSec = document.getElementById('model-compare-section');
+        const compareTbl = document.getElementById('model-compare-table');
+        if (compareSec && compareTbl && lastModelComparison) {
+          const rows = [['hw','Holt-Winters'],['sma','季節MA'],['linseason','線形+季節']];
+          let html = '<thead><tr><th>モデル</th><th>MAPE</th><th>MAE</th><th>状態</th></tr></thead><tbody>';
+          rows.forEach(([k, name]) => {
+            const r = lastModelComparison.candidates[k];
+            const isChosen = (lastModelComparison.chosenKey === k) ||
+                             (lastModelComparison.selectedMode === 'ensemble');
+            const mape = (r && isFinite(r.mape)) ? r.mape.toFixed(2) + '%' : '—';
+            const mae = (r && isFinite(r.mae)) ? Math.round(r.mae).toLocaleString() : '—';
+            let status = '';
+            if (lastModelComparison.selectedMode === 'ensemble') {
+              status = '✓ 平均化';
+            } else if (lastModelComparison.chosenKey === k) {
+              status = '✓ 選択中';
+            }
+            html += '<tr><td' + (isChosen ? ' class="gold"' : '') + '>' + name + '</td>' +
+              '<td>' + mape + '</td><td>' + mae + '</td>' +
+              '<td style="color:#c8a96e;">' + status + '</td></tr>';
+          });
+          html += '</tbody>';
+          compareTbl.innerHTML = html;
+          compareSec.style.display = 'block';
+        }
+      } catch (e) { console.error('compare table', e); }
+
       chartSection.style.display = 'block';
       chartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -577,6 +770,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         currentData = null;
         lastForecastResult = null; lastForecastLabels = null; lastCI = null;
         chartSection.style.display = 'none';
+        const cmp = document.getElementById('model-compare-section');
+        if (cmp) cmp.style.display = 'none';
         document.getElementById('preview-section').style.display = 'none';
         statusEl.textContent = '';
         btnRun.disabled = true;

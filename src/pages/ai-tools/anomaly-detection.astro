@@ -107,6 +107,46 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div style="margin-top:0.5rem;color:rgba(255,255,255,0.35);font-size:0.68rem;" id="loss-text"></div>
     </div>
 
+    <!-- Live Stream Section -->
+    <div id="stream-section" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin-bottom:1rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">LIVE STREAM SIMULATION</p>
+        <div style="display:flex;gap:0.5rem;">
+          <button id="btn-stream-start" class="m-btn-ghost">▶ 開始</button>
+          <button id="btn-stream-stop" class="m-btn-ghost" disabled>⏹ 停止</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;">
+          <label class="field-label" style="font-size:0.65rem;">サンプリング間隔</label>
+          <input type="range" id="stream-interval" min="100" max="2000" step="100" value="500" style="width:100%;accent-color:#c8a96e;">
+          <div style="color:#c8a96e;font-size:0.7rem;text-align:right;"><span id="stream-interval-val">500</span> ms</div>
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <label class="field-label" style="font-size:0.65rem;">異常注入確率</label>
+          <input type="range" id="stream-anom-prob" min="0" max="30" step="1" value="5" style="width:100%;accent-color:#c8a96e;">
+          <div style="color:#c8a96e;font-size:0.7rem;text-align:right;"><span id="stream-anom-prob-val">5</span>%</div>
+        </div>
+      </div>
+      <div style="position:relative;height:240px;">
+        <canvas id="stream-chart"></canvas>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem;margin-top:1rem;" id="stream-metrics">
+        <div style="background:#0a0a0c;padding:0.85rem 1rem;border:1px solid rgba(255,255,255,0.05);">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.2em;">受信点</div>
+          <div style="color:#edede8;font-size:1.2rem;font-weight:200;" id="stream-count">0</div>
+        </div>
+        <div style="background:#0a0a0c;padding:0.85rem 1rem;border:1px solid rgba(255,255,255,0.05);">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.2em;">異常検知数</div>
+          <div style="color:#e87070;font-size:1.2rem;font-weight:200;" id="stream-anom-count">0</div>
+        </div>
+        <div style="background:#0a0a0c;padding:0.85rem 1rem;border:1px solid rgba(255,255,255,0.05);">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.2em;">最新ステータス</div>
+          <div id="stream-status" style="color:#6ec86e;font-size:0.9rem;font-weight:300;">待機中</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Results -->
     <div id="result-section" style="display:none;">
 
@@ -247,6 +287,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let lastErrors = null;
     let lastNormalErrors = null;
     let lastTrainSplit = 0;
+
+    // ---- Streaming state ----
+    let streamModel = null;
+    let streamStats = null;
+    let streamThreshold = null;
+    let streamTimer = null;
+    let streamData = [];
+    let streamChart = null;
+    let streamCount = 0;
+    let streamAnomCount = 0;
 
     const statusEl = document.getElementById('data-status');
     const progressSection = document.getElementById('progress-section');
@@ -392,9 +442,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       xAll.dispose();
       reconstructed.dispose();
       errors.dispose();
-      model.dispose();
+      // NOTE: do NOT dispose model — kept for streaming inference
 
-      return { errors: errorsArr, threshold, mean, std, normalErrors, stopped };
+      return { errors: errorsArr, threshold, mean, std, normalErrors, stopped, model };
     }
 
     function recomputeThreshold() {
@@ -426,10 +476,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           if (row[j] > maxs[j]) maxs[j] = row[j];
         }
       }
-      return matrix.map(row => row.map((v, j) => {
+      const normalized = matrix.map(row => row.map((v, j) => {
         const range = maxs[j] - mins[j];
         return range === 0 ? 0 : (v - mins[j]) / range;
       }));
+      return { normalized, mins, maxs };
     }
 
     // ---- Run ----
@@ -449,14 +500,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       // Build matrix from sensor keys
       const allMatrix = currentData.map(row => sensorKeys.map(k => row[k] || 0));
-      const normalizedMatrix = normalize(allMatrix);
+      const normResult = normalize(allMatrix);
+      const normalizedMatrix = normResult.normalized;
       const normalData = normalizedMatrix.slice(0, nTrain);
+      // Save stats for streaming
+      streamStats = { mins: normResult.mins, maxs: normResult.maxs };
 
       try {
-        const { errors, threshold, mean: meanErr, normalErrors, stopped } = await trainAndDetect(normalData, normalizedMatrix, epochs, kappa, useEarlyStop);
+        // Dispose previous stream model if exists
+        if (streamModel) { try { streamModel.dispose(); } catch (_) {} streamModel = null; }
+        const { errors, threshold, mean: meanErr, normalErrors, stopped, model: trainedModel } = await trainAndDetect(normalData, normalizedMatrix, epochs, kappa, useEarlyStop);
         lastErrors = errors;
         lastNormalErrors = normalErrors;
         lastTrainSplit = nTrain;
+        streamModel = trainedModel;
+        streamThreshold = threshold;
+        // Show stream section
+        const streamSec = document.getElementById('stream-section');
+        if (streamSec) streamSec.style.display = 'block';
 
         // Sensor chart
         const labels = currentData.map(d => d.t.toString());
@@ -619,6 +680,180 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       URL.revokeObjectURL(url);
     });
 
+    // ---- Streaming ----
+    const streamIntervalEl = document.getElementById('stream-interval');
+    const streamIntervalVal = document.getElementById('stream-interval-val');
+    const streamAnomProbEl = document.getElementById('stream-anom-prob');
+    const streamAnomProbVal = document.getElementById('stream-anom-prob-val');
+    if (streamIntervalEl) {
+      // Mobile auto-adjust default
+      if (window.innerWidth < 700) {
+        streamIntervalEl.value = 1000;
+        streamIntervalVal.textContent = '1000';
+      }
+      streamIntervalEl.addEventListener('input', () => {
+        streamIntervalVal.textContent = streamIntervalEl.value;
+        // Live update interval if running
+        if (streamTimer) {
+          clearInterval(streamTimer);
+          streamTimer = setInterval(streamStep, parseInt(streamIntervalEl.value, 10));
+        }
+      });
+    }
+    if (streamAnomProbEl) {
+      streamAnomProbEl.addEventListener('input', () => {
+        streamAnomProbVal.textContent = streamAnomProbEl.value;
+      });
+    }
+
+    function generateStreamPoint(t, anomaly) {
+      const point = { t };
+      // Generate based on number of sensors trained on
+      const nSensors = sensorKeys.length;
+      // Use sample-data-style generators for v1..v3, fallback random
+      if (nSensors >= 1) point.v1 = 50 + 5 * Math.sin(t * 0.3) + (anomaly ? 25 : 0) + (Math.random() - 0.5) * 3;
+      if (nSensors >= 2) point.v2 = 30 + 3 * Math.cos(t * 0.2) + (anomaly ? -15 : 0) + (Math.random() - 0.5) * 2;
+      if (nSensors >= 3) point.v3 = 20 + 2 * Math.sin(t * 0.5) + (anomaly ? 20 : 0) + (Math.random() - 0.5) * 1.5;
+      // Extra sensors: random walk based on training mins/maxs
+      for (let i = 3; i < nSensors; i++) {
+        const k = 'v' + (i + 1);
+        const lo = streamStats ? streamStats.mins[i] : 0;
+        const hi = streamStats ? streamStats.maxs[i] : 1;
+        const mid = (lo + hi) / 2;
+        const span = (hi - lo) / 4;
+        point[k] = mid + (Math.random() - 0.5) * span * 2 + (anomaly ? span * 3 : 0);
+      }
+      return point;
+    }
+
+    function ensureStreamChart() {
+      if (streamChart) return;
+      const cv = document.getElementById('stream-chart');
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      streamChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: '異常スコア',
+              data: [],
+              borderColor: '#c8a96e',
+              backgroundColor: 'rgba(200,169,110,0.08)',
+              borderWidth: 1.5,
+              pointRadius: (ctx2) => {
+                const d = streamData[ctx2.dataIndex];
+                return (d && d.detected) ? 5 : 1;
+              },
+              pointBackgroundColor: (ctx2) => {
+                const d = streamData[ctx2.dataIndex];
+                return (d && d.detected) ? '#e87070' : '#c8a96e';
+              },
+              tension: 0.25,
+              fill: true
+            },
+            {
+              label: '閾値',
+              data: [],
+              borderColor: '#e87070',
+              borderWidth: 1,
+              borderDash: [5, 4],
+              pointRadius: 0,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: {
+            legend: { labels: { color: 'rgba(237,237,232,0.6)', font: { size: 10 }, boxWidth: 14 } },
+            tooltip: { backgroundColor: '#111114', titleColor: '#c8a96e', bodyColor: '#edede8' }
+          },
+          scales: {
+            x: { ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 9 }, maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            y: { ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+          }
+        }
+      });
+    }
+
+    async function streamStep() {
+      try {
+        if (!streamModel || !streamStats) return;
+        const anomalyProb = parseInt(streamAnomProbEl.value, 10) / 100;
+        const isAnomaly = Math.random() < anomalyProb;
+        const point = generateStreamPoint(streamCount, isAnomaly);
+
+        const inputArr = sensorKeys.map(k => point[k] != null ? point[k] : 0);
+        const normalized = inputArr.map((v, i) => {
+          const range = streamStats.maxs[i] - streamStats.mins[i];
+          return range === 0 ? 0 : (v - streamStats.mins[i]) / range;
+        });
+
+        const xT = tf.tensor2d([normalized]);
+        const recon = streamModel.predict(xT);
+        const errT = tf.mean(tf.square(tf.sub(xT, recon)), 1);
+        const errArr = await errT.array();
+        const error = errArr[0];
+        xT.dispose(); recon.dispose(); errT.dispose();
+
+        const detected = error > streamThreshold;
+        if (detected) streamAnomCount++;
+        streamCount++;
+
+        streamData.push({ ...point, error, detected });
+        if (streamData.length > 100) streamData.shift();
+
+        // Update chart
+        ensureStreamChart();
+        if (streamChart) {
+          streamChart.data.labels = streamData.map(d => d.t);
+          streamChart.data.datasets[0].data = streamData.map(d => d.error);
+          streamChart.data.datasets[1].data = streamData.map(() => streamThreshold);
+          streamChart.update('none');
+        }
+
+        // Update metrics
+        document.getElementById('stream-count').textContent = streamCount;
+        document.getElementById('stream-anom-count').textContent = streamAnomCount;
+        const statusEl2 = document.getElementById('stream-status');
+        if (statusEl2) {
+          if (detected) {
+            statusEl2.textContent = '⚠ 異常検知';
+            statusEl2.style.color = '#e87070';
+          } else {
+            statusEl2.textContent = '✓ 正常';
+            statusEl2.style.color = '#6ec86e';
+          }
+        }
+      } catch (e) {
+        console.error('stream step', e);
+      }
+    }
+
+    document.getElementById('btn-stream-start')?.addEventListener('click', () => {
+      try {
+        if (!streamModel) {
+          alert('先にAI学習を実行してください');
+          return;
+        }
+        const interval = parseInt(streamIntervalEl.value, 10);
+        if (streamTimer) clearInterval(streamTimer);
+        streamTimer = setInterval(streamStep, interval);
+        document.getElementById('btn-stream-start').disabled = true;
+        document.getElementById('btn-stream-stop').disabled = false;
+      } catch (e) { console.error(e); alert('開始失敗: ' + e.message); }
+    });
+
+    document.getElementById('btn-stream-stop')?.addEventListener('click', () => {
+      if (streamTimer) { clearInterval(streamTimer); streamTimer = null; }
+      document.getElementById('btn-stream-start').disabled = false;
+      document.getElementById('btn-stream-stop').disabled = true;
+    });
+
     // ---- Reset ----
     document.getElementById('btn-reset').addEventListener('click', () => {
       lastErrors = null;
@@ -626,6 +861,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       lastTrainSplit = 0;
       if (sensorChart) { sensorChart.destroy(); sensorChart = null; }
       if (scoreChart) { scoreChart.destroy(); scoreChart = null; }
+      // Stop streaming
+      if (streamTimer) { clearInterval(streamTimer); streamTimer = null; }
+      if (streamChart) { streamChart.destroy(); streamChart = null; }
+      if (streamModel) { try { streamModel.dispose(); } catch (_) {} streamModel = null; }
+      streamStats = null; streamThreshold = null;
+      streamData = []; streamCount = 0; streamAnomCount = 0;
+      const ssec = document.getElementById('stream-section');
+      if (ssec) ssec.style.display = 'none';
+      const sc = document.getElementById('stream-count'); if (sc) sc.textContent = '0';
+      const sac = document.getElementById('stream-anom-count'); if (sac) sac.textContent = '0';
+      const sst = document.getElementById('stream-status'); if (sst) { sst.textContent = '待機中'; sst.style.color = '#6ec86e'; }
+      const sbs = document.getElementById('btn-stream-start'); if (sbs) sbs.disabled = false;
+      const sbsp = document.getElementById('btn-stream-stop'); if (sbsp) sbsp.disabled = true;
       resultSection.style.display = 'none';
       progressSection.style.display = 'none';
       document.getElementById('progress-bar').style.width = '0%';

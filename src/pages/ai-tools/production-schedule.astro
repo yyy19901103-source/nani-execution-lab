@@ -48,7 +48,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <table id="job-table" style="width:100%;border-collapse:collapse;font-size:0.82rem;">
         <thead>
           <tr>
-            <th class="th">ジョブ名</th>
+              <th class="th">ジョブ名</th>
             <th class="th">M1 (h)</th>
             <th class="th">M2 (h)</th>
             <th class="th">M3 (h)</th>
@@ -67,7 +67,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <button id="btn-cancel" class="m-btn-ghost" style="display:none;">⏸ 中断</button>
       <button id="btn-reset" class="m-btn-ghost" style="margin-left:0.5rem;">リセット</button>
       <div id="progress-wrap" style="display:none;flex:1;min-width:200px;">
-        <div style="font-size:0.7rem;color:#c8a96e;margin-bottom:0.3rem;" id="progress-label">計算中… 0 / 200 世代</div>
+        <div style="font-size:0.7rem;color:#c8a96e;margin-bottom:0.3rem;display:flex;justify-content:space-between;gap:0.5rem;">
+          <span id="progress-label">計算中… 0 / 200 世代</span>
+          <span id="worker-badge" style="color:rgba(110,200,151,0.85);font-size:0.65rem;letter-spacing:0.05em;">⚙ Web Worker（別スレッド）で計算中</span>
+        </div>
         <div style="background:#1a1a1d;height:6px;border-radius:3px;overflow:hidden;">
           <div id="progress-bar" style="background:#c8a96e;height:100%;width:0%;transition:width 0.1s;"></div>
         </div>
@@ -524,12 +527,126 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
 
     // ============================================================
+    // Web Worker (Blob URL) — GAをUIスレッドから分離
+    // ============================================================
+    const workerCode = `
+      function evaluate(permutation, jobsData, MACHINE_COUNT) {
+        const n = jobsData.length;
+        const machineTime = new Array(MACHINE_COUNT).fill(0);
+        const jobEnd = new Array(n).fill(0);
+        const finish = jobsData.map(() => new Array(MACHINE_COUNT).fill(0));
+        for (const ji of permutation) {
+          const job = jobsData[ji];
+          let prevEnd = 0;
+          for (let m = 0; m < MACHINE_COUNT; m++) {
+            const start = Math.max(machineTime[m], prevEnd);
+            const end = start + job.times[m];
+            finish[ji][m] = end;
+            machineTime[m] = end;
+            prevEnd = end;
+          }
+          jobEnd[ji] = finish[ji][MACHINE_COUNT - 1];
+        }
+        const makespan = Math.max.apply(null, machineTime);
+        let latePenalty = 0;
+        for (let ji = 0; ji < n; ji++) {
+          const late = Math.max(0, jobEnd[ji] - jobsData[ji].deadline);
+          latePenalty += late * 10;
+        }
+        return { makespan: makespan, latePenalty: latePenalty, fitness: makespan + latePenalty, jobEnd: jobEnd };
+      }
+      function randomPermutation(n) {
+        const arr = Array.from({ length: n }, (_, i) => i);
+        for (let i = n - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+        }
+        return arr;
+      }
+      function crossover(a, b) {
+        const n = a.length;
+        const pts = [Math.floor(Math.random() * n), Math.floor(Math.random() * n)].sort(function(x,y){return x-y;});
+        const p1 = pts[0], p2 = pts[1];
+        const child = new Array(n).fill(-1);
+        for (let i = p1; i <= p2; i++) child[i] = a[i];
+        let ci = (p2 + 1) % n;
+        for (let k = 0; k < n; k++) {
+          const bi = (p2 + 1 + k) % n;
+          if (!child.includes(b[bi])) {
+            child[ci] = b[bi];
+            ci = (ci + 1) % n;
+          }
+        }
+        return child;
+      }
+      function mutate(perm) {
+        const n = perm.length;
+        const i = Math.floor(Math.random() * n);
+        const j = Math.floor(Math.random() * n);
+        const c = perm.slice();
+        const t = c[i]; c[i] = c[j]; c[j] = t;
+        return c;
+      }
+      self.addEventListener('message', function(e) {
+        const params = e.data;
+        const jobsData = params.jobsData;
+        const MACHINE_COUNT = params.MACHINE_COUNT;
+        const POP_SIZE = params.POP_SIZE;
+        const MAX_GEN = params.MAX_GEN;
+        const CROSSOVER_RATE = params.CROSSOVER_RATE;
+        const MUTATION_RATE = params.MUTATION_RATE;
+        const EARLY_STOP = params.EARLY_STOP;
+        const n = jobsData.length;
+        let pop = Array.from({ length: POP_SIZE }, function() { return randomPermutation(n); });
+        let bestFit = Infinity, bestIndiv = null, stagnation = 0;
+        for (let gen = 0; gen < MAX_GEN; gen++) {
+          const evaluated = pop.map(function(ind) {
+            const r = evaluate(ind, jobsData, MACHINE_COUNT);
+            return { ind: ind, makespan: r.makespan, latePenalty: r.latePenalty, fitness: r.fitness, jobEnd: r.jobEnd };
+          });
+          evaluated.sort(function(a,b){return a.fitness - b.fitness;});
+          if (evaluated[0].fitness < bestFit) {
+            bestFit = evaluated[0].fitness;
+            bestIndiv = evaluated[0];
+            stagnation = 0;
+          } else {
+            stagnation++;
+          }
+          if (gen % 5 === 0 || gen === MAX_GEN - 1) {
+            self.postMessage({ type: 'progress', gen: gen + 1, total: MAX_GEN, bestFit: bestFit, stagnation: stagnation });
+          }
+          if (stagnation >= EARLY_STOP) {
+            self.postMessage({ type: 'progress', gen: gen + 1, total: MAX_GEN, bestFit: bestFit, stagnation: stagnation, earlyStop: true });
+            break;
+          }
+          const eliteN = Math.max(2, Math.floor(POP_SIZE * 0.2));
+          const newPop = evaluated.slice(0, eliteN).map(function(e){return e.ind;});
+          while (newPop.length < POP_SIZE) {
+            const pa = evaluated[Math.floor(Math.random() * eliteN)].ind;
+            const pb = evaluated[Math.floor(Math.random() * eliteN)].ind;
+            let child = Math.random() < CROSSOVER_RATE ? crossover(pa, pb) : pa.slice();
+            if (Math.random() < MUTATION_RATE) child = mutate(child);
+            newPop.push(child);
+          }
+          pop = newPop;
+        }
+        self.postMessage({ type: 'done', best: bestIndiv });
+      });
+    `;
+    let workerBlobUrl = null;
+    try {
+      const workerBlob = new Blob([workerCode], { type: 'application/javascript' });
+      workerBlobUrl = URL.createObjectURL(workerBlob);
+    } catch (e) { console.warn('Worker setup failed, falling back:', e); }
+
+    // ============================================================
     // 実行ボタン
     // ============================================================
     // 状態保持（CSVダウンロード/リセット用）
     let lastGanttTasks = null;
     let lastJobsData = null;
     let cancelFlag = false;
+    let currentWorker = null;
 
     document.getElementById('btn-run').addEventListener('click', () => {
       const jobsData = getJobs();
@@ -556,16 +673,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const fifoOrder = jobsData.map((_, i) => i);
       const naiveResult = evaluate(fifoOrder, jobsData);
 
-      // 非同期でGA実行（UIをブロックしないようにチャンクで実行）
-      let gen = 0;
-      const n = jobsData.length;
-      let pop = Array.from({ length: POP_SIZE }, () => randomPermutation(n));
-      let bestFit = Infinity;
-      let bestIndiv = null;
-      let stagnation = 0;
+      // 規模に応じてパラメータをスケール
+      const nJobs = jobsData.length;
+      const dynPopSize = nJobs <= 10 ? 50 : (nJobs <= 20 ? 80 : 100);
+      const dynMaxGen = nJobs <= 10 ? 200 : (nJobs <= 20 ? 300 : 400);
       const STAGNATION_LIMIT = 30;
 
-      function finish(reasonLabel) {
+      function finalize(bestIndiv, reasonLabel) {
         progressBar.style.width = '100%';
         progressLabel.textContent = (reasonLabel || '完了') + ' 最適解を描画中…';
         setTimeout(() => {
@@ -587,13 +701,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }, 80);
       }
 
-      function step() {
-        if (cancelFlag) { finish('中断 —'); return; }
-        if (gen >= MAX_GEN) { finish('完了！'); return; }
-        if (stagnation >= STAGNATION_LIMIT) { finish('早期停止（' + STAGNATION_LIMIT + '世代改善なし） —'); return; }
+      // Worker優先 (Blob URL対応ブラウザ)
+      if (workerBlobUrl && typeof Worker !== 'undefined') {
+        try {
+          const worker = new Worker(workerBlobUrl);
+          currentWorker = worker;
+          worker.onmessage = (e) => {
+            const msg = e.data;
+            if (msg.type === 'progress') {
+              const pct = Math.round(msg.gen / msg.total * 100);
+              progressBar.style.width = pct + '%';
+              progressLabel.textContent = `計算中… ${msg.gen} / ${msg.total} 世代 (最良 fitness: ${msg.bestFit.toFixed(1)}, 停滞: ${msg.stagnation})`;
+            } else if (msg.type === 'done') {
+              try { worker.terminate(); } catch (_) {}
+              currentWorker = null;
+              finalize(msg.best, '完了！');
+            }
+          };
+          worker.onerror = (err) => {
+            console.error('Worker error:', err);
+            try { worker.terminate(); } catch (_) {}
+            currentWorker = null;
+            alert('Workerエラー: ' + (err.message || 'unknown'));
+            btn.disabled = false;
+            cancelBtn.style.display = 'none';
+            progressWrap.style.display = 'none';
+          };
+          worker.postMessage({
+            jobsData, MACHINE_COUNT,
+            POP_SIZE: dynPopSize, MAX_GEN: dynMaxGen,
+            CROSSOVER_RATE, MUTATION_RATE, EARLY_STOP: STAGNATION_LIMIT
+          });
+          return;
+        } catch (e) {
+          console.warn('Worker dispatch failed, falling back to main thread:', e);
+        }
+      }
 
-        // 10世代ずつ処理
-        const chunk = Math.min(10, MAX_GEN - gen);
+      // フォールバック: メインスレッドでチャンク実行
+      let gen = 0;
+      const n = jobsData.length;
+      let pop = Array.from({ length: dynPopSize }, () => randomPermutation(n));
+      let bestFit = Infinity;
+      let bestIndiv = null;
+      let stagnation = 0;
+      const workerBadge = document.getElementById('worker-badge');
+      if (workerBadge) workerBadge.textContent = '⚙ メインスレッド計算';
+
+      function step() {
+        if (cancelFlag) { finalize(bestIndiv, '中断 —'); return; }
+        if (gen >= dynMaxGen) { finalize(bestIndiv, '完了！'); return; }
+        if (stagnation >= STAGNATION_LIMIT) { finalize(bestIndiv, '早期停止（' + STAGNATION_LIMIT + '世代改善なし） —'); return; }
+
+        const chunk = Math.min(10, dynMaxGen - gen);
         for (let c = 0; c < chunk; c++) {
           const evaluated = pop.map(ind => {
             const r = evaluate(ind, jobsData);
@@ -607,9 +767,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           } else {
             stagnation++;
           }
-          const eliteN = Math.max(2, Math.floor(POP_SIZE * 0.2));
+          const eliteN = Math.max(2, Math.floor(dynPopSize * 0.2));
           const newPop = evaluated.slice(0, eliteN).map(e => e.ind);
-          while (newPop.length < POP_SIZE) {
+          while (newPop.length < dynPopSize) {
             const pa = evaluated[Math.floor(Math.random() * eliteN)].ind;
             const pb = evaluated[Math.floor(Math.random() * eliteN)].ind;
             let child = Math.random() < CROSSOVER_RATE ? crossover(pa, pb) : [...pa];
@@ -621,9 +781,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           if (stagnation >= STAGNATION_LIMIT) break;
         }
 
-        const pct = Math.round(gen / MAX_GEN * 100);
+        const pct = Math.round(gen / dynMaxGen * 100);
         progressBar.style.width = pct + '%';
-        progressLabel.textContent = `計算中… ${gen} / ${MAX_GEN} 世代 (最良 fitness: ${bestFit.toFixed(1)}, 停滞: ${stagnation})`;
+        progressLabel.textContent = `計算中… ${gen} / ${dynMaxGen} 世代 (最良 fitness: ${bestFit.toFixed(1)}, 停滞: ${stagnation})`;
         requestAnimationFrame(step);
       }
 
@@ -633,12 +793,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // 中断ボタン
     document.getElementById('btn-cancel').addEventListener('click', () => {
       cancelFlag = true;
+      if (currentWorker) {
+        try { currentWorker.terminate(); } catch (_) {}
+        currentWorker = null;
+        // Worker中断時はUIを片付けて結果は破棄
+        document.getElementById('progress-wrap').style.display = 'none';
+        document.getElementById('btn-run').disabled = false;
+        document.getElementById('btn-cancel').style.display = 'none';
+        const lbl = document.getElementById('progress-label');
+        if (lbl) lbl.textContent = '中断 —';
+      }
     });
 
     // リセットボタン
     document.getElementById('btn-reset').addEventListener('click', () => {
       try {
         cancelFlag = true;
+        if (currentWorker) { try { currentWorker.terminate(); } catch (_) {} currentWorker = null; }
         document.getElementById('result-area').style.display = 'none';
         document.getElementById('progress-wrap').style.display = 'none';
         document.getElementById('btn-cancel').style.display = 'none';
