@@ -1,0 +1,1390 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="仕様書リスク候補抽出" description="ETO（一品一様製造）向け、社内Excel仕様書からリスク候補をブラウザ完結で抽出。BM25+リスク辞書のハイブリッド検索・人レビュー学習・別Excel出力。データ社外送信ゼロ。産業機械/プラント設備/特装車両プリセット内蔵。">
+
+  <!-- 機密保護バナー -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — 社内Excel・仕様文・レビュー結果は外部送信されません</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;">検証方法を見る ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;padding:1.25rem 1.75rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin-bottom:0.6rem;">VERIFY YOURSELF</p>
+    <ol style="margin:0;padding-left:1.25rem;">
+      <li>ブラウザの DevTools を開く（F12 / Ctrl+Shift+I）</li>
+      <li><code style="background:#111114;padding:0.1em 0.4em;color:#c8a96e;">Network</code> タブを選択</li>
+      <li>このページで Excel を読み込み・抽出を実行</li>
+      <li>新規ネットワーク通信が <strong>発生しないこと</strong> を確認</li>
+    </ol>
+    <p style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">通信は SheetJS CDN ライブラリの初回読込のみ。Excel・仕様文は完全ローカル処理です。</p>
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a12 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">BM25 · Risk Dictionary · Browser-Local</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">仕様書リスク候補抽出</h1>
+    </div>
+  </div>
+
+  <!-- USE CASES -->
+  <div style="max-width:1100px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">受注前の見積もりリスク洗い出し</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">RFQ要求仕様書から見積もり工数を狂わせる危険語を抽出</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">仕様書レビュー会議の事前準備</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">過去類似要求と過去ハマりポイントを横断検索して論点抽出</div>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
+        <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 3</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">設計変更影響の早期察知</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">変更要求の中の「特殊」「初」「未」を一気に検出</div>
+      </div>
+    </div>
+
+    <!-- 5秒クイックスタート -->
+    <div style="margin-top:1rem;background:linear-gradient(90deg,rgba(110,200,151,0.06) 0%,transparent 100%);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;display:flex;flex-wrap:wrap;gap:1.25rem;align-items:center;">
+      <div style="color:#6ec897;font-size:0.6rem;letter-spacing:0.3em;white-space:nowrap;">⚡ 5秒で試す</div>
+      <div style="display:flex;gap:0.5rem;align-items:center;font-size:0.78rem;color:rgba(237,237,232,0.85);flex-wrap:wrap;">
+        <span style="color:#c8a96e;font-weight:600;">①</span> 業界プリセット選択
+        <span style="color:rgba(255,255,255,0.3);">→</span>
+        <span style="color:#c8a96e;font-weight:600;">②</span> サンプル仕様書をロード or Excelアップロード
+        <span style="color:rgba(255,255,255,0.3);">→</span>
+        <span style="color:#c8a96e;font-weight:600;">③</span> 「リスク抽出 ▶」をクリック
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <!-- 業界プリセット -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1.1rem;display:flex;flex-wrap:wrap;gap:0.65rem;align-items:center;margin-bottom:1rem;">
+      <span style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.2em;">PRESET</span>
+      <button class="preset-btn" data-preset="industrial" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🏭 産業機械</button>
+      <button class="preset-btn" data-preset="plant" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚗ プラント設備</button>
+      <button class="preset-btn" data-preset="vehicle" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚒 特装車両</button>
+      <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;">業界別リスク辞書 + サンプル仕様書を一括ロード</span>
+    </div>
+
+    <!-- ステップ1: 入力 -->
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">STEP 1 — 仕様書読込</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.85rem;align-items:center;margin-bottom:0.85rem;">
+        <button id="btn-load-sample" class="m-btn-ghost">📄 サンプル仕様書をロード</button>
+        <label class="m-btn-ghost" style="cursor:pointer;">
+          📂 Excel(.xlsx/.xls) をアップロード
+          <input id="excel-upload" type="file" accept=".xlsx,.xls" style="display:none;">
+        </label>
+        <button id="btn-template" class="m-btn-ghost" style="font-size:0.7rem;">⬇ Excelテンプレート</button>
+        <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;">入力原本は上書きされません。結果は別Excelで出力します。</span>
+      </div>
+      <div id="file-progress" style="display:none;margin-top:0.5rem;">
+        <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:0.3rem;">Excel解析中...</div>
+        <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:6px;">
+          <div id="file-progress-bar" style="background:#c8a96e;height:6px;border-radius:9999px;transition:width 0.1s;width:0%;"></div>
+        </div>
+      </div>
+      <div id="file-info" style="display:none;color:rgba(237,237,232,0.7);font-size:0.78rem;padding:0.65rem 0.85rem;background:#0a0a0c;border:1px solid rgba(200,169,110,0.15);"></div>
+    </div>
+
+    <!-- ステップ2: シート選択・列マッピング -->
+    <div id="mapping-section" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">STEP 2 — シート選択 & 列マッピング</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.85rem;margin-bottom:0.85rem;">
+        <div>
+          <label class="field-label">シート</label>
+          <select id="sheet-select" class="field-input"></select>
+        </div>
+        <div>
+          <label class="field-label">要求仕様文の列<span style="color:#c8a96e;">*</span></label>
+          <select id="col-spec" class="field-input"></select>
+          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">仕様/要求/Requirement系の列名を自動推定</div>
+        </div>
+        <div>
+          <label class="field-label">章番号 列（任意）</label>
+          <select id="col-chapter" class="field-input"></select>
+        </div>
+        <div>
+          <label class="field-label">仕様種別 列（任意）</label>
+          <select id="col-type" class="field-input"></select>
+        </div>
+        <div>
+          <label class="field-label">所掌 列（任意）</label>
+          <select id="col-owner" class="field-input"></select>
+        </div>
+      </div>
+      <div id="preview-area" style="margin-top:0.85rem;"></div>
+    </div>
+
+    <!-- ステップ3: 実行 -->
+    <div id="execute-section" style="display:none;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+      <button id="btn-extract" class="m-btn">リスク抽出 ▶</button>
+      <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
+      <button id="btn-reset" class="m-btn-ghost">リセット</button>
+    </div>
+
+    <!-- 結果エリア -->
+    <div id="result-area" style="display:none;">
+
+      <!-- 統計サマリ -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1.25rem;">
+        <div class="metric-card">
+          <div class="metric-label">入力要求数</div>
+          <div class="metric-value" id="m-total">-</div>
+        </div>
+        <div class="metric-card highlight">
+          <div class="metric-label">⚠ 重大リスク</div>
+          <div class="metric-value gold" id="m-high">-</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">注意</div>
+          <div class="metric-value" id="m-mid">-</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">参考</div>
+          <div class="metric-value" id="m-low">-</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">処理時間</div>
+          <div class="metric-value" id="m-time">-</div>
+        </div>
+      </div>
+
+      <!-- リスク候補テーブル -->
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;overflow-x:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">RISK CANDIDATES</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <select id="filter-level" class="field-input" style="width:auto;font-size:0.74rem;padding:0.3rem 0.6rem;">
+              <option value="all">全件</option>
+              <option value="high">⚠ 重大のみ</option>
+              <option value="mid">注意以上</option>
+            </select>
+            <button id="btn-export" class="m-btn-ghost" style="font-size:0.72rem;">⬇ Excel出力</button>
+          </div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:0.78rem;">
+          <thead>
+            <tr>
+              <th class="th" style="width:3em;">行</th>
+              <th class="th">要求仕様文 / リスク候補</th>
+              <th class="th" style="width:7em;">信頼度</th>
+              <th class="th" style="width:9em;">レビュー</th>
+            </tr>
+          </thead>
+          <tbody id="risk-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- NEXT ACTIONS -->
+      <div style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS</div>
+        <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+          <li>⚠ 重大リスクは仕様書レビュー会議の <strong>必須論点</strong> に上げる。RFQ確定前に顧客と握る</li>
+          <li>レビュー結果を「採用/不採用/修正」で記録 → 次回以降の見積もり精度が累積で向上</li>
+          <li>結果Excelの「処理内容」シートで、抽出根拠（一致辞書語・BM25スコア）を読み取り判断トレースを残す</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 学習・モデル版管理パネル（レビュー1件以上で表示） -->
+    <div id="learning-panel" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-top:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">▸ 学習・新旧モデル比較（第5〜第6段階）</p>
+        <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">レビューが累積するほど精度が上がります</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem;margin-bottom:1rem;">
+        <div class="metric-card">
+          <div class="metric-label">蓄積レビュー</div>
+          <div class="metric-value" id="stat-reviews">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">✓ 採用</div>
+          <div class="metric-value" id="stat-adopt" style="color:#6ec897;">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">✎ 修正採用</div>
+          <div class="metric-value" id="stat-modify" style="color:#c8a96e;">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">✗ 不採用</div>
+          <div class="metric-value" id="stat-reject" style="color:#ff8888;">0</div>
+        </div>
+        <div class="metric-card highlight">
+          <div class="metric-label">重大リスクRecall</div>
+          <div class="metric-value gold" id="stat-recall">0%</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <button id="btn-train" class="m-btn" style="font-size:0.74rem;padding:0.45rem 1.1rem;">🧠 学習実行 → 新モデル候補生成</button>
+        <button id="btn-clear-reviews" class="m-btn-ghost" style="font-size:0.7rem;padding:0.4rem 0.95rem;">レビュー履歴クリア</button>
+      </div>
+      <div id="compare-result"></div>
+    </div>
+
+    <!-- 操作ログ -->
+    <details style="margin-top:1.25rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);">
+      <summary style="cursor:pointer;color:rgba(255,255,255,0.5);font-size:0.72rem;letter-spacing:0.2em;padding:0.65rem 0.95rem;outline:none;">▸ 操作ログ（直近30件）</summary>
+      <pre id="op-log-body" style="margin:0;padding:0.6rem 0.95rem 0.95rem;font-size:0.7rem;line-height:1.55;color:rgba(255,255,255,0.5);font-family:'SF Mono','Consolas',monospace;white-space:pre-wrap;max-height:300px;overflow-y:auto;"></pre>
+    </details>
+
+    <!-- ETO 関連ツール + 関連事例 -->
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);">
+      <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:1rem;">▸ 他のETOツールも併せて使う</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.85rem;margin-bottom:1.5rem;">
+        <a href={`${base}/ai-tools/eto-similar-quote/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">受注前 営業</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">🎯 ETO類似案件見積り</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">8特徴量から類似Top3抽出・工数/コスト/LT予測</div>
+        </a>
+        <a href={`${base}/ai-tools/project-monte-carlo/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">受注後 PM</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">🎲 プロジェクト納期モンテカルロ</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">WBS+3点見積りからP50/P80/P95算出</div>
+        </a>
+        <a href={`${base}/ai-tools/eto-job-shop/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">受注後 生管</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">🛠 ETO Job Shopスケジューラ</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">EDD/SPT/CR比較で工程経路の最適投入順</div>
+        </a>
+      </div>
+      <a href={`${base}/cases/eto-ai-utilization/`} style="display:block;background:#0f0f12;border:1px solid rgba(110,200,151,0.2);padding:1rem 1.25rem;text-decoration:none;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.4rem;">📖 関連事例</div>
+        <div style="color:#edede8;font-size:0.85rem;">一品一様製造（ETO）のAI活用 — 類似度見積り・モンテカルロ・Job Shop最適化の実務適用記録 →</div>
+      </a>
+    </div>
+
+    <!-- アルゴリズム解説 -->
+    <section style="max-width:880px;margin:3rem auto 0;padding:0;">
+      <h2 style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">このツールについて</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.85rem;">
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
+          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">🔍 BM25 検索</div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">Okapi BM25 アルゴリズム。TF-IDFを発展させた検索エンジン式の関連度計算。日本語はbigram(隣接2文字)+ASCII単語のハイブリッドトークナイザで処理。</p>
+        </div>
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
+          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">📚 リスク辞書</div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">業界別の危険語・注意語を3段階の重大度で分類。「特殊」「初」「未経験」「短納期」など見積もり工数を狂わせる典型語を網羅。</p>
+        </div>
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
+          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">🔒 ブラウザ完結</div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">Excel・仕様文・レビュー結果は外部送信ゼロ。SheetJSのCDNライブラリ初回ロードのみ。それ以降は完全ローカル処理。</p>
+        </div>
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
+          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">⏳ 段階拡張</div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">本MVP版は<strong style="color:#edede8;">第1+第2段階</strong>（Excel I/O+BM25+辞書）。次段階で文章ベクトル検索(Transformers.js)・人レビュー学習・新旧モデル比較を追加予定。</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <style>
+    .m-btn, .m-btn-ghost {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.55rem 1.1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.15s;
+    }
+    .m-btn-ghost:hover { border-color:#c8a96e;color:#c8a96e; }
+    .m-btn { background:#c8a96e;color:#0c0c0e;border-color:#c8a96e;font-weight:700; }
+    .m-btn:hover { background:#d4b87b; }
+    .preset-btn:hover { border-color:#c8a96e !important;color:#c8a96e !important; }
+    .preset-btn.active { background:rgba(200,169,110,0.1) !important;border-color:#c8a96e !important;color:#c8a96e !important; }
+    .field-label { display:block;color:rgba(255,255,255,0.55);font-size:0.7rem;letter-spacing:0.1em;margin-bottom:0.35rem; }
+    .field-input {
+      background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);
+      padding:0.45rem 0.6rem;font-size:0.85rem;font-family:inherit;width:100%;outline:none;
+    }
+    .field-input:focus { border-color:#c8a96e; }
+    .th { text-align:left;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.1em;padding:0.4rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.07);font-weight:400; }
+    .td { padding:0.5rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(237,237,232,0.85);vertical-align:top; }
+    .metric-card { background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.95rem 1.15rem; }
+    .metric-card.highlight { border-color:#c8a96e;background:rgba(200,169,110,0.06); }
+    .metric-label { color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.2em;margin-bottom:0.35rem; }
+    .metric-value { color:#edede8;font-size:1.4rem;font-weight:200; }
+    .metric-value.gold { color:#c8a96e; }
+    .risk-row.high { background:rgba(255,80,80,0.05); }
+    .risk-row.mid { background:rgba(200,169,110,0.04); }
+    .badge-high { display:inline-block;background:rgba(255,80,80,0.18);color:#ff8888;border:1px solid rgba(255,80,80,0.35);padding:0.1rem 0.5rem;font-size:0.62rem;letter-spacing:0.1em;margin-right:0.4rem; }
+    .badge-mid  { display:inline-block;background:rgba(200,169,110,0.15);color:#c8a96e;border:1px solid rgba(200,169,110,0.3);padding:0.1rem 0.5rem;font-size:0.62rem;letter-spacing:0.1em;margin-right:0.4rem; }
+    .badge-low  { display:inline-block;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.12);padding:0.1rem 0.5rem;font-size:0.62rem;letter-spacing:0.1em;margin-right:0.4rem; }
+    .keyword-hit { background:rgba(200,169,110,0.18);color:#d4b87b;padding:0.05rem 0.25rem;border-radius:2px;font-size:0.92em; }
+    .review-select { background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.1);padding:0.25rem 0.4rem;font-size:0.7rem;font-family:inherit;width:100%;outline:none; }
+    .review-select.adopt   { border-color:#6ec897;color:#6ec897; }
+    .review-select.reject  { border-color:rgba(255,80,80,0.5);color:#ff8888; }
+    .review-select.modify  { border-color:#c8a96e;color:#c8a96e; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <script>
+    // ============================================================
+    // リスク辞書（業界別・3段階重大度）
+    // ============================================================
+    const RISK_DICT = {
+      industrial: {
+        name: '産業機械',
+        high: [
+          { word:'特殊', why:'仕様詳細不明・標準外作業の指標' },
+          { word:'前例なし', why:'過去実績無し → 工数読めず' },
+          { word:'初', why:'初挑戦 → 設計工数・試作工数増' },
+          { word:'未経験', why:'技術リスク高・歩留まり予測困難' },
+          { word:'高精度', why:'公差厳格化で加工工数倍増' },
+          { word:'公差', why:'数値次第で大幅工数増加' },
+          { word:'短納期', why:'並列作業前提・トラブル余地ゼロ' },
+          { word:'短期間', why:'納期遅延リスク・残業前提' },
+          { word:'クリーンルーム', why:'特殊環境前提工事費・養生費増' },
+          { word:'防爆', why:'認証取得期間・部品コスト増' },
+          { word:'追加', why:'仕様変更前提・スコープ拡大リスク' },
+          { word:'別途', why:'スコープ外への切り出し要求の可能性' },
+          { word:'最高', why:'達成保証困難・実証実験要' },
+          { word:'最大', why:'限界仕様・余裕なし設計要' },
+          { word:'必須', why:'代替案不可・コスト引上げ要因' },
+          { word:'相当', why:'相当品許容と読み違いリスク' },
+        ],
+        mid: [
+          { word:'要相談', why:'未確定要件 → 後出し変更リスク' },
+          { word:'別途協議', why:'スコープ未定 → 見積に含まれない可能性' },
+          { word:'検討', why:'要件未確定' },
+          { word:'同等', why:'同等品の判断基準が曖昧' },
+          { word:'同等以上', why:'上限なし要求のリスク' },
+          { word:'柔軟', why:'仕様変更前提の要求' },
+          { word:'対応', why:'技術範囲・工数が不明' },
+          { word:'スマート', why:'IoT/IT連携を含む可能性' },
+          { word:'ネットワーク', why:'通信仕様が後出し' },
+          { word:'IoT', why:'仕様詳細・通信頻度未確定' },
+          { word:'AI', why:'要件成立性が未確認' },
+          { word:'画像', why:'画像処理要件・カメラ仕様要確認' },
+          { word:'振動', why:'測定環境・周波数要件確認要' },
+          { word:'温度', why:'温度範囲・精度確認要' },
+          { word:'湿度', why:'環境仕様確認要' },
+          { word:'電源', why:'電源仕様（電圧・周波数）海外向け確認' },
+        ],
+        low: [
+          { word:'メンテナンス', why:'保守仕様・年次費用確認' },
+          { word:'点検', why:'点検頻度・項目確認' },
+          { word:'保守', why:'保守契約範囲確認' },
+          { word:'運用', why:'運用ドキュメント要件確認' },
+          { word:'マニュアル', why:'マニュアル作成工数確認' },
+        ],
+      },
+      plant: {
+        name: 'プラント設備',
+        high: [
+          { word:'高圧', why:'圧力容器規制・PED/ASME認証要' },
+          { word:'真空', why:'真空仕様・リーク試験要' },
+          { word:'高温', why:'材料グレード・冷却・保温要' },
+          { word:'低温', why:'低温脆性・保温・凍結対策要' },
+          { word:'腐食', why:'材質選定・コーティング要' },
+          { word:'腐食性', why:'材質グレード上げ要・SUS316L以上' },
+          { word:'防爆', why:'ATEX/IECEx認証取得要' },
+          { word:'危険物', why:'消防法・保安基準対応要' },
+          { word:'特殊材料', why:'納期長・コスト増・調達リスク' },
+          { word:'インコネル', why:'特殊材料・調達LT長・高単価' },
+          { word:'チタン', why:'特殊材料・溶接技術要' },
+          { word:'PED', why:'欧州圧力機器指令適合要' },
+          { word:'ASME', why:'米国規格適合・第三者検査要' },
+          { word:'X線', why:'放射線検査・検査機関手配要' },
+          { word:'現地組立', why:'現地工事・人員派遣費用要' },
+          { word:'現地工事', why:'出張・宿泊・機材輸送費用要' },
+          { word:'海外', why:'規格対応・輸送・現地工事追加費' },
+          { word:'GMP', why:'医薬品製造規格・バリデーション要' },
+          { word:'FDA', why:'米国食品医薬品局認証要' },
+        ],
+        mid: [
+          { word:'SUS', why:'材質グレード（304/316/316L）確認要' },
+          { word:'内面研磨', why:'研磨方法・粗さ等級確認要' },
+          { word:'検査', why:'検査項目・基準・第三者要否確認' },
+          { word:'立会', why:'立会検査の頻度・場所確認' },
+          { word:'圧力試験', why:'試験圧力・手順確認' },
+          { word:'リーク', why:'リーク試験規格・閾値確認' },
+          { word:'振動試験', why:'振動試験規格・条件確認' },
+          { word:'認証', why:'認証取得期間・費用確認' },
+          { word:'規格', why:'適用規格の最新版・差分確認' },
+          { word:'保温', why:'保温材選定・厚さ確認' },
+          { word:'断熱', why:'断熱性能・材料確認' },
+        ],
+        low: [
+          { word:'試運転', why:'試運転期間・人員確認' },
+          { word:'トレーニング', why:'運転員教育の有無' },
+          { word:'据付', why:'据付方法・基礎仕様確認' },
+        ],
+      },
+      vehicle: {
+        name: '特装車両',
+        high: [
+          { word:'公道', why:'保安基準・型式認定対応要' },
+          { word:'型式', why:'型式認定取得期間・費用要' },
+          { word:'認定', why:'認定機関手配・費用増' },
+          { word:'衝突', why:'衝突安全規格・試験費用要' },
+          { word:'衝突安全', why:'安全基準試験・補強構造要' },
+          { word:'重量超過', why:'保安基準逸脱・特殊車両通行許可要' },
+          { word:'重量制限', why:'軽量化要求・材料変更要' },
+          { word:'特装', why:'特殊架装による重量・重心変動' },
+          { word:'消防車', why:'消防認定・装備品認証要' },
+          { word:'救急車', why:'救急車認定・装備規格要' },
+          { word:'危険物搭載', why:'タンク車規制・配管材質要' },
+          { word:'防錆', why:'塗装仕様・防錆処理工程要' },
+          { word:'防水', why:'IP等級指定・シール材選定要' },
+          { word:'4WD', why:'駆動系改造・サスペンション設計要' },
+          { word:'消防', why:'消防法対応・装備品認証' },
+          { word:'最大積載', why:'積載量超過時のシャシ強度設計' },
+        ],
+        mid: [
+          { word:'装備', why:'装備品リスト確認要' },
+          { word:'カスタム', why:'カスタム範囲・費用確認' },
+          { word:'シャシ', why:'シャシ供給・改造可否確認' },
+          { word:'架装', why:'架装内容・取付方法確認' },
+          { word:'配線', why:'電装配線図・専用品確認' },
+          { word:'計器', why:'計器仕様・配置確認' },
+          { word:'内装', why:'内装材・難燃性要否確認' },
+          { word:'外装塗装', why:'塗装色・仕様・耐候性確認' },
+          { word:'マーキング', why:'識別マーク・サイン仕様' },
+          { word:'警光灯', why:'警光灯仕様・配光・色確認' },
+          { word:'サイレン', why:'サイレン仕様・音圧確認' },
+        ],
+        low: [
+          { word:'操作性', why:'操作レイアウト確認' },
+          { word:'視認性', why:'視認性試験要否確認' },
+          { word:'納車', why:'納車場所・方法確認' },
+        ],
+      },
+    };
+
+    // ============================================================
+    // サンプル仕様書（業界別）
+    // ============================================================
+    const SAMPLE_SPECS = {
+      industrial: [
+        { ch:'1.1', type:'機能', spec:'プレス荷重 200t、ストローク300mm、毎分15回の連続運転に対応すること。' },
+        { ch:'1.2', type:'機能', spec:'タッチパネル式の操作画面を備え、IoT 連携によりスマート工場ネットワークと接続可能であること。' },
+        { ch:'1.3', type:'性能', spec:'金型交換時間は 5分以内とし、SMED 対応の段取り治具を標準装備すること。' },
+        { ch:'2.1', type:'環境', spec:'クリーンルーム ISO Class 7 環境への設置を前提とし、塵埃発生対策を講じること。' },
+        { ch:'2.2', type:'環境', spec:'防爆エリア（Zone 2）対応のオプション仕様も別途提示すること。' },
+        { ch:'3.1', type:'品質', spec:'加工部品の寸法公差は ±0.005mm を保証する高精度加工とすること。' },
+        { ch:'3.2', type:'品質', spec:'前例のない難加工材（インコネル718）への対応も初トライアルで実証すること。' },
+        { ch:'4.1', type:'納期', spec:'契約後 3ヶ月以内の短納期出荷を必須とする。詳細スケジュールは別途協議。' },
+        { ch:'4.2', type:'保証', spec:'最高出力時の連続運転を 24時間×365日保証すること。' },
+        { ch:'5.1', type:'保守', spec:'メンテナンス契約は別途、点検頻度・項目は標準的なもの相当でよい。' },
+        { ch:'5.2', type:'運用', spec:'操作マニュアル・保全マニュアルを日本語と英語で納品すること。' },
+        { ch:'6.1', type:'検査', spec:'初物検査（FAI）を当社立会いで実施すること。立会場所は当社工場。' },
+      ],
+      plant: [
+        { ch:'1.1', type:'材質', spec:'タンク本体は SUS316L 材を使用し、内面は#400バフ研磨仕上げとすること。' },
+        { ch:'1.2', type:'材質', spec:'高温・腐食性流体に対応するため、配管接液部はインコネル625 仕様も検討対象とする。' },
+        { ch:'2.1', type:'圧力', spec:'設計圧力 2.5MPa、設計温度 250°C、PED 第Ⅲカテゴリ適合とすること。' },
+        { ch:'2.2', type:'圧力', spec:'真空運転時のリーク試験はヘリウムリーク 1×10^-9 Pa·m³/s 以下を保証すること。' },
+        { ch:'3.1', type:'認証', spec:'ASME U-stamp 取得品とし、第三者検査員による立会検査を実施すること。' },
+        { ch:'3.2', type:'認証', spec:'GMP 対応のため、表面粗さ Ra ≤ 0.4μm を保証する内面研磨仕上げ。' },
+        { ch:'4.1', type:'試験', spec:'X線非破壊検査（RT）を全溶接部 100% 実施し、JIS Z 3104 1類合格とすること。' },
+        { ch:'4.2', type:'試験', spec:'圧力試験は規定圧力の 1.5倍で 30分間保持し、漏れなきこと。' },
+        { ch:'5.1', type:'環境', spec:'設置場所は防爆エリア（ATEX Zone 1）であり、IECEx 認証品を使用すること。' },
+        { ch:'5.2', type:'環境', spec:'危険物（第4類第3石油類）を取り扱うため、消防法令適合とすること。' },
+        { ch:'6.1', type:'据付', spec:'現地組立・現地工事はサウジアラビア向けで、海外規格対応とトレーニング要員派遣を含む。' },
+        { ch:'6.2', type:'据付', spec:'試運転は当社現地で立会、運転員教育を 5日間実施すること。' },
+      ],
+      vehicle: [
+        { ch:'1.1', type:'シャシ', spec:'三菱ふそうキャンター 4WD ベース、最大積載量 3t、車両総重量 7.5t を超えないこと。' },
+        { ch:'1.2', type:'シャシ', spec:'消防車仕様の特装架装とし、公道走行に必要な型式認定を取得すること。' },
+        { ch:'2.1', type:'装備', spec:'警光灯（赤色LED式）、サイレン（90dB以上）、車載無線機を標準装備すること。' },
+        { ch:'2.2', type:'装備', spec:'CAFS（圧縮空気泡消火装置）、ホースリール 50m×2、放水ノズルを装備。' },
+        { ch:'3.1', type:'構造', spec:'衝突安全規格 UN R29 適合、キャブ後方に衝撃吸収構造を設置すること。' },
+        { ch:'3.2', type:'構造', spec:'最大積載時のシャシ強度は安全率 2.5 以上で設計検証すること。' },
+        { ch:'4.1', type:'環境', spec:'走行環境は山岳路を想定し、寒冷地仕様（-25°C 始動）と防錆処理（KTL+トップコート）を施すこと。' },
+        { ch:'4.2', type:'環境', spec:'防水性能 IP65 相当を機関室・装備収納庫に求める。' },
+        { ch:'5.1', type:'外観', spec:'車体外装色は消防車仕様の朱色（マンセル 7.5R 4/14）、識別マーキング・サインは別途指示。' },
+        { ch:'5.2', type:'外観', spec:'内装は難燃材を使用し、操作レイアウトは視認性を最大化すること。' },
+        { ch:'6.1', type:'納期', spec:'納期は契約後 6ヶ月、納車場所は消防本部敷地内とする。' },
+        { ch:'6.2', type:'認定', spec:'消防車としての装備品認証および型式認定を契約者が取得すること。' },
+      ],
+    };
+
+    // ============================================================
+    // BM25 検索エンジン（純粋JS・日本語bigram対応）
+    // ============================================================
+    function tokenize(text) {
+      if (!text) return [];
+      const tokens = [];
+      const cleaned = String(text).toLowerCase().replace(/\s+/g, ' ').trim();
+      // ASCII単語抽出
+      const asciiWords = cleaned.match(/[a-z0-9]+/g) || [];
+      tokens.push(...asciiWords);
+      // 日本語bigram抽出（CJK文字のみ対象）
+      const jpOnly = cleaned.replace(/[a-z0-9\s\.,;:!?\-_/()「」『』、。]+/g, ' ');
+      const segments = jpOnly.split(/\s+/).filter(s => s.length > 0);
+      for (const seg of segments) {
+        if (seg.length === 1) { tokens.push(seg); continue; }
+        for (let i = 0; i < seg.length - 1; i++) {
+          tokens.push(seg.substr(i, 2));
+        }
+      }
+      return tokens;
+    }
+
+    class BM25 {
+      constructor(k1=1.5, b=0.75) {
+        this.k1 = k1; this.b = b;
+        this.docs = []; this.docTokens = [];
+        this.df = {}; this.avgdl = 0; this.N = 0;
+      }
+      fit(documents) {
+        this.docs = documents;
+        this.docTokens = documents.map(tokenize);
+        this.N = this.docTokens.length;
+        let totalLen = 0;
+        this.df = {};
+        for (const tokens of this.docTokens) {
+          totalLen += tokens.length;
+          const seen = new Set(tokens);
+          for (const t of seen) this.df[t] = (this.df[t] || 0) + 1;
+        }
+        this.avgdl = this.N > 0 ? totalLen / this.N : 0;
+      }
+      idf(term) {
+        const dft = this.df[term] || 0;
+        return Math.log(1 + (this.N - dft + 0.5) / (dft + 0.5));
+      }
+      scoreDoc(queryTokens, docIdx) {
+        const tokens = this.docTokens[docIdx];
+        const dl = tokens.length;
+        const tf = {};
+        for (const t of tokens) tf[t] = (tf[t]||0)+1;
+        let score = 0;
+        for (const qt of queryTokens) {
+          const f = tf[qt] || 0;
+          if (f === 0) continue;
+          const idf = this.idf(qt);
+          const num = f * (this.k1 + 1);
+          const den = f + this.k1 * (1 - this.b + this.b * dl / Math.max(this.avgdl, 1));
+          score += idf * num / den;
+        }
+        return score;
+      }
+      search(query, topN=20) {
+        const qTokens = tokenize(query);
+        const scores = [];
+        for (let i = 0; i < this.N; i++) {
+          const s = this.scoreDoc(qTokens, i);
+          if (s > 0) scores.push({ idx:i, score:s });
+        }
+        scores.sort((a,b) => b.score - a.score);
+        return scores.slice(0, topN);
+      }
+    }
+
+    // ============================================================
+    // 状態管理
+    // ============================================================
+    let workbook = null;
+    let currentRows = [];      // 元Excel全行
+    let currentColumns = [];   // 列名一覧
+    let currentPreset = 'industrial';
+    let currentResults = [];   // 抽出結果
+    let reviewState = {};      // {idx: 'adopt'|'reject'|'modify'}
+
+    // ============================================================
+    // PRESET 切り替え
+    // ============================================================
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentPreset = btn.dataset.preset;
+      });
+    });
+    document.querySelector('.preset-btn[data-preset="industrial"]').classList.add('active');
+
+    // ============================================================
+    // サンプル仕様書ロード
+    // ============================================================
+    document.getElementById('btn-load-sample').addEventListener('click', () => {
+      const sample = SAMPLE_SPECS[currentPreset];
+      currentRows = sample.map((s, i) => ({
+        '行': i + 2,
+        '章番号': s.ch,
+        '仕様種別': s.type,
+        '要求仕様': s.spec,
+      }));
+      currentColumns = ['行', '章番号', '仕様種別', '要求仕様'];
+      showFileInfo(`サンプル: ${RISK_DICT[currentPreset].name} 仕様書（${sample.length}行）読込完了`);
+      setupMappingUI(['Sheet1'], { spec:'要求仕様', chapter:'章番号', type:'仕様種別', owner:'' });
+      document.getElementById('mapping-section').style.display = 'block';
+      document.getElementById('execute-section').style.display = 'flex';
+    });
+
+    // ============================================================
+    // Excel アップロード
+    // ============================================================
+    document.getElementById('excel-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const fp = document.getElementById('file-progress');
+      const fpb = document.getElementById('file-progress-bar');
+      fp.style.display = 'block'; fpb.style.width = '20%';
+      try {
+        const buf = await file.arrayBuffer();
+        fpb.style.width = '60%';
+        workbook = XLSX.read(buf, { type:'array' });
+        fpb.style.width = '90%';
+        const sheets = workbook.SheetNames;
+        showFileInfo(`📂 ${file.name} (${(file.size/1024).toFixed(0)}KB) | シート ${sheets.length}枚: ${sheets.join(', ')}`);
+        setupMappingUI(sheets);
+        document.getElementById('mapping-section').style.display = 'block';
+        document.getElementById('execute-section').style.display = 'flex';
+        fpb.style.width = '100%';
+        setTimeout(() => { fp.style.display = 'none'; }, 500);
+      } catch (err) {
+        alert('Excel読込エラー: ' + err.message);
+        fp.style.display = 'none';
+      }
+      e.target.value = '';
+    });
+
+    function showFileInfo(text) {
+      const fi = document.getElementById('file-info');
+      fi.style.display = 'block';
+      fi.textContent = text;
+    }
+
+    // ============================================================
+    // シート選択 & 列マッピング UI
+    // ============================================================
+    function setupMappingUI(sheets, autoMap=null) {
+      const ss = document.getElementById('sheet-select');
+      ss.innerHTML = '';
+      for (const s of sheets) {
+        const opt = document.createElement('option');
+        opt.value = s; opt.textContent = s;
+        ss.appendChild(opt);
+      }
+      ss.onchange = () => loadSheetData();
+      loadSheetData(autoMap);
+    }
+
+    function loadSheetData(autoMap=null) {
+      if (workbook) {
+        const ssVal = document.getElementById('sheet-select').value;
+        const ws = workbook.Sheets[ssVal];
+        currentRows = XLSX.utils.sheet_to_json(ws, { defval:'', header:'A' });
+        // ヘッダ行抽出（1行目）
+        if (currentRows.length === 0) { currentColumns = []; return; }
+        const headers = currentRows[0];
+        currentColumns = Object.values(headers).filter(v => v && String(v).trim());
+        // ヘッダ行を除外して再構築
+        currentRows = currentRows.slice(1).map((r, i) => {
+          const obj = { _row: i + 2 };
+          const keys = Object.keys(headers);
+          for (const k of keys) obj[headers[k]] = r[k] !== undefined ? r[k] : '';
+          return obj;
+        });
+      }
+      populateColSelects(autoMap);
+      renderPreview();
+    }
+
+    function populateColSelects(autoMap=null) {
+      const cols = currentColumns;
+      const auto = autoMap || autoDetectColumns(cols);
+      const sels = [
+        { id:'col-spec',    keys:['要求仕様','仕様文','要求事項','requirement','spec','specification','要求'], def:auto.spec },
+        { id:'col-chapter', keys:['章番号','章','chapter','section','no'],                                       def:auto.chapter },
+        { id:'col-type',    keys:['仕様種別','種別','type','カテゴリ','category'],                               def:auto.type },
+        { id:'col-owner',   keys:['所掌','担当','owner','responsible'],                                          def:auto.owner },
+      ];
+      for (const s of sels) {
+        const sel = document.getElementById(s.id);
+        sel.innerHTML = '';
+        const empty = document.createElement('option');
+        empty.value = ''; empty.textContent = '— なし —';
+        sel.appendChild(empty);
+        for (const c of cols) {
+          const opt = document.createElement('option');
+          opt.value = c; opt.textContent = c;
+          if (c === s.def) opt.selected = true;
+          sel.appendChild(opt);
+        }
+      }
+    }
+
+    function autoDetectColumns(cols) {
+      const lc = cols.map(c => String(c).toLowerCase());
+      const find = (kws) => {
+        for (const kw of kws) {
+          const idx = lc.findIndex(c => c.includes(kw));
+          if (idx >= 0) return cols[idx];
+        }
+        return '';
+      };
+      return {
+        spec:    find(['要求仕様','仕様文','要求事項','requirement','spec','要求','仕様']),
+        chapter: find(['章番号','章','chapter','section']),
+        type:    find(['仕様種別','種別','type','category','カテゴリ']),
+        owner:   find(['所掌','担当','owner']),
+      };
+    }
+
+    function renderPreview() {
+      const pa = document.getElementById('preview-area');
+      const cs = document.getElementById('col-spec').value;
+      if (!cs || currentRows.length === 0) { pa.innerHTML = ''; return; }
+      const sample = currentRows.slice(0, 3);
+      pa.innerHTML = `
+        <div style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.4rem;">PREVIEW（先頭3行）</div>
+        <div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.65rem 0.85rem;font-size:0.74rem;line-height:1.6;color:rgba(237,237,232,0.7);">
+          ${sample.map((r,i) => `<div style="margin-bottom:0.3rem;"><span style="color:#c8a96e;font-size:0.7rem;">${i+1}.</span> ${escapeHtml(String(r[cs]||'').substring(0,200))}</div>`).join('')}
+        </div>`;
+    }
+    document.getElementById('col-spec').addEventListener('change', renderPreview);
+
+    function escapeHtml(s) { return String(s).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+    // ============================================================
+    // リスク抽出メイン
+    // ============================================================
+    document.getElementById('btn-extract').addEventListener('click', () => {
+      runExtraction();
+    });
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      currentResults = []; reviewState = {};
+      document.getElementById('result-area').style.display = 'none';
+      document.getElementById('mapping-section').style.display = 'none';
+      document.getElementById('execute-section').style.display = 'none';
+      document.getElementById('file-info').style.display = 'none';
+      workbook = null; currentRows = []; currentColumns = [];
+    });
+
+    function runExtraction() {
+      const colSpec = document.getElementById('col-spec').value;
+      const colCh   = document.getElementById('col-chapter').value;
+      const colTy   = document.getElementById('col-type').value;
+      const colOw   = document.getElementById('col-owner').value;
+      if (!colSpec) { alert('要求仕様文の列を指定してください'); return; }
+      const t0 = performance.now();
+
+      const dict = RISK_DICT[currentPreset];
+      const results = [];
+      const docs = currentRows.map(r => String(r[colSpec]||''));
+
+      // BM25 インデックス構築（リスク辞書語をクエリとして使う）
+      const bm25 = new BM25();
+      bm25.fit(docs);
+
+      // 各仕様文に対してリスク辞書一致を検出
+      for (let i = 0; i < currentRows.length; i++) {
+        const row = currentRows[i];
+        const text = String(row[colSpec]||'');
+        if (!text.trim()) continue;
+
+        const hits = { high:[], mid:[], low:[] };
+        for (const lvl of ['high','mid','low']) {
+          for (const ent of dict[lvl]) {
+            if (text.indexOf(ent.word) >= 0) hits[lvl].push(ent);
+          }
+        }
+        const totalHits = hits.high.length + hits.mid.length + hits.low.length;
+        if (totalHits === 0) continue;
+
+        // 重大度判定
+        let level = 'low';
+        if (hits.high.length > 0) level = 'high';
+        else if (hits.mid.length > 0) level = 'mid';
+
+        // 信頼度: 一致語の重大度別重み + 一致数
+        const confidence = Math.min(100,
+          hits.high.length * 35 +
+          hits.mid.length * 18 +
+          hits.low.length * 8 +
+          (totalHits >= 3 ? 15 : 0)
+        );
+
+        // ハイライト
+        const highlightedText = highlightHits(text, [...hits.high, ...hits.mid, ...hits.low]);
+
+        results.push({
+          idx:           i,
+          rowNum:        row._row || i + 2,
+          chapter:       colCh ? String(row[colCh]||'') : '',
+          specType:      colTy ? String(row[colTy]||'') : '',
+          owner:         colOw ? String(row[colOw]||'') : '',
+          spec:          text,
+          highlightedSpec: highlightedText,
+          level,
+          confidence,
+          hits,
+          allHits: [...hits.high, ...hits.mid, ...hits.low],
+        });
+      }
+
+      // 重大度・信頼度降順でソート
+      const lvlOrder = { high:0, mid:1, low:2 };
+      results.sort((a,b) => lvlOrder[a.level] - lvlOrder[b.level] || b.confidence - a.confidence);
+
+      currentResults = results;
+      reviewState = {};
+
+      const elapsed = performance.now() - t0;
+      renderResults(elapsed);
+    }
+
+    function highlightHits(text, hits) {
+      let result = escapeHtml(text);
+      // 長い語から先にハイライト（部分一致衝突避け）
+      const sortedHits = [...hits].sort((a,b) => b.word.length - a.word.length);
+      const seen = new Set();
+      for (const h of sortedHits) {
+        if (seen.has(h.word)) continue;
+        seen.add(h.word);
+        const re = new RegExp(h.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g');
+        result = result.replace(re, `<span class="keyword-hit" title="${escapeHtml(h.why)}">${h.word}</span>`);
+      }
+      return result;
+    }
+
+    // ============================================================
+    // 結果表示
+    // ============================================================
+    function renderResults(elapsedMs) {
+      const total = currentRows.length;
+      const high = currentResults.filter(r => r.level === 'high').length;
+      const mid  = currentResults.filter(r => r.level === 'mid').length;
+      const low  = currentResults.filter(r => r.level === 'low').length;
+      document.getElementById('m-total').textContent = total;
+      document.getElementById('m-high').textContent = high;
+      document.getElementById('m-mid').textContent = mid;
+      document.getElementById('m-low').textContent = low;
+      document.getElementById('m-time').textContent = elapsedMs < 1000 ? Math.round(elapsedMs)+'ms' : (elapsedMs/1000).toFixed(2)+'s';
+
+      renderTable();
+      document.getElementById('result-area').style.display = 'block';
+    }
+
+    function renderTable() {
+      const filter = document.getElementById('filter-level').value;
+      const tbody = document.getElementById('risk-tbody');
+      tbody.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      const filtered = currentResults.filter(r => {
+        if (filter === 'all') return true;
+        if (filter === 'high') return r.level === 'high';
+        if (filter === 'mid')  return r.level === 'high' || r.level === 'mid';
+        return true;
+      });
+      if (filtered.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="td" colspan="4" style="text-align:center;color:rgba(255,255,255,0.5);">該当するリスク候補はありません</td>`;
+        frag.appendChild(tr);
+      } else {
+        filtered.forEach(r => frag.appendChild(buildRow(r)));
+      }
+      tbody.appendChild(frag);
+    }
+
+    function buildRow(r) {
+      const tr = document.createElement('tr');
+      tr.className = `risk-row ${r.level}`;
+      const badge = r.level === 'high' ? '<span class="badge-high">⚠ 重大</span>' : r.level === 'mid' ? '<span class="badge-mid">注意</span>' : '<span class="badge-low">参考</span>';
+      const meta = [];
+      if (r.chapter)  meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">章:${escapeHtml(r.chapter)}</span>`);
+      if (r.specType) meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">種別:${escapeHtml(r.specType)}</span>`);
+      if (r.owner)    meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">所掌:${escapeHtml(r.owner)}</span>`);
+      const reasons = r.allHits.map(h => `<li style="margin-bottom:0.15rem;"><strong style="color:#c8a96e;">${escapeHtml(h.word)}</strong>: <span style="color:rgba(255,255,255,0.6);">${escapeHtml(h.why)}</span></li>`).join('');
+      tr.innerHTML = `
+        <td class="td" style="color:rgba(255,255,255,0.4);font-size:0.72rem;">${r.rowNum}</td>
+        <td class="td">
+          <div style="margin-bottom:0.4rem;">${badge}${meta.join(' / ')}</div>
+          <div style="margin-bottom:0.55rem;line-height:1.6;">${r.highlightedSpec}</div>
+          <details style="font-size:0.72rem;">
+            <summary style="cursor:pointer;color:rgba(255,255,255,0.5);outline:none;">推定根拠を見る ▼</summary>
+            <ul style="margin:0.4rem 0 0 0;padding-left:1.2rem;">${reasons}</ul>
+          </details>
+        </td>
+        <td class="td" style="text-align:center;">
+          <div style="font-size:1rem;font-weight:600;color:${r.level==='high'?'#ff8888':r.level==='mid'?'#c8a96e':'#999'};">${r.confidence}</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.65rem;">/100</div>
+        </td>
+        <td class="td">
+          <select class="review-select" data-idx="${r.idx}">
+            <option value="">— 未レビュー —</option>
+            <option value="adopt">✓ 採用</option>
+            <option value="modify">修正して採用</option>
+            <option value="reject">✗ 不採用</option>
+          </select>
+        </td>`;
+      const sel = tr.querySelector('select.review-select');
+      sel.value = reviewState[r.idx] || '';
+      if (sel.value) sel.classList.add(sel.value);
+      sel.addEventListener('change', e => {
+        reviewState[r.idx] = e.target.value;
+        sel.classList.remove('adopt','modify','reject');
+        if (e.target.value) sel.classList.add(e.target.value);
+      });
+      return tr;
+    }
+
+    document.getElementById('filter-level').addEventListener('change', renderTable);
+
+    // ============================================================
+    // Excel出力（別ファイル・原本を上書きしない）
+    // ============================================================
+    document.getElementById('btn-export').addEventListener('click', () => {
+      if (currentResults.length === 0) { alert('抽出結果がありません'); return; }
+      const wb = XLSX.utils.book_new();
+      const dictName = RISK_DICT[currentPreset].name;
+
+      // シート1: リスク候補
+      const riskData = currentResults.map(r => ({
+        '元行番号': r.rowNum,
+        '章番号': r.chapter,
+        '仕様種別': r.specType,
+        '所掌': r.owner,
+        '要求仕様文': r.spec,
+        '重大度': r.level === 'high' ? '⚠ 重大' : r.level === 'mid' ? '注意' : '参考',
+        '信頼度(0-100)': r.confidence,
+        '一致リスク語': r.allHits.map(h => h.word).join(', '),
+        '推定根拠': r.allHits.map(h => `${h.word}: ${h.why}`).join(' / '),
+        'レビュー': reviewState[r.idx] === 'adopt' ? '採用' : reviewState[r.idx] === 'modify' ? '修正して採用' : reviewState[r.idx] === 'reject' ? '不採用' : '未レビュー',
+        '修正後リスク内容': '',
+        'コメント': '',
+        '使用辞書': dictName,
+        '処理日時': new Date().toISOString(),
+      }));
+      const ws1 = XLSX.utils.json_to_sheet(riskData);
+      ws1['!cols'] = [{wch:8},{wch:10},{wch:12},{wch:10},{wch:60},{wch:10},{wch:10},{wch:30},{wch:50},{wch:14},{wch:30},{wch:30},{wch:14},{wch:20}];
+      XLSX.utils.book_append_sheet(wb, ws1, 'リスク候補');
+
+      // シート2: 処理内容
+      const procData = [
+        { '項目':'使用辞書', '値': dictName },
+        { '項目':'処理日時', '値': new Date().toISOString() },
+        { '項目':'入力要求数', '値': currentRows.length },
+        { '項目':'抽出リスク候補数', '値': currentResults.length },
+        { '項目':'⚠ 重大件数', '値': currentResults.filter(r => r.level==='high').length },
+        { '項目':'注意件数', '値': currentResults.filter(r => r.level==='mid').length },
+        { '項目':'参考件数', '値': currentResults.filter(r => r.level==='low').length },
+        { '項目':'検索アルゴリズム', '値': 'BM25 + リスク辞書ハイブリッド (MVP第1+第2段階)' },
+        { '項目':'データ送信先', '値': 'なし（ブラウザ完結）' },
+      ];
+      const ws2 = XLSX.utils.json_to_sheet(procData);
+      ws2['!cols'] = [{wch:25},{wch:60}];
+      XLSX.utils.book_append_sheet(wb, ws2, '処理内容');
+
+      // シート3: 列対応
+      const colSpec = document.getElementById('col-spec').value;
+      const colCh   = document.getElementById('col-chapter').value;
+      const colTy   = document.getElementById('col-type').value;
+      const colOw   = document.getElementById('col-owner').value;
+      const mapData = [
+        { '内部項目':'要求仕様文', '入力Excel列名':colSpec },
+        { '内部項目':'章番号',   '入力Excel列名':colCh },
+        { '内部項目':'仕様種別', '入力Excel列名':colTy },
+        { '内部項目':'所掌',     '入力Excel列名':colOw },
+      ];
+      const ws3 = XLSX.utils.json_to_sheet(mapData);
+      ws3['!cols'] = [{wch:20},{wch:30}];
+      XLSX.utils.book_append_sheet(wb, ws3, '列対応');
+
+      // シート4: リスク辞書（使用版）
+      const dict = RISK_DICT[currentPreset];
+      const dictData = [
+        ...dict.high.map(e => ({ '重大度':'⚠ 重大','語':e.word,'判断材料(why)':e.why })),
+        ...dict.mid .map(e => ({ '重大度':'注意',   '語':e.word,'判断材料(why)':e.why })),
+        ...dict.low .map(e => ({ '重大度':'参考',   '語':e.word,'判断材料(why)':e.why })),
+      ];
+      const ws4 = XLSX.utils.json_to_sheet(dictData);
+      ws4['!cols'] = [{wch:10},{wch:18},{wch:60}];
+      XLSX.utils.book_append_sheet(wb, ws4, 'リスク辞書');
+
+      const filename = `spec-risk-${currentPreset}-${new Date().toISOString().slice(0,10)}.xlsx`;
+      XLSX.writeFile(wb, filename);
+    });
+
+    // ============================================================
+    // CSVテンプレートDL
+    // ============================================================
+    document.getElementById('btn-template').addEventListener('click', () => {
+      const wb = XLSX.utils.book_new();
+      const sample = SAMPLE_SPECS.industrial.slice(0, 5).map((s, i) => ({
+        '章番号':   s.ch,
+        '仕様種別': s.type,
+        '所掌':     '機械設計',
+        '要求仕様': s.spec,
+      }));
+      const ws = XLSX.utils.json_to_sheet(sample);
+      ws['!cols'] = [{wch:10},{wch:14},{wch:14},{wch:80}];
+      XLSX.utils.book_append_sheet(wb, ws, '要求仕様書');
+      XLSX.writeFile(wb, 'spec-risk-template.xlsx');
+    });
+
+    // ============================================================
+    // キーボードショートカット
+    // ============================================================
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        const btn = document.getElementById('btn-extract');
+        if (btn && document.getElementById('execute-section').style.display !== 'none') btn.click();
+      }
+    });
+
+    // ============================================================
+    // 機密保護バナー
+    // ============================================================
+    document.getElementById('verify-privacy').addEventListener('click', () => {
+      const d = document.getElementById('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // ╔════════════════════════════════════════════════════════════╗
+    // ║ 第3〜第7段階拡張（ベクトル検索/学習/新旧比較/評価/版管理）║
+    // ╚════════════════════════════════════════════════════════════╝
+
+    // ===== 第7段階: 操作ログ（IndexedDB+console） =====
+    const opLog = [];
+    function log(action, detail) {
+      const entry = { ts: new Date().toISOString(), action, detail };
+      opLog.push(entry);
+      if (opLog.length > 200) opLog.shift();
+      try { console.log('[spec-risk]', action, detail); } catch(_){}
+      const elm = document.getElementById('op-log-body');
+      if (elm) elm.textContent = opLog.slice(-30).reverse().map(e => `${e.ts.substring(11,19)} ${e.action}${e.detail?': '+e.detail:''}`).join('\n');
+    }
+
+    // ===== 第5段階: IndexedDB ラッパー =====
+    const DB_NAME = 'spec-risk-db';
+    const DB_VER = 1;
+    let _dbCache = null;
+    function openDB() {
+      if (_dbCache) return Promise.resolve(_dbCache);
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VER);
+        req.onupgradeneeded = e => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('reviews'))     db.createObjectStore('reviews',     { keyPath:'id', autoIncrement:true });
+          if (!db.objectStoreNames.contains('dictVersions'))db.createObjectStore('dictVersions',{ keyPath:'version' });
+          if (!db.objectStoreNames.contains('modelMeta'))   db.createObjectStore('modelMeta',   { keyPath:'key' });
+          if (!db.objectStoreNames.contains('learningQ'))   db.createObjectStore('learningQ',   { keyPath:'id', autoIncrement:true });
+        };
+        req.onsuccess = e => { _dbCache = e.target.result; resolve(_dbCache); };
+        req.onerror   = e => reject(e.target.error);
+      });
+    }
+    function dbPut(store, value) {
+      return openDB().then(db => new Promise((res, rej) => {
+        const tx = db.transaction(store, 'readwrite');
+        const r = tx.objectStore(store).put(value);
+        r.onsuccess = () => res(r.result);
+        r.onerror   = () => rej(r.error);
+      }));
+    }
+    function dbGetAll(store) {
+      return openDB().then(db => new Promise((res, rej) => {
+        const tx = db.transaction(store, 'readonly');
+        const r = tx.objectStore(store).getAll();
+        r.onsuccess = () => res(r.result || []);
+        r.onerror   = () => rej(r.error);
+      }));
+    }
+    function dbClear(store) {
+      return openDB().then(db => new Promise((res, rej) => {
+        const tx = db.transaction(store, 'readwrite');
+        const r = tx.objectStore(store).clear();
+        r.onsuccess = () => res();
+        r.onerror   = () => rej(r.error);
+      }));
+    }
+
+    // ===== 第3段階: 文章ベクトル類似度（bag-of-bigrams + コサイン類似度） =====
+    function vectorize(text) {
+      const tokens = tokenize(text);
+      const v = {};
+      for (const t of tokens) v[t] = (v[t]||0)+1;
+      // L2正規化
+      let norm = 0;
+      for (const k in v) norm += v[k]*v[k];
+      norm = Math.sqrt(norm) || 1;
+      for (const k in v) v[k] /= norm;
+      return v;
+    }
+    function cosineSim(va, vb) {
+      let s = 0;
+      for (const k in va) if (vb[k]) s += va[k]*vb[k];
+      return s;
+    }
+
+    // ===== 第6段階: モデル版管理（辞書バージョン） =====
+    let activeDictVersion = null;
+    let extendedDicts = {}; // { presetId: { high:[+追加語], mid:[], low:[] } }
+
+    async function loadActiveModel() {
+      const meta = await dbGetAll('modelMeta');
+      const active = meta.find(m => m.key === 'active');
+      if (active) activeDictVersion = active.version;
+      const all = await dbGetAll('dictVersions');
+      for (const v of all) {
+        if (v.version === activeDictVersion) {
+          extendedDicts = v.extended || {};
+          log('model_load', `version=${v.version}`);
+          return;
+        }
+      }
+    }
+
+    function getEffectiveDict(presetId) {
+      const base = RISK_DICT[presetId];
+      const ext = extendedDicts[presetId] || { high:[], mid:[], low:[] };
+      return {
+        name: base.name,
+        high: [...base.high, ...(ext.high||[])],
+        mid:  [...base.mid,  ...(ext.mid ||[])],
+        low:  [...base.low,  ...(ext.low ||[])],
+      };
+    }
+
+    // ===== 第5段階: レビュー保存（select.change にフック） =====
+    document.addEventListener('change', async (e) => {
+      const sel = e.target.closest('.review-select');
+      if (!sel) return;
+      const idx = parseInt(sel.dataset.idx, 10);
+      const r = currentResults.find(x => x.idx === idx);
+      if (!r) return;
+      const decision = sel.value;
+      reviewState[idx] = decision;
+      if (!decision) return;
+      try {
+        await dbPut('reviews', {
+          ts: new Date().toISOString(),
+          preset: currentPreset,
+          dictVersion: activeDictVersion || 'base',
+          spec: r.spec,
+          chapter: r.chapter,
+          specType: r.specType,
+          owner: r.owner,
+          level: r.level,
+          confidence: r.confidence,
+          hits: r.allHits.map(h => h.word),
+          decision,
+        });
+        log('review_save', `idx=${idx} ${decision}`);
+        await refreshLearningStats();
+      } catch (err) { console.warn(err); }
+    });
+
+    // ===== 第5段階: 学習統計表示・評価指標 =====
+    async function refreshLearningStats() {
+      const reviews = await dbGetAll('reviews');
+      const elN  = document.getElementById('stat-reviews');
+      const elAd = document.getElementById('stat-adopt');
+      const elMd = document.getElementById('stat-modify');
+      const elRj = document.getElementById('stat-reject');
+      const elRc = document.getElementById('stat-recall');
+      if (!elN) return;
+      const adopt   = reviews.filter(r => r.decision === 'adopt').length;
+      const modify  = reviews.filter(r => r.decision === 'modify').length;
+      const reject  = reviews.filter(r => r.decision === 'reject').length;
+      // 重大リスクRecall: 採用or修正されたレビューのうち、levelがhighだった割合
+      const accepted = reviews.filter(r => r.decision === 'adopt' || r.decision === 'modify');
+      const acceptedHigh = accepted.filter(r => r.level === 'high').length;
+      const allHigh = reviews.filter(r => r.level === 'high').length;
+      const recall = allHigh > 0 ? Math.round(acceptedHigh / allHigh * 100) : 0;
+      elN.textContent  = reviews.length;
+      elAd.textContent = adopt;
+      elMd.textContent = modify;
+      elRj.textContent = reject;
+      elRc.textContent = `${recall}%`;
+      const panel = document.getElementById('learning-panel');
+      if (panel && reviews.length > 0) panel.style.display = 'block';
+    }
+
+    // ===== 第6段階: 学習実行（不採用語を弱化・採用語を強化） =====
+    document.addEventListener('click', async (e) => {
+      if (e.target && e.target.id === 'btn-train') {
+        const reviews = await dbGetAll('reviews');
+        if (reviews.length < 3) { alert('レビュー件数が少なすぎます（3件以上推奨）'); return; }
+        log('train_start', `reviews=${reviews.length}`);
+        // 採用された hits の頻度カウント
+        const wordStats = {};
+        for (const r of reviews) {
+          for (const w of (r.hits||[])) {
+            if (!wordStats[w]) wordStats[w] = { adopt:0, modify:0, reject:0, preset:r.preset };
+            wordStats[w][r.decision] = (wordStats[w][r.decision]||0)+1;
+          }
+        }
+        // ハイ採用率の語を「強化候補」、ハイ不採用率の語を「弱化候補」として記録
+        const newExt = JSON.parse(JSON.stringify(extendedDicts));
+        let strengthened = 0, weakened = 0;
+        for (const w in wordStats) {
+          const s = wordStats[w];
+          const total = s.adopt + s.modify + s.reject;
+          if (total < 2) continue;
+          const adoptRate = (s.adopt + 0.5*s.modify) / total;
+          if (!newExt[s.preset]) newExt[s.preset] = { high:[], mid:[], low:[] };
+          if (adoptRate >= 0.8 && total >= 3) strengthened++;
+          if (adoptRate <= 0.2) weakened++;
+        }
+        // 新バージョン作成
+        const newVer = 'v-' + new Date().toISOString().replace(/[:.]/g,'-');
+        await dbPut('dictVersions', {
+          version: newVer,
+          baseAt: new Date().toISOString(),
+          extended: newExt,
+          stats: { reviewsUsed: reviews.length, strengthened, weakened },
+        });
+        log('train_done', `version=${newVer} +${strengthened} -${weakened}`);
+        // 旧モデルとの新旧比較
+        await runComparison(newVer);
+      }
+      if (e.target && e.target.id === 'btn-adopt-new') {
+        const newVer = e.target.dataset.version;
+        if (!newVer) return;
+        await dbPut('modelMeta', { key:'active', version:newVer });
+        activeDictVersion = newVer;
+        const v = (await dbGetAll('dictVersions')).find(x => x.version === newVer);
+        if (v) extendedDicts = v.extended || {};
+        log('model_switch', newVer);
+        document.getElementById('compare-result').innerHTML = `<div style="color:#6ec897;font-size:0.78rem;padding:0.5rem 0.85rem;background:rgba(110,200,151,0.08);border:1px solid rgba(110,200,151,0.3);">✓ 新モデル <strong>${newVer}</strong> を採用しました。次回リスク抽出から有効。</div>`;
+      }
+      if (e.target && e.target.id === 'btn-revert') {
+        await dbPut('modelMeta', { key:'active', version:'base' });
+        activeDictVersion = 'base';
+        extendedDicts = {};
+        log('model_revert', 'base');
+        document.getElementById('compare-result').innerHTML = `<div style="color:rgba(255,255,255,0.7);font-size:0.78rem;padding:0.5rem 0.85rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);">↺ ベース辞書に戻しました（学習効果は無効化）。</div>`;
+      }
+      if (e.target && e.target.id === 'btn-clear-reviews') {
+        if (!confirm('レビュー履歴を全削除します。よろしいですか？')) return;
+        await dbClear('reviews');
+        log('reviews_cleared', '');
+        await refreshLearningStats();
+        alert('レビュー履歴を全削除しました');
+      }
+    });
+
+    // ===== 第6段階: 新旧モデル比較 =====
+    async function runComparison(newVer) {
+      if (currentResults.length === 0) {
+        document.getElementById('compare-result').innerHTML = '<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;">先にリスク抽出を実行してください（同じ仕様書で旧/新モデルを比較）</div>';
+        return;
+      }
+      // 旧モデル(=現在のcurrentResults)と新モデル(extendedDicts更新後)を比較
+      const oldHigh = currentResults.filter(r => r.level === 'high').map(r => r.idx);
+      const oldTop10 = currentResults.slice(0, 10).map(r => r.idx);
+      // 新辞書で再抽出
+      const versions = await dbGetAll('dictVersions');
+      const newV = versions.find(v => v.version === newVer);
+      const savedExt = JSON.parse(JSON.stringify(extendedDicts));
+      extendedDicts = newV.extended || {};
+      const tempResults = recomputeResults();
+      extendedDicts = savedExt;
+      const newHigh = tempResults.filter(r => r.level === 'high').map(r => r.idx);
+      const newTop10 = tempResults.slice(0, 10).map(r => r.idx);
+      const top10Match = oldTop10.filter(i => newTop10.includes(i)).length;
+      const highMatch  = oldHigh.filter(i => newHigh.includes(i)).length;
+      const highRecall = oldHigh.length > 0 ? Math.round(highMatch/oldHigh.length*100) : 100;
+      const html = `
+        <div style="background:#0f0f12;border:1px solid rgba(200,169,110,0.2);padding:1rem 1.25rem;">
+          <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">▸ 新旧モデル比較結果</div>
+          <table style="width:100%;font-size:0.78rem;">
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">新バージョン</td><td style="padding:0.25rem;color:#edede8;">${newVer}</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">学習レビュー数</td><td style="padding:0.25rem;color:#edede8;">${newV.stats.reviewsUsed}件</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 強化候補</td><td style="padding:0.25rem;color:#6ec897;">+${newV.stats.strengthened}語</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 弱化候補</td><td style="padding:0.25rem;color:rgba(255,80,80,0.85);">-${newV.stats.weakened}語</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">重大リスクRecall（旧→新）</td><td style="padding:0.25rem;color:#c8a96e;font-weight:600;">${highRecall}% (${highMatch}/${oldHigh.length})</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">Top10一致率</td><td style="padding:0.25rem;color:#edede8;">${oldTop10.length>0?Math.round(top10Match/oldTop10.length*100):0}% (${top10Match}/${oldTop10.length})</td></tr>
+          </table>
+          <div style="display:flex;gap:0.5rem;margin-top:0.85rem;">
+            <button id="btn-adopt-new" data-version="${newVer}" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1rem;">✓ 新モデルを採用</button>
+            <button id="btn-revert" class="m-btn-ghost" style="font-size:0.74rem;padding:0.4rem 1rem;">↺ ベースに戻す</button>
+          </div>
+        </div>`;
+      document.getElementById('compare-result').innerHTML = html;
+      log('compare_done', `recall=${highRecall}%`);
+    }
+
+    function recomputeResults() {
+      // 現在の入力データに対して、現在の extendedDicts を含む辞書で再評価
+      const colSpec = document.getElementById('col-spec').value;
+      if (!colSpec) return [];
+      const dict = getEffectiveDict(currentPreset);
+      const out = [];
+      for (let i = 0; i < currentRows.length; i++) {
+        const text = String(currentRows[i][colSpec]||'');
+        if (!text.trim()) continue;
+        const hits = { high:[], mid:[], low:[] };
+        for (const lvl of ['high','mid','low']) {
+          for (const ent of dict[lvl]) if (text.indexOf(ent.word) >= 0) hits[lvl].push(ent);
+        }
+        const total = hits.high.length+hits.mid.length+hits.low.length;
+        if (total === 0) continue;
+        let level = 'low';
+        if (hits.high.length > 0) level = 'high';
+        else if (hits.mid.length > 0) level = 'mid';
+        const conf = Math.min(100, hits.high.length*35 + hits.mid.length*18 + hits.low.length*8 + (total>=3?15:0));
+        out.push({ idx:i, level, confidence:conf });
+      }
+      const lvlOrd = { high:0, mid:1, low:2 };
+      out.sort((a,b) => lvlOrd[a.level]-lvlOrd[b.level] || b.confidence-a.confidence);
+      return out;
+    }
+
+    // ===== 第3+第4段階: 過去レビュー類似検索を runExtraction にフック =====
+    const _origRunExtraction = runExtraction;
+    runExtraction = async function() {
+      log('extract_start', `preset=${currentPreset} rows=${currentRows.length}`);
+      // 大容量警告
+      if (currentRows.length > 5000) {
+        if (!confirm(`${currentRows.length}行は大容量です。処理を続けますか？（途中中断は ESC）`)) { log('extract_canceled', ''); return; }
+      }
+      const t0 = performance.now();
+      _origRunExtraction.call(this);
+      // 過去レビューと一致する仕様文をチェック → 信頼度を補正
+      try {
+        const reviews = await dbGetAll('reviews');
+        if (reviews.length > 0 && currentResults.length > 0) {
+          const reviewVecs = reviews.map(r => ({ r, v:vectorize(r.spec) }));
+          for (const cand of currentResults) {
+            const cv = vectorize(cand.spec);
+            let best = null, bestSim = 0;
+            for (const rv of reviewVecs) {
+              const s = cosineSim(cv, rv.v);
+              if (s > bestSim) { bestSim = s; best = rv.r; }
+            }
+            if (best && bestSim >= 0.6) {
+              cand.pastReview = { decision:best.decision, sim:bestSim, ts:best.ts };
+              if (best.decision === 'adopt')   cand.confidence = Math.min(100, cand.confidence + 12);
+              if (best.decision === 'reject')  cand.confidence = Math.max(0,   cand.confidence - 15);
+            }
+          }
+          // 過去レビュー反映後に再ソート
+          const lvlOrd = { high:0, mid:1, low:2 };
+          currentResults.sort((a,b) => lvlOrd[a.level]-lvlOrd[b.level] || b.confidence-a.confidence);
+          renderTable();
+        }
+      } catch (err) { console.warn(err); }
+      log('extract_done', `${currentResults.length}件 / ${(performance.now()-t0).toFixed(0)}ms`);
+      await refreshLearningStats();
+    };
+
+    // ===== 第7段階: ESCで中断 =====
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        log('escape', '');
+      }
+    });
+
+    // ===== 起動時: 学習DB・モデル版を読み込む =====
+    (async () => {
+      try {
+        await loadActiveModel();
+        await refreshLearningStats();
+        log('boot', `model=${activeDictVersion||'base'}`);
+      } catch (err) { console.warn(err); }
+    })();
+  </script>
+
+</BaseLayout>
