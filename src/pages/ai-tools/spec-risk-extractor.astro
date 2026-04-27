@@ -365,7 +365,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ⑧  候補統合 + 重複除去                ↓
 ⑨  リランキング（5指標重み付き総合）   ↓
 ⑩  懸念候補生成 + 判定（対象/要確認/対象外）↓
-⑪  カテゴリ・所掌・優先度推定          ↓
+⑪  E&C&LT 影響軸推定（OR集約・軸別重み付き）↓
 ⑫  信頼度算出 (0〜100点)              ↓
 ⑬  推定根拠表示 (一致語+why)          ↓
 ⑭  人レビュー (採用/修正/不採用)       ↓
@@ -529,6 +529,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     .review-select.adopt   { border-color:#6ec897;color:#6ec897; }
     .review-select.reject  { border-color:rgba(255,80,80,0.5);color:#ff8888; }
     .review-select.modify  { border-color:#c8a96e;color:#c8a96e; }
+    /* Phase 3: E&C&LT 影響軸バッジ（軸別配色） */
+    .impact-badge { display:inline-block;padding:0.08rem 0.45rem;border-radius:2px;letter-spacing:0.05em;font-size:0.62rem;border-style:solid;border-width:1px; }
+    .impact-e   { background:rgba(110,180,200,0.15); color:#80c4d8; border-color:rgba(110,180,200,0.40); }
+    .impact-c   { background:rgba(200,169,110,0.15); color:#c8a96e; border-color:rgba(200,169,110,0.40); }
+    .impact-lt  { background:rgba(110,200,151,0.12); color:#6ec897; border-color:rgba(110,200,151,0.40); }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -537,132 +542,135 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ============================================================
     // デビクラ辞書（業界別・対象/要確認/対象外の3段階）
     // ============================================================
+    // CODEX 4巡目フィードバック: impact は配列で持つ（Set相当・OR集約）
+    //   E = Engineering（設計影響）  C = Cost（コスト影響）  LT = LeadTime（納期影響）
+    //   各語の業務的意味から論理的に推定。空配列は影響軸不明＝判定保留扱い
     const RISK_DICT = {
       industrial: {
         name: '産業機械',
         high: [
-          { word:'特殊', why:'仕様詳細不明・標準外作業の指標' },
-          { word:'前例なし', why:'過去実績無し → 工数読めず' },
-          { word:'初', why:'初挑戦 → 設計工数・試作工数増' },
-          { word:'未経験', why:'技術リスク高・歩留まり予測困難' },
-          { word:'高精度', why:'公差厳格化で加工工数倍増' },
-          { word:'公差', why:'数値次第で大幅工数増加' },
-          { word:'短納期', why:'並列作業前提・トラブル余地ゼロ' },
-          { word:'短期間', why:'納期遅延リスク・残業前提' },
-          { word:'クリーンルーム', why:'特殊環境前提工事費・養生費増' },
-          { word:'防爆', why:'認証取得期間・部品コスト増' },
-          { word:'追加', why:'仕様変更前提・スコープ拡大リスク' },
-          { word:'別途', why:'スコープ外への切り出し要求の可能性' },
-          { word:'最高', why:'達成保証困難・実証実験要' },
-          { word:'最大', why:'限界仕様・余裕なし設計要' },
-          { word:'必須', why:'代替案不可・コスト引上げ要因' },
-          { word:'相当', why:'相当品許容と読み違いリスク' },
+          { word:'特殊', why:'仕様詳細不明・標準外作業の指標', impact:['E','C','LT'] },
+          { word:'前例なし', why:'過去実績無し → 工数読めず', impact:['E','LT'] },
+          { word:'初', why:'初挑戦 → 設計工数・試作工数増', impact:['E','LT'] },
+          { word:'未経験', why:'技術リスク高・歩留まり予測困難', impact:['E','LT'] },
+          { word:'高精度', why:'公差厳格化で加工工数倍増', impact:['E','C'] },
+          { word:'公差', why:'数値次第で大幅工数増加', impact:['E','C'] },
+          { word:'短納期', why:'並列作業前提・トラブル余地ゼロ', impact:['LT','C'] },
+          { word:'短期間', why:'納期遅延リスク・残業前提', impact:['LT','C'] },
+          { word:'クリーンルーム', why:'特殊環境前提工事費・養生費増', impact:['C','E'] },
+          { word:'防爆', why:'認証取得期間・部品コスト増', impact:['C','LT','E'] },
+          { word:'追加', why:'仕様変更前提・スコープ拡大リスク', impact:['E','C'] },
+          { word:'別途', why:'スコープ外への切り出し要求の可能性', impact:['C'] },
+          { word:'最高', why:'達成保証困難・実証実験要', impact:['E','C'] },
+          { word:'最大', why:'限界仕様・余裕なし設計要', impact:['E'] },
+          { word:'必須', why:'代替案不可・コスト引上げ要因', impact:['C'] },
+          { word:'相当', why:'相当品許容と読み違いリスク', impact:['E'] },
         ],
         mid: [
-          { word:'要相談', why:'未確定要件 → 後出し変更リスク' },
-          { word:'別途協議', why:'スコープ未定 → 見積に含まれない可能性' },
-          { word:'検討', why:'要件未確定' },
-          { word:'同等', why:'同等品の判断基準が曖昧' },
-          { word:'同等以上', why:'上限なし要求のリスク' },
-          { word:'柔軟', why:'仕様変更前提の要求' },
-          { word:'対応', why:'技術範囲・工数が不明' },
-          { word:'スマート', why:'IoT/IT連携を含む可能性' },
-          { word:'ネットワーク', why:'通信仕様が後出し' },
-          { word:'IoT', why:'仕様詳細・通信頻度未確定' },
-          { word:'AI', why:'要件成立性が未確認' },
-          { word:'画像', why:'画像処理要件・カメラ仕様要確認' },
-          { word:'振動', why:'測定環境・周波数要件確認要' },
-          { word:'温度', why:'温度範囲・精度確認要' },
-          { word:'湿度', why:'環境仕様確認要' },
-          { word:'電源', why:'電源仕様（電圧・周波数）海外向け確認' },
+          { word:'要相談', why:'未確定要件 → 後出し変更リスク', impact:['E','C'] },
+          { word:'別途協議', why:'スコープ未定 → 見積に含まれない可能性', impact:['C'] },
+          { word:'検討', why:'要件未確定', impact:['E'] },
+          { word:'同等', why:'同等品の判断基準が曖昧', impact:['E'] },
+          { word:'同等以上', why:'上限なし要求のリスク', impact:['E','C'] },
+          { word:'柔軟', why:'仕様変更前提の要求', impact:['E'] },
+          { word:'対応', why:'技術範囲・工数が不明', impact:['E','C'] },
+          { word:'スマート', why:'IoT/IT連携を含む可能性', impact:['E'] },
+          { word:'ネットワーク', why:'通信仕様が後出し', impact:['E'] },
+          { word:'IoT', why:'仕様詳細・通信頻度未確定', impact:['E'] },
+          { word:'AI', why:'要件成立性が未確認', impact:['E','LT'] },
+          { word:'画像', why:'画像処理要件・カメラ仕様要確認', impact:['E','C'] },
+          { word:'振動', why:'測定環境・周波数要件確認要', impact:['E'] },
+          { word:'温度', why:'温度範囲・精度確認要', impact:['E'] },
+          { word:'湿度', why:'環境仕様確認要', impact:['E'] },
+          { word:'電源', why:'電源仕様（電圧・周波数）海外向け確認', impact:['E','C'] },
         ],
         low: [
-          { word:'メンテナンス', why:'保守仕様・年次費用確認' },
-          { word:'点検', why:'点検頻度・項目確認' },
-          { word:'保守', why:'保守契約範囲確認' },
-          { word:'運用', why:'運用ドキュメント要件確認' },
-          { word:'マニュアル', why:'マニュアル作成工数確認' },
+          { word:'メンテナンス', why:'保守仕様・年次費用確認', impact:['C'] },
+          { word:'点検', why:'点検頻度・項目確認', impact:['C'] },
+          { word:'保守', why:'保守契約範囲確認', impact:['C'] },
+          { word:'運用', why:'運用ドキュメント要件確認', impact:['E'] },
+          { word:'マニュアル', why:'マニュアル作成工数確認', impact:['C'] },
         ],
       },
       plant: {
         name: 'プラント設備',
         high: [
-          { word:'高圧', why:'圧力容器規制・PED/ASME認証要' },
-          { word:'真空', why:'真空仕様・リーク試験要' },
-          { word:'高温', why:'材料グレード・冷却・保温要' },
-          { word:'低温', why:'低温脆性・保温・凍結対策要' },
-          { word:'腐食', why:'材質選定・コーティング要' },
-          { word:'腐食性', why:'材質グレード上げ要・SUS316L以上' },
-          { word:'防爆', why:'ATEX/IECEx認証取得要' },
-          { word:'危険物', why:'消防法・保安基準対応要' },
-          { word:'特殊材料', why:'納期長・コスト増・調達リスク' },
-          { word:'インコネル', why:'特殊材料・調達LT長・高単価' },
-          { word:'チタン', why:'特殊材料・溶接技術要' },
-          { word:'PED', why:'欧州圧力機器指令適合要' },
-          { word:'ASME', why:'米国規格適合・第三者検査要' },
-          { word:'X線', why:'放射線検査・検査機関手配要' },
-          { word:'現地組立', why:'現地工事・人員派遣費用要' },
-          { word:'現地工事', why:'出張・宿泊・機材輸送費用要' },
-          { word:'海外', why:'規格対応・輸送・現地工事追加費' },
-          { word:'GMP', why:'医薬品製造規格・バリデーション要' },
-          { word:'FDA', why:'米国食品医薬品局認証要' },
+          { word:'高圧', why:'圧力容器規制・PED/ASME認証要', impact:['E','C','LT'] },
+          { word:'真空', why:'真空仕様・リーク試験要', impact:['E','C'] },
+          { word:'高温', why:'材料グレード・冷却・保温要', impact:['E','C'] },
+          { word:'低温', why:'低温脆性・保温・凍結対策要', impact:['E','C'] },
+          { word:'腐食', why:'材質選定・コーティング要', impact:['E','C'] },
+          { word:'腐食性', why:'材質グレード上げ要・SUS316L以上', impact:['E','C'] },
+          { word:'防爆', why:'ATEX/IECEx認証取得要', impact:['C','LT','E'] },
+          { word:'危険物', why:'消防法・保安基準対応要', impact:['E','C'] },
+          { word:'特殊材料', why:'納期長・コスト増・調達リスク', impact:['C','LT'] },
+          { word:'インコネル', why:'特殊材料・調達LT長・高単価', impact:['C','LT'] },
+          { word:'チタン', why:'特殊材料・溶接技術要', impact:['C','LT','E'] },
+          { word:'PED', why:'欧州圧力機器指令適合要', impact:['LT','C','E'] },
+          { word:'ASME', why:'米国規格適合・第三者検査要', impact:['LT','C','E'] },
+          { word:'X線', why:'放射線検査・検査機関手配要', impact:['LT','C'] },
+          { word:'現地組立', why:'現地工事・人員派遣費用要', impact:['C','LT'] },
+          { word:'現地工事', why:'出張・宿泊・機材輸送費用要', impact:['C','LT'] },
+          { word:'海外', why:'規格対応・輸送・現地工事追加費', impact:['C','LT','E'] },
+          { word:'GMP', why:'医薬品製造規格・バリデーション要', impact:['LT','C','E'] },
+          { word:'FDA', why:'米国食品医薬品局認証要', impact:['LT','C','E'] },
         ],
         mid: [
-          { word:'SUS', why:'材質グレード（304/316/316L）確認要' },
-          { word:'内面研磨', why:'研磨方法・粗さ等級確認要' },
-          { word:'検査', why:'検査項目・基準・第三者要否確認' },
-          { word:'立会', why:'立会検査の頻度・場所確認' },
-          { word:'圧力試験', why:'試験圧力・手順確認' },
-          { word:'リーク', why:'リーク試験規格・閾値確認' },
-          { word:'振動試験', why:'振動試験規格・条件確認' },
-          { word:'認証', why:'認証取得期間・費用確認' },
-          { word:'規格', why:'適用規格の最新版・差分確認' },
-          { word:'保温', why:'保温材選定・厚さ確認' },
-          { word:'断熱', why:'断熱性能・材料確認' },
+          { word:'SUS', why:'材質グレード（304/316/316L）確認要', impact:['E','C'] },
+          { word:'内面研磨', why:'研磨方法・粗さ等級確認要', impact:['C','E'] },
+          { word:'検査', why:'検査項目・基準・第三者要否確認', impact:['LT','C'] },
+          { word:'立会', why:'立会検査の頻度・場所確認', impact:['LT','C'] },
+          { word:'圧力試験', why:'試験圧力・手順確認', impact:['LT','C'] },
+          { word:'リーク', why:'リーク試験規格・閾値確認', impact:['LT','C'] },
+          { word:'振動試験', why:'振動試験規格・条件確認', impact:['LT','C'] },
+          { word:'認証', why:'認証取得期間・費用確認', impact:['LT','C'] },
+          { word:'規格', why:'適用規格の最新版・差分確認', impact:['E'] },
+          { word:'保温', why:'保温材選定・厚さ確認', impact:['E','C'] },
+          { word:'断熱', why:'断熱性能・材料確認', impact:['E','C'] },
         ],
         low: [
-          { word:'試運転', why:'試運転期間・人員確認' },
-          { word:'トレーニング', why:'運転員教育の有無' },
-          { word:'据付', why:'据付方法・基礎仕様確認' },
+          { word:'試運転', why:'試運転期間・人員確認', impact:['LT','C'] },
+          { word:'トレーニング', why:'運転員教育の有無', impact:['C'] },
+          { word:'据付', why:'据付方法・基礎仕様確認', impact:['C'] },
         ],
       },
       vehicle: {
         name: '特装車両',
         high: [
-          { word:'公道', why:'保安基準・型式認定対応要' },
-          { word:'型式', why:'型式認定取得期間・費用要' },
-          { word:'認定', why:'認定機関手配・費用増' },
-          { word:'衝突', why:'衝突安全規格・試験費用要' },
-          { word:'衝突安全', why:'安全基準試験・補強構造要' },
-          { word:'重量超過', why:'保安基準逸脱・特殊車両通行許可要' },
-          { word:'重量制限', why:'軽量化要求・材料変更要' },
-          { word:'特装', why:'特殊架装による重量・重心変動' },
-          { word:'消防車', why:'消防認定・装備品認証要' },
-          { word:'救急車', why:'救急車認定・装備規格要' },
-          { word:'危険物搭載', why:'タンク車規制・配管材質要' },
-          { word:'防錆', why:'塗装仕様・防錆処理工程要' },
-          { word:'防水', why:'IP等級指定・シール材選定要' },
-          { word:'4WD', why:'駆動系改造・サスペンション設計要' },
-          { word:'消防', why:'消防法対応・装備品認証' },
-          { word:'最大積載', why:'積載量超過時のシャシ強度設計' },
+          { word:'公道', why:'保安基準・型式認定対応要', impact:['LT','C','E'] },
+          { word:'型式', why:'型式認定取得期間・費用要', impact:['LT','C'] },
+          { word:'認定', why:'認定機関手配・費用増', impact:['LT','C'] },
+          { word:'衝突', why:'衝突安全規格・試験費用要', impact:['E','C','LT'] },
+          { word:'衝突安全', why:'安全基準試験・補強構造要', impact:['E','C','LT'] },
+          { word:'重量超過', why:'保安基準逸脱・特殊車両通行許可要', impact:['LT','C','E'] },
+          { word:'重量制限', why:'軽量化要求・材料変更要', impact:['E','C'] },
+          { word:'特装', why:'特殊架装による重量・重心変動', impact:['E','C'] },
+          { word:'消防車', why:'消防認定・装備品認証要', impact:['LT','C','E'] },
+          { word:'救急車', why:'救急車認定・装備規格要', impact:['LT','C','E'] },
+          { word:'危険物搭載', why:'タンク車規制・配管材質要', impact:['E','C','LT'] },
+          { word:'防錆', why:'塗装仕様・防錆処理工程要', impact:['C','LT'] },
+          { word:'防水', why:'IP等級指定・シール材選定要', impact:['E','C'] },
+          { word:'4WD', why:'駆動系改造・サスペンション設計要', impact:['E','C'] },
+          { word:'消防', why:'消防法対応・装備品認証', impact:['LT','C','E'] },
+          { word:'最大積載', why:'積載量超過時のシャシ強度設計', impact:['E','C'] },
         ],
         mid: [
-          { word:'装備', why:'装備品リスト確認要' },
-          { word:'カスタム', why:'カスタム範囲・費用確認' },
-          { word:'シャシ', why:'シャシ供給・改造可否確認' },
-          { word:'架装', why:'架装内容・取付方法確認' },
-          { word:'配線', why:'電装配線図・専用品確認' },
-          { word:'計器', why:'計器仕様・配置確認' },
-          { word:'内装', why:'内装材・難燃性要否確認' },
-          { word:'外装塗装', why:'塗装色・仕様・耐候性確認' },
-          { word:'マーキング', why:'識別マーク・サイン仕様' },
-          { word:'警光灯', why:'警光灯仕様・配光・色確認' },
-          { word:'サイレン', why:'サイレン仕様・音圧確認' },
+          { word:'装備', why:'装備品リスト確認要', impact:['C'] },
+          { word:'カスタム', why:'カスタム範囲・費用確認', impact:['E','C'] },
+          { word:'シャシ', why:'シャシ供給・改造可否確認', impact:['E','LT'] },
+          { word:'架装', why:'架装内容・取付方法確認', impact:['E','C'] },
+          { word:'配線', why:'電装配線図・専用品確認', impact:['E'] },
+          { word:'計器', why:'計器仕様・配置確認', impact:['E','C'] },
+          { word:'内装', why:'内装材・難燃性要否確認', impact:['E','C'] },
+          { word:'外装塗装', why:'塗装色・仕様・耐候性確認', impact:['C'] },
+          { word:'マーキング', why:'識別マーク・サイン仕様', impact:['C'] },
+          { word:'警光灯', why:'警光灯仕様・配光・色確認', impact:['E'] },
+          { word:'サイレン', why:'サイレン仕様・音圧確認', impact:['E'] },
         ],
         low: [
-          { word:'操作性', why:'操作レイアウト確認' },
-          { word:'視認性', why:'視認性試験要否確認' },
-          { word:'納車', why:'納車場所・方法確認' },
+          { word:'操作性', why:'操作レイアウト確認', impact:['E'] },
+          { word:'視認性', why:'視認性試験要否確認', impact:['E'] },
+          { word:'納車', why:'納車場所・方法確認', impact:['LT'] },
         ],
       },
     };
@@ -1080,6 +1088,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           ? highlightHits(text, [...hits.high, ...hits.mid, ...hits.low])
           : '';
 
+        // Phase 3: E&C&LT 影響軸の集約（CODEXフィードバック反映）
+        //   impactFlags = OR集約（複数ヒット語のimpact配列をunion）
+        //   impactScore = 軸別の重み付き総和（high=3 / mid=1.5 / low=0.5）
+        //   いずれの語も impact が無い場合は flags 空集合・スコア全0
+        const allHits = [...hits.high, ...hits.mid, ...hits.low];
+        const impactFlags = { E:false, C:false, LT:false };
+        const impactScore = { E:0, C:0, LT:0 };
+        const lvlWeight = { high:3, mid:1.5, low:0.5 };
+        for (const lvl of ['high','mid','low']) {
+          for (const h of hits[lvl]) {
+            if (!Array.isArray(h.impact)) continue;
+            for (const ax of h.impact) {
+              if (ax === 'E' || ax === 'C' || ax === 'LT') {
+                impactFlags[ax] = true;
+                impactScore[ax] += lvlWeight[lvl];
+              }
+            }
+          }
+        }
+
         results.push({
           idx: i, rowNum: row._row || i + 2,
           chapter: colCh ? String(row[colCh]||'') : '',
@@ -1087,12 +1115,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           owner: colOw ? String(row[colOw]||'') : '',
           spec: text, highlightedSpec: highlightedText,
           level, confidence, hits,
-          allHits: [...hits.high, ...hits.mid, ...hits.low],
+          allHits,
           bmScorePct: Math.round(bmScore * 100),
           vecSimPct: Math.round(vecSim * 100),
           dictScorePct: Math.round(dictScore * 100),
           pastAdoptSim: Math.round(pastAdoptSim * 100),
           pastRejectSim: Math.round(pastRejectSim * 100),
+          impactFlags, impactScore,
         });
       }
 
@@ -1223,6 +1252,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           ${r.pastAdoptSim > 30 ? `<span style="background:rgba(110,200,151,0.10);color:#6ec897;border:1px solid rgba(110,200,151,0.30);padding:0.08rem 0.4rem;">過去採用 ${r.pastAdoptSim}</span>` : ''}
           ${r.pastRejectSim > 30 ? `<span style="background:rgba(255,80,80,0.08);color:#ff8888;border:1px solid rgba(255,80,80,0.25);padding:0.08rem 0.4rem;">過去不採用 ${r.pastRejectSim}</span>` : ''}
         </div>`;
+      // Phase 3: E&C&LT 影響軸バッジ（軸ヒット時のみ点灯）
+      const flags = r.impactFlags || { E:false, C:false, LT:false };
+      const sc    = r.impactScore || { E:0, C:0, LT:0 };
+      const impactBadges = (flags.E || flags.C || flags.LT) ? `
+        <div style="display:flex;gap:0.35rem;flex-wrap:wrap;margin-top:0.4rem;font-size:0.62rem;align-items:center;">
+          <span style="color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.15em;">影響軸:</span>
+          ${flags.E  ? `<span class="impact-badge impact-e"  title="設計影響スコア ${sc.E.toFixed(1)}">E 設計</span>`  : ''}
+          ${flags.C  ? `<span class="impact-badge impact-c"  title="コスト影響スコア ${sc.C.toFixed(1)}">C コスト</span>`   : ''}
+          ${flags.LT ? `<span class="impact-badge impact-lt" title="納期影響スコア ${sc.LT.toFixed(1)}">LT 納期</span>` : ''}
+        </div>` : '';
       const isModify = reviewState[r.idx] === 'modify';
       const modifiedVal = reviewModified[r.idx] || '';
       tr.innerHTML = `
@@ -1231,6 +1270,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div style="margin-bottom:0.4rem;">${badge}${meta.join(' / ')}</div>
           <div style="margin-bottom:0.5rem;line-height:1.6;">${r.highlightedSpec}</div>
           ${scoreBadges}
+          ${impactBadges}
           <details style="font-size:0.72rem;margin-top:0.5rem;">
             <summary style="cursor:pointer;color:rgba(255,255,255,0.5);outline:none;">推定根拠を見る ▼</summary>
             <ul style="margin:0.4rem 0 0 0;padding-left:1.2rem;">${reasons}</ul>
@@ -1273,28 +1313,43 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const colRfq     = document.getElementById('col-rfq').value;
       const colDoc     = document.getElementById('col-doc').value;
       const colImpact  = document.getElementById('col-impact').value;
-      const riskData = currentResults.map(r => ({
-        '元行番号': r.rowNum,
-        '章番号': r.chapter,
-        '仕様種別': r.specType,
-        '所掌': r.owner,
-        'Project名': colProject ? String(currentRows[r.idx]?.[colProject]||'') : '',
-        '引合番号': colRfq     ? String(currentRows[r.idx]?.[colRfq]    ||'') : '',
-        'E&C&LT': colImpact  ? String(currentRows[r.idx]?.[colImpact] ||'') : '',
-        'ドキュメント番号': colDoc ? String(currentRows[r.idx]?.[colDoc]||'') : '',
-        '要求仕様文': r.spec,
-        '判定': r.level === 'high' ? '対象' : r.level === 'mid' ? '要確認' : '対象外',
-        '信頼度(0-100)': r.confidence,
-        '一致デビクラ語': r.allHits.map(h => h.word).join(', '),
-        '推定根拠': r.allHits.map(h => `${h.word}: ${h.why}`).join(' / '),
-        'レビュー': reviewState[r.idx] === 'adopt' ? '採用' : reviewState[r.idx] === 'modify' ? '修正して採用' : reviewState[r.idx] === 'reject' ? '不採用' : '未レビュー',
-        '修正後内容': '',
-        'コメント': '',
-        '使用辞書': dictName,
-        '処理日時': new Date().toISOString(),
-      }));
+      // Phase 3: E&C&LT 影響軸列を追加（CODEXフィードバック反映）
+      //   - 主列「E&C&LT(推定)」: 'E,C,LT' をカンマ区切りで併記（後処理向け）
+      //   - 別列「E影響/C影響/LT影響」: '○' or '' で軸別フラグ（Excel集計向け）
+      //   - 入力Excelに既存の影響軸列があれば「E&C&LT(入力)」として保持
+      const riskData = currentResults.map(r => {
+        const f  = r.impactFlags || { E:false, C:false, LT:false };
+        const sc = r.impactScore || { E:0, C:0, LT:0 };
+        const inferredAxes = ['E','C','LT'].filter(ax => f[ax]).join(',');
+        return {
+          '元行番号': r.rowNum,
+          '章番号': r.chapter,
+          '仕様種別': r.specType,
+          '所掌': r.owner,
+          'Project名': colProject ? String(currentRows[r.idx]?.[colProject]||'') : '',
+          '引合番号': colRfq     ? String(currentRows[r.idx]?.[colRfq]    ||'') : '',
+          'E&C&LT(入力)':  colImpact ? String(currentRows[r.idx]?.[colImpact]||'') : '',
+          'E&C&LT(推定)':  inferredAxes,
+          'E影響':  f.E  ? '○' : '',
+          'C影響':  f.C  ? '○' : '',
+          'LT影響': f.LT ? '○' : '',
+          '影響軸スコア(E/C/LT)': `${sc.E.toFixed(1)} / ${sc.C.toFixed(1)} / ${sc.LT.toFixed(1)}`,
+          'ドキュメント番号': colDoc ? String(currentRows[r.idx]?.[colDoc]||'') : '',
+          '要求仕様文': r.spec,
+          '判定': r.level === 'high' ? '対象' : r.level === 'mid' ? '要確認' : '対象外',
+          '信頼度(0-100)': r.confidence,
+          '一致デビクラ語': r.allHits.map(h => h.word).join(', '),
+          '推定根拠': r.allHits.map(h => `${h.word}: ${h.why}`).join(' / '),
+          'レビュー': reviewState[r.idx] === 'adopt' ? '採用' : reviewState[r.idx] === 'modify' ? '修正して採用' : reviewState[r.idx] === 'reject' ? '不採用' : '未レビュー',
+          '修正後内容': '',
+          'コメント': '',
+          '使用辞書': dictName,
+          '処理日時': new Date().toISOString(),
+        };
+      });
       const ws1 = XLSX.utils.json_to_sheet(riskData);
-      ws1['!cols'] = [{wch:8},{wch:10},{wch:12},{wch:10},{wch:20},{wch:14},{wch:12},{wch:18},{wch:60},{wch:10},{wch:10},{wch:30},{wch:50},{wch:14},{wch:30},{wch:30},{wch:14},{wch:20}];
+      // 列幅: 元行/章/種別/所掌/Proj/引合/E&C&LT入力/推定/E/C/LT/スコア/Doc/仕様文/判定/信頼度/一致語/根拠/レビュー/修正/コメント/辞書/日時 = 23列
+      ws1['!cols'] = [{wch:8},{wch:10},{wch:12},{wch:10},{wch:20},{wch:14},{wch:14},{wch:14},{wch:7},{wch:7},{wch:7},{wch:18},{wch:18},{wch:60},{wch:10},{wch:10},{wch:30},{wch:50},{wch:14},{wch:30},{wch:30},{wch:14},{wch:20}];
       XLSX.utils.book_append_sheet(wb, ws1, 'デビクラ一覧');
 
       // シート2: 処理内容
@@ -1306,7 +1361,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { '項目':'対象件数', '値': currentResults.filter(r => r.level==='high').length },
         { '項目':'要確認件数', '値': currentResults.filter(r => r.level==='mid').length },
         { '項目':'対象外件数', '値': currentResults.filter(r => r.level==='low').length },
-        { '項目':'検索アルゴリズム', '値': 'BM25 + デビクラ辞書ハイブリッド (MVP第1+第2段階)' },
+        { '項目':'E影響あり件数',  '値': currentResults.filter(r => r.impactFlags?.E ).length },
+        { '項目':'C影響あり件数',  '値': currentResults.filter(r => r.impactFlags?.C ).length },
+        { '項目':'LT影響あり件数', '値': currentResults.filter(r => r.impactFlags?.LT).length },
+        { '項目':'検索アルゴリズム', '値': 'BM25 + デビクラ辞書 + E&C&LT影響軸推定 (Phase 3)' },
         { '項目':'データ送信先', '値': 'なし（ブラウザ完結）' },
       ];
       const ws2 = XLSX.utils.json_to_sheet(procData);
@@ -1334,15 +1392,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       ws3['!cols'] = [{wch:20},{wch:30}];
       XLSX.utils.book_append_sheet(wb, ws3, '列対応');
 
-      // シート4: デビクラ辞書（使用版）
+      // シート4: デビクラ辞書（使用版・Phase 3 で E&C&LT 列追加）
       const dict = RISK_DICT[currentPreset];
+      const fmtImpact = e => Array.isArray(e.impact) ? e.impact.join(',') : '';
       const dictData = [
-        ...dict.high.map(e => ({ '判定':'対象',   '語':e.word,'判断材料(why)':e.why })),
-        ...dict.mid .map(e => ({ '判定':'要確認', '語':e.word,'判断材料(why)':e.why })),
-        ...dict.low .map(e => ({ '判定':'対象外', '語':e.word,'判断材料(why)':e.why })),
+        ...dict.high.map(e => ({ '判定':'対象',   '語':e.word,'判断材料(why)':e.why,'E&C&LT':fmtImpact(e) })),
+        ...dict.mid .map(e => ({ '判定':'要確認', '語':e.word,'判断材料(why)':e.why,'E&C&LT':fmtImpact(e) })),
+        ...dict.low .map(e => ({ '判定':'対象外', '語':e.word,'判断材料(why)':e.why,'E&C&LT':fmtImpact(e) })),
       ];
       const ws4 = XLSX.utils.json_to_sheet(dictData);
-      ws4['!cols'] = [{wch:10},{wch:18},{wch:60}];
+      ws4['!cols'] = [{wch:10},{wch:18},{wch:60},{wch:14}];
       XLSX.utils.book_append_sheet(wb, ws4, 'デビクラ辞書');
 
       const filename = `spec-risk-${currentPreset}-${new Date().toISOString().slice(0,10)}.xlsx`;
@@ -1450,6 +1509,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         tx.onabort    = () => rej(tx.error || new Error('tx aborted'));
         tx.onerror    = () => rej(tx.error);
       }));
+    }
+
+    // ===== Phase 3: E&C&LT 影響軸の文字列パーサー =====
+    //   "E,C" / "E/C" / "E C" / "E、C" / "Engineering, Cost" / "設計・コスト" 等を ['E','C','LT'] に正規化
+    //   未知トークンは捨てる。重複は除去。順序は ['E','C','LT'] 固定
+    function parseImpactString(s) {
+      if (!s) return [];
+      const upper = String(s).toUpperCase();
+      const flags = { E:false, C:false, LT:false };
+      // LT を先に判定（'LT' を 'L' + 'T' と取られないため）
+      if (/\bLT\b|LEAD\s*TIME|納期|リードタイム/.test(upper)) flags.LT = true;
+      if (/\bE\b|ENGINEERING|設計/.test(upper))               flags.E  = true;
+      if (/\bC\b|COST|コスト|費用/.test(upper))               flags.C  = true;
+      const out = [];
+      if (flags.E)  out.push('E');
+      if (flags.C)  out.push('C');
+      if (flags.LT) out.push('LT');
+      return out;
     }
 
     // ===== 第3段階: 文章ベクトル類似度（bag-of-bigrams + コサイン類似度） =====
@@ -1839,6 +1916,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           //   旧Bug: imported プレフィックス付きで別キー → 同一Excel再取込で重複蓄積していた
           const key = `${currentPreset}|${rowNum}|${simpleHash(spec)}`;
           const now = new Date().toISOString();
+          // Phase 3: impact 列の文字列を正規化（"E,C" "E/C" "E C" "E、C" 等を ['E','C'] に）
+          const impactRaw = m.impact ? String(r[m.impact]||'') : '';
+          const impactArr = parseImpactString(impactRaw);
           const record = {
             ts: now,
             updatedAt: now,
@@ -1852,7 +1932,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             owner: m.owner ? String(r[m.owner]||'') : '',
             project: m.project ? String(r[m.project]||'') : '',
             rfq: m.rfq ? String(r[m.rfq]||'') : '',
-            impact: m.impact ? String(r[m.impact]||'') : '',
+            impactRaw,           // 元文字列も監査用に保持
+            impact: impactArr,   // 正規化済み配列 ['E','C','LT']
             doc: m.doc ? String(r[m.doc]||'') : '',
             devicraRaw: devRaw,
             level,
