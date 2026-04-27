@@ -317,7 +317,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
         <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
           <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">🧠 学習する</div>
-          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">人レビュー（採用/修正/不採用）を IndexedDB に蓄積。新旧モデル比較で重大候補の承認率を評価し、人が採用判断する仕組み。<strong style="color:#edede8;">使うほど自社判断ナレッジが育つ</strong>。</p>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">人レビュー（採用/修正/不採用）を IndexedDB に蓄積。新旧モデル比較で「対象」候補の承認率を評価し、人が採用判断する仕組み。<strong style="color:#edede8;">使うほど自社判断ナレッジが育つ</strong>。</p>
         </div>
       </div>
     </section>
@@ -373,7 +373,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ⑯  学習対象データ抽出                 ↓
 ⑰  新辞書バージョン候補生成            ↓
 ⑱  旧モデル/新モデル評価実行           ↓
-⑲  重大候補の承認率・Top10一致率算出   ↓
+⑲ 「対象」候補の承認率・Top10一致率算出 ↓
 ⑳  画面に新旧差分表示                 ↓
 ㉑  人が採用可否判断                   ↓
 ㉒  採用時のみ新モデル切替              ↓
@@ -966,7 +966,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     function escapeHtml(s) { return String(s).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 
     // ============================================================
-    // リスク抽出メイン
+    // デビクラ抽出メイン
     // ============================================================
     document.getElementById('btn-extract').addEventListener('click', () => {
       runExtraction();
@@ -1133,7 +1133,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       reviewState = {};
       // CODEX Minor対応: 新規抽出時に修正テキストもクリア（前候補のidx衝突防止）
       for (const k in reviewModified) delete reviewModified[k];
-      lastReviewIdByCandidate = {}; // upsertキー追跡もリセット
+      // CODEX 4巡目 Major対応:
+      //   旧バグ: 抽出のたびに lastReviewIdByCandidate を空にしていた
+      //   → 起動時に rebuildReviewIndex() で復元した既存upsert索引が破棄され、
+      //     既存候補の最初の再レビューが上書きでなく新規追加になっていた
+      //   → 索引は捨てず、最新DBから再構築するだけにする
+      await rebuildReviewIndex();
 
       const elapsed = performance.now() - t0;
       renderResults(elapsed);
@@ -1231,7 +1236,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <ul style="margin:0.4rem 0 0 0;padding-left:1.2rem;">${reasons}</ul>
           </details>
           <div id="modify-area-${r.idx}" style="display:${isModify?'block':'none'};margin-top:0.6rem;">
-            <label style="color:rgba(255,255,255,0.5);font-size:0.66rem;letter-spacing:0.1em;display:block;margin-bottom:0.25rem;">修正後リスク内容（学習に保存）</label>
+            <label style="color:rgba(255,255,255,0.5);font-size:0.66rem;letter-spacing:0.1em;display:block;margin-bottom:0.25rem;">修正後の懸念内容（学習に保存）</label>
             <textarea class="modify-textarea" data-idx="${r.idx}" rows="2" style="width:100%;background:#0a0a0c;color:#edede8;border:1px solid rgba(200,169,110,0.3);padding:0.4rem 0.55rem;font-size:0.78rem;font-family:inherit;outline:none;line-height:1.5;">${escapeHtml(modifiedVal)}</textarea>
           </div>
         </td>
@@ -1308,16 +1313,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       ws2['!cols'] = [{wch:25},{wch:60}];
       XLSX.utils.book_append_sheet(wb, ws2, '処理内容');
 
-      // シート3: 列対応
+      // シート3: 列対応（CODEX 4巡目 Major対応: 新5列も列対応シートに反映）
       const colSpec = document.getElementById('col-spec').value;
       const colCh   = document.getElementById('col-chapter').value;
       const colTy   = document.getElementById('col-type').value;
       const colOw   = document.getElementById('col-owner').value;
+      const colCat  = document.getElementById('col-category').value;
       const mapData = [
-        { '内部項目':'要求仕様文', '入力Excel列名':colSpec },
-        { '内部項目':'章番号',   '入力Excel列名':colCh },
-        { '内部項目':'仕様種別', '入力Excel列名':colTy },
-        { '内部項目':'所掌',     '入力Excel列名':colOw },
+        { '内部項目':'要求仕様文',       '入力Excel列名':colSpec },
+        { '内部項目':'章番号',           '入力Excel列名':colCh },
+        { '内部項目':'仕様種別',         '入力Excel列名':colTy },
+        { '内部項目':'所掌',             '入力Excel列名':colOw },
+        { '内部項目':'カテゴリー',       '入力Excel列名':colCat },
+        { '内部項目':'Project名',        '入力Excel列名':colProject },
+        { '内部項目':'引合番号(RFQ)',    '入力Excel列名':colRfq },
+        { '内部項目':'ドキュメント番号', '入力Excel列名':colDoc },
+        { '内部項目':'E&C&LT 影響軸',    '入力Excel列名':colImpact },
       ];
       const ws3 = XLSX.utils.json_to_sheet(mapData);
       ws3['!cols'] = [{wch:20},{wch:30}];
@@ -1587,7 +1598,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const adopt   = reviews.filter(r => r.decision === 'adopt').length;
       const modify  = reviews.filter(r => r.decision === 'modify').length;
       const reject  = reviews.filter(r => r.decision === 'reject').length;
-      // 「重大候補の人手承認率」（CODEX指摘 Major: Recall という名前は誤りだったため修正）
+      // 「対象候補の人手承認率」（CODEX指摘 Major: Recall という名前は誤りだったため修正・Phase2で「対象」に改称）
       // 重大判定された候補のうち、レビューで「採用 or 修正採用」された割合 = 辞書精度の見方
       const highReviews = reviews.filter(r => r.level === 'high');
       const highAccepted = highReviews.filter(r => r.decision === 'adopt' || r.decision === 'modify').length;
@@ -1676,7 +1687,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const v = (await dbGetAll('dictVersions')).find(x => x.version === newVer);
         if (v) extendedDicts = v.extended || {};
         log('model_switch', newVer);
-        document.getElementById('compare-result').innerHTML = `<div style="color:#6ec897;font-size:0.78rem;padding:0.5rem 0.85rem;background:rgba(110,200,151,0.08);border:1px solid rgba(110,200,151,0.3);">✓ 新モデル <strong>${newVer}</strong> を採用しました。次回リスク抽出から有効。</div>`;
+        document.getElementById('compare-result').innerHTML = `<div style="color:#6ec897;font-size:0.78rem;padding:0.5rem 0.85rem;background:rgba(110,200,151,0.08);border:1px solid rgba(110,200,151,0.3);">✓ 新モデル <strong>${newVer}</strong> を採用しました。次回デビクラ抽出から有効。</div>`;
       }
       if (e.target && e.target.id === 'btn-revert') {
         await dbPut('modelMeta', { key:'active', version:'base' });
@@ -1697,7 +1708,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // ===== 第6段階: 新旧モデル比較 =====
     async function runComparison(newVer) {
       if (currentResults.length === 0) {
-        document.getElementById('compare-result').innerHTML = '<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;">先にリスク抽出を実行してください（同じ仕様書で旧/新モデルを比較）</div>';
+        document.getElementById('compare-result').innerHTML = '<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;">先にデビクラ抽出を実行してください（同じ仕様書で旧/新モデルを比較）</div>';
         return;
       }
       // 旧モデル(=現在のcurrentResults)と新モデル(extendedDicts更新後)を比較
@@ -1714,7 +1725,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const newTop10 = tempResults.slice(0, 10).map(r => r.idx);
       const top10Match = oldTop10.filter(i => newTop10.includes(i)).length;
       const highMatch  = oldHigh.filter(i => newHigh.includes(i)).length;
-      // CODEX指摘 Major対応: 「重大候補の承認率」は誤称（実装は重大判定 idx の重複率）→ 「重大候補一致率」に正しく改名
+      // CODEX指摘 Major対応: 「重大候補の承認率」は誤称（実装は対象判定 idx の重複率）→ 「対象候補一致率」に正しく改名
       const highMatchRate = oldHigh.length > 0 ? Math.round(highMatch/oldHigh.length*100) : 100;
       const html = `
         <div style="background:#0f0f12;border:1px solid rgba(200,169,110,0.2);padding:1rem 1.25rem;">
@@ -1724,7 +1735,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">学習レビュー数</td><td style="padding:0.25rem;color:#edede8;">${newV.stats.reviewsUsed}件</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 強化候補</td><td style="padding:0.25rem;color:#6ec897;">+${newV.stats.strengthened}語</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 弱化候補</td><td style="padding:0.25rem;color:rgba(255,80,80,0.85);">-${newV.stats.weakened}語</td></tr>
-            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">重大候補一致率（旧∩新／旧）</td><td style="padding:0.25rem;color:#c8a96e;font-weight:600;">${highMatchRate}% (${highMatch}/${oldHigh.length})</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">「対象」候補一致率（旧∩新／旧）</td><td style="padding:0.25rem;color:#c8a96e;font-weight:600;">${highMatchRate}% (${highMatch}/${oldHigh.length})</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">Top10一致率</td><td style="padding:0.25rem;color:#edede8;">${oldTop10.length>0?Math.round(top10Match/oldTop10.length*100):0}% (${top10Match}/${oldTop10.length})</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">新モデル候補数</td><td style="padding:0.25rem;color:rgba(255,255,255,0.6);">${tempResults.length}件 (重大${newHigh.length}件)</td></tr>
           </table>
@@ -1823,7 +1834,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           else { skipped++; continue; }
 
           const rowNum = imported + 2;
-          const key = `${currentPreset}|imported-${simpleHash(spec)}|${simpleHash(spec)}`;
+          // CODEX 4巡目 Major対応: 通常レビュー保存と同じ candidateKey() ロジックで upsert する
+          //   通常: `${preset}|${rowNum}|${simpleHash(spec)}`
+          //   旧Bug: imported プレフィックス付きで別キー → 同一Excel再取込で重複蓄積していた
+          const key = `${currentPreset}|${rowNum}|${simpleHash(spec)}`;
           const now = new Date().toISOString();
           const record = {
             ts: now,
