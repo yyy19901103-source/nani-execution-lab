@@ -1554,7 +1554,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       XLSX.utils.book_append_sheet(wb, ws4, 'デビクラ辞書');
 
       const filename = `spec-risk-${currentPreset}-${new Date().toISOString().slice(0,10)}.xlsx`;
-      XLSX.writeFile(wb, filename);
+      const wbout1 = XLSX.write(wb, { bookType:'xlsx', type:'array' });
+      const blob1  = new Blob([wbout1], { type:'application/octet-stream' });
+      const url1   = URL.createObjectURL(blob1);
+      const a1     = document.createElement('a');
+      a1.href = url1; a1.download = filename;
+      document.body.appendChild(a1); a1.click(); document.body.removeChild(a1);
+      setTimeout(() => URL.revokeObjectURL(url1), 1000);
     });
 
     // ============================================================
@@ -1571,7 +1577,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const ws = XLSX.utils.json_to_sheet(sample);
       ws['!cols'] = [{wch:10},{wch:14},{wch:14},{wch:80}];
       XLSX.utils.book_append_sheet(wb, ws, '要求仕様書');
-      XLSX.writeFile(wb, 'spec-risk-template.xlsx');
+      const wbout2 = XLSX.write(wb, { bookType:'xlsx', type:'array' });
+      const blob2  = new Blob([wbout2], { type:'application/octet-stream' });
+      const url2   = URL.createObjectURL(blob2);
+      const a2     = document.createElement('a');
+      a2.href = url2; a2.download = 'spec-risk-template.xlsx';
+      document.body.appendChild(a2); a2.click(); document.body.removeChild(a2);
+      setTimeout(() => URL.revokeObjectURL(url2), 1000);
     });
 
     // ============================================================
@@ -2153,7 +2165,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         a.href = url;
         a.download = `spec-risk-model-${new Date().toISOString().slice(0,10)}.json`;
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
         setShareStatus(`✓ 書き出し完了 (辞書${payload.stats.dictVersions}版・レビュー${payload.stats.reviews}件)`, '#6ec897');
         log('model_export', `dictVersions=${payload.stats.dictVersions} reviews=${payload.stats.reviews}`);
       } catch (err) {
