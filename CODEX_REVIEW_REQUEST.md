@@ -1,83 +1,77 @@
-# CODEX 4巡目レビュー依頼書（2026-04-27）
+# CODEX 5巡目レビュー依頼書（2026-04-27）
 
 ## レビュー対象
 
 **プロジェクト**: NaNi Execution Lab — 製造業DX × ETO（一品一様製造） 個人技術サイト
 **リポジトリ**: https://github.com/yyy19901103-source/nani-execution-lab
-**対象コミット**: `d1e31f3`（HEAD）
-**前回レビュー対象**: `73feddb`（3巡目）
+**対象コミット**: `1ce495b`（HEAD）
+**前回レビュー対象**: `cc725d6`（4巡目）
 
 ---
 
-## 🔁 3巡目以降の変更サマリ
+## 🔁 4巡目レビュー以降の対応サマリ
 
-### Phase 1（コミット `e580ce1`）: 学習データインポート + 列マッピング拡張
+### 4巡目 Major（4件）→ 全件対応（コミット `18fe484`）
 
-| 変更 | 内容 |
-|------|------|
-| **学習データ取り込み** | 既存のデビクラ判定済みExcelを `IndexedDB.reviews` に一括投入するUIを追加 |
-| **デビクラ列マッピング** | 対象→adopt/high・要確認→modify/mid・対象外→reject/low のマッピング確立 |
-| **列マッピング5列追加** | `col-category` / `col-project` / `col-rfq` / `col-doc` / `col-impact` |
-| **candidateKey による upsert** | `preset+rowNum+spec hash` の論理キーで重複蓄積防止 |
-| **起動時 rebuildReviewIndex** | インポート済みデータの索引を起動時に復元 |
+| 4巡目指摘 | 対応 |
+|----------|------|
+| **学習インポートのupsertキー不整合** | キー形式を `${preset}\|${rowNum}\|${hash}` に統一（通常レビューと同一）。同一Excel再取込で重複しなくなった |
+| **`runExtraction()` で `lastReviewIdByCandidate = {}` で索引破棄バグ** | 空にせず `await rebuildReviewIndex()` で再構築するよう変更 |
+| **UI文言「リスク」残存4箇所** | コメント・ラベル・メッセージを業界用語に置換完了 |
+| **列対応シートに新5列が未反映** | カテゴリー / Project名 / 引合番号 / ドキュメント番号 / E&C&LT 影響軸 を追加 |
 
-### Phase 2（コミット `d1e31f3`）: UI業界用語化（本コミット）
+### 4巡目 Minor → 対応
+- コメント「重大候補」→「対象」候補 統一（HOW ⑲・アルゴリズム解説・コメント・テーブル行）
 
-| 変更 | 内容 |
-|------|------|
-| **「リスク候補」→「懸念候補」** | 全画面・HTML/JS/コメント置換 |
-| **「⚠ 重大 / 注意 / 参考」→「対象 / 要確認 / 対象外」** | badge・フィルター・統計カード・Excel出力列値を置換 |
-| **「リスク辞書」→「デビクラ辞書」** | アルゴリズム解説・機能仕様・Excel シート名・コメントを置換 |
-| **Excel出力列追加** | Project名・引合番号・E&C&LT・ドキュメント番号の4列を「デビクラ一覧」シートに追加 |
-| **Excel「デビクラ一覧」シートの列「重大度」→「判定」** | 値も「対象/要確認/対象外」に変更 |
-| **USE CASES/NEXT ACTIONS/機能仕様の文言更新** | 業界用語に統一 |
+### Phase 3 実装（コミット `1ce495b`）: E&C&LT 影響軸推定
+
+CODEX 4巡目フィードバック（D節）を反映：
+
+| CODEX指摘 | 設計反映 |
+|----------|---------|
+| **`impact` は配列で持つべき** | `RISK_DICT` 全100語に `impact: ['E','C','LT']` 配列を付与 |
+| **OR集約 + 軸別スコア** | `impactFlags`（OR集約）と `impactScore`（軸別重み和）を別管理 |
+| **E影響/C影響/LT影響を別列で○/空** | Excel出力に `E影響/C影響/LT影響` の3列追加（○表示） |
+| **画面に小バッジでE/C/LTを出す** | テーブル行に `.impact-e/.impact-c/.impact-lt` バッジ表示 |
+| **学習インポート時のimpact正規化** | `parseImpactString()` で "E,C" / "設計・コスト" / "Engineering, Cost" 等を `['E','C']` に統一 |
+
+軸別重み: `high=3, mid=1.5, low=0.5` で `impactScore.E/C/LT` に積算。
 
 ---
 
-## 🔍 重点レビュー依頼項目（4巡目）
+## 🔍 重点レビュー項目（5巡目）
 
-### A. Phase 2 UI変更の整合性チェック
-1. **用語置換の抜け漏れがないか**
-   - HTML・JS・コメントすべてで「リスク候補/リスク辞書/⚠ 重大/注意/参考」が残っていないか
-   - `filter-level` select の option value（`high`/`mid`/`low`）は変えずに表示ラベルだけ変えているか
-   - badge CSS クラス名（`badge-high` 等）は変えずに中身の文字列だけ変えているか
+### A. Phase 3 実装の整合性
 
-2. **Excel出力の新4列が正しく出力されるか**
-   - `currentRows[r.idx]?.[colProject]` 等のアクセスで `r.idx` が正しく `currentRows` の添字と対応しているか
-   - 列マッピングセレクタが未設定の場合（空文字）のフォールバックが空文字になっているか
-   - `ws1['!cols']` のカラム幅配列が新18列と一致しているか
+1. **`impact` 配列の業務的妥当性**（`RISK_DICT` 全100語）
+   - E（設計）/ C（コスト）/ LT（納期）の割当が業務的に妥当か
+   - 例: `公差 → ['E','C']` / `短納期 → ['LT','C']` / `PED → ['LT','C','E']` / `4WD → ['E','C']` 等
+   - 抜けがありそうな語（impact属性が論理的でない）はないか
 
-3. **デビクラ辞書の `high/mid/low` キー名は変更されていないか**（JavaScript内部処理で `level === 'high'` 等が使われているため、キー名変更は破壊的変更になる）
+2. **OR集約 + 軸別スコアのロジック**
+   - 同じ軸が複数の語からヒットしたとき、`impactScore` にスコアが加算される設計でよいか
+   - `impactFlags` は単純OR集約だが、軸別の信頼度をUIに反映する設計が必要か
 
-### B. Phase 1 + 2 の統合整合性
-4. **学習インポート時の `decision`・`level` マッピングが正しいか**
-   - `'対象'` → `decision:'adopt', level:'high'`
-   - `'要確認'` → `decision:'modify', level:'mid'`
-   - `'対象外'` → `decision:'reject', level:'low'`
+3. **`parseImpactString()` の堅牢性**
+   - "E,C" / "E/C" / "E C" / "E、C" / "Engineering, Cost" / "設計・コスト" / "ENG/LT" 等を正しく解釈するか
+   - エッジケース（空文字 / 数字混入 / 全角英字 / 不正トークン）の扱い
 
-5. **`refreshLearningStats()` が「対象」候補の承認率を正しく計算しているか**
-   - `highReviews` は `r.level === 'high'` でフィルタ — Phase 2でレベルキー名を変更していないなら問題なし
+4. **Excel出力17→23列拡張で `!cols` 配列のずれがないか**
+   - 列順: 元行/章/種別/所掌/Proj/引合/E&C&LT入力/E&C&LT推定/E影響/C影響/LT影響/影響軸スコア/Doc/仕様文/判定/信頼度/一致語/根拠/レビュー/修正/コメント/辞書/日時 = 23列
+   - `ws1['!cols']` も23要素で対応済みか
 
-### C. Phase 3 への準備状況評価（実装前フィードバック求む）
-Phase 3 として以下の実装を計画中。問題点・改善提案があれば指摘を：
+### B. 4巡目 Major対応の回帰確認
+5. 学習インポートのupsertキー統一が崩れていないか
+6. `runExtraction()` の `rebuildReviewIndex()` 呼び出しが正しく機能しているか（async 伝播含む）
 
-```
-E&C&LT 影響軸推定:
-- デビクラ辞書の各語に impact 属性を追加
-  例: { word:'公差', why:'...', impact:['E','C'] }
-- 抽出結果に E/C/LT バッジ表示（色分け）
-- 結果Excelの「E&C&LT」列を自動推定値で出力
-- 学習データの impact 列値を辞書補強の材料にする
-```
+### C. 機密保護（継続確認）
+7. `console.log` で `impactFlags`/`impactScore` 等が間接的に仕様文を漏らしていないか
+8. `parseImpactString()` の正規化結果に PII が混入する可能性はないか
 
-   - `impact` 属性をデビクラ辞書に追加する場合、既存の `RISK_DICT` 構造にどう追加するのが最善か
-   - 複数辞書語がヒットした場合の `impact` 集約ロジック（union? 多数決?）
-   - Excel の `E&C&LT` 列にどう出力するか（`['E','C']` → `"E/C"` 等の文字列変換）
-
-### D. 機密保護・コード品質（継続確認）
-- Phase 1/2 の変更で会社データの外部送信がゼロのまま保たれているか
-- `console.log` で仕様文・プロジェクト名等の実データが出ていないか
-- async/await の伝播に漏れがないか（Phase 1 の `learning-upload` ハンドラ）
+### D. UX
+9. E/C/LTバッジの色分け（青/金/緑）が直感的に区別できるか
+10. ツールチップ表示（軸別スコア）が情報過多になっていないか
+11. バッジが横に並ぶレイアウトでスマホ表示が崩れないか
 
 ---
 
@@ -93,11 +87,9 @@ E&C&LT 影響軸推定:
 ```
 
 特に：
-
-1. **Phase 2 の用語置換に抜け・整合性破壊がないか**
-2. **Excel新4列の `currentRows[r.idx]` アクセスに実行時エラーが無いか**
-3. **Phase 3 設計の事前フィードバック** — `impact` 属性の追加方針に問題がないか
-4. **「演出先行」最終卒業判定** — Phase1/2完了後で「使うほど精度が上がる仕組み」として仕上がっているか
+1. **Phase 3 の `impact` 配列割当の業務的妥当性**（100語のサンプリングレビュー）
+2. **17→23列拡張の `!cols` ずれ・型エラーがないか**
+3. **「演出先行卒業の最終判定」** — Phase 1/2/3 完了後で「使うほど精度が上がる仕組み」として完成しているか
 
 ## 機密保護絶対要件（変わらず）
 
@@ -111,21 +103,18 @@ E&C&LT 影響軸推定:
 git clone https://github.com/yyy19901103-source/nani-execution-lab.git
 cd nani-execution-lab
 git log --oneline -5
-# d1e31f3 が HEAD であることを確認
+# 1ce495b が HEAD であることを確認
 
 cat CODEX_REVIEW_REQUEST.md  # 本依頼書
 
 # 主要レビュー対象
-#   src/pages/ai-tools/spec-risk-extractor.astro    （主対象: Phase1/2 全変更）
-#   src/pages/ai-tools/eto-similar-quote.astro      （Z-score 修正・回帰確認）
-#   src/pages/ai-tools/project-monte-carlo.astro    （回帰確認）
-#   src/pages/ai-tools/eto-job-shop.astro           （回帰確認）
+#   src/pages/ai-tools/spec-risk-extractor.astro    （Phase 3 全変更 + 4巡目修正）
 ```
 
 レビュー後、以下3点の総評をお願いします：
 
-1. **生産技術エンジニアが現場で本当に使いたくなるか（Phase 2で業界用語統一後）**
-2. **機密保護の絶対要件は守られているか**
-3. **Phase 3（E&C&LT軸推定）を安全に実装するための設計上の注意点**
+1. **Phase 1+2+3 完了で、生産技術エンジニアが現場で本当に使いたくなるか**
+2. **E&C&LT 影響軸推定で意思決定支援として実用レベルに達しているか**
+3. **「演出先行」を完全卒業したと判定できるか**
 
 辛口で結構です。残課題があれば 🔴 / 🟡 で再指摘してください。
