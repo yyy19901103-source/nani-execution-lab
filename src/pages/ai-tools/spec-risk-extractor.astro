@@ -65,6 +65,126 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
 
+    <!-- 📖 使い方ガイド（折りたたみ・詳細） -->
+    <details style="margin-bottom:1rem;background:#0f0f12;border:1px solid rgba(200,169,110,0.2);">
+      <summary style="cursor:pointer;color:#c8a96e;font-size:0.78rem;letter-spacing:0.15em;padding:0.85rem 1.1rem;outline:none;font-weight:500;">
+        📖 使い方ガイド ▼ <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;font-weight:400;letter-spacing:0.05em;margin-left:0.5rem;">— 個人運用・チーム運用・モデル共有まで</span>
+      </summary>
+      <div style="padding:0 1.4rem 1.4rem;color:rgba(237,237,232,0.85);font-size:0.8rem;line-height:1.7;">
+
+        <h3 style="color:#c8a96e;font-size:0.72rem;letter-spacing:0.2em;margin-top:1rem;margin-bottom:0.6rem;">▸ STEP 0 — このツールの本質</h3>
+        <p style="margin:0 0 0.85rem 0;color:rgba(237,237,232,0.75);">
+          ETO製造業の <strong>仕様書Excel</strong> から、見積もり・設計・納期を狂わせる
+          <strong style="color:#c8a96e;">デビクラ（Deviation &amp; Clarification = 顧客に提示する懸念事項）</strong>
+          をブラウザ完結で抽出します。<br/>
+          AIではなく、業界別デビクラ辞書 + BM25 + 文章ベクトル類似度 + 過去レビュー学習のハイブリッドで動きます。
+          <strong>外部送信ゼロ・社内PCで全処理が閉じる</strong>のが最大の特徴です。
+        </p>
+
+        <h3 style="color:#c8a96e;font-size:0.72rem;letter-spacing:0.2em;margin-top:1.25rem;margin-bottom:0.6rem;">▸ STEP 1 — 個人運用フロー（最初の体験）</h3>
+        <ol style="margin:0 0 0.85rem 0;padding-left:1.4rem;color:rgba(237,237,232,0.75);">
+          <li><strong>業界プリセット</strong>を選ぶ（産業機械 / プラント / 特装車両）</li>
+          <li><strong>「📄 サンプル仕様書をロード」</strong>でデモを動かす（Excelなしで体験可能）</li>
+          <li><strong>「デビクラ抽出 ▶」</strong>または <code>Ctrl+Enter</code> で実行</li>
+          <li>抽出された懸念候補を見て、各行の右端で <strong>「✓ 採用 / 修正 / ✗ 不採用」</strong> を選択</li>
+          <li>「⬇ Excel出力」で結果を別Excelに出力（4シート: デビクラ一覧 / 処理内容 / 列対応 / デビクラ辞書）</li>
+        </ol>
+
+        <h3 style="color:#c8a96e;font-size:0.72rem;letter-spacing:0.2em;margin-top:1.25rem;margin-bottom:0.6rem;">▸ STEP 2 — 自社Excelを取り込む</h3>
+        <ol style="margin:0 0 0.85rem 0;padding-left:1.4rem;color:rgba(237,237,232,0.75);">
+          <li><strong>「📂 Excelをアップロード」</strong> または「⬇ Excelテンプレート」でひな型をDL</li>
+          <li>シート選択 → <strong>列マッピング</strong>を確認（要求仕様文の列は必須・他は任意）<br/>
+            <span style="color:rgba(255,255,255,0.5);font-size:0.74rem;">対応列: 章番号 / カテゴリー / 仕様種別 / 所掌 / Project名 / 引合番号(RFQ) / ドキュメント番号 / E&amp;C&amp;LT デビクラ種類</span>
+          </li>
+          <li>抽出 → レビュー → Excel出力</li>
+        </ol>
+
+        <h3 style="color:#c8a96e;font-size:0.72rem;letter-spacing:0.2em;margin-top:1.25rem;margin-bottom:0.6rem;">▸ STEP 3 — 過去案件で学習させる（精度を一気に上げる）</h3>
+        <ol style="margin:0 0 0.85rem 0;padding-left:1.4rem;color:rgba(237,237,232,0.75);">
+          <li>過去のデビクラ判定済みExcel（対象/要確認/対象外を入れてあるもの）を用意</li>
+          <li><strong>「📚 学習データ → 既存のデビクラ判定済みExcelを取り込む」</strong>でアップロード</li>
+          <li>列名は <strong>要求仕様 / デビクラ</strong> が必須。対象→adopt/対象、要確認→修正、対象外→不採用 にマッピング</li>
+          <li><strong>「🧠 学習実行」</strong>で新モデル候補を生成 → 「対象」候補一致率・Top10一致率で旧/新比較</li>
+          <li>納得すれば <strong>「✓ 新モデルを採用」</strong> / 不安なら「↺ ベースに戻す」で復元可能</li>
+        </ol>
+
+        <h3 style="color:#6ec897;font-size:0.72rem;letter-spacing:0.2em;margin-top:1.25rem;margin-bottom:0.6rem;">▸ STEP 4 — チーム運用（モデル共有）</h3>
+        <p style="margin:0 0 0.6rem 0;color:rgba(237,237,232,0.75);">
+          学習成果は <strong>各PCのブラウザ内（IndexedDB）</strong> にしか保存されません。チームで共有するには：
+        </p>
+        <ol style="margin:0 0 0.85rem 0;padding-left:1.4rem;color:rgba(237,237,232,0.75);">
+          <li>学習済みPCで <strong>「📥 モデル書き出し（JSON）」</strong>を実行 → 1つのJSONファイルがDLされる<br/>
+            <span style="color:rgba(255,255,255,0.5);font-size:0.74rem;">含まれるもの: 辞書バージョン全件 / レビュー履歴全件 / アクティブバージョン情報</span>
+          </li>
+          <li>そのJSONをチームメンバーに渡す（社内ファイルサーバ or 暗号化メール推奨）</li>
+          <li>受け取った側は <strong>「📤 モデル取り込み（JSON）」</strong> でアップロード<br/>
+            ・<strong>マージ</strong>（推奨）: 既存データと統合・同一candidateKeyは上書き<br/>
+            ・<strong>置換</strong>: 既存を全削除して読み込み（取り消し不可）
+          </li>
+          <li>取り込み後は受け取った側のPCでも同じ学習成果が使える</li>
+        </ol>
+
+        <h3 style="color:#80c4d8;font-size:0.72rem;letter-spacing:0.2em;margin-top:1.25rem;margin-bottom:0.6rem;">▸ STEP 5 — E&amp;C&amp;LT デビクラ種類の見方</h3>
+        <p style="margin:0 0 0.6rem 0;color:rgba(237,237,232,0.75);">
+          抽出された各候補には、<strong>デビクラがどの種類に該当するか</strong>が小バッジで表示されます：
+        </p>
+        <ul style="margin:0 0 0.85rem 0;padding-left:1.4rem;color:rgba(237,237,232,0.75);">
+          <li><span class="impact-badge impact-e">E 技術</span> Engineering = 技術的成立性・設計工数・公差・歩留まりへの影響</li>
+          <li><span class="impact-badge impact-c">C コスト</span> Cost = 部品コスト・特殊材料・認証費用・現地工事費等</li>
+          <li><span class="impact-badge impact-lt">LT リードタイム</span> LeadTime = 認証取得期間・調達LT長・短納期要求等</li>
+        </ul>
+        <p style="margin:0 0 0.85rem 0;color:rgba(237,237,232,0.55);font-size:0.76rem;">
+          バッジにマウスを合わせると種類別スコア（高=3 / 中=1.5 / 低=0.5 の重み付き総和）が表示されます。
+          複数の辞書語がヒットした場合はORで集約。Excel出力では「E&amp;C&amp;LT(推定)」「E影響/C影響/LT影響」の各列に出力。
+        </p>
+
+        <h3 style="color:#ff8888;font-size:0.72rem;letter-spacing:0.2em;margin-top:1.25rem;margin-bottom:0.6rem;">▸ STEP 6 — 機密保護のチェック方法</h3>
+        <ol style="margin:0 0 0.85rem 0;padding-left:1.4rem;color:rgba(237,237,232,0.75);">
+          <li>ブラウザの DevTools (F12) → <strong>Network</strong> タブを開く</li>
+          <li>このページで Excel をアップロードして抽出を実行</li>
+          <li>新規ネットワーク通信が <strong>発生しないこと</strong>を確認（SheetJS CDN 初回ロード以降は通信ゼロ）</li>
+        </ol>
+        <p style="margin:0 0 0.85rem 0;color:rgba(237,237,232,0.55);font-size:0.76rem;">
+          IndexedDB に学習データが残ります。共有PC・退職時には DevTools → Application → IndexedDB → <code>spec-risk-db</code> を削除してください。
+          または「レビュー履歴クリア」ボタンで reviews ストアのみクリア可能。
+        </p>
+
+        <h3 style="color:rgba(255,255,255,0.7);font-size:0.72rem;letter-spacing:0.2em;margin-top:1.25rem;margin-bottom:0.6rem;">▸ FAQ・トラブルシューティング</h3>
+        <details style="margin-bottom:0.4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.5rem 0.85rem;">
+          <summary style="cursor:pointer;color:rgba(237,237,232,0.85);font-size:0.78rem;outline:none;">Q. 大きなExcel（5000行以上）を読み込ませたい</summary>
+          <p style="margin:0.5rem 0 0 0;color:rgba(255,255,255,0.6);font-size:0.74rem;">
+            5000行超は警告ダイアログが出ます。ESCキーで処理中断可能。重い場合は事前にシートを分割するのが推奨。
+          </p>
+        </details>
+        <details style="margin-bottom:0.4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.5rem 0.85rem;">
+          <summary style="cursor:pointer;color:rgba(237,237,232,0.85);font-size:0.78rem;outline:none;">Q. 学習データをチームで共有するベストな方法は</summary>
+          <p style="margin:0.5rem 0 0 0;color:rgba(255,255,255,0.6);font-size:0.74rem;">
+            (1) ベース担当が学習済みモデルを書き出し → (2) 社内ファイルサーバに置く → (3) 各メンバーが「マージ」モードで取り込み。<br/>
+            週次・月次で再書き出し→上書き共有のサイクルが現実的。
+          </p>
+        </details>
+        <details style="margin-bottom:0.4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.5rem 0.85rem;">
+          <summary style="cursor:pointer;color:rgba(237,237,232,0.85);font-size:0.78rem;outline:none;">Q. 「対象候補の人手承認率」が下がってきた</summary>
+          <p style="margin:0.5rem 0 0 0;color:rgba(255,255,255,0.6);font-size:0.74rem;">
+            辞書が業務に対して過剰に厳しい可能性。レビュー結果を再点検して、不採用が多い辞書語は「学習実行」で自動的に弱化（suppressed）されます。
+          </p>
+        </details>
+        <details style="margin-bottom:0.4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.5rem 0.85rem;">
+          <summary style="cursor:pointer;color:rgba(237,237,232,0.85);font-size:0.78rem;outline:none;">Q. 取り込んだモデルを元に戻したい</summary>
+          <p style="margin:0.5rem 0 0 0;color:rgba(255,255,255,0.6);font-size:0.74rem;">
+            「↺ ベースに戻す」ボタンで辞書はベース版に戻ります。レビュー履歴は残るので、必要に応じて「レビュー履歴クリア」を実行。
+          </p>
+        </details>
+        <details style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:0.5rem 0.85rem;">
+          <summary style="cursor:pointer;color:rgba(237,237,232,0.85);font-size:0.78rem;outline:none;">Q. オフライン環境でも使える？</summary>
+          <p style="margin:0.5rem 0 0 0;color:rgba(255,255,255,0.6);font-size:0.74rem;">
+            ページの初回読込（HTML+CSS+JS+SheetJS CDN）後はオフラインで動作可能。ブラウザのキャッシュが残っていれば再起動後も動きます。
+          </p>
+        </details>
+
+      </div>
+    </details>
+
     <!-- 業界プリセット -->
     <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1.1rem;display:flex;flex-wrap:wrap;gap:0.65rem;align-items:center;margin-bottom:1rem;">
       <span style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:0.2em;">PRESET</span>
@@ -152,9 +272,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <select id="col-doc" class="field-input"></select>
         </div>
         <div>
-          <label class="field-label">E&amp;C&amp;LT 影響軸 列（任意）</label>
+          <label class="field-label">E&amp;C&amp;LT デビクラ種類 列（任意）</label>
           <select id="col-impact" class="field-input"></select>
-          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">E=設計 / C=コスト / LT=納期 影響</div>
+          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">E=技術 / C=コスト / LT=リードタイム デビクラ</div>
         </div>
       </div>
       <div id="preview-area" style="margin-top:0.85rem;"></div>
@@ -265,6 +385,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <button id="btn-clear-reviews" class="m-btn-ghost" style="font-size:0.7rem;padding:0.4rem 0.95rem;">レビュー履歴クリア</button>
       </div>
       <div id="compare-result"></div>
+
+      <!-- モデル共有（チーム配布用エクスポート/インポート） -->
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed rgba(200,169,110,0.18);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin:0;">▸ モデル共有（チーム配布）</p>
+          <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">学習成果を別のPC/別の人と共有</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+          <button id="btn-export-model" class="m-btn-ghost" style="font-size:0.74rem;padding:0.45rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
+            📥 モデル書き出し（JSON）
+          </button>
+          <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.45rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
+            📤 モデル取り込み（JSON）
+            <input id="model-import-upload" type="file" accept=".json,application/json" style="display:none;">
+          </label>
+          <select id="model-import-mode" class="field-input" style="width:auto;font-size:0.72rem;padding:0.3rem 0.6rem;">
+            <option value="merge">マージ（既存と統合・推奨）</option>
+            <option value="replace">置換（既存を全削除）</option>
+          </select>
+          <span id="model-share-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;flex:1;min-width:200px;"></span>
+        </div>
+        <div style="margin-top:0.6rem;color:rgba(255,255,255,0.4);font-size:0.66rem;line-height:1.55;">
+          書き出し: 辞書バージョン全件 + レビュー履歴全件 + アクティブバージョン情報を含む単一JSONファイル。
+          取り込み: マージは upsert（同一candidateKeyは上書き）。置換は既存を完全削除して読み込む（取り消し不可）。
+        </div>
+      </div>
     </div>
 
     <!-- 操作ログ -->
@@ -365,7 +511,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ⑧  候補統合 + 重複除去                ↓
 ⑨  リランキング（5指標重み付き総合）   ↓
 ⑩  懸念候補生成 + 判定（対象/要確認/対象外）↓
-⑪  E&C&LT 影響軸推定（OR集約・軸別重み付き）↓
+⑪ E&C&LT デビクラ種類推定（技術/コスト/LT・OR集約）↓
 ⑫  信頼度算出 (0〜100点)              ↓
 ⑬  推定根拠表示 (一致語+why)          ↓
 ⑭  人レビュー (採用/修正/不採用)       ↓
@@ -543,8 +689,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // デビクラ辞書（業界別・対象/要確認/対象外の3段階）
     // ============================================================
     // CODEX 4巡目フィードバック: impact は配列で持つ（Set相当・OR集約）
-    //   E = Engineering（設計影響）  C = Cost（コスト影響）  LT = LeadTime（納期影響）
-    //   各語の業務的意味から論理的に推定。空配列は影響軸不明＝判定保留扱い
+    //   デビクラ種類 3軸:
+    //     E  = 技術デビクラ（Engineering）   設計工数・公差・技術的成立性に関わる懸念
+    //     C  = コストデビクラ（Cost）        部品・材料・認証・現地工事のコスト増懸念
+    //     LT = リードタイムデビクラ（LeadTime） 認証取得期間・調達LT長・短納期要求の懸念
+    //   各語の業務的意味から論理的に推定。空配列はデビクラ種類不明＝判定保留扱い
     const RISK_DICT = {
       industrial: {
         name: '産業機械',
@@ -954,7 +1103,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         project:  find(['project','プロジェクト','案件名']),
         rfq:      find(['引合','rfq','見積番号','問合']),
         doc:      find(['ドキュメント','document','図書','文書','資料番号']),
-        impact:   find(['e&c&lt','e&c','影響軸','impact','e/c/lt']),
+        impact:   find(['e&c&lt','e&c','デビクラ種類','影響軸','impact','e/c/lt']),
       };
     }
 
@@ -1257,10 +1406,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const sc    = r.impactScore || { E:0, C:0, LT:0 };
       const impactBadges = (flags.E || flags.C || flags.LT) ? `
         <div style="display:flex;gap:0.35rem;flex-wrap:wrap;margin-top:0.4rem;font-size:0.62rem;align-items:center;">
-          <span style="color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.15em;">影響軸:</span>
-          ${flags.E  ? `<span class="impact-badge impact-e"  title="設計影響スコア ${sc.E.toFixed(1)}">E 設計</span>`  : ''}
-          ${flags.C  ? `<span class="impact-badge impact-c"  title="コスト影響スコア ${sc.C.toFixed(1)}">C コスト</span>`   : ''}
-          ${flags.LT ? `<span class="impact-badge impact-lt" title="納期影響スコア ${sc.LT.toFixed(1)}">LT 納期</span>` : ''}
+          <span style="color:rgba(255,255,255,0.4);font-size:0.6rem;letter-spacing:0.15em;">デビクラ種類:</span>
+          ${flags.E  ? `<span class="impact-badge impact-e"  title="技術デビクラスコア ${sc.E.toFixed(1)}">E 技術</span>`  : ''}
+          ${flags.C  ? `<span class="impact-badge impact-c"  title="コストデビクラスコア ${sc.C.toFixed(1)}">C コスト</span>`   : ''}
+          ${flags.LT ? `<span class="impact-badge impact-lt" title="リードタイムデビクラスコア ${sc.LT.toFixed(1)}">LT リードタイム</span>` : ''}
         </div>` : '';
       const isModify = reviewState[r.idx] === 'modify';
       const modifiedVal = reviewModified[r.idx] || '';
@@ -1333,7 +1482,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           'E影響':  f.E  ? '○' : '',
           'C影響':  f.C  ? '○' : '',
           'LT影響': f.LT ? '○' : '',
-          '影響軸スコア(E/C/LT)': `${sc.E.toFixed(1)} / ${sc.C.toFixed(1)} / ${sc.LT.toFixed(1)}`,
+          'デビクラ種類スコア(E/C/LT)': `${sc.E.toFixed(1)} / ${sc.C.toFixed(1)} / ${sc.LT.toFixed(1)}`,
           'ドキュメント番号': colDoc ? String(currentRows[r.idx]?.[colDoc]||'') : '',
           '要求仕様文': r.spec,
           '判定': r.level === 'high' ? '対象' : r.level === 'mid' ? '要確認' : '対象外',
@@ -1361,10 +1510,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { '項目':'対象件数', '値': currentResults.filter(r => r.level==='high').length },
         { '項目':'要確認件数', '値': currentResults.filter(r => r.level==='mid').length },
         { '項目':'対象外件数', '値': currentResults.filter(r => r.level==='low').length },
-        { '項目':'E影響あり件数',  '値': currentResults.filter(r => r.impactFlags?.E ).length },
-        { '項目':'C影響あり件数',  '値': currentResults.filter(r => r.impactFlags?.C ).length },
-        { '項目':'LT影響あり件数', '値': currentResults.filter(r => r.impactFlags?.LT).length },
-        { '項目':'検索アルゴリズム', '値': 'BM25 + デビクラ辞書 + E&C&LT影響軸推定 (Phase 3)' },
+        { '項目':'E(技術)デビクラ件数',     '値': currentResults.filter(r => r.impactFlags?.E ).length },
+        { '項目':'C(コスト)デビクラ件数',   '値': currentResults.filter(r => r.impactFlags?.C ).length },
+        { '項目':'LT(リードタイム)デビクラ件数', '値': currentResults.filter(r => r.impactFlags?.LT).length },
+        { '項目':'検索アルゴリズム', '値': 'BM25 + デビクラ辞書 + E&C&LT種類推定 (Phase 3)' },
         { '項目':'データ送信先', '値': 'なし（ブラウザ完結）' },
       ];
       const ws2 = XLSX.utils.json_to_sheet(procData);
@@ -1386,7 +1535,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { '内部項目':'Project名',        '入力Excel列名':colProject },
         { '内部項目':'引合番号(RFQ)',    '入力Excel列名':colRfq },
         { '内部項目':'ドキュメント番号', '入力Excel列名':colDoc },
-        { '内部項目':'E&C&LT 影響軸',    '入力Excel列名':colImpact },
+        { '内部項目':'E&C&LT デビクラ種類', '入力Excel列名':colImpact },
       ];
       const ws3 = XLSX.utils.json_to_sheet(mapData);
       ws3['!cols'] = [{wch:20},{wch:30}];
@@ -1511,17 +1660,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }));
     }
 
-    // ===== Phase 3: E&C&LT 影響軸の文字列パーサー =====
-    //   "E,C" / "E/C" / "E C" / "E、C" / "Engineering, Cost" / "設計・コスト" 等を ['E','C','LT'] に正規化
+    // ===== Phase 3: E&C&LT デビクラ種類の文字列パーサー =====
+    //   E = 技術（Engineering） / C = コスト（Cost） / LT = リードタイム（LeadTime）
+    //   "E,C" / "E/C" / "E C" / "E、C" / "技術・コスト" / "Engineering, Cost" 等を ['E','C','LT'] に正規化
     //   未知トークンは捨てる。重複は除去。順序は ['E','C','LT'] 固定
     function parseImpactString(s) {
       if (!s) return [];
       const upper = String(s).toUpperCase();
       const flags = { E:false, C:false, LT:false };
       // LT を先に判定（'LT' を 'L' + 'T' と取られないため）
-      if (/\bLT\b|LEAD\s*TIME|納期|リードタイム/.test(upper)) flags.LT = true;
-      if (/\bE\b|ENGINEERING|設計/.test(upper))               flags.E  = true;
-      if (/\bC\b|COST|コスト|費用/.test(upper))               flags.C  = true;
+      if (/\bLT\b|LEAD\s*TIME|リードタイム|納期/.test(upper))           flags.LT = true;
+      if (/\bE\b|ENGINEERING|TECHNICAL|技術|設計/.test(upper))           flags.E  = true;
+      if (/\bC\b|COST|コスト|費用/.test(upper))                          flags.C  = true;
       const out = [];
       if (flags.E)  out.push('E');
       if (flags.C)  out.push('C');
@@ -1954,6 +2104,122 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       } catch (err) {
         status.textContent = '❌ 取込エラー: ' + err.message;
         status.style.color = '#ff8888';
+        console.warn(err);
+      }
+      e.target.value = '';
+    });
+
+    // ============================================================
+    // モデル共有: エクスポート/インポート（チーム配布用）
+    // ============================================================
+    //   形式: { type:'spec-risk-extractor-model', version, exportedAt,
+    //          activeDictVersion, dictVersions[], reviews[], stats }
+    //   インポートモード:
+    //     merge   = 既存と統合（candidateKey/version で upsert・推奨）
+    //     replace = 既存全削除して読込（取り消し不可）
+    const MODEL_EXPORT_VERSION = '1.0';
+    function setShareStatus(text, color) {
+      const el = document.getElementById('model-share-status');
+      if (!el) return;
+      el.textContent = text;
+      el.style.color = color || 'rgba(255,255,255,0.5)';
+    }
+
+    document.getElementById('btn-export-model').addEventListener('click', async () => {
+      try {
+        setShareStatus('書き出し中...', '#c8a96e');
+        const dictVersions = await dbGetAll('dictVersions');
+        const reviews      = await dbGetAll('reviews');
+        const modelMeta    = await dbGetAll('modelMeta');
+        const activeMeta   = modelMeta.find(m => m.key === 'active');
+        const payload = {
+          type: 'spec-risk-extractor-model',
+          version: MODEL_EXPORT_VERSION,
+          exportedAt: new Date().toISOString(),
+          activeDictVersion: activeMeta?.version || activeDictVersion || 'base',
+          dictVersions,
+          reviews,
+          stats: {
+            dictVersions: dictVersions.length,
+            reviews: reviews.length,
+            adopt:  reviews.filter(r => r.decision === 'adopt').length,
+            modify: reviews.filter(r => r.decision === 'modify').length,
+            reject: reviews.filter(r => r.decision === 'reject').length,
+          },
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+        const url  = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `spec-risk-model-${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        setShareStatus(`✓ 書き出し完了 (辞書${payload.stats.dictVersions}版・レビュー${payload.stats.reviews}件)`, '#6ec897');
+        log('model_export', `dictVersions=${payload.stats.dictVersions} reviews=${payload.stats.reviews}`);
+      } catch (err) {
+        setShareStatus('❌ 書き出しエラー: ' + err.message, '#ff8888');
+        console.warn(err);
+      }
+    });
+
+    document.getElementById('model-import-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const mode = document.getElementById('model-import-mode').value || 'merge';
+      try {
+        setShareStatus(`取り込み中（${mode}）...`, '#c8a96e');
+        const text = await file.text();
+        const payload = JSON.parse(text);
+        if (payload.type !== 'spec-risk-extractor-model') {
+          throw new Error(`不正なファイル形式: type=${payload.type || '不明'}`);
+        }
+        if (mode === 'replace') {
+          if (!confirm('既存の辞書バージョン・レビュー履歴を全削除して取り込みます。取り消しできません。よろしいですか？')) {
+            setShareStatus('キャンセルしました', 'rgba(255,255,255,0.5)');
+            e.target.value = '';
+            return;
+          }
+          await dbClear('reviews');
+          await dbClear('dictVersions');
+          await dbClear('modelMeta');
+        }
+        // dictVersions: version をキーにした upsert
+        let dictUp = 0;
+        for (const v of (payload.dictVersions || [])) {
+          if (!v.version) continue;
+          await dbPut('dictVersions', v);
+          dictUp++;
+        }
+        // reviews: candidateKey で upsert（merge時のみ・replace時は新規挿入）
+        let revUp = 0;
+        for (const rec of (payload.reviews || [])) {
+          if (!rec.spec) continue;
+          if (mode === 'merge') {
+            const key = `${rec.preset || currentPreset}|${rec.rowNum || 0}|${simpleHash(rec.spec)}`;
+            if (lastReviewIdByCandidate[key] != null) {
+              rec.id = lastReviewIdByCandidate[key];
+            } else {
+              delete rec.id;  // 新規追加（autoIncrement任せ）
+            }
+            const newId = await dbPut('reviews', rec);
+            lastReviewIdByCandidate[key] = newId;
+          } else {
+            delete rec.id;
+            await dbPut('reviews', rec);
+          }
+          revUp++;
+        }
+        // activeDictVersion 復元（明示指定あれば）
+        if (payload.activeDictVersion && payload.activeDictVersion !== 'base') {
+          await dbPut('modelMeta', { key:'active', version: payload.activeDictVersion });
+        }
+        await loadActiveModel();
+        await rebuildReviewIndex();
+        await refreshLearningStats();
+        setShareStatus(`✓ 取り込み完了（${mode}） 辞書${dictUp}版・レビュー${revUp}件 / active=${activeDictVersion||'base'}`, '#6ec897');
+        log('model_import', `mode=${mode} dictVersions=${dictUp} reviews=${revUp} active=${activeDictVersion||'base'}`);
+      } catch (err) {
+        setShareStatus('❌ 取り込みエラー: ' + err.message, '#ff8888');
         console.warn(err);
       }
       e.target.value = '';
