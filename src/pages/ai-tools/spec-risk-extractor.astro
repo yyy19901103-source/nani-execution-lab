@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout title="仕様書リスク候補抽出" description="ETO（一品一様製造）向け、社内Excel仕様書からリスク候補をブラウザ完結で抽出。BM25+リスク辞書のハイブリッド検索・人レビュー学習・別Excel出力。データ社外送信ゼロ。産業機械/プラント設備/特装車両プリセット内蔵。">
+<BaseLayout title="仕様書デビクラ抽出" description="ETO（一品一様製造）向け、社内Excel仕様書からデビクラ（Deviation &amp; Clarification）懸念候補をブラウザ完結で抽出。BM25+デビクラ辞書のハイブリッド検索・人レビュー学習・別Excel出力。データ社外送信ゼロ。産業機械/プラント設備/特装車両プリセット内蔵。">
 
   <!-- 機密保護バナー -->
   <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
@@ -25,8 +25,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div style="position:relative;height:12rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
     <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d1a12 60%,#0c0c0e 100%);"></div>
     <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
-      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">BM25 · Risk Dictionary · Browser-Local</p>
-      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">仕様書リスク候補抽出</h1>
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">BM25 · デビクラ辞書 · Browser-Local</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">仕様書デビクラ抽出</h1>
     </div>
   </div>
 
@@ -35,8 +35,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;">
       <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
         <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 1</div>
-        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">受注前の見積もりリスク洗い出し</div>
-        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">RFQ要求仕様書から見積もり工数を狂わせる危険語を抽出</div>
+        <div style="color:#edede8;font-size:0.82rem;font-weight:500;margin-bottom:0.3rem;">受注前のデビクラ（懸念事項）洗い出し</div>
+        <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">RFQ要求仕様書から見積もり工数を狂わせる懸念候補を抽出</div>
       </div>
       <div style="background:#111114;border:1px solid rgba(200,169,110,0.15);border-left:3px solid #c8a96e;padding:0.85rem 1.1rem;">
         <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">USE CASE 2</div>
@@ -58,7 +58,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <span style="color:rgba(255,255,255,0.3);">→</span>
         <span style="color:#c8a96e;font-weight:600;">②</span> サンプル仕様書をロード or Excelアップロード
         <span style="color:rgba(255,255,255,0.3);">→</span>
-        <span style="color:#c8a96e;font-weight:600;">③</span> 「リスク抽出 ▶」をクリック
+        <span style="color:#c8a96e;font-weight:600;">③</span> 「デビクラ抽出 ▶」をクリック
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <button class="preset-btn" data-preset="industrial" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🏭 産業機械</button>
       <button class="preset-btn" data-preset="plant" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">⚗ プラント設備</button>
       <button class="preset-btn" data-preset="vehicle" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.3rem 0.85rem;font-size:0.72rem;cursor:pointer;font-family:inherit;">🚒 特装車両</button>
-      <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;">業界別リスク辞書 + サンプル仕様書を一括ロード</span>
+      <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;">業界別デビクラ辞書 + サンプル仕様書を一括ロード</span>
     </div>
 
     <!-- ステップ1: 入力 -->
@@ -162,7 +162,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- ステップ3: 実行 -->
     <div id="execute-section" style="display:none;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
-      <button id="btn-extract" class="m-btn">リスク抽出 ▶</button>
+      <button id="btn-extract" class="m-btn">デビクラ抽出 ▶</button>
       <span style="color:rgba(255,255,255,0.35);font-size:0.72rem;">Ctrl+Enter で実行</span>
       <button id="btn-reset" class="m-btn-ghost">リセット</button>
     </div>
@@ -177,15 +177,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="metric-value" id="m-total">-</div>
         </div>
         <div class="metric-card highlight">
-          <div class="metric-label">⚠ 重大リスク</div>
+          <div class="metric-label">対象</div>
           <div class="metric-value gold" id="m-high">-</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">注意</div>
+          <div class="metric-label">要確認</div>
           <div class="metric-value" id="m-mid">-</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">参考</div>
+          <div class="metric-label">対象外</div>
           <div class="metric-value" id="m-low">-</div>
         </div>
         <div class="metric-card">
@@ -194,15 +194,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
       </div>
 
-      <!-- リスク候補テーブル -->
+      <!-- 懸念候補テーブル -->
       <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;overflow-x:auto;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
-          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">RISK CANDIDATES</p>
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">DEVICRA CANDIDATES</p>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
             <select id="filter-level" class="field-input" style="width:auto;font-size:0.74rem;padding:0.3rem 0.6rem;">
               <option value="all">全件</option>
-              <option value="high">⚠ 重大のみ</option>
-              <option value="mid">注意以上</option>
+              <option value="high">対象のみ</option>
+              <option value="mid">要確認以上</option>
             </select>
             <button id="btn-export" class="m-btn-ghost" style="font-size:0.72rem;">⬇ Excel出力</button>
           </div>
@@ -211,7 +211,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <thead>
             <tr>
               <th class="th" style="width:3em;">行</th>
-              <th class="th">要求仕様文 / リスク候補</th>
+              <th class="th">要求仕様文 / 懸念候補</th>
               <th class="th" style="width:7em;">信頼度</th>
               <th class="th" style="width:9em;">レビュー</th>
             </tr>
@@ -224,9 +224,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;">
         <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS</div>
         <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
-          <li>⚠ 重大リスクは仕様書レビュー会議の <strong>必須論点</strong> に上げる。RFQ確定前に顧客と握る</li>
+          <li>「対象」は仕様書レビュー会議の <strong>必須デビクラ</strong> に上げる。RFQ確定前に顧客と握る</li>
           <li>レビュー結果を「採用/不採用/修正」で記録 → 次回以降の見積もり精度が累積で向上</li>
-          <li>結果Excelの「処理内容」シートで、抽出根拠（一致辞書語・BM25スコア）を読み取り判断トレースを残す</li>
+          <li>結果Excelの「処理内容」シートで、抽出根拠（一致デビクラ語・BM25スコア）を読み取り判断トレースを残す</li>
         </ol>
       </div>
     </div>
@@ -255,9 +255,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="metric-value" id="stat-reject" style="color:#ff8888;">0</div>
         </div>
         <div class="metric-card highlight">
-          <div class="metric-label">重大候補の人手承認率</div>
+          <div class="metric-label">「対象」候補の人手承認率</div>
           <div class="metric-value gold" id="stat-recall">0%</div>
-          <div style="color:rgba(255,255,255,0.35);font-size:0.6rem;margin-top:0.2rem;">重大判定中で採用/修正された割合</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.6rem;margin-top:0.2rem;">「対象」判定中で採用/修正された割合</div>
         </div>
       </div>
       <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
@@ -308,8 +308,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">Okapi BM25 アルゴリズム。TF-IDFを発展させた検索エンジン式の関連度計算。日本語はbigram(隣接2文字)+ASCII単語のハイブリッドトークナイザで処理。</p>
         </div>
         <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
-          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">📚 リスク辞書</div>
-          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">業界別の危険語・注意語を3段階の重大度で分類。「特殊」「初」「未経験」「短納期」など見積もり工数を狂わせる典型語を網羅。</p>
+          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">📚 デビクラ辞書</div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">業界別の懸念語を対象／要確認／対象外の3段階で分類。「特殊」「初」「未経験」「短納期」など見積もり工数を狂わせる典型語を網羅。</p>
         </div>
         <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
           <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">🔒 ブラウザ完結</div>
@@ -331,8 +331,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ WHAT — 何ができるか</div>
         <p style="color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.85;margin-bottom:0.85rem;">
           ETO（受注設計生産）製造業の <strong>仕様書Excel</strong> を読み込み、見積り工数・納期・品質を狂わせる
-          <strong style="color:#c8a96e;">リスク候補</strong> をブラウザ完結で抽出します。
-          産業機械・プラント設備・特装車両の業界別リスク辞書を内蔵。
+          <strong style="color:#c8a96e;">デビクラ（Deviation &amp; Clarification）懸念候補</strong> をブラウザ完結で抽出します。
+          産業機械・プラント設備・特装車両の業界別デビクラ辞書を内蔵。
           人レビュー結果を蓄積するほど、抽出精度が自社業務に最適化されていきます。
         </p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.65rem;">
@@ -342,11 +342,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </div>
           <div style="background:#0a0a0c;border-left:2px solid #6ec897;padding:0.7rem 0.95rem;">
             <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.3rem;">処理</div>
-            <div style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.55;">BM25 + リスク辞書 + 文章ベクトル類似度<br/>過去レビューとの一致補正</div>
+            <div style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.55;">BM25 + デビクラ辞書 + 文章ベクトル類似度<br/>過去レビューとの一致補正</div>
           </div>
           <div style="background:#0a0a0c;border-left:2px solid #c8a96e;padding:0.7rem 0.95rem;">
             <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.3rem;">出力</div>
-            <div style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.55;">画面リスク候補表 + 別Excel（4シート）<br/>人レビューで再学習可能</div>
+            <div style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.55;">画面デビクラ一覧 + 別Excel（4シート）<br/>人レビューで再学習可能</div>
           </div>
         </div>
       </div>
@@ -360,11 +360,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ③  要求仕様文の正規化・分割            ↓
 ④  BM25検索で広く候補拾い (Top100)     ↓
 ⑤  文章ベクトル類似度 (bag-of-bigrams)  ↓
-⑥  リスク辞書ヒット検出 (3段階重大度)   ↓
+⑥  デビクラ辞書ヒット検出 (3段階)        ↓
 ⑦  過去レビューDB類似引き当て          ↓
 ⑧  候補統合 + 重複除去                ↓
 ⑨  リランキング（5指標重み付き総合）   ↓
-⑩  リスク候補生成 + 重大度判定         ↓
+⑩  懸念候補生成 + 判定（対象/要確認/対象外）↓
 ⑪  カテゴリ・所掌・優先度推定          ↓
 ⑫  信頼度算出 (0〜100点)              ↓
 ⑬  推定根拠表示 (一致語+why)          ↓
@@ -378,7 +378,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ㉑  人が採用可否判断                   ↓
 ㉒  採用時のみ新モデル切替              ↓
 ㉓  ベース辞書への復元可能              ↓
-㉔  別Excel出力 (4シート)             ↓
+㉔  別Excel出力 (4シート: デビクラ一覧等) ↓
 ㉕  操作ログ記録 (200件保持)
         </div>
       </div>
@@ -389,7 +389,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <ol style="margin:0;padding-left:0;list-style:none;">
           <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
             <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">1</span>
-            <div style="flex:1;"><strong style="color:#edede8;">業界プリセット選択</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">産業機械 / プラント設備 / 特装車両 を選択。リスク辞書とサンプル仕様書がセットでロード</div></div>
+            <div style="flex:1;"><strong style="color:#edede8;">業界プリセット選択</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">産業機械 / プラント設備 / 特装車両 を選択。デビクラ辞書とサンプル仕様書がセットでロード</div></div>
           </li>
           <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
             <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">2</span>
@@ -401,7 +401,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </li>
           <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
             <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">4</span>
-            <div style="flex:1;"><strong style="color:#edede8;">リスク抽出 ▶</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「リスク抽出 ▶」または Ctrl+Enter で実行。重大/注意/参考 の3段階で表示。フィルタ・推定根拠展開可能</div></div>
+            <div style="flex:1;"><strong style="color:#edede8;">デビクラ抽出 ▶</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「デビクラ抽出 ▶」または Ctrl+Enter で実行。対象/要確認/対象外 の3段階で表示。フィルタ・推定根拠展開可能</div></div>
           </li>
           <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
             <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">5</span>
@@ -409,7 +409,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </li>
           <li style="padding:0.6rem 0;display:flex;gap:0.85rem;align-items:flex-start;">
             <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">6</span>
-            <div style="flex:1;"><strong style="color:#edede8;">学習・新旧比較・採用判断 / Excel出力</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「🧠 学習実行」で新モデル候補生成 → 重大候補の承認率・Top10一致率を比較 → 人が採用判断（または旧モデルへ復元）。結果は別Excelに4シート出力（リスク候補/処理内容/列対応/リスク辞書）</div></div>
+            <div style="flex:1;"><strong style="color:#edede8;">学習・新旧比較・採用判断 / Excel出力</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「🧠 学習実行」で新モデル候補生成 → 「対象」候補の承認率・Top10一致率を比較 → 人が採用判断（または旧モデルへ復元）。結果は別Excelに4シート出力（デビクラ一覧/処理内容/列対応/デビクラ辞書）</div></div>
           </li>
         </ol>
       </div>
@@ -449,11 +449,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.85rem;">
           <div>
             <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">信頼度 (0〜100)</div>
-            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">一致リスク語の重大度別重み（重大35×注意18×参考8）+ 一致語数ボーナス + 過去レビュー結果による補正（採用なら+12、不採用なら-15）</p>
+            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">一致デビクラ語の判定別重み（対象35×要確認18×対象外8）+ 一致語数ボーナス + 過去レビュー結果による補正（採用なら+12、不採用なら-15）</p>
           </div>
           <div>
-            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">⚠ 重大候補の承認率（最重要）</div>
-            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">重大判定された候補のうち、レビューで「採用 or 修正採用」された割合。<strong style="color:#c8a96e;">辞書精度の見方</strong>。下がっている場合は辞書を緩める／レビュー結果を再点検。<em style="color:rgba(255,255,255,0.4);">※統計的Recall（正解集合に対する再現率）ではなく承認率</em></p>
+            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">「対象」候補の承認率（最重要）</div>
+            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">「対象」判定された候補のうち、レビューで「採用 or 修正採用」された割合。<strong style="color:#c8a96e;">辞書精度の見方</strong>。下がっている場合は辞書を緩める／レビュー結果を再点検。<em style="color:rgba(255,255,255,0.4);">※統計的Recall（正解集合に対する再現率）ではなく承認率</em></p>
           </div>
           <div>
             <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">Top10一致率（新旧比較）</div>
@@ -475,7 +475,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">ローカル保存</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">IndexedDB（reviews / dictVersions / modelMeta / learningQ の4 ObjectStore）</td></tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">検索アルゴリズム</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">Okapi BM25 (k1=1.5, b=0.75) + 日本語bigram + ASCII単語の純粋JS実装</td></tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">類似度計算</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">Bag-of-bigrams + L2正規化 + コサイン類似度（Transformers.js非使用で軽量化）</td></tr>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">リスク辞書</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">産業機械40語 / プラント30語 / 特装車両30語、3段階重大度・各語に判断材料(why)添付</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">デビクラ辞書</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">産業機械40語 / プラント30語 / 特装車両30語、対象/要確認/対象外の3段階・各語に判断材料(why)添付</td></tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">学習方式</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">レビュー結果からの辞書語重み更新・新バージョンとして保存・人による採用判断・旧復元可能</td></tr>
           <tr><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">外部依存</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">SheetJS CDN（jsdelivr）の <strong>初回ロードのみ</strong>。AI API・解析・追跡なし</td></tr>
         </table>
@@ -535,7 +535,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   <script>
     // ============================================================
-    // リスク辞書（業界別・3段階重大度）
+    // デビクラ辞書（業界別・対象/要確認/対象外の3段階）
     // ============================================================
     const RISK_DICT = {
       industrial: {
@@ -1190,7 +1190,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       });
       if (filtered.length === 0) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td class="td" colspan="4" style="text-align:center;color:rgba(255,255,255,0.5);">該当するリスク候補はありません</td>`;
+        tr.innerHTML = `<td class="td" colspan="4" style="text-align:center;color:rgba(255,255,255,0.5);">該当する懸念候補はありません</td>`;
         frag.appendChild(tr);
       } else {
         filtered.forEach(r => frag.appendChild(buildRow(r)));
@@ -1201,7 +1201,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     function buildRow(r) {
       const tr = document.createElement('tr');
       tr.className = `risk-row ${r.level}`;
-      const badge = r.level === 'high' ? '<span class="badge-high">⚠ 重大</span>' : r.level === 'mid' ? '<span class="badge-mid">注意</span>' : '<span class="badge-low">参考</span>';
+      const badge = r.level === 'high' ? '<span class="badge-high">対象</span>' : r.level === 'mid' ? '<span class="badge-mid">要確認</span>' : '<span class="badge-low">対象外</span>';
       const meta = [];
       if (r.chapter)  meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">章:${escapeHtml(r.chapter)}</span>`);
       if (r.specType) meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">種別:${escapeHtml(r.specType)}</span>`);
@@ -1263,37 +1263,45 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const wb = XLSX.utils.book_new();
       const dictName = RISK_DICT[currentPreset].name;
 
-      // シート1: リスク候補
+      // シート1: デビクラ一覧
+      const colProject = document.getElementById('col-project').value;
+      const colRfq     = document.getElementById('col-rfq').value;
+      const colDoc     = document.getElementById('col-doc').value;
+      const colImpact  = document.getElementById('col-impact').value;
       const riskData = currentResults.map(r => ({
         '元行番号': r.rowNum,
         '章番号': r.chapter,
         '仕様種別': r.specType,
         '所掌': r.owner,
+        'Project名': colProject ? String(currentRows[r.idx]?.[colProject]||'') : '',
+        '引合番号': colRfq     ? String(currentRows[r.idx]?.[colRfq]    ||'') : '',
+        'E&C&LT': colImpact  ? String(currentRows[r.idx]?.[colImpact] ||'') : '',
+        'ドキュメント番号': colDoc ? String(currentRows[r.idx]?.[colDoc]||'') : '',
         '要求仕様文': r.spec,
-        '重大度': r.level === 'high' ? '⚠ 重大' : r.level === 'mid' ? '注意' : '参考',
+        '判定': r.level === 'high' ? '対象' : r.level === 'mid' ? '要確認' : '対象外',
         '信頼度(0-100)': r.confidence,
-        '一致リスク語': r.allHits.map(h => h.word).join(', '),
+        '一致デビクラ語': r.allHits.map(h => h.word).join(', '),
         '推定根拠': r.allHits.map(h => `${h.word}: ${h.why}`).join(' / '),
         'レビュー': reviewState[r.idx] === 'adopt' ? '採用' : reviewState[r.idx] === 'modify' ? '修正して採用' : reviewState[r.idx] === 'reject' ? '不採用' : '未レビュー',
-        '修正後リスク内容': '',
+        '修正後内容': '',
         'コメント': '',
         '使用辞書': dictName,
         '処理日時': new Date().toISOString(),
       }));
       const ws1 = XLSX.utils.json_to_sheet(riskData);
-      ws1['!cols'] = [{wch:8},{wch:10},{wch:12},{wch:10},{wch:60},{wch:10},{wch:10},{wch:30},{wch:50},{wch:14},{wch:30},{wch:30},{wch:14},{wch:20}];
-      XLSX.utils.book_append_sheet(wb, ws1, 'リスク候補');
+      ws1['!cols'] = [{wch:8},{wch:10},{wch:12},{wch:10},{wch:20},{wch:14},{wch:12},{wch:18},{wch:60},{wch:10},{wch:10},{wch:30},{wch:50},{wch:14},{wch:30},{wch:30},{wch:14},{wch:20}];
+      XLSX.utils.book_append_sheet(wb, ws1, 'デビクラ一覧');
 
       // シート2: 処理内容
       const procData = [
         { '項目':'使用辞書', '値': dictName },
         { '項目':'処理日時', '値': new Date().toISOString() },
         { '項目':'入力要求数', '値': currentRows.length },
-        { '項目':'抽出リスク候補数', '値': currentResults.length },
-        { '項目':'⚠ 重大件数', '値': currentResults.filter(r => r.level==='high').length },
-        { '項目':'注意件数', '値': currentResults.filter(r => r.level==='mid').length },
-        { '項目':'参考件数', '値': currentResults.filter(r => r.level==='low').length },
-        { '項目':'検索アルゴリズム', '値': 'BM25 + リスク辞書ハイブリッド (MVP第1+第2段階)' },
+        { '項目':'抽出懸念候補数', '値': currentResults.length },
+        { '項目':'対象件数', '値': currentResults.filter(r => r.level==='high').length },
+        { '項目':'要確認件数', '値': currentResults.filter(r => r.level==='mid').length },
+        { '項目':'対象外件数', '値': currentResults.filter(r => r.level==='low').length },
+        { '項目':'検索アルゴリズム', '値': 'BM25 + デビクラ辞書ハイブリッド (MVP第1+第2段階)' },
         { '項目':'データ送信先', '値': 'なし（ブラウザ完結）' },
       ];
       const ws2 = XLSX.utils.json_to_sheet(procData);
@@ -1315,16 +1323,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       ws3['!cols'] = [{wch:20},{wch:30}];
       XLSX.utils.book_append_sheet(wb, ws3, '列対応');
 
-      // シート4: リスク辞書（使用版）
+      // シート4: デビクラ辞書（使用版）
       const dict = RISK_DICT[currentPreset];
       const dictData = [
-        ...dict.high.map(e => ({ '重大度':'⚠ 重大','語':e.word,'判断材料(why)':e.why })),
-        ...dict.mid .map(e => ({ '重大度':'注意',   '語':e.word,'判断材料(why)':e.why })),
-        ...dict.low .map(e => ({ '重大度':'参考',   '語':e.word,'判断材料(why)':e.why })),
+        ...dict.high.map(e => ({ '判定':'対象',   '語':e.word,'判断材料(why)':e.why })),
+        ...dict.mid .map(e => ({ '判定':'要確認', '語':e.word,'判断材料(why)':e.why })),
+        ...dict.low .map(e => ({ '判定':'対象外', '語':e.word,'判断材料(why)':e.why })),
       ];
       const ws4 = XLSX.utils.json_to_sheet(dictData);
       ws4['!cols'] = [{wch:10},{wch:18},{wch:60}];
-      XLSX.utils.book_append_sheet(wb, ws4, 'リスク辞書');
+      XLSX.utils.book_append_sheet(wb, ws4, 'デビクラ辞書');
 
       const filename = `spec-risk-${currentPreset}-${new Date().toISOString().slice(0,10)}.xlsx`;
       XLSX.writeFile(wb, filename);
