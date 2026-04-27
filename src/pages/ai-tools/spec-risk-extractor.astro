@@ -279,9 +279,181 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">Excel・仕様文・レビュー結果は外部送信ゼロ。SheetJSのCDNライブラリ初回ロードのみ。それ以降は完全ローカル処理。</p>
         </div>
         <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
-          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">⏳ 段階拡張</div>
-          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">本MVP版は<strong style="color:#edede8;">第1+第2段階</strong>（Excel I/O+BM25+辞書）。次段階で文章ベクトル検索(Transformers.js)・人レビュー学習・新旧モデル比較を追加予定。</p>
+          <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">🧠 学習する</div>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">人レビュー（採用/修正/不採用）を IndexedDB に蓄積。新旧モデル比較で重大リスクRecallを評価し、人が採用判断する仕組み。<strong style="color:#edede8;">使うほど自社判断ナレッジが育つ</strong>。</p>
         </div>
+      </div>
+    </section>
+
+    <!-- 機能仕様（What/How/Use/Privacy） -->
+    <section style="max-width:880px;margin:3rem auto 0;padding:0;">
+      <h2 style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1.5rem;">機能仕様</h2>
+
+      <!-- WHAT: 何ができるか -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.5rem 1.75rem;margin-bottom:1rem;">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ WHAT — 何ができるか</div>
+        <p style="color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.85;margin-bottom:0.85rem;">
+          ETO（受注設計生産）製造業の <strong>仕様書Excel</strong> を読み込み、見積り工数・納期・品質を狂わせる
+          <strong style="color:#c8a96e;">リスク候補</strong> をブラウザ完結で抽出します。
+          産業機械・プラント設備・特装車両の業界別リスク辞書を内蔵。
+          人レビュー結果を蓄積するほど、抽出精度が自社業務に最適化されていきます。
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.65rem;">
+          <div style="background:#0a0a0c;border-left:2px solid #c8a96e;padding:0.7rem 0.95rem;">
+            <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.3rem;">入力</div>
+            <div style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.55;">.xlsx / .xls 仕様書<br/>または内蔵サンプル仕様書</div>
+          </div>
+          <div style="background:#0a0a0c;border-left:2px solid #6ec897;padding:0.7rem 0.95rem;">
+            <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.3rem;">処理</div>
+            <div style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.55;">BM25 + リスク辞書 + 文章ベクトル類似度<br/>過去レビューとの一致補正</div>
+          </div>
+          <div style="background:#0a0a0c;border-left:2px solid #c8a96e;padding:0.7rem 0.95rem;">
+            <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.3rem;">出力</div>
+            <div style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.55;">画面リスク候補表 + 別Excel（4シート）<br/>人レビューで再学習可能</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOW: どう動くか（処理フロー） -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.5rem 1.75rem;margin-bottom:1rem;">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ HOW — 処理フロー（25ステップ）</div>
+        <div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:1rem 1.25rem;font-family:'SF Mono','Consolas',monospace;font-size:0.74rem;color:rgba(237,237,232,0.78);line-height:1.85;overflow-x:auto;white-space:pre;">
+①  Excel/サンプル読込                  ↓
+②  シート選択・列マッピング自動推定      ↓
+③  要求仕様文の正規化・分割            ↓
+④  BM25検索で広く候補拾い (Top100)     ↓
+⑤  文章ベクトル類似度 (bag-of-bigrams)  ↓
+⑥  リスク辞書ヒット検出 (3段階重大度)   ↓
+⑦  過去レビューDB類似引き当て          ↓
+⑧  候補統合 + 重複除去                ↓
+⑨  リランキング（5指標重み付き総合）   ↓
+⑩  リスク候補生成 + 重大度判定         ↓
+⑪  カテゴリ・所掌・優先度推定          ↓
+⑫  信頼度算出 (0〜100点)              ↓
+⑬  推定根拠表示 (一致語+why)          ↓
+⑭  人レビュー (採用/修正/不採用)       ↓
+⑮  IndexedDB へ正解データ保存         ↓
+⑯  学習対象データ抽出                 ↓
+⑰  新辞書バージョン候補生成            ↓
+⑱  旧モデル/新モデル評価実行           ↓
+⑲  重大リスクRecall・Top10一致率算出   ↓
+⑳  画面に新旧差分表示                 ↓
+㉑  人が採用可否判断                   ↓
+㉒  採用時のみ新モデル切替              ↓
+㉓  ベース辞書への復元可能              ↓
+㉔  別Excel出力 (4シート)             ↓
+㉕  操作ログ記録 (200件保持)
+        </div>
+      </div>
+
+      <!-- USE: どう使うか（ステップガイド） -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.5rem 1.75rem;margin-bottom:1rem;">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ USE — 使い方（6ステップ）</div>
+        <ol style="margin:0;padding-left:0;list-style:none;">
+          <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
+            <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">1</span>
+            <div style="flex:1;"><strong style="color:#edede8;">業界プリセット選択</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">産業機械 / プラント設備 / 特装車両 を選択。リスク辞書とサンプル仕様書がセットでロード</div></div>
+          </li>
+          <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
+            <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">2</span>
+            <div style="flex:1;"><strong style="color:#edede8;">仕様書読込</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「サンプル仕様書をロード」で即体験 / または「Excel をアップロード」で社内仕様書を投入（外部送信ゼロ）</div></div>
+          </li>
+          <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
+            <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">3</span>
+            <div style="flex:1;"><strong style="color:#edede8;">列マッピング確認</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">要求仕様文の列・章番号・仕様種別・所掌の列を自動推定。必要なら手動修正</div></div>
+          </li>
+          <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
+            <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">4</span>
+            <div style="flex:1;"><strong style="color:#edede8;">リスク抽出 ▶</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「リスク抽出 ▶」または Ctrl+Enter で実行。重大/注意/参考 の3段階で表示。フィルタ・推定根拠展開可能</div></div>
+          </li>
+          <li style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:0.85rem;align-items:flex-start;">
+            <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">5</span>
+            <div style="flex:1;"><strong style="color:#edede8;">人レビュー</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">各候補に「採用 / 修正して採用 / 不採用」を選択。即座に IndexedDB に保存され、次回以降の抽出に反映</div></div>
+          </li>
+          <li style="padding:0.6rem 0;display:flex;gap:0.85rem;align-items:flex-start;">
+            <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">6</span>
+            <div style="flex:1;"><strong style="color:#edede8;">学習・新旧比較・採用判断 / Excel出力</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「🧠 学習実行」で新モデル候補生成 → 重大リスクRecall・Top10一致率を比較 → 人が採用判断（または旧モデルへ復元）。結果は別Excelに4シート出力（リスク候補/処理内容/列対応/リスク辞書）</div></div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- PRIVACY: データはどこへ -->
+      <div style="background:#0f0f12;border:1px solid rgba(110,200,151,0.2);padding:1.5rem 1.75rem;margin-bottom:1rem;">
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ PRIVACY — データはどこへ流れるか</div>
+        <div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:1rem 1.25rem;font-family:'SF Mono','Consolas',monospace;font-size:0.74rem;color:rgba(237,237,232,0.78);line-height:1.85;overflow-x:auto;white-space:pre;">
+🌐 個人HPサーバー (静的配信のみ)
+        │
+        │  HTML/CSS/JS/初期辞書のダウンロード (1回のみ)
+        ▼
+🖥  社内PC ブラウザ (ここで全処理が閉じる)
+        │
+        ├─ Excel読込 ────────► メモリ上 (ローカル)
+        ├─ 仕様文解析 ──────► メモリ上 (ローカル)
+        ├─ BM25 / ベクトル ──► メモリ上 (ローカル)
+        ├─ レビュー結果 ────► IndexedDB (社内PCのみ)
+        ├─ 学習データ ──────► IndexedDB (社内PCのみ)
+        ├─ モデル版履歴 ────► IndexedDB (社内PCのみ)
+        └─ Excel出力 ───────► ローカルファイル (社内PCのみ)
+
+❌ 外部AI API ──────── 接続なし
+❌ 外部CDN (会社データ) ─ 送信なし
+❌ アクセス解析 ─────── 設置なし
+❌ サーバーログ ──────── 静的配信のみ・会社データ通過なし
+        </div>
+        <p style="color:rgba(237,237,232,0.65);font-size:0.78rem;line-height:1.7;margin-top:0.85rem;margin-bottom:0;">
+          検証方法: ブラウザの DevTools (F12) → Network タブを開いて操作。
+          初期 SheetJS CDN 読込以降、<strong style="color:#6ec897;">追加通信が発生しないこと</strong>を目視確認できます。
+        </p>
+      </div>
+
+      <!-- METRICS: 評価指標の見方 -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.5rem 1.75rem;margin-bottom:1rem;">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ METRICS — 評価指標の見方</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.85rem;">
+          <div>
+            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">信頼度 (0〜100)</div>
+            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">一致リスク語の重大度別重み（重大35×注意18×参考8）+ 一致語数ボーナス + 過去レビュー結果による補正（採用なら+12、不採用なら-15）</p>
+          </div>
+          <div>
+            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">⚠ 重大リスクRecall（最重要）</div>
+            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">重大判定された候補のうち、レビューで「採用 or 修正採用」された割合。<strong style="color:#c8a96e;">見逃し防止の最重要指標</strong>。下がっている場合は辞書を緩める／レビュー結果を再点検</p>
+          </div>
+          <div>
+            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">Top10一致率（新旧比較）</div>
+            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">学習前後で同じ仕様書を再走査した時、上位10件のうち何件が両者で重複しているか。<strong>変動が大きすぎる場合は学習が不安定</strong>のサインなので採用を保留</p>
+          </div>
+          <div>
+            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">辞書語 強化／弱化候補数</div>
+            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">学習でレビュー反映により強化された語（採用率80%以上&3件以上）・弱化された語（採用率20%以下）の件数。<strong>新モデル採用時の判断材料</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECH: 採用技術 -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.5rem 1.75rem;margin-bottom:1rem;">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ TECH — 採用技術スタック</div>
+        <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);width:34%;">画面</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">Astro v6 (静的SSG) + Vanilla JavaScript（DOM操作はDocumentFragment最適化）</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">Excel処理</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">SheetJS xlsx@0.18.5（.xlsx/.xls/複数シート対応・原本上書き禁止）</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">ローカル保存</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">IndexedDB（reviews / dictVersions / modelMeta / learningQ の4 ObjectStore）</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">検索アルゴリズム</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">Okapi BM25 (k1=1.5, b=0.75) + 日本語bigram + ASCII単語の純粋JS実装</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">類似度計算</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">Bag-of-bigrams + L2正規化 + コサイン類似度（Transformers.js非使用で軽量化）</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">リスク辞書</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">産業機械40語 / プラント30語 / 特装車両30語、3段階重大度・各語に判断材料(why)添付</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">学習方式</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">レビュー結果からの辞書語重み更新・新バージョンとして保存・人による採用判断・旧復元可能</td></tr>
+          <tr><td style="padding:0.45rem 0.6rem;color:rgba(255,255,255,0.5);">外部依存</td><td style="padding:0.45rem 0.6rem;color:rgba(237,237,232,0.85);">SheetJS CDN（jsdelivr）の <strong>初回ロードのみ</strong>。AI API・解析・追跡なし</td></tr>
+        </table>
+      </div>
+
+      <!-- LIMIT: 限界と対応方針 -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,80,80,0.18);padding:1.5rem 1.75rem;">
+        <div style="color:#ff8888;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">▸ LIMIT — 既知の限界と対応方針</div>
+        <ul style="margin:0;padding-left:1.25rem;color:rgba(237,237,232,0.75);font-size:0.78rem;line-height:1.85;">
+          <li><strong style="color:#edede8;">大容量Excel</strong> (5000行超) は警告ダイアログ表示。ESCで中断・処理再開対応</li>
+          <li><strong style="color:#edede8;">辞書語の業界カバレッジ</strong> はサンプル含み3業界×30〜40語。自社の固有語は<u>レビュー学習で追加</u>される設計</li>
+          <li><strong style="color:#edede8;">Transformers.js による真の文章ベクトル検索</strong> は本MVP不採用（CDN依存・モデルダウンロード10MB+）。代替で bag-of-bigrams コサイン類似度を採用</li>
+          <li><strong style="color:#edede8;">ブラウザDB</strong> なので <u>レビュー履歴は端末ごと</u>。チーム共有はExcel経由で運用</li>
+          <li><strong style="color:#edede8;">本ツールは判断補助</strong>。最終的な採用可否は必ず人レビューで決定する設計（自動採用は実装しない）</li>
+        </ul>
       </div>
     </section>
 

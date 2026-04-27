@@ -1,48 +1,127 @@
-# CODEX レビュー依頼書
+# CODEX レビュー依頼書（最新版・2026-04-26）
 
 ## レビュー対象
 
-**プロジェクト**: NaNi Execution Lab — 製造業DX 個人技術サイト
+**プロジェクト**: NaNi Execution Lab — 製造業DX × ETO（一品一様製造） 個人技術サイト
 **リポジトリ**: https://github.com/yyy19901103-source/nani-execution-lab
 **公開URL**: https://yyy19901103-source.github.io/nani-execution-lab/
-**最新コミット**: `bc8d63c` （ETO新ツール3本+事例追加）
+**最新コミット**: `main` ブランチ HEAD（仕様書リスク候補抽出ツール追加版）
 
-## レビュー範囲（優先度順）
+---
 
-### 🔴 最優先: ETO（一品一様・受注設計生産）向け新ツール3本
+## 🔴 重点レビュー対象 — 仕様書リスク候補抽出ツール（最新追加・最重要）
 
-実務での使用に耐える品質か、アルゴリズム・UX・ETO業務知識の正確性を厳しく見てほしい。
+ファイル: `src/pages/ai-tools/spec-risk-extractor.astro`（約1500行）  
+URL: `/ai-tools/spec-risk-extractor/`
 
-| ファイル | URL | アルゴリズム |
-|---------|-----|-------------|
-| `src/pages/ai-tools/eto-similar-quote.astro` | `/ai-tools/eto-similar-quote/` | コサイン類似度 + k-NN |
-| `src/pages/ai-tools/project-monte-carlo.astro` | `/ai-tools/project-monte-carlo/` | PERT 3点見積り + モンテカルロ 10000回 + CPM |
-| `src/pages/ai-tools/eto-job-shop.astro` | `/ai-tools/eto-job-shop/` | ディスパッチングルール（EDD/SPT/CR）+ 時刻同期 |
+ETO（受注設計生産）製造業の仕様書Excelから、見積り工数・納期・品質を狂わせるリスク候補をブラウザ完結で抽出するツール。**仕様書の第1〜第7段階すべてを実装した完成形**。
 
-### 🟡 高優先: 既存6ツール（量産向け・実用化済み）
+### 機能スコープ（25ステップ処理フロー）
+
+```
+入力 ──→ ① Excel読込 (.xlsx/.xls/サンプル)
+      ──→ ② シート選択・列マッピング自動推定
+      ──→ ③ 要求仕様文の正規化・分割
+解析 ──→ ④ BM25検索 (Top100)
+      ──→ ⑤ 文章ベクトル類似度 (bag-of-bigrams + コサイン類似度)
+      ──→ ⑥ リスク辞書ヒット検出 (3段階重大度)
+      ──→ ⑦ 過去レビューDB類似引き当て
+判断 ──→ ⑧ 候補統合・重複除去
+      ──→ ⑨ リランキング (5指標重み付き総合)
+      ──→ ⑩〜⑬ 重大度・カテゴリ・所掌・優先度・信頼度・推定根拠
+学習 ──→ ⑭ 人レビュー (採用/修正/不採用)
+      ──→ ⑮〜⑰ IndexedDB保存・新辞書バージョン候補生成
+比較 ──→ ⑱〜⑳ 旧/新モデル評価・重大リスクRecall・Top10一致率
+判断 ──→ ㉑〜㉓ 人による採用判断・旧モデル復元可能
+出力 ──→ ㉔ 別Excel出力 (4シート: リスク候補/処理内容/列対応/リスク辞書)
+      ──→ ㉕ 操作ログ (200件保持)
+```
+
+### レビュー観点（特に重点）
+
+#### A. アルゴリズム正確性
+
+- [ ] **BM25**: k1=1.5, b=0.75 のパラメータ。IDF計算 `log(1 + (N - df + 0.5) / (df + 0.5))` の数式正当性
+- [ ] **日本語bigram**: `tokenize()` 関数で CJK 文字のみを bigram 化、ASCII単語と分離処理。1文字の場合の扱い
+- [ ] **bag-of-bigrams + コサイン類似度**: L2正規化のタイミング、疎ベクトルでの計算効率
+- [ ] **過去レビュー一致補正**: 類似度 ≥ 0.6 で +12 / -15 の閾値・補正値が妥当か
+- [ ] **重大度判定ロジック**: hits.high.length > 0 → 'high' の優先度設計
+- [ ] **信頼度算出**: `high*35 + mid*18 + low*8 + (total>=3?15:0)` の重み配分妥当性
+- [ ] **学習ロジック**: 採用率 ≥ 80% & 一致回数 ≥ 3 で「強化候補」、≤ 20% で「弱化候補」の閾値
+
+#### B. データ永続化（IndexedDB）
+
+- [ ] `openDB()` の上位層キャッシュ `_dbCache` は同時アクセスで競合しないか
+- [ ] `onupgradeneeded` での 4 ObjectStore 定義（reviews/dictVersions/modelMeta/learningQ）
+- [ ] レビュー保存時の `change` イベント委譲パターンが正しく動くか
+- [ ] エラーハンドリング（`reject` への到達と上位への伝播）
+
+#### C. 機密保護（最重要）
+
+- [ ] **会社データ送信ゼロ**の保証：`fetch`, `XMLHttpRequest`, `navigator.sendBeacon`, `WebSocket` 等が会社データを送らないことを確認
+- [ ] `console.log` 経由のクラウドロギングが無いことの確認
+- [ ] CDN リソースは SheetJS のみ（CDN ライブラリのロード時にデータが送られないこと）
+- [ ] LocalStorage / sessionStorage を使っていないこと（IndexedDBのみ）
+- [ ] 第三者JS（解析・トラッキング）の不在
+- [ ] Service Worker による意図しないキャッシング・送信が無いこと
+
+#### D. 実用性 — ETO 製造業の現場で本当に使えるか
+
+- [ ] **業界別リスク辞書**：産業機械40語/プラント30語/特装車両30語の妥当性
+  - 各語の `why`（判断材料）が実務的に正しい根拠を提示できているか
+  - 業界エンジニアが見て「これは確かに見積もり工数を狂わせる」と納得できるか
+- [ ] **サンプル仕様書**：3業界×12行が現場感のある記述になっているか
+- [ ] **5秒クイックスタート**：プリセット選択→サンプル読込→実行の3ステップで結果が得られるか
+- [ ] **レビューUI**：採用/修正/不採用の3択は現場で迷わず使えるか（修正後内容入力欄が無い点をどう評価するか）
+- [ ] **新旧比較指標**：重大リスクRecall・Top10一致率が判断に使えるレベルか
+
+#### E. UX/UI
+
+- [ ] レイアウトの一貫性（既存 ETO 3 ツールとデザイン揃ってるか）
+- [ ] レスポンシブ対応（モバイルで使えるか）
+- [ ] 大容量Excel（5000行超）の警告ダイアログ・ESC中断
+- [ ] 機密保護バナー＋検証方法トグル
+- [ ] 操作ログ（直近30件表示）の可読性
+- [ ] 「機能仕様」セクション（WHAT/HOW/USE/PRIVACY/METRICS/TECH/LIMIT）が一読で全機能を理解できるか
+
+#### F. コード品質
+
+- [ ] 重複コード／不要コードの有無
+- [ ] エラーハンドリング（try-catch）の網羅性
+- [ ] **detach-reattach パターン使用禁止**（過去事故あり）→ DocumentFragment 使用済み確認
+- [ ] グローバル変数汚染（workbook, currentRows 等）の影響範囲
+- [ ] `runExtraction` のラップパターン（`_origRunExtraction` 経由）が想定通り動くか
+
+---
+
+## 🟡 高優先 — ETO 関連ツール3本（既存）
+
+| ファイル | URL | アルゴリズム | レビュー観点 |
+|---------|-----|-------------|------------|
+| `src/pages/ai-tools/eto-similar-quote.astro` | `/ai-tools/eto-similar-quote/` | コサイン類似度+k-NN | 8特徴量設計の妥当性・Z-score正規化・加重平均ロジック |
+| `src/pages/ai-tools/project-monte-carlo.astro` | `/ai-tools/project-monte-carlo/` | PERT 3点+1万回モンテカルロ+CPM | DAG トポロジカルソート・三角分布サンプリング・P50/P80/P95算出 |
+| `src/pages/ai-tools/eto-job-shop.astro` | `/ai-tools/eto-job-shop/` | EDD/SPT/CR ディスパッチング | 時刻同期ロジック・並列リソース管理 |
+
+---
+
+## 🟢 中優先 — 量産系AIツール6本（既存）
 
 | ファイル | アルゴリズム |
 |---------|-------------|
-| `src/pages/ai-tools/production-schedule.astro` | GA + NEH + 3手法比較 |
-| `src/pages/ai-tools/bottleneck.astro` | Little's Law + Monte Carlo |
-| `src/pages/ai-tools/demand-forecast.astro` | Holt-Winters + AR(2) + 季節MA + アンサンブル |
-| `src/pages/ai-tools/anomaly-detection.astro` | TF.js Autoencoder + Isolation Forest |
-| `src/pages/ai-tools/quality-prediction.astro` | TF.js Dense NN + 信頼区間 + バッチCSV |
-| `src/pages/ai-tools/spc-chart.astro` | X-bar/R + X-MR + Western Electric Rules |
-
-### 🟢 中優先: 事例コンテンツ
-
-- `src/content/cases/eto-ai-utilization.md`（ETO実務適用記録・最新追加）
-- `src/content/cases/local-llm-document-automation.md`（ローカルLLM活用）
-- `src/content/cases/nani-execution-lab-build.md`（サイト構築事例）
+| `production-schedule.astro` | GA + NEH + FIFO比較 |
+| `bottleneck.astro` | Little's Law + Monte Carlo |
+| `demand-forecast.astro` | Holt-Winters + AR(2) + 季節MA |
+| `anomaly-detection.astro` | TF.js Autoencoder + Isolation Forest |
+| `quality-prediction.astro` | TF.js Dense NN + 信頼区間 + バッチCSV |
+| `spc-chart.astro` | X-bar/R + X-MR + Western Electric |
 
 ---
 
 ## ⚠️ 機密保護に関する絶対要件（最重要）
 
-**特定企業名・製品名・社内固有名詞が記事中に出ていないか厳格にチェック**してほしい。
+**特定企業名・製品名・社内固有名詞が記事中・コード中・コミットメッセージに出ていないか厳格にチェック**。
 
-### 確認項目（NG リスト）
+### NG リスト
 - 特定企業名（実在する産業機械メーカー名・プラントメーカー名等）
 - 任意の3〜4文字略号で社名や製品名を想起させるもの
 - 個人名（Author含む）
@@ -51,94 +130,11 @@
 
 ### OK な汎用表現
 - 業界カテゴリ（産業機械・プラント設備・特装車両 等）
-- アルゴリズム名（GA, NEH, Holt-Winters, Isolation Forest 等）
-- 一般的な業界用語（ETO, Job Shop, CCPM, TOC, MAPE 等）
+- アルゴリズム名（GA, NEH, BM25, Holt-Winters, Isolation Forest 等）
+- 一般的な業界用語（ETO, Job Shop, CCPM, TOC, MAPE, PERT 等）
+- サンプル製品名（「プレス機200t」「貯蔵タンク50KL」「消防車ポンプ車」等の汎用品名）
 
 **NG が1つでも見つかれば即座に指摘してほしい。**
-
----
-
-## レビュー観点
-
-### 1. アルゴリズムの正確性
-
-#### eto-similar-quote.astro
-- [ ] Z-score 正規化が数値特徴量に正しく適用されているか
-- [ ] One-hot エンコーディングがカテゴリ変数に対して正しいか
-- [ ] コサイン類似度の計算式が正しいか（分子=内積, 分母=ノルム積）
-- [ ] k-NN の k 値（3 or 5）の妥当性
-- [ ] 類似度加重平均で予測値を出す重み付けロジックが正しいか
-- [ ] 標準偏差からの信頼区間算出が統計的に妥当か
-
-#### project-monte-carlo.astro
-- [ ] PERT の3点見積り（a, m, b）からのサンプリングが適切か（三角分布 or ベータ分布）
-- [ ] DAG のトポロジカルソートが正しく動くか（循環検出含む）
-- [ ] CPM の Forward/Backward Pass が正しいか
-- [ ] 10000回シミュレーションで完了日分布を構築しているか
-- [ ] P50/P80/P95 の percentile 計算が正しいか
-- [ ] クリティカル度（各タスクが何%でクリティカルパス上にあったか）の集計ロジック
-
-#### eto-job-shop.astro
-- [ ] EDD（Earliest Due Date）の優先度計算が正しいか
-- [ ] SPT（Shortest Processing Time）が現工程の処理時間を見ているか
-- [ ] CR（Critical Ratio = (納期-現在時刻) / 残処理時間）が正しいか
-- [ ] 時刻同期: 工程開始時刻 = max(前工程完了時刻, 機械空き時刻) のロジック
-- [ ] 機械リソース管理（複数台ある機械の並列処理）
-
-### 2. 実用性 — 生産技術エンジニアが本当に使えるか
-
-- [ ] サンプルデータが「現場感」あるか（部品名・工程名の現実性）
-- [ ] 業界プリセット（自動車部品/電子機器/食品/産業機械/プラント/特装車両）が業界の特徴を反映しているか
-- [ ] 入力フォームが直感的か（数値レンジ・単位明記）
-- [ ] 結果表示が「現場で次に何をすべきか」に繋がっているか（NEXT ACTIONS の具体性）
-- [ ] CSVテンプレートDLが実用的なヘッダ+10行のリアルなサンプルになっているか
-- [ ] エラー時のメッセージが分かりやすいか
-
-### 3. UX/UI
-
-- [ ] レイアウトの一貫性（既存6ツールと新3ツールでデザインが揃っているか）
-- [ ] レスポンシブ対応（モバイルで使えるか）
-- [ ] アクセシビリティ（キーボード操作・読み上げ）
-- [ ] ローディング表示（モンテカルロ10000回・GA計算等）
-- [ ] Chart.js の可視化が読みやすいか
-
-### 4. パフォーマンス
-
-- [ ] ブラウザでの計算速度（モンテカルロ10000回が秒単位で完了するか）
-- [ ] 大量CSV（5000+行）でフリーズしないか
-- [ ] TF.js の遅延ロードが効いているか（Autoencoder/Dense NN）
-- [ ] LRU キャッシュ・メモ化が機能しているか
-
-### 5. 機密性・セキュリティ
-
-- [ ] 「全処理ブラウザ完結・データ社外送信ゼロ」が実装で保証されているか
-- [ ] LocalStorage を不必要に使っていないか
-- [ ] 外部APIコール（fetch等）が無いか
-- [ ] CDN ライブラリ（Chart.js, TF.js）の読込のみに限定されているか
-
-### 6. ETO業務知識の正確性
-
-- [ ] 類似度ベース見積りの考え方が正しいか
-- [ ] CCPM（クリティカルチェイン・プロジェクトマネジメント）の説明
-- [ ] TOC（制約条件理論）の適用
-- [ ] PERT/CPM の理論的基礎
-- [ ] Job Shop ディスパッチングルールの一般的解釈
-
-### 7. コード品質
-
-- [ ] 重複コード・不要なコードがないか
-- [ ] 関数の責務分離
-- [ ] エラーハンドリング（try-catch）
-- [ ] 既存ツールと共通化できる部分があるか
-- [ ] detach-reattach パターン使用禁止（getElementById null 衝突）→ DocumentFragment 使用済みか
-- [ ] コメントの質と量
-
-### 8. 事例（Markdown）の質
-
-- [ ] 説得力ある具体性（数値・期待効果）
-- [ ] 個人情報・企業名なし
-- [ ] 業界知識として正確か
-- [ ] 想定読者（生産技術エンジニア）に刺さる内容か
 
 ---
 
@@ -151,6 +147,9 @@
 
 ### 🔴 Critical（即修正）
 - [問題点と対応案]
+  - 根拠: 該当ファイル:行番号 / コードスニペット
+  - 影響範囲: 機密漏洩 / アルゴリズム間違い / 実用不可レベルの欠陥
+  - 推奨対応: 具体的な修正方針
 
 ### 🟡 Major（早期修正推奨）
 - [問題点と対応案]
@@ -162,36 +161,57 @@
 - [改善アイデア]
 
 ### ✅ Good Points（評価点）
-- [良い実装箇所]
+- [良い実装箇所と理由]
 ```
 
-特に **🔴 Critical** は機密漏洩・アルゴリズム間違い・実用性に致命的な欠陥がある場合のみ。
+特に **🔴 Critical** は機密漏洩・アルゴリズム致命的間違い・実用性に致命的な欠陥がある場合のみ。
 
 ---
 
 ## 補足情報
 
-- **技術スタック**: Astro v6 + Tailwind v4 + GitHub Pages（完全静的）
-- **ビルド**: `npx astro build` で 82 ページ
-- **デザイン**: 背景 #0c0c0e、ゴールド #c8a96e、テキスト #edede8
-- **デプロイ**: GitHub Actions 自動（push → 1-2分）
-- **過去のハマりポイント**:
-  - detach-reattach × getElementById null 衝突バグ（修正済み）
-  - Astro v6 の破壊的変更（content collections 仕様変更）
-  - JS 関数名の Vite 最小化による検証ノイズ
+### 技術スタック
+- Astro v6 (静的SSG) + Tailwind v4 + GitHub Pages（完全静的）
+- ビルド: `npx astro build` で 85 ページ
+- デザイン: 背景 #0c0c0e、ゴールド #c8a96e、テキスト #edede8
 
-## 履歴ログ抜粋
+### 過去のハマりポイント（再発防止チェック対象）
+1. **detach-reattach × getElementById null 衝突バグ**
+   - `parent.removeChild(tbody)` で切り離し中に `getElementById('tbody')` を呼んで null クラッシュした事故
+   - 対応: 全ツールで DocumentFragment パターンに統一済み
+2. **Astro v6 の破壊的変更**
+   - `entry.slug` → `entry.id.replace(/\.md$/, '')`
+   - `entry.render()` → `import { render } from 'astro:content'; render(entry)`
+3. **配列定義はあるがレンダリング欠落**
+   - `etoTools` 配列を index.astro に定義したが画面表示処理を入れ忘れた事故
+   - 対応: 各 .astro ファイルで定義配列が確実に `.map()` でレンダリングされているか確認
+4. **JS関数名の Vite 最小化検証ノイズ**
+   - 関数名 grep でツール検証すると minified 後の名前差で誤検知
+   - 対応: HTML ID 文字列での検証に切り替え
 
-過去のラウンド改善実績:
+---
+
+## 履歴ログ抜粋（最新の改善履歴）
+
 - Round 1〜10: パフォーマンス改善（GA最適化・TF.js遅延ロード・LRUキャッシュ・DOM最適化・CSVチャンク・PNG export・性能計測）
 - Round 11〜14: 新機能（NEH法・AR(2)・Isolation Forest・バッチCSV予測+信頼区間）
-- 実用化フェーズ: USE CASES / 業界プリセット / CSVテンプレートDL / NEXT ACTIONS
-- ETO拡張（最新）: 類似案件見積り・モンテカルロ・Job Shopスケジューラ + ETO事例
+- 実用化フェーズ: USE CASES / 業界プリセット / CSVテンプレートDL / NEXT ACTIONS / 5秒クイックスタート
+- ETO拡張: 類似案件見積り・モンテカルロ・Job Shopスケジューラ + ETO事例
+- 20項目改善: 用語集 ETO 13語追加・FAQ・ハイライト・ETOツール相互リンク・blog/news/README更新等
+- **仕様書リスク候補抽出ツール追加（最新）**: BM25+リスク辞書+人レビュー学習+IndexedDB+新旧比較+評価指標+操作ログ（第1〜第7段階すべて実装）
 
 ---
 
 ## 追加お願い
 
-レビュー後、**「これを生産技術エンジニアが現場で見たら、本当に使いたくなるか」** という観点での総評を最後に1段落でお願いしたい。
+レビュー後、以下3点について最後に1段落ずつ総評をお願いしたい：
+
+1. **「これを生産技術エンジニアが現場で見たら、本当に使いたくなるか」** — 実用性の総評
+2. **「機密保護の絶対要件は守られているか」** — 漏洩リスクの総評
+3. **「使うほど精度が上がる仕組みとして仕上がっているか」** — 学習ループの総評
 
 辛口で構わない。「実用レベルに達していない」と判断されれば理由を明確に。
+
+---
+
+**この依頼書をそのまま CODEX に投げ込んでください。** 必要に応じて対象ファイルを `cat src/pages/ai-tools/spec-risk-extractor.astro` 等で示すか、リポジトリ URL を提供してください。
