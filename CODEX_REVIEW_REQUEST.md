@@ -1,217 +1,180 @@
-# CODEX レビュー依頼書（最新版・2026-04-26）
+# CODEX 再レビュー依頼書（修正後・2026-04-27）
 
 ## レビュー対象
 
 **プロジェクト**: NaNi Execution Lab — 製造業DX × ETO（一品一様製造） 個人技術サイト
 **リポジトリ**: https://github.com/yyy19901103-source/nani-execution-lab
-**公開URL**: https://yyy19901103-source.github.io/nani-execution-lab/
-**最新コミット**: `main` ブランチ HEAD（仕様書リスク候補抽出ツール追加版）
+**前回レビュー対象コミット**: `bcc5ed2`
+**今回再レビュー対象コミット**: `39258c3`（CODEX レビュー対応版）
 
 ---
 
-## 🔴 重点レビュー対象 — 仕様書リスク候補抽出ツール（最新追加・最重要）
+## 🔁 前回 CODEX レビューでの指摘と対応状況
 
-ファイル: `src/pages/ai-tools/spec-risk-extractor.astro`（約1500行）  
-URL: `/ai-tools/spec-risk-extractor/`
+前回レビューで Critical 2件 + Major 6件の指摘を受け、すべて修正しました。以下、対応のサマリと該当コードの位置です。
 
-ETO（受注設計生産）製造業の仕様書Excelから、見積り工数・納期・品質を狂わせるリスク候補をブラウザ完結で抽出するツール。**仕様書の第1〜第7段階すべてを実装した完成形**。
+### 🔴 Critical（修正済み・要再確認）
 
-### 機能スコープ（25ステップ処理フロー）
+#### Critical#1: BM25 が実際には使われていない問題
 
-```
-入力 ──→ ① Excel読込 (.xlsx/.xls/サンプル)
-      ──→ ② シート選択・列マッピング自動推定
-      ──→ ③ 要求仕様文の正規化・分割
-解析 ──→ ④ BM25検索 (Top100)
-      ──→ ⑤ 文章ベクトル類似度 (bag-of-bigrams + コサイン類似度)
-      ──→ ⑥ リスク辞書ヒット検出 (3段階重大度)
-      ──→ ⑦ 過去レビューDB類似引き当て
-判断 ──→ ⑧ 候補統合・重複除去
-      ──→ ⑨ リランキング (5指標重み付き総合)
-      ──→ ⑩〜⑬ 重大度・カテゴリ・所掌・優先度・信頼度・推定根拠
-学習 ──→ ⑭ 人レビュー (採用/修正/不採用)
-      ──→ ⑮〜⑰ IndexedDB保存・新辞書バージョン候補生成
-比較 ──→ ⑱〜⑳ 旧/新モデル評価・重大リスクRecall・Top10一致率
-判断 ──→ ㉑〜㉓ 人による採用判断・旧モデル復元可能
-出力 ──→ ㉔ 別Excel出力 (4シート: リスク候補/処理内容/列対応/リスク辞書)
-      ──→ ㉕ 操作ログ (200件保持)
-```
+| 項目 | 内容 |
+|------|------|
+| 前回指摘 | `bm25.fit()` は呼ぶが `bm25.search()` を呼んでおらず、実処理は `text.indexOf()` だけだった |
+| 対応 | 辞書語をクエリ化し `bm25.search(dictQuery, docs.length)` で全件スコア取得 → 各仕様文の `bmScore` を最大値正規化 |
+| 該当箇所 | `src/pages/ai-tools/spec-risk-extractor.astro` の `runExtraction()` 内 |
+| 統合スコア | `0.35 × 辞書 + 0.25 × BM25 + 0.20 × ベクトル類似度 + 0.10 × 過去採用 + 0.10 × 一致語数` |
+| 候補化判定 | 辞書ヒットゼロでも BM25 ≥ 0.30 / ベクトル類似度 ≥ 0.15 / 過去採用類似 ≥ 0.5 のいずれかで候補化 |
 
-### レビュー観点（特に重点）
+#### Critical#2: 学習が辞書を実更新しない問題
 
-#### A. アルゴリズム正確性
+| 項目 | 内容 |
+|------|------|
+| 前回指摘 | 学習処理は強化候補/弱化候補を数えるだけ、`extendedDicts` は空のまま、本抽出は `RISK_DICT` 直参照 |
+| 対応 | (a) 採用率≥80% の新語を `extendedDicts[preset].high[]` に **実エントリとして追加** / (b) 採用率≤20% の語を `extendedDicts[preset].suppressed[]` に追加 / (c) 本抽出 `runExtraction()` も `getEffectiveDict()` 経由に変更し、suppressed 語を hit から除外 |
+| 該当箇所 | `btn-train` クリックハンドラ内 + `runExtraction()` 内の辞書取得 |
+| 学習効果の流れ | レビュー保存 → 学習実行 → `extendedDicts` 更新 → 新バージョンとして dbPut → 採用判断 → 次回 `runExtraction()` で反映 |
 
-- [ ] **BM25**: k1=1.5, b=0.75 のパラメータ。IDF計算 `log(1 + (N - df + 0.5) / (df + 0.5))` の数式正当性
-- [ ] **日本語bigram**: `tokenize()` 関数で CJK 文字のみを bigram 化、ASCII単語と分離処理。1文字の場合の扱い
-- [ ] **bag-of-bigrams + コサイン類似度**: L2正規化のタイミング、疎ベクトルでの計算効率
-- [ ] **過去レビュー一致補正**: 類似度 ≥ 0.6 で +12 / -15 の閾値・補正値が妥当か
-- [ ] **重大度判定ロジック**: hits.high.length > 0 → 'high' の優先度設計
-- [ ] **信頼度算出**: `high*35 + mid*18 + low*8 + (total>=3?15:0)` の重み配分妥当性
-- [ ] **学習ロジック**: 採用率 ≥ 80% & 一致回数 ≥ 3 で「強化候補」、≤ 20% で「弱化候補」の閾値
+### 🟡 Major（修正済み・要再確認）
 
-#### B. データ永続化（IndexedDB）
+| # | 前回指摘 | 対応 |
+|---|---------|------|
+| ESC中断 | ESC押下をログするだけで処理停止しない | `extractAborted` フラグ + 200行ごとに `setTimeout(0)` で UI yield + ループ先頭でフラグチェック → 実際に停止 |
+| 修正テキスト欄なし | 「修正して採用」しても修正後内容が残らない | `modify` 選択時に `<textarea class="modify-textarea">` を表示。入力内容を `reviews.modifiedSpec` として IndexedDB に保存 |
+| Recall定義誤り | 正解集合がないのに「Recall」を名乗る | 名称を「**重大候補の承認率**」に変更 + 説明文に「※統計的Recallではなく承認率」を併記 |
+| openDB 競合 | `_dbCache` に入る前の同時呼び出しで複数 open 走る | `_dbPromise` で **Promise 自体をキャッシュ** → 同時呼び出しを1本化 |
+| tx.oncomplete 不使用 | request 成功で resolve、tx 完了を待たない | `tx.oncomplete` で resolve / `tx.onabort` `tx.onerror` でreject に変更 |
+| project-monte-carlo クリティカル度 | 単一終端起点で並列終端を取りこぼし | 「最大EFを持つ全終端」を起点に逆探索する形に修正 |
+| eto-job-shop 未定義機械 | 未定義機械参照で部分スケジュール完了 | `schedule()` 冒頭で未定義機械・ゼロ台数を検証 → throw で実行中止 |
+| パーセンタイル | `floor(iterations*q)` で上振れ | 線形補間方式 `sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo)` に変更 |
 
-- [ ] `openDB()` の上位層キャッシュ `_dbCache` は同時アクセスで競合しないか
-- [ ] `onupgradeneeded` での 4 ObjectStore 定義（reviews/dictVersions/modelMeta/learningQ）
-- [ ] レビュー保存時の `change` イベント委譲パターンが正しく動くか
-- [ ] エラーハンドリング（`reject` への到達と上位への伝播）
+### 💡 Suggestion 採用
 
-#### C. 機密保護（最重要）
-
-- [ ] **会社データ送信ゼロ**の保証：`fetch`, `XMLHttpRequest`, `navigator.sendBeacon`, `WebSocket` 等が会社データを送らないことを確認
-- [ ] `console.log` 経由のクラウドロギングが無いことの確認
-- [ ] CDN リソースは SheetJS のみ（CDN ライブラリのロード時にデータが送られないこと）
-- [ ] LocalStorage / sessionStorage を使っていないこと（IndexedDBのみ）
-- [ ] 第三者JS（解析・トラッキング）の不在
-- [ ] Service Worker による意図しないキャッシング・送信が無いこと
-
-#### D. 実用性 — ETO 製造業の現場で本当に使えるか
-
-- [ ] **業界別リスク辞書**：産業機械40語/プラント30語/特装車両30語の妥当性
-  - 各語の `why`（判断材料）が実務的に正しい根拠を提示できているか
-  - 業界エンジニアが見て「これは確かに見積もり工数を狂わせる」と納得できるか
-- [ ] **サンプル仕様書**：3業界×12行が現場感のある記述になっているか
-- [ ] **5秒クイックスタート**：プリセット選択→サンプル読込→実行の3ステップで結果が得られるか
-- [ ] **レビューUI**：採用/修正/不採用の3択は現場で迷わず使えるか（修正後内容入力欄が無い点をどう評価するか）
-- [ ] **新旧比較指標**：重大リスクRecall・Top10一致率が判断に使えるレベルか
-
-#### E. UX/UI
-
-- [ ] レイアウトの一貫性（既存 ETO 3 ツールとデザイン揃ってるか）
-- [ ] レスポンシブ対応（モバイルで使えるか）
-- [ ] 大容量Excel（5000行超）の警告ダイアログ・ESC中断
-- [ ] 機密保護バナー＋検証方法トグル
-- [ ] 操作ログ（直近30件表示）の可読性
-- [ ] 「機能仕様」セクション（WHAT/HOW/USE/PRIVACY/METRICS/TECH/LIMIT）が一読で全機能を理解できるか
-
-#### F. コード品質
-
-- [ ] 重複コード／不要コードの有無
-- [ ] エラーハンドリング（try-catch）の網羅性
-- [ ] **detach-reattach パターン使用禁止**（過去事故あり）→ DocumentFragment 使用済み確認
-- [ ] グローバル変数汚染（workbook, currentRows 等）の影響範囲
-- [ ] `runExtraction` のラップパターン（`_origRunExtraction` 経由）が想定通り動くか
+| 提案 | 対応 |
+|------|------|
+| 辞書/BM25/類似度を別スコアで可視化 | 結果テーブル各行に **5つのスコアバッジ**（辞書 / BM25 / 類似度 / 過去採用 / 過去不採用）を表示 |
 
 ---
 
-## 🟡 高優先 — ETO 関連ツール3本（既存）
+## 🔍 重点再確認お願い項目
 
-| ファイル | URL | アルゴリズム | レビュー観点 |
-|---------|-----|-------------|------------|
-| `src/pages/ai-tools/eto-similar-quote.astro` | `/ai-tools/eto-similar-quote/` | コサイン類似度+k-NN | 8特徴量設計の妥当性・Z-score正規化・加重平均ロジック |
-| `src/pages/ai-tools/project-monte-carlo.astro` | `/ai-tools/project-monte-carlo/` | PERT 3点+1万回モンテカルロ+CPM | DAG トポロジカルソート・三角分布サンプリング・P50/P80/P95算出 |
-| `src/pages/ai-tools/eto-job-shop.astro` | `/ai-tools/eto-job-shop/` | EDD/SPT/CR ディスパッチング | 時刻同期ロジック・並列リソース管理 |
+### A. アルゴリズム正確性
 
----
+#### A-1. BM25 の使われ方
+- 辞書語結合クエリでの検索結果が、各仕様文の `bmScore` として実際に統合スコアに反映されているか
+- BM25 の重みづけ 0.25 が辞書 0.35 と比較して妥当か（辞書が依然主役・BM25 が補助）
+- 候補化閾値 BM25 ≥ 0.30 が見逃し防止／ノイズ削減のバランスとして妥当か
 
-## 🟢 中優先 — 量産系AIツール6本（既存）
+#### A-2. 学習ループの実効性
+- `btn-train` クリック後、`extendedDicts[preset].high[]` に新語が**実際に追加**されているか
+- `suppressedSet` が `runExtraction()` 内の `dict[lvl].forEach` ループで参照され、対象語の hit が**実際にスキップ**されているか
+- 採用された後の新語が、次回抽出で BM25 クエリにも入るか（→ 副次的な強化が連鎖するか）
 
-| ファイル | アルゴリズム |
-|---------|-------------|
-| `production-schedule.astro` | GA + NEH + FIFO比較 |
-| `bottleneck.astro` | Little's Law + Monte Carlo |
-| `demand-forecast.astro` | Holt-Winters + AR(2) + 季節MA |
-| `anomaly-detection.astro` | TF.js Autoencoder + Isolation Forest |
-| `quality-prediction.astro` | TF.js Dense NN + 信頼区間 + バッチCSV |
-| `spc-chart.astro` | X-bar/R + X-MR + Western Electric |
+#### A-3. 過去レビュー類似度
+- `pastAdoptSim` / `pastRejectSim` が `vectorize` + `cosineSim` で正しく計算されているか
+- `pastBonus = pastAdoptSim * 0.5 - pastRejectSim * 0.5` の重みが妥当か
+- レビュー DB が空の状態（初回利用時）でもエラーにならないか
 
----
+### B. データ永続化（IndexedDB）
 
-## ⚠️ 機密保護に関する絶対要件（最重要）
+- `_dbPromise` キャッシュで同時呼び出しが1本化されているか
+- `tx.oncomplete` 待ちで書き込み確定が保証されているか
+- レビュー保存・学習・新旧比較の各書き込みで race condition が起きないか
 
-**特定企業名・製品名・社内固有名詞が記事中・コード中・コミットメッセージに出ていないか厳格にチェック**。
+### C. 機密保護（前回 Critical なし）
 
-### NG リスト
-- 特定企業名（実在する産業機械メーカー名・プラントメーカー名等）
-- 任意の3〜4文字略号で社名や製品名を想起させるもの
-- 個人名（Author含む）
-- 特定の顧客名・案件番号
-- 内部システム名・社内ツール名
+- 修正後のコードでも会社データの外部送信が無いことの再確認
+- レビュー UI に追加した textarea の内容が `console.log` 等経由で漏れないか
+- 学習辞書バージョン JSON が IndexedDB 内に閉じているか
 
-### OK な汎用表現
-- 業界カテゴリ（産業機械・プラント設備・特装車両 等）
-- アルゴリズム名（GA, NEH, BM25, Holt-Winters, Isolation Forest 等）
-- 一般的な業界用語（ETO, Job Shop, CCPM, TOC, MAPE, PERT 等）
-- サンプル製品名（「プレス機200t」「貯蔵タンク50KL」「消防車ポンプ車」等の汎用品名）
+### D. 実用性
 
-**NG が1つでも見つかれば即座に指摘してほしい。**
+- 「修正して採用」テキスト欄が現場の運用に耐えるか（修正テキストはDBに残る・次回抽出のパターン学習材料）
+- 「重大候補の承認率」表示が誤解を招かないか
+- ESC 中断後、再度実行ボタンを押すと正しく再開できるか
+- `extendedDicts[preset].suppressed` が UI で確認できるか（学習結果の透明性）
+
+### E. UX/UI
+
+- スコアバッジ5本（辞書/BM25/類似度/過去採用/過去不採用）が画面で読みやすいか
+- 大容量Excel + ESC中断のフロー全体が現場で使えるレベルか
+- `modify` 選択 → textarea 表示 → 入力 → 自動保存 のフィードバックループ
+
+### F. コード品質
+
+- `_origRunExtraction` ラッパー削除後、`runExtraction()` 単体で完結しているか
+- 旧コードと新コードの境界に dead code が残っていないか
+- 名前変更（重大リスクRecall → 重大候補の承認率）が UI / コメント / Excel出力 / log で一貫しているか
 
 ---
 
 ## 期待するレビュー出力
 
-以下の形式で1ファイル（または1観点）ごとに分けて報告してほしい：
+前回と同じフォーマットでお願いします：
 
 ```markdown
 ## [対象ファイル/観点]
 
 ### 🔴 Critical（即修正）
-- [問題点と対応案]
-  - 根拠: 該当ファイル:行番号 / コードスニペット
-  - 影響範囲: 機密漏洩 / アルゴリズム間違い / 実用不可レベルの欠陥
-  - 推奨対応: 具体的な修正方針
-
 ### 🟡 Major（早期修正推奨）
-- [問題点と対応案]
-
 ### 🟢 Minor（任意改善）
-- [問題点と対応案]
-
 ### 💡 Suggestion（拡張提案）
-- [改善アイデア]
-
 ### ✅ Good Points（評価点）
-- [良い実装箇所と理由]
 ```
 
-特に **🔴 Critical** は機密漏洩・アルゴリズム致命的間違い・実用性に致命的な欠陥がある場合のみ。
+特に：
+
+1. **前回の Critical 2件が本当に修正されているか** — `bm25.search()` の戻り値が信頼度に反映されているか / `extendedDicts` が学習で実更新され `runExtraction()` で参照されているか
+2. **修正で新規発生した不具合がないか** — async化に伴う race condition / await 漏れ / 例外伝播
+3. **依然として「演出先行」感が残る箇所** — 説明文と実装の差分
 
 ---
 
-## 補足情報
+## 機密保護に関する絶対要件（前回と同じ）
 
-### 技術スタック
-- Astro v6 (静的SSG) + Tailwind v4 + GitHub Pages（完全静的）
-- ビルド: `npx astro build` で 85 ページ
-- デザイン: 背景 #0c0c0e、ゴールド #c8a96e、テキスト #edede8
-
-### 過去のハマりポイント（再発防止チェック対象）
-1. **detach-reattach × getElementById null 衝突バグ**
-   - `parent.removeChild(tbody)` で切り離し中に `getElementById('tbody')` を呼んで null クラッシュした事故
-   - 対応: 全ツールで DocumentFragment パターンに統一済み
-2. **Astro v6 の破壊的変更**
-   - `entry.slug` → `entry.id.replace(/\.md$/, '')`
-   - `entry.render()` → `import { render } from 'astro:content'; render(entry)`
-3. **配列定義はあるがレンダリング欠落**
-   - `etoTools` 配列を index.astro に定義したが画面表示処理を入れ忘れた事故
-   - 対応: 各 .astro ファイルで定義配列が確実に `.map()` でレンダリングされているか確認
-4. **JS関数名の Vite 最小化検証ノイズ**
-   - 関数名 grep でツール検証すると minified 後の名前差で誤検知
-   - 対応: HTML ID 文字列での検証に切り替え
+特定企業名・3〜4文字略号で社名想起させるもの・個人名・案件番号・内部システム名 が**コード/コメント/git log/コミットメッセージ**のどこにも混入していないか厳格にチェック。1件でも見つかれば即 🔴 Critical で指摘。
 
 ---
 
-## 履歴ログ抜粋（最新の改善履歴）
+## CODEX への手順
 
-- Round 1〜10: パフォーマンス改善（GA最適化・TF.js遅延ロード・LRUキャッシュ・DOM最適化・CSVチャンク・PNG export・性能計測）
-- Round 11〜14: 新機能（NEH法・AR(2)・Isolation Forest・バッチCSV予測+信頼区間）
-- 実用化フェーズ: USE CASES / 業界プリセット / CSVテンプレートDL / NEXT ACTIONS / 5秒クイックスタート
-- ETO拡張: 類似案件見積り・モンテカルロ・Job Shopスケジューラ + ETO事例
-- 20項目改善: 用語集 ETO 13語追加・FAQ・ハイライト・ETOツール相互リンク・blog/news/README更新等
-- **仕様書リスク候補抽出ツール追加（最新）**: BM25+リスク辞書+人レビュー学習+IndexedDB+新旧比較+評価指標+操作ログ（第1〜第7段階すべて実装）
+```bash
+# 1. ワークスペースに最新版を clone
+git clone https://github.com/yyy19901103-source/nani-execution-lab.git
+cd nani-execution-lab
+
+# 2. 再レビュー対象コミットに合わせる
+git log --oneline -5
+# 39258c3 CODEX レビュー対応: Critical 2件 + Major 6件 を修正
+# が HEAD であることを確認
+
+# 3. 本依頼書を読む
+cat CODEX_REVIEW_REQUEST.md
+
+# 4. 前回指摘の各項目について、上記「該当箇所」を中心に再点検
+#    - src/pages/ai-tools/spec-risk-extractor.astro
+#    - src/pages/ai-tools/project-monte-carlo.astro
+#    - src/pages/ai-tools/eto-job-shop.astro
+
+# 5. 「期待するレビュー出力」フォーマットで報告
+#    最後に前回の3点総評（実用性／機密保護／学習ループ）を更新版で再評価
+```
 
 ---
 
 ## 追加お願い
 
-レビュー後、以下3点について最後に1段落ずつ総評をお願いしたい：
+レビュー後、特に**前回の3点総評を再評価**してください：
 
-1. **「これを生産技術エンジニアが現場で見たら、本当に使いたくなるか」** — 実用性の総評
-2. **「機密保護の絶対要件は守られているか」** — 漏洩リスクの総評
-3. **「使うほど精度が上がる仕組みとして仕上がっているか」** — 学習ループの総評
+1. **「これを生産技術エンジニアが現場で見たら、本当に使いたくなるか」**
+   - 前回評価: 「触ってみたくなる段階。看板機能と実装の差が大きく現場導入レベルまでもう一段」
+   - 今回 Critical 2件修正後の評価は？
 
-辛口で構わない。「実用レベルに達していない」と判断されれば理由を明確に。
+2. **「機密保護の絶対要件は守られているか」**
+   - 前回評価: 「コード上はかなり良好。会社データ送信なし・NGワードなし・第三者通信は SheetJS CDN のみ」
+   - 修正で何か変化したか？
 
----
+3. **「使うほど精度が上がる仕組みとして仕上がっているか」**
+   - 前回評価: 「現状未完成。レビュー保存はできても辞書実更新が無く、修正内容も残らず、学習結果が本抽出に効かない。**演出先行**」
+   - 今回の修正で「演出先行」を脱したか？
 
-**この依頼書をそのまま CODEX に投げ込んでください。** 必要に応じて対象ファイルを `cat src/pages/ai-tools/spec-risk-extractor.astro` 等で示すか、リポジトリ URL を提供してください。
+辛口で構わない。改善が不十分なら 🔴 Critical / 🟡 Major で再指摘してください。
