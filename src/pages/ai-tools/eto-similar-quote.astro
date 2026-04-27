@@ -318,11 +318,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // 特徴量ベクトル化（数値Z-score+カテゴリOne-hot）
     // ============================================================
     function buildVectors(records, query) {
-      const all = records.concat([query]);
+      // CODEX指摘 Minor対応: Z-score 母集団は「過去案件のみ」で計算（クエリを混ぜると比較軸が動く）
       const numericKeys = ['parts','size','weight','difficulty','newDesign'];
       const stats = {};
       numericKeys.forEach(k => {
-        const arr = all.map(r => r[k]);
+        const arr = records.map(r => r[k]);  // クエリを除外
         const mean = arr.reduce((a,b)=>a+b,0)/arr.length;
         const variance = arr.reduce((s,v)=>s+(v-mean)**2,0)/arr.length;
         const std = Math.sqrt(variance) || 1;

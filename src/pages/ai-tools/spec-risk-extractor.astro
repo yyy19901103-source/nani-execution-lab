@@ -934,63 +934,51 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     });
 
     let extractAborted = false;
-    async function runExtraction() {
-      const colSpec = document.getElementById('col-spec').value;
-      const colCh   = document.getElementById('col-chapter').value;
-      const colTy   = document.getElementById('col-type').value;
-      const colOw   = document.getElementById('col-owner').value;
-      if (!colSpec) { alert('要求仕様文の列を指定してください'); return; }
-      log('extract_start', `preset=${currentPreset} rows=${currentRows.length} dict=${activeDictVersion||'base'}`);
 
-      // 大容量警告（ESC中断に対応）
-      if (currentRows.length > 5000) {
-        if (!confirm(`${currentRows.length}行は大容量です。処理を続けますか？（処理中はESCキーで中断できます）`)) {
-          log('extract_canceled', '');
-          return;
-        }
-      }
-      extractAborted = false;
-      const t0 = performance.now();
+    // ============================================================
+    // 共通候補抽出ロジック（CODEX指摘 Major対応:
+    //   本抽出 と 比較再計算 で同じスコアリングを使うよう統一）
+    // ============================================================
+    async function extractCandidates(rows, colSpec, dict, suppressedSet, opts = {}) {
+      const colCh = opts.colCh, colTy = opts.colTy, colOw = opts.colOw;
+      const docs = rows.map(r => String(r[colSpec]||''));
 
-      // === 学習済み辞書を取得（CODEX指摘 Critical#2 への対応）===
-      const dict = getEffectiveDict(currentPreset);
-      const suppressedSet = new Set((extendedDicts[currentPreset]?.suppressed || []));
-      const results = [];
-      const docs = currentRows.map(r => String(r[colSpec]||''));
-
-      // === BM25 インデックス構築 + 辞書語クエリで検索（CODEX指摘 Critical#1 への対応）===
+      // BM25
       const bm25 = new BM25();
       bm25.fit(docs);
-      const dictWords = [...dict.high, ...dict.mid, ...dict.low].filter(e => !suppressedSet.has(e.word)).map(e => e.word);
-      const dictQuery = dictWords.join(' ');
-      const bmHits = bm25.search(dictQuery, docs.length);
+      const dictAllNonSup = [...dict.high, ...dict.mid, ...dict.low].filter(e => !suppressedSet.has(e.word));
+      const dictQuery = dictAllNonSup.map(e => e.word).join(' ');
+      const bmHits = dictQuery ? bm25.search(dictQuery, docs.length) : [];
       const bmScoreByIdx = Object.fromEntries(bmHits.map(r => [r.idx, r.score]));
-      const maxBM = Math.max(0.0001, ...bmHits.map(r => r.score));
+      const maxBM = Math.max(0.0001, ...bmHits.map(r => r.score), 0.0001);
 
-      // 辞書全体のベクトル化（類似度比較の参照）
-      const dictText = [...dict.high, ...dict.mid, ...dict.low].filter(e => !suppressedSet.has(e.word)).map(e => `${e.word} ${e.why}`).join(' ');
+      // 辞書ベクトル
+      const dictText = dictAllNonSup.map(e => `${e.word} ${e.why}`).join(' ');
       const dictVec = vectorize(dictText);
 
-      // 過去レビューDB（採用文ベクトル）— 採用された語パターンを学習材料に
-      const pastReviews = await dbGetAll('reviews').catch(() => []);
-      const adoptedReviewVecs = pastReviews.filter(r => r.decision === 'adopt' || r.decision === 'modify').map(r => ({
-        v: vectorize((r.modifiedSpec || r.spec) || ''),
-        decision: r.decision,
-      }));
-      const rejectedReviewVecs = pastReviews.filter(r => r.decision === 'reject').map(r => ({ v: vectorize(r.spec || ''), decision:'reject' }));
+      // 過去レビュー（オプションで省略可・新旧比較で同じ集合を使う）
+      let pastReviews = opts.pastReviews;
+      if (pastReviews == null) {
+        pastReviews = await dbGetAll('reviews').catch(() => []);
+      }
+      const adoptedReviewVecs  = pastReviews.filter(r => r.decision === 'adopt' || r.decision === 'modify').map(r => ({ v: vectorize((r.modifiedSpec || r.spec) || '') }));
+      const rejectedReviewVecs = pastReviews.filter(r => r.decision === 'reject').map(r => ({ v: vectorize(r.spec || '') }));
 
-      // === メインループ（ESC中断対応・チャンク処理）===
+      const results = [];
       const CHUNK = 200;
-      for (let i = 0; i < currentRows.length; i++) {
-        if (extractAborted) { log('extract_aborted', `at row ${i}/${currentRows.length}`); break; }
-        if (i > 0 && i % CHUNK === 0) {
-          await new Promise(r => setTimeout(r, 0)); // yield UI
+      for (let i = 0; i < rows.length; i++) {
+        if (opts.checkAbort && extractAborted) {
+          if (opts.onAbort) opts.onAbort(i, rows.length);
+          break;
         }
-        const row = currentRows[i];
+        if (opts.yieldUI && i > 0 && i % CHUNK === 0) {
+          await new Promise(r => setTimeout(r, 0));
+        }
+        const row = rows[i];
         const text = String(row[colSpec]||'');
         if (!text.trim()) continue;
 
-        // 1) 辞書ヒット検出（suppressed 除外）
+        // 1) 辞書ヒット
         const hits = { high:[], mid:[], low:[] };
         for (const lvl of ['high','mid','low']) {
           for (const ent of dict[lvl]) {
@@ -1000,39 +988,50 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }
         const totalHits = hits.high.length + hits.mid.length + hits.low.length;
 
-        // 2) BM25 スコア（正規化 0〜1）
+        // 2) BM25
         const bmScore = (bmScoreByIdx[i] || 0) / maxBM;
 
-        // 3) ベクトル類似度（辞書ベクトルとのコサイン類似度）
+        // 3) ベクトル類似度
         const docVec = vectorize(text);
         const vecSim = cosineSim(docVec, dictVec);
 
-        // 4) 過去レビュー類似度（採用過去とどれだけ似ているか）
+        // 4) 過去レビュー類似度
         let pastAdoptSim = 0, pastRejectSim = 0;
-        for (const rv of adoptedReviewVecs) { const s = cosineSim(docVec, rv.v); if (s > pastAdoptSim) pastAdoptSim = s; }
-        for (const rv of rejectedReviewVecs){ const s = cosineSim(docVec, rv.v); if (s > pastRejectSim) pastRejectSim = s; }
+        for (const rv of adoptedReviewVecs)  { const s = cosineSim(docVec, rv.v); if (s > pastAdoptSim)  pastAdoptSim  = s; }
+        for (const rv of rejectedReviewVecs) { const s = cosineSim(docVec, rv.v); if (s > pastRejectSim) pastRejectSim = s; }
 
-        // 候補化判定: 辞書/BM25/ベクトル/過去採用 のいずれかでスコアが立てば候補
+        // 候補化
         if (totalHits === 0 && bmScore < 0.30 && vecSim < 0.15 && pastAdoptSim < 0.5) continue;
 
         // 重大度判定
         let level = 'low';
         if (hits.high.length > 0) level = 'high';
         else if (hits.mid.length > 0) level = 'mid';
-        else if (bmScore >= 0.55 || vecSim >= 0.25) level = 'mid'; // 辞書非ヒットでも検索強なら注意
+        else if (bmScore >= 0.55 || vecSim >= 0.25) level = 'mid';
 
-        // 統合信頼度（CODEX指摘 Critical#1 + Suggestion対応：複数指標を可視化）
+        // CODEX Minor指摘対応: 過去不採用が強い場合に重大度を下げてペナルティを実効化
+        let pastPenalty = 0;
+        if (pastRejectSim >= 0.6 && pastRejectSim > pastAdoptSim + 0.1) {
+          if (level === 'high') level = 'mid';
+          else if (level === 'mid') level = 'low';
+          pastPenalty = (pastRejectSim - pastAdoptSim) * 0.30;
+        }
+
+        // 統合信頼度
         const dictScore = Math.min(1, (hits.high.length*0.35 + hits.mid.length*0.18 + hits.low.length*0.08));
-        const pastBonus = pastAdoptSim * 0.5 - pastRejectSim * 0.5;
-        const totalScore =
+        const pastBonus = Math.max(0, pastAdoptSim - pastRejectSim) * 0.5;
+        const rawScore =
           0.35 * dictScore +
           0.25 * bmScore +
           0.20 * vecSim +
-          0.10 * Math.max(0, pastBonus) +
-          0.10 * Math.min(1, totalHits/4);
-        const confidence = Math.round(Math.max(0, Math.min(100, totalScore * 100)));
+          0.10 * pastBonus +
+          0.10 * Math.min(1, totalHits/4) -
+          pastPenalty;
+        const confidence = Math.round(Math.max(0, Math.min(100, rawScore * 100)));
 
-        const highlightedText = highlightHits(text, [...hits.high, ...hits.mid, ...hits.low]);
+        const highlightedText = opts.includeHighlight !== false
+          ? highlightHits(text, [...hits.high, ...hits.mid, ...hits.low])
+          : '';
 
         results.push({
           idx: i, rowNum: row._row || i + 2,
@@ -1050,16 +1049,52 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         });
       }
 
-      // 重大度・信頼度降順でソート
       const lvlOrder = { high:0, mid:1, low:2 };
       results.sort((a,b) => lvlOrder[a.level] - lvlOrder[b.level] || b.confidence - a.confidence);
+      return results;
+    }
+
+    async function runExtraction() {
+      const colSpec = document.getElementById('col-spec').value;
+      const colCh   = document.getElementById('col-chapter').value;
+      const colTy   = document.getElementById('col-type').value;
+      const colOw   = document.getElementById('col-owner').value;
+      if (!colSpec) { alert('要求仕様文の列を指定してください'); return; }
+      log('extract_start', `preset=${currentPreset} rows=${currentRows.length} dict=${activeDictVersion||'base'}`);
+
+      if (currentRows.length > 5000) {
+        if (!confirm(`${currentRows.length}行は大容量です。処理を続けますか？（処理中はESCキーで中断できます）`)) {
+          log('extract_canceled', '');
+          return;
+        }
+      }
+      extractAborted = false;
+      const t0 = performance.now();
+
+      const dict = getEffectiveDict(currentPreset);
+      const suppressedSet = new Set((extendedDicts[currentPreset]?.suppressed || []));
+
+      const results = await extractCandidates(currentRows, colSpec, dict, suppressedSet, {
+        colCh, colTy, colOw,
+        checkAbort: true,
+        yieldUI: true,
+        includeHighlight: true,
+        onAbort: (i, total) => log('extract_aborted', `at row ${i}/${total}`),
+      });
 
       currentResults = results;
       reviewState = {};
+      // CODEX Minor対応: 新規抽出時に修正テキストもクリア（前候補のidx衝突防止）
+      for (const k in reviewModified) delete reviewModified[k];
+      lastReviewIdByCandidate = {}; // upsertキー追跡もリセット
 
       const elapsed = performance.now() - t0;
       renderResults(elapsed);
-      log('extract_done', `${results.length}件 / ${(elapsed).toFixed(0)}ms / dict=${activeDictVersion||'base'}`);
+      log('extract_done', `${results.length}件 / ${(elapsed).toFixed(0)}ms / dict=${activeDictVersion||'base'}${extractAborted?' (中断)':''}`);
+      if (extractAborted) {
+        const m = document.getElementById('m-time');
+        if (m) m.textContent += ' (中断)';
+      }
       await refreshLearningStats();
     }
 
@@ -1398,10 +1433,39 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       };
     }
 
-    // ===== 第5段階: レビュー保存（CODEX指摘 Major: 修正テキストを残す） =====
+    // ===== 第5段階: レビュー保存（CODEX指摘 Major対応: upsert で重複蓄積を防ぐ） =====
     const reviewModified = {}; // idx -> 修正後仕様テキスト
+    let lastReviewIdByCandidate = {}; // candidateKey -> 最後に書いたreviewのid
+
+    function candidateKey(r) {
+      // 安定論理キー: preset + rowNum + spec の簡易ハッシュ
+      const h = simpleHash(r.spec || '');
+      return `${currentPreset}|${r.rowNum}|${h}`;
+    }
+    function simpleHash(s) {
+      let h = 0;
+      for (let i = 0; i < s.length; i++) { h = ((h << 5) - h + s.charCodeAt(i)) | 0; }
+      return h.toString(36);
+    }
+
+    // 起動時に既存レビューから lastReviewIdByCandidate を再構築
+    async function rebuildReviewIndex() {
+      try {
+        const all = await dbGetAll('reviews');
+        const seen = {};
+        for (const rec of all) {
+          // 同じ key で複数あれば最新（updatedAt or ts 最大）を採用
+          const key = `${rec.preset}|${rec.rowNum}|${simpleHash(rec.spec||'')}`;
+          if (!seen[key] || (rec.updatedAt || rec.ts || '') > (seen[key].updatedAt || seen[key].ts || '')) {
+            seen[key] = rec;
+          }
+        }
+        lastReviewIdByCandidate = {};
+        for (const k in seen) lastReviewIdByCandidate[k] = seen[k].id;
+      } catch (err) { console.warn(err); }
+    }
+
     document.addEventListener('change', async (e) => {
-      // セレクト変更
       const sel = e.target.closest('.review-select');
       if (sel) {
         const idx = parseInt(sel.dataset.idx, 10);
@@ -1409,13 +1473,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         if (!r) return;
         const decision = sel.value;
         reviewState[idx] = decision;
-        // 修正欄の表示制御
         const modifyArea = document.getElementById(`modify-area-${idx}`);
         if (modifyArea) modifyArea.style.display = decision === 'modify' ? 'block' : 'none';
         if (!decision) return;
         await persistReview(r, decision);
       }
-      // 修正テキスト変更（debounce相当）
       const ta = e.target.closest('.modify-textarea');
       if (ta) {
         const idx = parseInt(ta.dataset.idx, 10);
@@ -1429,9 +1491,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     async function persistReview(r, decision) {
       try {
-        await dbPut('reviews', {
-          ts: new Date().toISOString(),
+        const key = candidateKey(r);
+        const now = new Date().toISOString();
+        const record = {
+          ts: now,
+          updatedAt: now,
           preset: currentPreset,
+          rowNum: r.rowNum,
           dictVersion: activeDictVersion || 'base',
           spec: r.spec,
           modifiedSpec: decision === 'modify' ? (reviewModified[r.idx] || '') : '',
@@ -1442,8 +1508,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           confidence: r.confidence,
           hits: r.allHits.map(h => h.word),
           decision,
-        });
-        log('review_save', `idx=${r.idx} ${decision}${decision==='modify'?' +modifiedSpec':''}`);
+        };
+        // 既存IDがあれば上書き（upsert）
+        if (lastReviewIdByCandidate[key] != null) {
+          record.id = lastReviewIdByCandidate[key];
+        }
+        const newId = await dbPut('reviews', record);
+        lastReviewIdByCandidate[key] = newId;
+        log('review_save', `key=${key.substring(0,30)} ${decision}${decision==='modify'?' +mod':''} id=${newId}`);
         await refreshLearningStats();
       } catch (err) { console.warn(err); }
     }
@@ -1581,13 +1653,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const newV = versions.find(v => v.version === newVer);
       const savedExt = JSON.parse(JSON.stringify(extendedDicts));
       extendedDicts = newV.extended || {};
-      const tempResults = recomputeResults();
+      const tempResults = await recomputeResults(); // CODEX対応: await + extractCandidates 共通化済み
       extendedDicts = savedExt;
       const newHigh = tempResults.filter(r => r.level === 'high').map(r => r.idx);
       const newTop10 = tempResults.slice(0, 10).map(r => r.idx);
       const top10Match = oldTop10.filter(i => newTop10.includes(i)).length;
       const highMatch  = oldHigh.filter(i => newHigh.includes(i)).length;
-      const highRecall = oldHigh.length > 0 ? Math.round(highMatch/oldHigh.length*100) : 100;
+      // CODEX指摘 Major対応: 「重大候補の承認率」は誤称（実装は重大判定 idx の重複率）→ 「重大候補一致率」に正しく改名
+      const highMatchRate = oldHigh.length > 0 ? Math.round(highMatch/oldHigh.length*100) : 100;
       const html = `
         <div style="background:#0f0f12;border:1px solid rgba(200,169,110,0.2);padding:1rem 1.25rem;">
           <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">▸ 新旧モデル比較結果</div>
@@ -1596,8 +1669,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">学習レビュー数</td><td style="padding:0.25rem;color:#edede8;">${newV.stats.reviewsUsed}件</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 強化候補</td><td style="padding:0.25rem;color:#6ec897;">+${newV.stats.strengthened}語</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 弱化候補</td><td style="padding:0.25rem;color:rgba(255,80,80,0.85);">-${newV.stats.weakened}語</td></tr>
-            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">重大候補の承認率（旧→新）</td><td style="padding:0.25rem;color:#c8a96e;font-weight:600;">${highRecall}% (${highMatch}/${oldHigh.length})</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">重大候補一致率（旧∩新／旧）</td><td style="padding:0.25rem;color:#c8a96e;font-weight:600;">${highMatchRate}% (${highMatch}/${oldHigh.length})</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">Top10一致率</td><td style="padding:0.25rem;color:#edede8;">${oldTop10.length>0?Math.round(top10Match/oldTop10.length*100):0}% (${top10Match}/${oldTop10.length})</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">新モデル候補数</td><td style="padding:0.25rem;color:rgba(255,255,255,0.6);">${tempResults.length}件 (重大${newHigh.length}件)</td></tr>
           </table>
           <div style="display:flex;gap:0.5rem;margin-top:0.85rem;">
             <button id="btn-adopt-new" data-version="${newVer}" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1rem;">✓ 新モデルを採用</button>
@@ -1605,33 +1679,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </div>
         </div>`;
       document.getElementById('compare-result').innerHTML = html;
-      log('compare_done', `recall=${highRecall}%`);
+      log('compare_done', `match=${highMatchRate}% top10=${oldTop10.length>0?Math.round(top10Match/oldTop10.length*100):0}%`);
     }
 
-    function recomputeResults() {
-      // 現在の入力データに対して、現在の extendedDicts を含む辞書で再評価
+    // CODEX指摘 Major対応: 比較再計算も extractCandidates() を使い本抽出と完全一致
+    async function recomputeResults() {
       const colSpec = document.getElementById('col-spec').value;
       if (!colSpec) return [];
       const dict = getEffectiveDict(currentPreset);
-      const out = [];
-      for (let i = 0; i < currentRows.length; i++) {
-        const text = String(currentRows[i][colSpec]||'');
-        if (!text.trim()) continue;
-        const hits = { high:[], mid:[], low:[] };
-        for (const lvl of ['high','mid','low']) {
-          for (const ent of dict[lvl]) if (text.indexOf(ent.word) >= 0) hits[lvl].push(ent);
-        }
-        const total = hits.high.length+hits.mid.length+hits.low.length;
-        if (total === 0) continue;
-        let level = 'low';
-        if (hits.high.length > 0) level = 'high';
-        else if (hits.mid.length > 0) level = 'mid';
-        const conf = Math.min(100, hits.high.length*35 + hits.mid.length*18 + hits.low.length*8 + (total>=3?15:0));
-        out.push({ idx:i, level, confidence:conf });
-      }
-      const lvlOrd = { high:0, mid:1, low:2 };
-      out.sort((a,b) => lvlOrd[a.level]-lvlOrd[b.level] || b.confidence-a.confidence);
-      return out;
+      const suppressedSet = new Set((extendedDicts[currentPreset]?.suppressed || []));
+      // 過去レビューはキャッシュ（旧/新で同じ集合を使う）
+      const past = await dbGetAll('reviews').catch(() => []);
+      return await extractCandidates(currentRows, colSpec, dict, suppressedSet, {
+        pastReviews: past,
+        checkAbort: false,
+        yieldUI: false,
+        includeHighlight: false,
+      });
     }
 
     // ===== 第7段階: ESCで実際に中断（CODEX指摘 Major: 表示と挙動が一致してなかったので修正） =====
@@ -1644,12 +1708,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
     });
 
-    // ===== 起動時: 学習DB・モデル版を読み込む =====
+    // ===== 起動時: 学習DB・モデル版・レビューupsert索引を読み込む =====
     (async () => {
       try {
         await loadActiveModel();
+        await rebuildReviewIndex();
         await refreshLearningStats();
-        log('boot', `model=${activeDictVersion||'base'}`);
+        log('boot', `model=${activeDictVersion||'base'} reviews=${Object.keys(lastReviewIdByCandidate).length}`);
       } catch (err) { console.warn(err); }
     })();
   </script>
