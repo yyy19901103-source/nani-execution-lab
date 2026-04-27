@@ -424,23 +424,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           ef[idx] = es + d;
         }
         // プロジェクト完了 = 最大EF
-        let maxEf = 0, maxIdx = -1;
-        for (let i=0; i<n; i++) if (ef[i] > maxEf) { maxEf = ef[i]; maxIdx = i; }
+        let maxEf = 0;
+        for (let i=0; i<n; i++) if (ef[i] > maxEf) maxEf = ef[i];
         completions[it] = maxEf;
 
-        // クリティカルパス: 終了タスクから逆向きに、ESがちょうどEF-d となる先行を辿る
+        // CODEX指摘 Major対応: 並列終端・複数クリティカル経路を取りこぼさないため
+        // 「最大EFを持つ全終端」を起点にして逆探索する
         const inCrit = new Array(n).fill(false);
-        const stack = [maxIdx];
+        const stack = [];
+        for (let i=0; i<n; i++) {
+          if (Math.abs(ef[i] - maxEf) < 1e-6) stack.push(i);
+        }
         while (stack.length) {
           const u = stack.pop();
           if (u<0 || inCrit[u]) continue;
           inCrit[u] = true;
-          // ES_u = EF_u - dur_u
           const es_u = ef[u] - dur[u];
-          // 先行で ef[dep-1] が es_u に近いものをクリティカル先行に
           const t = tasks[u];
           t.deps.forEach(dep => {
             const di = dep - 1;
+            // 総余裕0判定: 先行のEFが現タスクESと一致 = クリティカル
             if (di>=0 && di<n && Math.abs(ef[di] - es_u) < 1e-6) stack.push(di);
           });
         }
@@ -448,7 +451,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
 
       const sorted = completions.slice().sort((a,b)=>a-b);
-      const pct = q => sorted[Math.min(sorted.length-1, Math.max(0, Math.floor(iterations*q)))];
+      // CODEX指摘 Minor: パーセンタイルは線形補間で（floor だと上振れ）
+      const pct = q => {
+        const idx = (sorted.length - 1) * q;
+        const lo = Math.floor(idx), hi = Math.ceil(idx);
+        if (lo === hi) return sorted[lo];
+        return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+      };
       const mean = completions.reduce((a,b)=>a+b,0) / iterations;
       return {
         completions, sorted, mean,

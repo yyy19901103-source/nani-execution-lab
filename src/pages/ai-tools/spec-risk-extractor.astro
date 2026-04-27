@@ -219,8 +219,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="metric-value" id="stat-reject" style="color:#ff8888;">0</div>
         </div>
         <div class="metric-card highlight">
-          <div class="metric-label">重大リスクRecall</div>
+          <div class="metric-label">重大候補の人手承認率</div>
           <div class="metric-value gold" id="stat-recall">0%</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.6rem;margin-top:0.2rem;">重大判定中で採用/修正された割合</div>
         </div>
       </div>
       <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
@@ -280,7 +281,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
         <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.1rem 1.25rem;">
           <div style="color:#c8a96e;font-size:0.85rem;font-weight:500;margin-bottom:0.4rem;">🧠 学習する</div>
-          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">人レビュー（採用/修正/不採用）を IndexedDB に蓄積。新旧モデル比較で重大リスクRecallを評価し、人が採用判断する仕組み。<strong style="color:#edede8;">使うほど自社判断ナレッジが育つ</strong>。</p>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;line-height:1.65;">人レビュー（採用/修正/不採用）を IndexedDB に蓄積。新旧モデル比較で重大候補の承認率を評価し、人が採用判断する仕組み。<strong style="color:#edede8;">使うほど自社判断ナレッジが育つ</strong>。</p>
         </div>
       </div>
     </section>
@@ -336,7 +337,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ⑯  学習対象データ抽出                 ↓
 ⑰  新辞書バージョン候補生成            ↓
 ⑱  旧モデル/新モデル評価実行           ↓
-⑲  重大リスクRecall・Top10一致率算出   ↓
+⑲  重大候補の承認率・Top10一致率算出   ↓
 ⑳  画面に新旧差分表示                 ↓
 ㉑  人が採用可否判断                   ↓
 ㉒  採用時のみ新モデル切替              ↓
@@ -372,7 +373,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </li>
           <li style="padding:0.6rem 0;display:flex;gap:0.85rem;align-items:flex-start;">
             <span style="background:#c8a96e;color:#0c0c0e;width:1.6rem;height:1.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;">6</span>
-            <div style="flex:1;"><strong style="color:#edede8;">学習・新旧比較・採用判断 / Excel出力</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「🧠 学習実行」で新モデル候補生成 → 重大リスクRecall・Top10一致率を比較 → 人が採用判断（または旧モデルへ復元）。結果は別Excelに4シート出力（リスク候補/処理内容/列対応/リスク辞書）</div></div>
+            <div style="flex:1;"><strong style="color:#edede8;">学習・新旧比較・採用判断 / Excel出力</strong><div style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.25rem;">「🧠 学習実行」で新モデル候補生成 → 重大候補の承認率・Top10一致率を比較 → 人が採用判断（または旧モデルへ復元）。結果は別Excelに4シート出力（リスク候補/処理内容/列対応/リスク辞書）</div></div>
           </li>
         </ol>
       </div>
@@ -415,8 +416,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">一致リスク語の重大度別重み（重大35×注意18×参考8）+ 一致語数ボーナス + 過去レビュー結果による補正（採用なら+12、不採用なら-15）</p>
           </div>
           <div>
-            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">⚠ 重大リスクRecall（最重要）</div>
-            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">重大判定された候補のうち、レビューで「採用 or 修正採用」された割合。<strong style="color:#c8a96e;">見逃し防止の最重要指標</strong>。下がっている場合は辞書を緩める／レビュー結果を再点検</p>
+            <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">⚠ 重大候補の承認率（最重要）</div>
+            <p style="color:rgba(237,237,232,0.6);font-size:0.74rem;line-height:1.65;margin:0;">重大判定された候補のうち、レビューで「採用 or 修正採用」された割合。<strong style="color:#c8a96e;">辞書精度の見方</strong>。下がっている場合は辞書を緩める／レビュー結果を再点検。<em style="color:rgba(255,255,255,0.4);">※統計的Recall（正解集合に対する再現率）ではなく承認率</em></p>
           </div>
           <div>
             <div style="color:#c8a96e;font-size:0.82rem;font-weight:500;margin-bottom:0.35rem;">Top10一致率（新旧比較）</div>
@@ -932,65 +933,120 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       workbook = null; currentRows = []; currentColumns = [];
     });
 
-    function runExtraction() {
+    let extractAborted = false;
+    async function runExtraction() {
       const colSpec = document.getElementById('col-spec').value;
       const colCh   = document.getElementById('col-chapter').value;
       const colTy   = document.getElementById('col-type').value;
       const colOw   = document.getElementById('col-owner').value;
       if (!colSpec) { alert('要求仕様文の列を指定してください'); return; }
+      log('extract_start', `preset=${currentPreset} rows=${currentRows.length} dict=${activeDictVersion||'base'}`);
+
+      // 大容量警告（ESC中断に対応）
+      if (currentRows.length > 5000) {
+        if (!confirm(`${currentRows.length}行は大容量です。処理を続けますか？（処理中はESCキーで中断できます）`)) {
+          log('extract_canceled', '');
+          return;
+        }
+      }
+      extractAborted = false;
       const t0 = performance.now();
 
-      const dict = RISK_DICT[currentPreset];
+      // === 学習済み辞書を取得（CODEX指摘 Critical#2 への対応）===
+      const dict = getEffectiveDict(currentPreset);
+      const suppressedSet = new Set((extendedDicts[currentPreset]?.suppressed || []));
       const results = [];
       const docs = currentRows.map(r => String(r[colSpec]||''));
 
-      // BM25 インデックス構築（リスク辞書語をクエリとして使う）
+      // === BM25 インデックス構築 + 辞書語クエリで検索（CODEX指摘 Critical#1 への対応）===
       const bm25 = new BM25();
       bm25.fit(docs);
+      const dictWords = [...dict.high, ...dict.mid, ...dict.low].filter(e => !suppressedSet.has(e.word)).map(e => e.word);
+      const dictQuery = dictWords.join(' ');
+      const bmHits = bm25.search(dictQuery, docs.length);
+      const bmScoreByIdx = Object.fromEntries(bmHits.map(r => [r.idx, r.score]));
+      const maxBM = Math.max(0.0001, ...bmHits.map(r => r.score));
 
-      // 各仕様文に対してリスク辞書一致を検出
+      // 辞書全体のベクトル化（類似度比較の参照）
+      const dictText = [...dict.high, ...dict.mid, ...dict.low].filter(e => !suppressedSet.has(e.word)).map(e => `${e.word} ${e.why}`).join(' ');
+      const dictVec = vectorize(dictText);
+
+      // 過去レビューDB（採用文ベクトル）— 採用された語パターンを学習材料に
+      const pastReviews = await dbGetAll('reviews').catch(() => []);
+      const adoptedReviewVecs = pastReviews.filter(r => r.decision === 'adopt' || r.decision === 'modify').map(r => ({
+        v: vectorize((r.modifiedSpec || r.spec) || ''),
+        decision: r.decision,
+      }));
+      const rejectedReviewVecs = pastReviews.filter(r => r.decision === 'reject').map(r => ({ v: vectorize(r.spec || ''), decision:'reject' }));
+
+      // === メインループ（ESC中断対応・チャンク処理）===
+      const CHUNK = 200;
       for (let i = 0; i < currentRows.length; i++) {
+        if (extractAborted) { log('extract_aborted', `at row ${i}/${currentRows.length}`); break; }
+        if (i > 0 && i % CHUNK === 0) {
+          await new Promise(r => setTimeout(r, 0)); // yield UI
+        }
         const row = currentRows[i];
         const text = String(row[colSpec]||'');
         if (!text.trim()) continue;
 
+        // 1) 辞書ヒット検出（suppressed 除外）
         const hits = { high:[], mid:[], low:[] };
         for (const lvl of ['high','mid','low']) {
           for (const ent of dict[lvl]) {
+            if (suppressedSet.has(ent.word)) continue;
             if (text.indexOf(ent.word) >= 0) hits[lvl].push(ent);
           }
         }
         const totalHits = hits.high.length + hits.mid.length + hits.low.length;
-        if (totalHits === 0) continue;
+
+        // 2) BM25 スコア（正規化 0〜1）
+        const bmScore = (bmScoreByIdx[i] || 0) / maxBM;
+
+        // 3) ベクトル類似度（辞書ベクトルとのコサイン類似度）
+        const docVec = vectorize(text);
+        const vecSim = cosineSim(docVec, dictVec);
+
+        // 4) 過去レビュー類似度（採用過去とどれだけ似ているか）
+        let pastAdoptSim = 0, pastRejectSim = 0;
+        for (const rv of adoptedReviewVecs) { const s = cosineSim(docVec, rv.v); if (s > pastAdoptSim) pastAdoptSim = s; }
+        for (const rv of rejectedReviewVecs){ const s = cosineSim(docVec, rv.v); if (s > pastRejectSim) pastRejectSim = s; }
+
+        // 候補化判定: 辞書/BM25/ベクトル/過去採用 のいずれかでスコアが立てば候補
+        if (totalHits === 0 && bmScore < 0.30 && vecSim < 0.15 && pastAdoptSim < 0.5) continue;
 
         // 重大度判定
         let level = 'low';
         if (hits.high.length > 0) level = 'high';
         else if (hits.mid.length > 0) level = 'mid';
+        else if (bmScore >= 0.55 || vecSim >= 0.25) level = 'mid'; // 辞書非ヒットでも検索強なら注意
 
-        // 信頼度: 一致語の重大度別重み + 一致数
-        const confidence = Math.min(100,
-          hits.high.length * 35 +
-          hits.mid.length * 18 +
-          hits.low.length * 8 +
-          (totalHits >= 3 ? 15 : 0)
-        );
+        // 統合信頼度（CODEX指摘 Critical#1 + Suggestion対応：複数指標を可視化）
+        const dictScore = Math.min(1, (hits.high.length*0.35 + hits.mid.length*0.18 + hits.low.length*0.08));
+        const pastBonus = pastAdoptSim * 0.5 - pastRejectSim * 0.5;
+        const totalScore =
+          0.35 * dictScore +
+          0.25 * bmScore +
+          0.20 * vecSim +
+          0.10 * Math.max(0, pastBonus) +
+          0.10 * Math.min(1, totalHits/4);
+        const confidence = Math.round(Math.max(0, Math.min(100, totalScore * 100)));
 
-        // ハイライト
         const highlightedText = highlightHits(text, [...hits.high, ...hits.mid, ...hits.low]);
 
         results.push({
-          idx:           i,
-          rowNum:        row._row || i + 2,
-          chapter:       colCh ? String(row[colCh]||'') : '',
-          specType:      colTy ? String(row[colTy]||'') : '',
-          owner:         colOw ? String(row[colOw]||'') : '',
-          spec:          text,
-          highlightedSpec: highlightedText,
-          level,
-          confidence,
-          hits,
+          idx: i, rowNum: row._row || i + 2,
+          chapter: colCh ? String(row[colCh]||'') : '',
+          specType: colTy ? String(row[colTy]||'') : '',
+          owner: colOw ? String(row[colOw]||'') : '',
+          spec: text, highlightedSpec: highlightedText,
+          level, confidence, hits,
           allHits: [...hits.high, ...hits.mid, ...hits.low],
+          bmScorePct: Math.round(bmScore * 100),
+          vecSimPct: Math.round(vecSim * 100),
+          dictScorePct: Math.round(dictScore * 100),
+          pastAdoptSim: Math.round(pastAdoptSim * 100),
+          pastRejectSim: Math.round(pastRejectSim * 100),
         });
       }
 
@@ -1003,6 +1059,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       const elapsed = performance.now() - t0;
       renderResults(elapsed);
+      log('extract_done', `${results.length}件 / ${(elapsed).toFixed(0)}ms / dict=${activeDictVersion||'base'}`);
+      await refreshLearningStats();
     }
 
     function highlightHits(text, hits) {
@@ -1066,16 +1124,34 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (r.chapter)  meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">章:${escapeHtml(r.chapter)}</span>`);
       if (r.specType) meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">種別:${escapeHtml(r.specType)}</span>`);
       if (r.owner)    meta.push(`<span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">所掌:${escapeHtml(r.owner)}</span>`);
-      const reasons = r.allHits.map(h => `<li style="margin-bottom:0.15rem;"><strong style="color:#c8a96e;">${escapeHtml(h.word)}</strong>: <span style="color:rgba(255,255,255,0.6);">${escapeHtml(h.why)}</span></li>`).join('');
+      const reasons = r.allHits.length > 0
+        ? r.allHits.map(h => `<li style="margin-bottom:0.15rem;"><strong style="color:#c8a96e;">${escapeHtml(h.word)}</strong>: <span style="color:rgba(255,255,255,0.6);">${escapeHtml(h.why)}</span></li>`).join('')
+        : '<li style="color:rgba(255,255,255,0.5);">（辞書一致なし・BM25/類似度ヒット）</li>';
+      // CODEX指摘 Suggestion: スコア内訳を可視化（辞書/BM25/ベクトル/過去レビュー）
+      const scoreBadges = `
+        <div style="display:flex;gap:0.35rem;flex-wrap:wrap;margin-top:0.5rem;font-size:0.62rem;">
+          <span style="background:rgba(200,169,110,0.12);color:#c8a96e;border:1px solid rgba(200,169,110,0.25);padding:0.08rem 0.4rem;">辞書 ${r.dictScorePct}</span>
+          <span style="background:rgba(110,180,200,0.10);color:#80c4d8;border:1px solid rgba(110,180,200,0.25);padding:0.08rem 0.4rem;">BM25 ${r.bmScorePct}</span>
+          <span style="background:rgba(160,140,200,0.10);color:#a89cd0;border:1px solid rgba(160,140,200,0.25);padding:0.08rem 0.4rem;">類似度 ${r.vecSimPct}</span>
+          ${r.pastAdoptSim > 30 ? `<span style="background:rgba(110,200,151,0.10);color:#6ec897;border:1px solid rgba(110,200,151,0.30);padding:0.08rem 0.4rem;">過去採用 ${r.pastAdoptSim}</span>` : ''}
+          ${r.pastRejectSim > 30 ? `<span style="background:rgba(255,80,80,0.08);color:#ff8888;border:1px solid rgba(255,80,80,0.25);padding:0.08rem 0.4rem;">過去不採用 ${r.pastRejectSim}</span>` : ''}
+        </div>`;
+      const isModify = reviewState[r.idx] === 'modify';
+      const modifiedVal = reviewModified[r.idx] || '';
       tr.innerHTML = `
         <td class="td" style="color:rgba(255,255,255,0.4);font-size:0.72rem;">${r.rowNum}</td>
         <td class="td">
           <div style="margin-bottom:0.4rem;">${badge}${meta.join(' / ')}</div>
-          <div style="margin-bottom:0.55rem;line-height:1.6;">${r.highlightedSpec}</div>
-          <details style="font-size:0.72rem;">
+          <div style="margin-bottom:0.5rem;line-height:1.6;">${r.highlightedSpec}</div>
+          ${scoreBadges}
+          <details style="font-size:0.72rem;margin-top:0.5rem;">
             <summary style="cursor:pointer;color:rgba(255,255,255,0.5);outline:none;">推定根拠を見る ▼</summary>
             <ul style="margin:0.4rem 0 0 0;padding-left:1.2rem;">${reasons}</ul>
           </details>
+          <div id="modify-area-${r.idx}" style="display:${isModify?'block':'none'};margin-top:0.6rem;">
+            <label style="color:rgba(255,255,255,0.5);font-size:0.66rem;letter-spacing:0.1em;display:block;margin-bottom:0.25rem;">修正後リスク内容（学習に保存）</label>
+            <textarea class="modify-textarea" data-idx="${r.idx}" rows="2" style="width:100%;background:#0a0a0c;color:#edede8;border:1px solid rgba(200,169,110,0.3);padding:0.4rem 0.55rem;font-size:0.78rem;font-family:inherit;outline:none;line-height:1.5;">${escapeHtml(modifiedVal)}</textarea>
+          </div>
         </td>
         <td class="td" style="text-align:center;">
           <div style="font-size:1rem;font-weight:600;color:${r.level==='high'?'#ff8888':r.level==='mid'?'#c8a96e':'#999'};">${r.confidence}</div>
@@ -1092,11 +1168,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const sel = tr.querySelector('select.review-select');
       sel.value = reviewState[r.idx] || '';
       if (sel.value) sel.classList.add(sel.value);
-      sel.addEventListener('change', e => {
-        reviewState[r.idx] = e.target.value;
-        sel.classList.remove('adopt','modify','reject');
-        if (e.target.value) sel.classList.add(e.target.value);
-      });
       return tr;
     }
 
@@ -1227,13 +1298,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (elm) elm.textContent = opLog.slice(-30).reverse().map(e => `${e.ts.substring(11,19)} ${e.action}${e.detail?': '+e.detail:''}`).join('\n');
     }
 
-    // ===== 第5段階: IndexedDB ラッパー =====
+    // ===== 第5段階: IndexedDB ラッパー（CODEX指摘 Major: dbPromise キャッシュ + tx.oncomplete 待ち） =====
     const DB_NAME = 'spec-risk-db';
     const DB_VER = 1;
-    let _dbCache = null;
+    let _dbPromise = null;  // open Promise 自体をキャッシュ → 同時呼び出しでも一本化
     function openDB() {
-      if (_dbCache) return Promise.resolve(_dbCache);
-      return new Promise((resolve, reject) => {
+      if (_dbPromise) return _dbPromise;
+      _dbPromise = new Promise((resolve, reject) => {
         const req = indexedDB.open(DB_NAME, DB_VER);
         req.onupgradeneeded = e => {
           const db = e.target.result;
@@ -1242,16 +1313,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           if (!db.objectStoreNames.contains('modelMeta'))   db.createObjectStore('modelMeta',   { keyPath:'key' });
           if (!db.objectStoreNames.contains('learningQ'))   db.createObjectStore('learningQ',   { keyPath:'id', autoIncrement:true });
         };
-        req.onsuccess = e => { _dbCache = e.target.result; resolve(_dbCache); };
-        req.onerror   = e => reject(e.target.error);
+        req.onsuccess = e => resolve(e.target.result);
+        req.onerror   = e => { _dbPromise = null; reject(e.target.error); };
+        req.onblocked = () => { /* 別タブで開きっぱなし等 */ };
       });
+      return _dbPromise;
     }
+    // tx.oncomplete を待つ（書き込み確定保証）
     function dbPut(store, value) {
       return openDB().then(db => new Promise((res, rej) => {
         const tx = db.transaction(store, 'readwrite');
+        let result;
         const r = tx.objectStore(store).put(value);
-        r.onsuccess = () => res(r.result);
+        r.onsuccess = () => { result = r.result; };
         r.onerror   = () => rej(r.error);
+        tx.oncomplete = () => res(result);
+        tx.onabort    = () => rej(tx.error || new Error('tx aborted'));
+        tx.onerror    = () => rej(tx.error);
       }));
     }
     function dbGetAll(store) {
@@ -1260,14 +1338,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const r = tx.objectStore(store).getAll();
         r.onsuccess = () => res(r.result || []);
         r.onerror   = () => rej(r.error);
+        tx.onabort  = () => rej(tx.error || new Error('tx aborted'));
       }));
     }
     function dbClear(store) {
       return openDB().then(db => new Promise((res, rej) => {
         const tx = db.transaction(store, 'readwrite');
-        const r = tx.objectStore(store).clear();
-        r.onsuccess = () => res();
-        r.onerror   = () => rej(r.error);
+        tx.objectStore(store).clear();
+        tx.oncomplete = () => res();
+        tx.onabort    = () => rej(tx.error || new Error('tx aborted'));
+        tx.onerror    = () => rej(tx.error);
       }));
     }
 
@@ -1318,22 +1398,43 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       };
     }
 
-    // ===== 第5段階: レビュー保存（select.change にフック） =====
+    // ===== 第5段階: レビュー保存（CODEX指摘 Major: 修正テキストを残す） =====
+    const reviewModified = {}; // idx -> 修正後仕様テキスト
     document.addEventListener('change', async (e) => {
+      // セレクト変更
       const sel = e.target.closest('.review-select');
-      if (!sel) return;
-      const idx = parseInt(sel.dataset.idx, 10);
-      const r = currentResults.find(x => x.idx === idx);
-      if (!r) return;
-      const decision = sel.value;
-      reviewState[idx] = decision;
-      if (!decision) return;
+      if (sel) {
+        const idx = parseInt(sel.dataset.idx, 10);
+        const r = currentResults.find(x => x.idx === idx);
+        if (!r) return;
+        const decision = sel.value;
+        reviewState[idx] = decision;
+        // 修正欄の表示制御
+        const modifyArea = document.getElementById(`modify-area-${idx}`);
+        if (modifyArea) modifyArea.style.display = decision === 'modify' ? 'block' : 'none';
+        if (!decision) return;
+        await persistReview(r, decision);
+      }
+      // 修正テキスト変更（debounce相当）
+      const ta = e.target.closest('.modify-textarea');
+      if (ta) {
+        const idx = parseInt(ta.dataset.idx, 10);
+        reviewModified[idx] = ta.value;
+        const r = currentResults.find(x => x.idx === idx);
+        if (r && reviewState[idx] === 'modify') {
+          await persistReview(r, 'modify');
+        }
+      }
+    });
+
+    async function persistReview(r, decision) {
       try {
         await dbPut('reviews', {
           ts: new Date().toISOString(),
           preset: currentPreset,
           dictVersion: activeDictVersion || 'base',
           spec: r.spec,
+          modifiedSpec: decision === 'modify' ? (reviewModified[r.idx] || '') : '',
           chapter: r.chapter,
           specType: r.specType,
           owner: r.owner,
@@ -1342,10 +1443,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           hits: r.allHits.map(h => h.word),
           decision,
         });
-        log('review_save', `idx=${idx} ${decision}`);
+        log('review_save', `idx=${r.idx} ${decision}${decision==='modify'?' +modifiedSpec':''}`);
         await refreshLearningStats();
       } catch (err) { console.warn(err); }
-    });
+    }
 
     // ===== 第5段階: 学習統計表示・評価指標 =====
     async function refreshLearningStats() {
@@ -1359,21 +1460,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const adopt   = reviews.filter(r => r.decision === 'adopt').length;
       const modify  = reviews.filter(r => r.decision === 'modify').length;
       const reject  = reviews.filter(r => r.decision === 'reject').length;
-      // 重大リスクRecall: 採用or修正されたレビューのうち、levelがhighだった割合
-      const accepted = reviews.filter(r => r.decision === 'adopt' || r.decision === 'modify');
-      const acceptedHigh = accepted.filter(r => r.level === 'high').length;
-      const allHigh = reviews.filter(r => r.level === 'high').length;
-      const recall = allHigh > 0 ? Math.round(acceptedHigh / allHigh * 100) : 0;
+      // 「重大候補の人手承認率」（CODEX指摘 Major: Recall という名前は誤りだったため修正）
+      // 重大判定された候補のうち、レビューで「採用 or 修正採用」された割合 = 辞書精度の見方
+      const highReviews = reviews.filter(r => r.level === 'high');
+      const highAccepted = highReviews.filter(r => r.decision === 'adopt' || r.decision === 'modify').length;
+      const acceptRate = highReviews.length > 0 ? Math.round(highAccepted / highReviews.length * 100) : 0;
       elN.textContent  = reviews.length;
       elAd.textContent = adopt;
       elMd.textContent = modify;
       elRj.textContent = reject;
-      elRc.textContent = `${recall}%`;
+      elRc.textContent = `${acceptRate}%`;
       const panel = document.getElementById('learning-panel');
       if (panel && reviews.length > 0) panel.style.display = 'block';
     }
 
-    // ===== 第6段階: 学習実行（不採用語を弱化・採用語を強化） =====
+    // ===== 第6段階: 学習実行（CODEX指摘 Critical#2: 実際に extendedDicts を更新する） =====
     document.addEventListener('click', async (e) => {
       if (e.target && e.target.id === 'btn-train') {
         const reviews = await dbGetAll('reviews');
@@ -1387,7 +1488,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             wordStats[w][r.decision] = (wordStats[w][r.decision]||0)+1;
           }
         }
-        // ハイ採用率の語を「強化候補」、ハイ不採用率の語を「弱化候補」として記録
+        // 辞書を実更新する
         const newExt = JSON.parse(JSON.stringify(extendedDicts));
         let strengthened = 0, weakened = 0;
         for (const w in wordStats) {
@@ -1395,9 +1496,38 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           const total = s.adopt + s.modify + s.reject;
           if (total < 2) continue;
           const adoptRate = (s.adopt + 0.5*s.modify) / total;
-          if (!newExt[s.preset]) newExt[s.preset] = { high:[], mid:[], low:[] };
-          if (adoptRate >= 0.8 && total >= 3) strengthened++;
-          if (adoptRate <= 0.2) weakened++;
+          if (!newExt[s.preset]) newExt[s.preset] = { high:[], mid:[], low:[], suppressed:[] };
+          if (!newExt[s.preset].suppressed) newExt[s.preset].suppressed = [];
+
+          // 既存辞書のどのレベルに該当するか
+          const baseDict = RISK_DICT[s.preset];
+          let foundLevel = null;
+          for (const lvl of ['high','mid','low']) {
+            if (baseDict[lvl].some(en => en.word === w)) { foundLevel = lvl; break; }
+          }
+
+          if (adoptRate >= 0.8 && total >= 3) {
+            // 強化: 既存辞書に無い新語なら 'high' として追加。あればそのまま（重み再強化はsuppressed解除のみ）
+            if (!foundLevel) {
+              if (!newExt[s.preset].high.some(en => en.word === w)) {
+                newExt[s.preset].high.push({
+                  word: w,
+                  why: `レビュー学習（採用率${Math.round(adoptRate*100)}%・${total}件のレビューに基づき強化）`
+                });
+                strengthened++;
+              }
+            }
+            // suppressed から外す（誤って弱化されていた場合の復活）
+            const sIdx = newExt[s.preset].suppressed.indexOf(w);
+            if (sIdx >= 0) { newExt[s.preset].suppressed.splice(sIdx, 1); strengthened++; }
+          }
+          if (adoptRate <= 0.2 && total >= 3) {
+            // 弱化: suppressed リストに追加（本抽出で hit から除外される）
+            if (!newExt[s.preset].suppressed.includes(w)) {
+              newExt[s.preset].suppressed.push(w);
+              weakened++;
+            }
+          }
         }
         // 新バージョン作成
         const newVer = 'v-' + new Date().toISOString().replace(/[:.]/g,'-');
@@ -1466,7 +1596,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">学習レビュー数</td><td style="padding:0.25rem;color:#edede8;">${newV.stats.reviewsUsed}件</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 強化候補</td><td style="padding:0.25rem;color:#6ec897;">+${newV.stats.strengthened}語</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">辞書語 弱化候補</td><td style="padding:0.25rem;color:rgba(255,80,80,0.85);">-${newV.stats.weakened}語</td></tr>
-            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">重大リスクRecall（旧→新）</td><td style="padding:0.25rem;color:#c8a96e;font-weight:600;">${highRecall}% (${highMatch}/${oldHigh.length})</td></tr>
+            <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">重大候補の承認率（旧→新）</td><td style="padding:0.25rem;color:#c8a96e;font-weight:600;">${highRecall}% (${highMatch}/${oldHigh.length})</td></tr>
             <tr><td style="padding:0.25rem;color:rgba(255,255,255,0.55);">Top10一致率</td><td style="padding:0.25rem;color:#edede8;">${oldTop10.length>0?Math.round(top10Match/oldTop10.length*100):0}% (${top10Match}/${oldTop10.length})</td></tr>
           </table>
           <div style="display:flex;gap:0.5rem;margin-top:0.85rem;">
@@ -1504,48 +1634,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return out;
     }
 
-    // ===== 第3+第4段階: 過去レビュー類似検索を runExtraction にフック =====
-    const _origRunExtraction = runExtraction;
-    runExtraction = async function() {
-      log('extract_start', `preset=${currentPreset} rows=${currentRows.length}`);
-      // 大容量警告
-      if (currentRows.length > 5000) {
-        if (!confirm(`${currentRows.length}行は大容量です。処理を続けますか？（途中中断は ESC）`)) { log('extract_canceled', ''); return; }
-      }
-      const t0 = performance.now();
-      _origRunExtraction.call(this);
-      // 過去レビューと一致する仕様文をチェック → 信頼度を補正
-      try {
-        const reviews = await dbGetAll('reviews');
-        if (reviews.length > 0 && currentResults.length > 0) {
-          const reviewVecs = reviews.map(r => ({ r, v:vectorize(r.spec) }));
-          for (const cand of currentResults) {
-            const cv = vectorize(cand.spec);
-            let best = null, bestSim = 0;
-            for (const rv of reviewVecs) {
-              const s = cosineSim(cv, rv.v);
-              if (s > bestSim) { bestSim = s; best = rv.r; }
-            }
-            if (best && bestSim >= 0.6) {
-              cand.pastReview = { decision:best.decision, sim:bestSim, ts:best.ts };
-              if (best.decision === 'adopt')   cand.confidence = Math.min(100, cand.confidence + 12);
-              if (best.decision === 'reject')  cand.confidence = Math.max(0,   cand.confidence - 15);
-            }
-          }
-          // 過去レビュー反映後に再ソート
-          const lvlOrd = { high:0, mid:1, low:2 };
-          currentResults.sort((a,b) => lvlOrd[a.level]-lvlOrd[b.level] || b.confidence-a.confidence);
-          renderTable();
-        }
-      } catch (err) { console.warn(err); }
-      log('extract_done', `${currentResults.length}件 / ${(performance.now()-t0).toFixed(0)}ms`);
-      await refreshLearningStats();
-    };
-
-    // ===== 第7段階: ESCで中断 =====
+    // ===== 第7段階: ESCで実際に中断（CODEX指摘 Major: 表示と挙動が一致してなかったので修正） =====
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        log('escape', '');
+        if (!extractAborted) {
+          extractAborted = true;
+          log('escape_pressed', '中断要求');
+        }
       }
     });
 

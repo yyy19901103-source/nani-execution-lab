@@ -312,6 +312,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // スケジューラ
     // ============================================================
     function schedule(machines, jobs, rule) {
+      // CODEX指摘 Major対応: 未定義機械・ゼロ台数の入力検証（部分スケジュール完了の事故防止）
+      const machineNames = new Set(machines.map(m => m.name));
+      const zeroCountMachines = machines.filter(m => !m.count || m.count <= 0).map(m => m.name);
+      if (zeroCountMachines.length > 0) {
+        throw new Error(`機械「${zeroCountMachines.join(', ')}」の台数が0以下です。1以上に設定してください。`);
+      }
+      const undefinedRefs = [];
+      jobs.forEach(j => {
+        (j.route || []).forEach(([machName], opIdx) => {
+          if (!machineNames.has(machName)) undefinedRefs.push(`${j.name}[op${opIdx+1}]→${machName}`);
+        });
+      });
+      if (undefinedRefs.length > 0) {
+        throw new Error(`未定義機械を参照: ${undefinedRefs.slice(0,3).join(' / ')}${undefinedRefs.length>3?` ほか${undefinedRefs.length-3}件`:''}。MACHINESセクションに追加してください。`);
+      }
+
       // 機械単位の利用可能時刻配列（同名で台数分）
       const machSlots = {};
       machines.forEach(m => { machSlots[m.name] = new Array(m.count).fill(0); });
