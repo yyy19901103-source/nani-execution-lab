@@ -93,6 +93,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
       </div>
       <div id="file-info" style="display:none;color:rgba(237,237,232,0.7);font-size:0.78rem;padding:0.65rem 0.85rem;background:#0a0a0c;border:1px solid rgba(200,169,110,0.15);"></div>
+
+      <!-- 学習データ取り込み（既にデビクラ判定済みの過去案件Excelをインポート） -->
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed rgba(200,169,110,0.18);">
+        <div style="display:flex;flex-wrap:wrap;gap:0.85rem;align-items:center;">
+          <span style="color:#6ec897;font-size:0.6rem;letter-spacing:0.3em;white-space:nowrap;">📚 学習データ</span>
+          <label class="m-btn-ghost" style="cursor:pointer;border-color:rgba(110,200,151,0.35);color:#6ec897;">
+            既存のデビクラ判定済みExcelを取り込む
+            <input id="learning-upload" type="file" accept=".xlsx,.xls" style="display:none;">
+          </label>
+          <span id="learning-status" style="color:rgba(255,255,255,0.4);font-size:0.72rem;flex:1;">
+            列名: 要求仕様 / デビクラ（対象・要確認・対象外）/ カテゴリー / Project名 / 引合番号 / E&amp;C&amp;LT / ドキュメント番号 / 章番号 / 所掌
+          </span>
+        </div>
+      </div>
     </div>
 
     <!-- ステップ2: シート選択・列マッピング -->
@@ -113,12 +127,34 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <select id="col-chapter" class="field-input"></select>
         </div>
         <div>
+          <label class="field-label">カテゴリー 列（任意）</label>
+          <select id="col-category" class="field-input"></select>
+          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">安全・品質・性能・環境 等</div>
+        </div>
+        <div>
           <label class="field-label">仕様種別 列（任意）</label>
           <select id="col-type" class="field-input"></select>
         </div>
         <div>
           <label class="field-label">所掌 列（任意）</label>
           <select id="col-owner" class="field-input"></select>
+        </div>
+        <div>
+          <label class="field-label">Project名 列（任意）</label>
+          <select id="col-project" class="field-input"></select>
+        </div>
+        <div>
+          <label class="field-label">引合番号(RFQ) 列（任意）</label>
+          <select id="col-rfq" class="field-input"></select>
+        </div>
+        <div>
+          <label class="field-label">ドキュメント番号 列（任意）</label>
+          <select id="col-doc" class="field-input"></select>
+        </div>
+        <div>
+          <label class="field-label">E&amp;C&amp;LT 影響軸 列（任意）</label>
+          <select id="col-impact" class="field-input"></select>
+          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">E=設計 / C=コスト / LT=納期 影響</div>
         </div>
       </div>
       <div id="preview-area" style="margin-top:0.85rem;"></div>
@@ -866,13 +902,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const cols = currentColumns;
       const auto = autoMap || autoDetectColumns(cols);
       const sels = [
-        { id:'col-spec',    keys:['要求仕様','仕様文','要求事項','requirement','spec','specification','要求'], def:auto.spec },
-        { id:'col-chapter', keys:['章番号','章','chapter','section','no'],                                       def:auto.chapter },
-        { id:'col-type',    keys:['仕様種別','種別','type','カテゴリ','category'],                               def:auto.type },
-        { id:'col-owner',   keys:['所掌','担当','owner','responsible'],                                          def:auto.owner },
+        { id:'col-spec',     def:auto.spec },
+        { id:'col-chapter',  def:auto.chapter },
+        { id:'col-category', def:auto.category },
+        { id:'col-type',     def:auto.type },
+        { id:'col-owner',    def:auto.owner },
+        { id:'col-project',  def:auto.project },
+        { id:'col-rfq',      def:auto.rfq },
+        { id:'col-doc',      def:auto.doc },
+        { id:'col-impact',   def:auto.impact },
       ];
       for (const s of sels) {
         const sel = document.getElementById(s.id);
+        if (!sel) continue;
         sel.innerHTML = '';
         const empty = document.createElement('option');
         empty.value = ''; empty.textContent = '— なし —';
@@ -896,10 +938,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         return '';
       };
       return {
-        spec:    find(['要求仕様','仕様文','要求事項','requirement','spec','要求','仕様']),
-        chapter: find(['章番号','章','chapter','section']),
-        type:    find(['仕様種別','種別','type','category','カテゴリ']),
-        owner:   find(['所掌','担当','owner']),
+        spec:     find(['要求仕様','仕様文','要求事項','requirement','spec','要求','仕様']),
+        chapter:  find(['章番号','章','chapter','section']),
+        category: find(['カテゴリー','カテゴリ','category','分類']),
+        type:     find(['仕様種別','種別','type']),
+        owner:    find(['所掌','担当','owner','responsible']),
+        project:  find(['project','プロジェクト','案件名']),
+        rfq:      find(['引合','rfq','見積番号','問合']),
+        doc:      find(['ドキュメント','document','図書','文書','資料番号']),
+        impact:   find(['e&c&lt','e&c','影響軸','impact','e/c/lt']),
       };
     }
 
@@ -1706,6 +1753,107 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           log('escape_pressed', '中断要求');
         }
       }
+    });
+
+    // ===== 学習データインポート（既存のデビクラ判定済みExcelを reviews ストアに一括投入） =====
+    document.getElementById('learning-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) { return; }
+      const status = document.getElementById('learning-status');
+      status.textContent = '解析中...';
+      status.style.color = '#c8a96e';
+      try {
+        const buf = await file.arrayBuffer();
+        const wb = XLSX.read(buf, { type:'array' });
+        // 「正解データ」または「学習データ」シートを優先、なければ先頭シート
+        const preferredSheets = ['正解データ', '学習データ', '判定済', 'デビクラ', 'training', 'learning'];
+        let sheetName = wb.SheetNames[0];
+        for (const ps of preferredSheets) {
+          const found = wb.SheetNames.find(n => n.includes(ps));
+          if (found) { sheetName = found; break; }
+        }
+        const ws = wb.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json(ws, { defval:'' });
+        if (rows.length === 0) throw new Error('シート「' + sheetName + '」に行が無い');
+
+        // 列を自動推定
+        const cols = Object.keys(rows[0]);
+        const lc = cols.map(c => String(c).toLowerCase());
+        const find = (kws) => {
+          for (const kw of kws) {
+            const idx = lc.findIndex(c => c.includes(kw.toLowerCase()));
+            if (idx >= 0) return cols[idx];
+          }
+          return '';
+        };
+        const m = {
+          spec:     find(['要求仕様','仕様文','要求事項','requirement','spec']),
+          devicra:  find(['デビクラ','deviation','判定','正解']),
+          category: find(['カテゴリー','カテゴリ','category']),
+          project:  find(['project','プロジェクト','案件名']),
+          rfq:      find(['引合','rfq']),
+          impact:   find(['e&c&lt','e&c','影響']),
+          doc:      find(['ドキュメント','document','図書']),
+          chapter:  find(['章番号','章','chapter']),
+          owner:    find(['所掌','担当','owner']),
+        };
+        if (!m.spec) throw new Error('「要求仕様」列が見つかりません');
+        if (!m.devicra) throw new Error('「デビクラ」列が見つかりません（対象/要確認/対象外 のいずれか）');
+
+        // デビクラ判定 → decision/level マッピング
+        // 対象 → adopt + high  /  要確認 → modify + mid  /  対象外 → reject + low
+        let imported = 0, skipped = 0;
+        for (const r of rows) {
+          const spec = String(r[m.spec]||'').trim();
+          if (!spec) { skipped++; continue; }
+          const devRaw = String(r[m.devicra]||'').trim();
+          let decision = '', level = 'mid';
+          if (devRaw === '対象')        { decision = 'adopt';  level = 'high'; }
+          else if (devRaw === '要確認') { decision = 'modify'; level = 'mid';  }
+          else if (devRaw === '対象外') { decision = 'reject'; level = 'low';  }
+          else if (devRaw)              { decision = 'modify'; level = 'mid';  } // 未知ラベル → 要確認扱い
+          else { skipped++; continue; }
+
+          const rowNum = imported + 2;
+          const key = `${currentPreset}|imported-${simpleHash(spec)}|${simpleHash(spec)}`;
+          const now = new Date().toISOString();
+          const record = {
+            ts: now,
+            updatedAt: now,
+            preset: currentPreset,
+            rowNum,
+            dictVersion: activeDictVersion || 'base',
+            spec,
+            modifiedSpec: '',
+            chapter: m.chapter ? String(r[m.chapter]||'') : '',
+            specType: m.category ? String(r[m.category]||'') : '',
+            owner: m.owner ? String(r[m.owner]||'') : '',
+            project: m.project ? String(r[m.project]||'') : '',
+            rfq: m.rfq ? String(r[m.rfq]||'') : '',
+            impact: m.impact ? String(r[m.impact]||'') : '',
+            doc: m.doc ? String(r[m.doc]||'') : '',
+            devicraRaw: devRaw,
+            level,
+            confidence: decision === 'adopt' ? 90 : (decision === 'modify' ? 60 : 30),
+            hits: [],
+            decision,
+            source: 'imported',
+          };
+          if (lastReviewIdByCandidate[key] != null) record.id = lastReviewIdByCandidate[key];
+          const newId = await dbPut('reviews', record);
+          lastReviewIdByCandidate[key] = newId;
+          imported++;
+        }
+        status.textContent = `✓ ${imported}件取り込み (シート「${sheetName}」 / スキップ${skipped}件 / preset=${currentPreset})`;
+        status.style.color = '#6ec897';
+        log('learning_import', `imported=${imported} skipped=${skipped} sheet=${sheetName}`);
+        await refreshLearningStats();
+      } catch (err) {
+        status.textContent = '❌ 取込エラー: ' + err.message;
+        status.style.color = '#ff8888';
+        console.warn(err);
+      }
+      e.target.value = '';
     });
 
     // ===== 起動時: 学習DB・モデル版・レビューupsert索引を読み込む =====
