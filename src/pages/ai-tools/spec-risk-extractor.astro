@@ -203,6 +203,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           📂 Excel(.xlsx/.xls) をアップロード
           <input id="excel-upload" type="file" accept=".xlsx,.xls" style="display:none;">
         </label>
+        <label class="m-btn-ghost" style="cursor:pointer;">
+          📄 PDF仕様書をアップロード
+          <input id="pdf-upload" type="file" accept=".pdf" style="display:none;">
+        </label>
         <button id="btn-template" class="m-btn-ghost" style="font-size:0.7rem;">⬇ Excelテンプレート</button>
         <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;flex:1;">入力原本は上書きされません。結果は別Excelで出力します。</span>
       </div>
@@ -340,6 +344,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </table>
       </div>
 
+      <!-- AI類似検索 実行ボタン＋結果 -->
+      <div id="ai-search-section" style="display:none;margin-top:1rem;background:#0d1a12;border:1px solid rgba(110,200,151,0.2);padding:1.25rem 1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.85rem;">
+          <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;">🔍 AI類似事例検索</div>
+          <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:0.35rem;color:rgba(255,255,255,0.6);font-size:0.72rem;">
+              類似度閾値:
+              <input id="ai-threshold" type="number" value="0.75" min="0.5" max="0.99" step="0.05"
+                class="field-input" style="width:64px;font-size:0.74rem;padding:0.25rem 0.4rem;">
+            </label>
+            <button id="btn-ai-search" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1.1rem;background:rgba(110,200,151,0.15);border:1px solid rgba(110,200,151,0.4);color:#6ec897;">
+              🔍 AI類似検索 ▶
+            </button>
+          </div>
+        </div>
+        <div id="ai-search-progress" style="display:none;margin-bottom:0.75rem;">
+          <div style="color:rgba(110,200,151,0.7);font-size:0.7rem;margin-bottom:0.3rem;" id="ai-progress-text">処理中...</div>
+          <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:5px;">
+            <div id="ai-progress-bar" style="background:#6ec897;height:5px;border-radius:9999px;transition:width 0.15s;width:0%;"></div>
+          </div>
+        </div>
+        <div id="ai-search-results"></div>
+      </div>
+
       <!-- NEXT ACTIONS -->
       <div style="background:linear-gradient(135deg,rgba(200,169,110,0.05) 0%,rgba(110,200,151,0.05) 100%);border-left:3px solid #6ec897;padding:1.25rem 1.5rem;">
         <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.75rem;">✓ NEXT ACTIONS</div>
@@ -471,6 +499,65 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </table>
         </div>
         <div id="cdict-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.4rem;min-height:1.2em;"></div>
+      </div>
+
+      <!-- ===== 過去事例DB（AI類似検索用）===== -->
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed rgba(110,200,151,0.25);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+          <p style="color:#6ec897;font-size:0.62rem;letter-spacing:0.35em;margin:0;">▸ 過去事例DB — AI類似検索用（仕様文 × デビクラ文ペア）</p>
+          <span id="past-cases-count-badge" style="color:rgba(110,200,151,0.6);font-size:0.7rem;">0件登録済み</span>
+        </div>
+        <div style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:0.85rem;line-height:1.6;">
+          過去仕様書PDF から仕様文を抽出し、そのときに出したデビクラ文とセットで登録します。<br/>
+          登録数が増えるほどAI類似検索の精度が上がります（初回モデルDL: 約117MB）。
+        </div>
+
+        <!-- PDF → 仕様文抽出 -->
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:0.85rem;">
+          <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
+            📄 過去仕様書PDFを読込
+            <input id="past-pdf-upload" type="file" accept=".pdf" style="display:none;">
+          </label>
+          <span id="past-pdf-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
+        </div>
+
+        <!-- 抽出された仕様文リスト（PDF読込後に表示） -->
+        <div id="past-pdf-sentences" style="display:none;max-height:320px;overflow-y:auto;border:1px solid rgba(255,255,255,0.07);margin-bottom:0.85rem;">
+          <div style="padding:0.5rem 0.75rem;color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.15em;border-bottom:1px solid rgba(255,255,255,0.05);position:sticky;top:0;background:#0f0f12;">
+            デビクラを出した仕様文の行に「出したデビクラ文」を入力して「登録」してください
+          </div>
+          <div id="past-pdf-list"></div>
+        </div>
+
+        <!-- 手動登録フォーム -->
+        <div style="background:#0a0a0c;border:1px dashed rgba(110,200,151,0.15);padding:0.75rem;margin-bottom:0.85rem;">
+          <div style="color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.15em;margin-bottom:0.5rem;">手動登録（仕様文を直接入力）</div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem;">
+            <input id="past-spec-input" type="text" class="field-input" placeholder="仕様文（例: 公差±0.05mm以内の加工精度を要求する）" style="width:100%;font-size:0.76rem;padding:0.4rem 0.65rem;">
+            <div style="display:flex;gap:0.4rem;">
+              <textarea id="past-devicra-input" class="field-input" placeholder="デビクラ文（例: 寸法精度保証のための工程能力確認が必要。Cp値1.33以上の場合、設備投資が発生する可能性がある）" rows="2" style="flex:1;font-size:0.76rem;padding:0.4rem 0.65rem;resize:vertical;font-family:inherit;"></textarea>
+              <button id="btn-past-add" class="m-btn" style="font-size:0.74rem;padding:0.4rem 0.9rem;white-space:nowrap;align-self:flex-end;">＋ 登録</button>
+            </div>
+          </div>
+          <div id="past-add-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.35rem;min-height:1.1em;"></div>
+        </div>
+
+        <!-- 登録済み事例テーブル -->
+        <div id="past-cases-table-wrap" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+            <span style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.15em;">▸ 登録済み過去事例</span>
+            <button id="btn-past-clear-all" class="m-btn-ghost" style="font-size:0.65rem;padding:0.2rem 0.6rem;border-color:rgba(255,100,100,0.2);color:#ff8888;">全件削除</button>
+          </div>
+          <div id="past-cases-list" style="max-height:220px;overflow-y:auto;border:1px solid rgba(255,255,255,0.06);"></div>
+        </div>
+
+        <!-- AIモデル状態 -->
+        <div style="margin-top:0.75rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+          <button id="btn-ai-model-init" class="m-btn-ghost" style="font-size:0.72rem;padding:0.35rem 0.9rem;border-color:rgba(110,200,151,0.3);color:#6ec897;">
+            🧠 Embeddingモデル読込（117MB・初回のみ）
+          </button>
+          <span id="ai-model-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
+        </div>
       </div>
     </div>
 
@@ -744,6 +831,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- PDF.js: PDF読込（過去事例DB + 新仕様書PDF入力） -->
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <!-- Transformers.js: ブラウザ内多言語Embedding（117MB・初回DL後キャッシュ） -->
+  <script type="module">
+    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js';
+    env.allowLocalModels = false;
+    env.useBrowserCache  = true;
+    window._txPipeline = pipeline;
+  </script>
 
   <script>
     // ============================================================
@@ -1420,6 +1516,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       renderTable();
       document.getElementById('result-area').style.display = 'block';
+      // 過去事例DBに1件でも登録があれば AI検索セクションを表示
+      dbGetAll('pastCases').then(all => {
+        document.getElementById('ai-search-section').style.display = all.length > 0 ? 'block' : 'none';
+        document.getElementById('ai-search-results').innerHTML = '';
+      });
     }
 
     function renderTable() {
@@ -1683,7 +1784,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     // ===== 第5段階: IndexedDB ラッパー（CODEX指摘 Major: dbPromise キャッシュ + tx.oncomplete 待ち） =====
     const DB_NAME = 'spec-risk-db';
-    const DB_VER = 1;
+    const DB_VER = 2; // v2: pastCases ObjectStore 追加
     let _dbPromise = null;  // open Promise 自体をキャッシュ → 同時呼び出しでも一本化
     function openDB() {
       if (_dbPromise) return _dbPromise;
@@ -1695,6 +1796,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           if (!db.objectStoreNames.contains('dictVersions'))db.createObjectStore('dictVersions',{ keyPath:'version' });
           if (!db.objectStoreNames.contains('modelMeta'))   db.createObjectStore('modelMeta',   { keyPath:'key' });
           if (!db.objectStoreNames.contains('learningQ'))   db.createObjectStore('learningQ',   { keyPath:'id', autoIncrement:true });
+          if (!db.objectStoreNames.contains('pastCases'))   db.createObjectStore('pastCases',   { keyPath:'id', autoIncrement:true });
         };
         req.onsuccess = e => resolve(e.target.result);
         req.onerror   = e => { _dbPromise = null; reject(e.target.error); };
@@ -2392,6 +2494,308 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       e.target.value = '';
     });
 
+    // ============================================================
+    // ===== AI類似検索 / PDF読込 / 過去事例DB管理 =====
+    // ============================================================
+
+    // PDF.js worker 設定
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+    }
+
+    // Embedding モデル（遅延初期化）
+    let _embedder = null;
+    async function getEmbedder() {
+      if (_embedder) return _embedder;
+      const pipeline = window._txPipeline;
+      if (!pipeline) throw new Error('Transformers.jsがまだ読込中です。少し待ってから再試行してください。');
+      setAIModelStatus('モデルをダウンロード中... (117MB・初回のみ)');
+      _embedder = await pipeline('feature-extraction', 'Xenova/paraphrase-multilingual-MiniLM-L12-v2', {
+        progress_callback: p => {
+          if (p.status === 'downloading' && p.total) {
+            const pct = Math.round(p.loaded / p.total * 100);
+            setAIModelStatus(`ダウンロード中 ${pct}%... (${(p.loaded/1e6).toFixed(0)}/${(p.total/1e6).toFixed(0)}MB)`);
+          } else if (p.status === 'ready') {
+            setAIModelStatus('✓ モデル準備完了');
+          }
+        }
+      });
+      setAIModelStatus('✓ モデル準備完了');
+      return _embedder;
+    }
+
+    function setAIModelStatus(msg) {
+      const el = document.getElementById('ai-model-status');
+      if (el) el.textContent = msg;
+    }
+
+    async function embedText(text) {
+      const emb = await getEmbedder();
+      const out = await emb(text, { pooling: 'mean', normalize: true });
+      return Array.from(out.data);
+    }
+
+    function cosineSim(a, b) {
+      let dot = 0;
+      for (let i = 0; i < a.length; i++) dot += a[i] * b[i];
+      return dot; // normalize:true なので単位ベクトル済み
+    }
+
+    // ---- PDF テキスト抽出 ----
+    async function extractPDFSentences(file, minLen = 12) {
+      if (typeof pdfjsLib === 'undefined') throw new Error('PDF.jsが読込できていません');
+      const buf = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+      const results = [];
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const raw = content.items.map(it => it.str).join('');
+        raw.split(/[。\n；;]/).forEach(s => {
+          const t = s.trim().replace(/\s+/g, ' ');
+          if (t.length >= minLen) results.push({ text: t, page: i });
+        });
+      }
+      return results;
+    }
+
+    // ---- 過去事例DB CRUD ----
+    async function addPastCase(specText, devicraText) {
+      const embedding = await embedText(specText);
+      await dbPut('pastCases', {
+        specText, devicraText, embedding,
+        preset: currentPreset,
+        addedAt: new Date().toISOString(),
+      });
+    }
+
+    async function deletePastCase(id) {
+      const db = await openDB();
+      return new Promise((res, rej) => {
+        const tx = db.transaction('pastCases', 'readwrite');
+        tx.objectStore('pastCases').delete(id);
+        tx.oncomplete = res; tx.onerror = e => rej(e.target.error);
+      });
+    }
+
+    async function refreshPastCasesUI() {
+      const all = await dbGetAll('pastCases');
+      const badge = document.getElementById('past-cases-count-badge');
+      if (badge) badge.textContent = `${all.length}件登録済み`;
+      const wrap = document.getElementById('past-cases-table-wrap');
+      const list = document.getElementById('past-cases-list');
+      if (!wrap || !list) return;
+      wrap.style.display = all.length > 0 ? 'block' : 'none';
+      list.innerHTML = all.length === 0 ? '' : all.map(c => `
+        <div style="display:flex;gap:0.5rem;align-items:flex-start;padding:0.5rem 0.65rem;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.72rem;">
+          <div style="flex:1;min-width:0;">
+            <div style="color:#edede8;margin-bottom:0.2rem;word-break:break-all;">${c.specText}</div>
+            <div style="color:#6ec897;font-size:0.68rem;word-break:break-all;">${c.devicraText}</div>
+            <div style="color:rgba(255,255,255,0.25);font-size:0.63rem;margin-top:0.2rem;">${c.preset || ''} · ${(c.addedAt||'').slice(0,10)}</div>
+          </div>
+          <button class="btn-past-del" data-id="${c.id}"
+            style="background:transparent;border:1px solid rgba(255,100,100,0.2);color:#ff8888;padding:0.15rem 0.45rem;font-size:0.63rem;cursor:pointer;font-family:inherit;flex-shrink:0;">削除</button>
+        </div>
+      `).join('');
+    }
+
+    // ---- 過去事例 PDF読込ハンドラ ----
+    document.getElementById('past-pdf-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const statusEl = document.getElementById('past-pdf-status');
+      const wrapEl   = document.getElementById('past-pdf-sentences');
+      const listEl   = document.getElementById('past-pdf-list');
+      statusEl.textContent = 'PDF解析中...';
+      try {
+        const sentences = await extractPDFSentences(file);
+        statusEl.textContent = `${sentences.length}文抽出 (${file.name})`;
+        wrapEl.style.display = 'block';
+        listEl.innerHTML = sentences.map((s, i) => `
+          <div style="display:flex;gap:0.4rem;align-items:flex-start;padding:0.45rem 0.65rem;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <span style="color:rgba(255,255,255,0.25);font-size:0.62rem;flex-shrink:0;min-width:2em;">p${s.page}</span>
+            <span style="flex:1;color:rgba(237,237,232,0.8);font-size:0.73rem;word-break:break-all;">${s.text}</span>
+            <input type="text" class="field-input past-devicra-inline" data-spec="${s.text.replace(/"/g,'&quot;')}"
+              placeholder="このデビクラを出した場合ここに入力"
+              style="width:220px;font-size:0.7rem;padding:0.2rem 0.45rem;flex-shrink:0;">
+            <button class="btn-past-inline-add" data-idx="${i}" style="background:rgba(110,200,151,0.1);border:1px solid rgba(110,200,151,0.3);color:#6ec897;padding:0.2rem 0.5rem;font-size:0.65rem;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap;">登録</button>
+          </div>
+        `).join('');
+      } catch (err) {
+        statusEl.textContent = '❌ ' + err.message;
+      }
+      e.target.value = '';
+    });
+
+    // PDF行の「登録」ボタン
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.btn-past-inline-add');
+      if (!btn) return;
+      const row = btn.closest('div');
+      const input = row.querySelector('.past-devicra-inline');
+      const specText    = input.dataset.spec;
+      const devicraText = input.value.trim();
+      if (!devicraText) { input.style.borderColor='#ff8888'; return; }
+      btn.disabled = true; btn.textContent = '...';
+      try {
+        await addPastCase(specText, devicraText);
+        btn.textContent = '✓'; btn.style.color = '#6ec897';
+        input.value = ''; input.style.borderColor = '';
+        await refreshPastCasesUI();
+      } catch (err) {
+        btn.textContent = '❌'; btn.disabled = false;
+        alert(err.message);
+      }
+    });
+
+    // 手動登録ボタン
+    document.getElementById('btn-past-add').addEventListener('click', async () => {
+      const specText    = document.getElementById('past-spec-input').value.trim();
+      const devicraText = document.getElementById('past-devicra-input').value.trim();
+      const st = document.getElementById('past-add-status');
+      if (!specText)    { st.textContent = '⚠ 仕様文は必須です'; st.style.color='#ff8888'; return; }
+      if (!devicraText) { st.textContent = '⚠ デビクラ文は必須です'; st.style.color='#ff8888'; return; }
+      st.textContent = '登録中（Embedding生成）...'; st.style.color = 'rgba(255,255,255,0.5)';
+      try {
+        await addPastCase(specText, devicraText);
+        document.getElementById('past-spec-input').value    = '';
+        document.getElementById('past-devicra-input').value = '';
+        st.textContent = '✓ 登録完了'; st.style.color = '#6ec897';
+        await refreshPastCasesUI();
+      } catch (err) {
+        st.textContent = '❌ ' + err.message; st.style.color = '#ff8888';
+      }
+    });
+
+    // 個別削除
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.btn-past-del');
+      if (!btn) return;
+      await deletePastCase(Number(btn.dataset.id));
+      await refreshPastCasesUI();
+    });
+
+    // 全件削除
+    document.getElementById('btn-past-clear-all').addEventListener('click', async () => {
+      if (!confirm('過去事例を全件削除しますか？（取り消し不可）')) return;
+      const all = await dbGetAll('pastCases');
+      for (const c of all) await deletePastCase(c.id);
+      await refreshPastCasesUI();
+    });
+
+    // Embeddingモデル手動初期化ボタン
+    document.getElementById('btn-ai-model-init').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-ai-model-init');
+      btn.disabled = true;
+      try { await getEmbedder(); }
+      catch (err) { setAIModelStatus('❌ ' + err.message); }
+      btn.disabled = false;
+    });
+
+    // ---- 新仕様書PDF アップロード（STEP 1） ----
+    document.getElementById('pdf-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const prog = document.getElementById('file-progress');
+      const bar  = document.getElementById('file-progress-bar');
+      prog.style.display = 'block';
+      prog.querySelector('div').textContent = 'PDF解析中...';
+      bar.style.width = '30%';
+      try {
+        const sentences = await extractPDFSentences(file);
+        bar.style.width = '100%';
+        currentRows = sentences.map((s, i) => ({ _pdfText: s.text, _page: s.page, rowNum: i + 1 }));
+        showFileInfo(`PDF: ${file.name} / ${sentences.length}文 / ${(await (await fetch(URL.createObjectURL(file))).blob()).size ? '' : ''}${sentences.length}行読込完了`);
+        // col-spec を _pdfText に固定マッピング
+        document.querySelectorAll('.col-select').forEach(sel => {
+          sel.innerHTML = '<option value="_pdfText">仕様文（PDF抽出）</option>';
+        });
+        document.getElementById('col-spec').value = '_pdfText';
+        document.getElementById('mapping-section').style.display = 'block';
+        document.getElementById('execute-section').style.display = 'flex';
+        prog.style.display = 'none';
+      } catch (err) {
+        prog.style.display = 'none';
+        alert('PDF読込エラー: ' + err.message);
+      }
+      e.target.value = '';
+    });
+
+    // ---- AI類似検索 実行 ----
+    document.getElementById('btn-ai-search').addEventListener('click', async () => {
+      const all = await dbGetAll('pastCases');
+      if (all.length === 0) {
+        document.getElementById('ai-search-results').innerHTML =
+          '<div style="color:#ff8888;font-size:0.78rem;padding:0.5rem;">過去事例DBが空です。学習パネルから事例を登録してください。</div>';
+        return;
+      }
+      if (currentResults.length === 0) {
+        document.getElementById('ai-search-results').innerHTML =
+          '<div style="color:#ff8888;font-size:0.78rem;padding:0.5rem;">先にデビクラ抽出を実行してください。</div>';
+        return;
+      }
+      const threshold = parseFloat(document.getElementById('ai-threshold').value) || 0.75;
+      const progressEl  = document.getElementById('ai-search-progress');
+      const progressBar = document.getElementById('ai-progress-bar');
+      const progressTxt = document.getElementById('ai-progress-text');
+      const resultsEl   = document.getElementById('ai-search-results');
+      progressEl.style.display = 'block';
+      resultsEl.innerHTML = '';
+
+      // 過去事例のembeddingが無いものはスキップ
+      const validPast = all.filter(c => Array.isArray(c.embedding) && c.embedding.length > 0);
+
+      // 抽出候補ごとに類似検索
+      const found = [];
+      for (let i = 0; i < currentResults.length; i++) {
+        const r = currentResults[i];
+        progressTxt.textContent = `Embedding処理中... ${i + 1}/${currentResults.length}`;
+        progressBar.style.width = `${Math.round((i + 1) / currentResults.length * 100)}%`;
+        let qVec;
+        try { qVec = await embedText(r.spec); }
+        catch (err) { progressTxt.textContent = '❌ ' + err.message; return; }
+
+        const matches = validPast
+          .map(c => ({ ...c, sim: cosineSim(qVec, c.embedding) }))
+          .filter(c => c.sim >= threshold)
+          .sort((a, b) => b.sim - a.sim)
+          .slice(0, 3);
+
+        if (matches.length > 0) found.push({ candidate: r, matches });
+        await new Promise(r => setTimeout(r, 0)); // UI更新のための yield
+      }
+
+      progressEl.style.display = 'none';
+
+      if (found.length === 0) {
+        resultsEl.innerHTML = `<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;padding:0.5rem;">類似度 ${threshold} 以上の過去事例が見つかりませんでした。閾値を下げるか、過去事例を追加してください。</div>`;
+        return;
+      }
+
+      resultsEl.innerHTML = found.map(({ candidate: r, matches }) => `
+        <div style="border:1px solid rgba(110,200,151,0.15);margin-bottom:0.75rem;background:#0a0a0c;">
+          <div style="padding:0.6rem 0.85rem;background:rgba(110,200,151,0.05);border-bottom:1px solid rgba(110,200,151,0.1);">
+            <span style="color:rgba(255,255,255,0.4);font-size:0.65rem;">行${r.rowNum} &nbsp;|&nbsp; </span>
+            <span style="color:#edede8;font-size:0.78rem;">${r.spec}</span>
+          </div>
+          ${matches.map(m => `
+            <div style="padding:0.55rem 0.85rem;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.3rem;">
+                <span style="background:rgba(110,200,151,0.15);color:#6ec897;font-size:0.68rem;padding:0.1rem 0.45rem;border-radius:2px;">類似度 ${m.sim.toFixed(2)}</span>
+                <span style="color:rgba(255,255,255,0.35);font-size:0.65rem;">過去仕様文:</span>
+                <span style="color:rgba(237,237,232,0.7);font-size:0.73rem;">${m.specText}</span>
+              </div>
+              <div style="display:flex;gap:0.5rem;align-items:flex-start;">
+                <span style="color:#c8a96e;font-size:0.65rem;flex-shrink:0;margin-top:0.1rem;">提案デビクラ:</span>
+                <span style="color:#c8a96e;font-size:0.76rem;font-weight:500;line-height:1.55;">${m.devicraText}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+    });
+
     // ===== 起動時: 学習DB・モデル版・レビューupsert索引を読み込む =====
     (async () => {
       try {
@@ -2399,6 +2803,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         await rebuildReviewIndex();
         await refreshLearningStats();
         renderCustomWords();
+        await refreshPastCasesUI();
         log('boot', `model=${activeDictVersion||'base'} reviews=${Object.keys(lastReviewIdByCandidate).length}`);
       } catch (err) { console.warn(err); }
     })();
