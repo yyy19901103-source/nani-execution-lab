@@ -411,6 +411,67 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           取り込み: マージは upsert（同一candidateKeyは上書き）。置換は既存を完全削除して読み込む（取り消し不可）。
         </div>
       </div>
+
+      <!-- カスタム辞書語登録 -->
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed rgba(200,169,110,0.18);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin:0;">▸ カスタム辞書語を追加（自社固有語）</p>
+          <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">ベース辞書に無い自社固有のデビクラ語を登録</span>
+        </div>
+        <!-- サンプル -->
+        <div style="background:#0a0a0c;border:1px dashed rgba(200,169,110,0.2);padding:0.65rem 0.85rem;margin-bottom:0.85rem;font-size:0.7rem;color:rgba(255,255,255,0.5);line-height:1.7;">
+          <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.2em;">SAMPLE FORMAT —</span><br/>
+          語: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">特注フランジ</code>&nbsp;
+          判断材料: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">特注品のため設計工数・調達リードタイム増</code>&nbsp;
+          判定: <code style="background:#111;padding:0.1em 0.35em;color:#6ec897;">対象</code>&nbsp;
+          E&amp;C&amp;LT: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">E,LT</code>
+        </div>
+        <!-- 入力フォーム -->
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:0.85rem;">
+          <div>
+            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">語（必須）</div>
+            <input id="cdict-word" type="text" placeholder="例: 特注フランジ" class="field-input" style="width:140px;font-size:0.76rem;padding:0.35rem 0.6rem;">
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">判断材料 why（推奨）</div>
+            <input id="cdict-why" type="text" placeholder="例: 特注品のため設計工数・調達LT増" class="field-input" style="width:100%;font-size:0.76rem;padding:0.35rem 0.6rem;">
+          </div>
+          <div>
+            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">判定</div>
+            <select id="cdict-level" class="field-input" style="font-size:0.74rem;padding:0.35rem 0.55rem;">
+              <option value="high">対象（高）</option>
+              <option value="mid">要確認（中）</option>
+              <option value="low">対象外（低）</option>
+            </select>
+          </div>
+          <div>
+            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">E&amp;C&amp;LT 種類</div>
+            <div style="display:flex;gap:0.4rem;align-items:center;height:2rem;">
+              <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-e" type="checkbox"> E技術</label>
+              <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-c" type="checkbox"> Cコスト</label>
+              <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-lt" type="checkbox"> LTリードタイム</label>
+            </div>
+          </div>
+          <button id="btn-cdict-add" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1rem;white-space:nowrap;">＋ 追加</button>
+        </div>
+        <!-- 登録済みカスタム語テーブル -->
+        <div id="cdict-table-wrap" style="display:none;">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.15em;margin-bottom:0.4rem;">▸ 登録済みカスタム語（<span id="cdict-count">0</span>語）</div>
+          <table style="width:100%;border-collapse:collapse;font-size:0.72rem;">
+            <thead>
+              <tr style="color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.1em;border-bottom:1px solid rgba(255,255,255,0.07);">
+                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">語</th>
+                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">判断材料</th>
+                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">判定</th>
+                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">E&amp;C&amp;LT</th>
+                <th style="padding:0.35rem 0.5rem;font-weight:400;"></th>
+              </tr>
+            </thead>
+            <tbody id="cdict-tbody"></tbody>
+          </table>
+        </div>
+        <div id="cdict-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.4rem;min-height:1.2em;"></div>
+      </div>
     </div>
 
     <!-- 操作ログ -->
@@ -963,6 +1024,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentPreset = btn.dataset.preset;
+        renderCustomWords();
       });
     });
     document.querySelector('.preset-btn[data-preset="industrial"]').classList.add('active');
@@ -1727,6 +1789,98 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
     }
 
+    // ===== カスタム辞書語管理 =====
+    async function saveExtendedDicts() {
+      // activeDictVersion がなければ自動で "custom-YYYY-MM-DD" を作成
+      const ver = activeDictVersion || ('custom-' + new Date().toISOString().slice(0,10));
+      await dbPut('dictVersions', {
+        version: ver,
+        baseAt: new Date().toISOString(),
+        extended: extendedDicts,
+        stats: {},
+      });
+      if (!activeDictVersion) {
+        activeDictVersion = ver;
+        await dbPut('modelMeta', { key:'active', version: ver });
+      }
+    }
+
+    function renderCustomWords() {
+      const ext = extendedDicts[currentPreset] || {};
+      const levelLabel = { high:'対象', mid:'要確認', low:'対象外' };
+      const levelColor = { high:'#6ec897', mid:'#c8a96e', low:'rgba(255,255,255,0.4)' };
+      const words = [
+        ...(ext.high||[]).filter(e => e._custom).map(e => ({...e, level:'high'})),
+        ...(ext.mid ||[]).filter(e => e._custom).map(e => ({...e, level:'mid'})),
+        ...(ext.low ||[]).filter(e => e._custom).map(e => ({...e, level:'low'})),
+      ];
+      const wrap  = document.getElementById('cdict-table-wrap');
+      const tbody = document.getElementById('cdict-tbody');
+      const cnt   = document.getElementById('cdict-count');
+      if (!wrap || !tbody || !cnt) return;
+      cnt.textContent = words.length;
+      wrap.style.display = words.length > 0 ? 'block' : 'none';
+      tbody.innerHTML = words.map(e => `
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+          <td style="padding:0.35rem 0.5rem;color:#edede8;font-weight:500;">${e.word}</td>
+          <td style="padding:0.35rem 0.5rem;color:rgba(255,255,255,0.6);font-size:0.7rem;max-width:260px;word-break:break-all;">${e.why||''}</td>
+          <td style="padding:0.35rem 0.5rem;color:${levelColor[e.level]};">${levelLabel[e.level]}</td>
+          <td style="padding:0.35rem 0.5rem;color:rgba(255,255,255,0.5);">${Array.isArray(e.impact)?e.impact.join(','):''}</td>
+          <td style="padding:0.35rem 0.5rem;text-align:right;">
+            <button class="btn-cdict-del" data-word="${e.word}" data-level="${e.level}"
+              style="background:transparent;border:1px solid rgba(255,100,100,0.25);color:#ff8888;padding:0.15rem 0.5rem;font-size:0.65rem;cursor:pointer;font-family:inherit;">削除</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('btn-cdict-add').addEventListener('click', async () => {
+      const word = document.getElementById('cdict-word').value.trim();
+      const st   = document.getElementById('cdict-status');
+      if (!word) { st.textContent = '⚠ 「語」は必須です'; st.style.color='#ff8888'; return; }
+      const why    = document.getElementById('cdict-why').value.trim();
+      const level  = document.getElementById('cdict-level').value;
+      const impact = [];
+      if (document.getElementById('cdict-e').checked)  impact.push('E');
+      if (document.getElementById('cdict-c').checked)  impact.push('C');
+      if (document.getElementById('cdict-lt').checked) impact.push('LT');
+      if (!extendedDicts[currentPreset]) extendedDicts[currentPreset] = { high:[], mid:[], low:[], suppressed:[] };
+      const arr = extendedDicts[currentPreset][level] || [];
+      if (arr.some(e => e.word === word)) {
+        st.textContent = `⚠ 「${word}」は既に登録されています`;
+        st.style.color = '#ff8888'; return;
+      }
+      arr.push({ word, why, impact, _custom: true });
+      extendedDicts[currentPreset][level] = arr;
+      await saveExtendedDicts();
+      document.getElementById('cdict-word').value  = '';
+      document.getElementById('cdict-why').value   = '';
+      document.getElementById('cdict-e').checked   = false;
+      document.getElementById('cdict-c').checked   = false;
+      document.getElementById('cdict-lt').checked  = false;
+      renderCustomWords();
+      st.textContent  = `✓ 「${word}」を登録しました（次の抽出から反映）`;
+      st.style.color  = '#6ec897';
+      log('custom_dict_add', `${currentPreset} ${level} "${word}"`);
+    });
+
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.btn-cdict-del');
+      if (!btn) return;
+      const { word, level } = btn.dataset;
+      if (!extendedDicts[currentPreset]) return;
+      const arr = extendedDicts[currentPreset][level] || [];
+      const idx = arr.findIndex(en => en.word === word);
+      if (idx < 0) return;
+      arr.splice(idx, 1);
+      await saveExtendedDicts();
+      renderCustomWords();
+      const st = document.getElementById('cdict-status');
+      st.textContent = `✓ 「${word}」を削除しました`;
+      st.style.color = '#c8a96e';
+      log('custom_dict_del', `${currentPreset} ${level} "${word}"`);
+    });
+
     function getEffectiveDict(presetId) {
       const base = RISK_DICT[presetId];
       const ext = extendedDicts[presetId] || { high:[], mid:[], low:[] };
@@ -2228,6 +2382,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         await loadActiveModel();
         await rebuildReviewIndex();
         await refreshLearningStats();
+        renderCustomWords();
         setShareStatus(`✓ 取り込み完了（${mode}） 辞書${dictUp}版・レビュー${revUp}件 / active=${activeDictVersion||'base'}`, '#6ec897');
         log('model_import', `mode=${mode} dictVersions=${dictUp} reviews=${revUp} active=${activeDictVersion||'base'}`);
       } catch (err) {
@@ -2243,6 +2398,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         await loadActiveModel();
         await rebuildReviewIndex();
         await refreshLearningStats();
+        renderCustomWords();
         log('boot', `model=${activeDictVersion||'base'} reviews=${Object.keys(lastReviewIdByCandidate).length}`);
       } catch (err) { console.warn(err); }
     })();
