@@ -346,19 +346,48 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <!-- AI類似検索 実行ボタン＋結果 -->
       <div id="ai-search-section" style="display:none;margin-top:1rem;background:#0d1a12;border:1px solid rgba(110,200,151,0.2);padding:1.25rem 1.5rem;">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.85rem;">
-          <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;">🔍 AI類似事例検索</div>
-          <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
-            <label style="display:flex;align-items:center;gap:0.35rem;color:rgba(255,255,255,0.6);font-size:0.72rem;">
-              類似度閾値:
-              <input id="ai-threshold" type="number" value="0.75" min="0.5" max="0.99" step="0.05"
-                class="field-input" style="width:64px;font-size:0.74rem;padding:0.25rem 0.4rem;">
-            </label>
-            <button id="btn-ai-search" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1.1rem;background:rgba(110,200,151,0.15);border:1px solid rgba(110,200,151,0.4);color:#6ec897;">
-              🔍 AI類似検索 ▶
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">🔍 AI類似事例検索 + デビクラ生成</div>
+
+        <!-- モード選択 -->
+        <div style="display:flex;gap:0.65rem;flex-wrap:wrap;margin-bottom:0.85rem;">
+          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;background:#111114;border:1px solid rgba(110,200,151,0.35);padding:0.4rem 0.85rem;font-size:0.73rem;color:#6ec897;">
+            <input type="radio" name="ai-mode" value="A" checked style="accent-color:#6ec897;">
+            モードA &nbsp;— 類似検索のみ（117MB）
+          </label>
+          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;background:#111114;border:1px solid rgba(200,169,110,0.3);padding:0.4rem 0.85rem;font-size:0.73rem;color:#c8a96e;">
+            <input type="radio" name="ai-mode" value="B" style="accent-color:#c8a96e;">
+            モードB &nbsp;— +Llama生成（WebGPU必須・+~700MB）
+          </label>
+        </div>
+
+        <!-- モードB: Llama初期化エリア -->
+        <div id="llama-init-area" style="display:none;background:rgba(200,169,110,0.04);border:1px dashed rgba(200,169,110,0.2);padding:0.75rem;margin-bottom:0.85rem;">
+          <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem;">
+            <button id="btn-llama-init" class="m-btn-ghost" style="font-size:0.72rem;padding:0.35rem 0.9rem;border-color:rgba(200,169,110,0.35);color:#c8a96e;">
+              🦙 Llama 3.2 1B 読込（初回~700MB）
             </button>
+            <span id="llama-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
+          </div>
+          <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:4px;display:none;" id="llama-dl-wrap">
+            <div id="llama-dl-bar" style="background:#c8a96e;height:4px;border-radius:9999px;transition:width 0.2s;width:0%;"></div>
+          </div>
+          <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;margin-top:0.4rem;line-height:1.5;">
+            過去事例なし → Llamaがデビクラ文を自動生成。WebGPU非対応ブラウザはモードAに自動切替。
           </div>
         </div>
+
+        <!-- 検索オプション＋実行 -->
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.85rem;">
+          <label style="display:flex;align-items:center;gap:0.35rem;color:rgba(255,255,255,0.6);font-size:0.72rem;">
+            類似度閾値:
+            <input id="ai-threshold" type="number" value="0.75" min="0.5" max="0.99" step="0.05"
+              class="field-input" style="width:64px;font-size:0.74rem;padding:0.25rem 0.4rem;">
+          </label>
+          <button id="btn-ai-search" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1.1rem;background:rgba(110,200,151,0.15);border:1px solid rgba(110,200,151,0.4);color:#6ec897;">
+            🔍 AI類似検索 ▶
+          </button>
+        </div>
+
         <div id="ai-search-progress" style="display:none;margin-bottom:0.75rem;">
           <div style="color:rgba(110,200,151,0.7);font-size:0.7rem;margin-bottom:0.3rem;" id="ai-progress-text">処理中...</div>
           <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:5px;">
@@ -839,6 +868,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     env.allowLocalModels = false;
     env.useBrowserCache  = true;
     window._txPipeline = pipeline;
+  </script>
+  <!-- WebLLM: Llama 3.2 1B ブラウザ内推論（WebGPU必須・~700MB・モードB用） -->
+  <script type="module">
+    try {
+      const { CreateMLCEngine } = await import('https://esm.run/@mlc-ai/web-llm');
+      window._webllmCreate = CreateMLCEngine;
+    } catch (e) { window._webllmCreate = null; }
   </script>
 
   <script>
@@ -2495,7 +2531,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     });
 
     // ============================================================
-    // ===== AI類似検索 / PDF読込 / 過去事例DB管理 =====
+    // ===== AI類似検索 / PDF読込 / 過去事例DB管理 / Llama生成（Phase 2） =====
     // ============================================================
 
     // PDF.js worker 設定
@@ -2723,13 +2759,81 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     });
 
     // ---- AI類似検索 実行 ----
-    document.getElementById('btn-ai-search').addEventListener('click', async () => {
-      const all = await dbGetAll('pastCases');
-      if (all.length === 0) {
-        document.getElementById('ai-search-results').innerHTML =
-          '<div style="color:#ff8888;font-size:0.78rem;padding:0.5rem;">過去事例DBが空です。学習パネルから事例を登録してください。</div>';
-        return;
+    // ---- Llama 3.2 1B（WebLLM・Phase 2） ----
+    let _llamaEngine = null;
+
+    function setLlamaStatus(msg, color) {
+      const el = document.getElementById('llama-status');
+      if (el) { el.textContent = msg; if (color) el.style.color = color; }
+    }
+
+    async function checkWebGPU() {
+      if (!navigator.gpu) return false;
+      try { return !!(await navigator.gpu.requestAdapter()); }
+      catch { return false; }
+    }
+
+    async function getLlamaEngine() {
+      if (_llamaEngine) return _llamaEngine;
+      const create = window._webllmCreate;
+      if (!create) throw new Error('WebLLMがまだ読込中です。少し待ってから再試行してください。');
+      if (!await checkWebGPU()) throw new Error('WebGPU非対応ブラウザです。Chrome/Edge 113以降が必要です。');
+      const wrap = document.getElementById('llama-dl-wrap');
+      const bar  = document.getElementById('llama-dl-bar');
+      if (wrap) wrap.style.display = 'block';
+      _llamaEngine = await create('Llama-3.2-1B-Instruct-q4f16_1-MLC', {
+        initProgressCallback: p => {
+          setLlamaStatus(p.text || '読込中...');
+          if (bar && p.progress) bar.style.width = Math.round(p.progress * 100) + '%';
+        }
+      });
+      if (wrap) wrap.style.display = 'none';
+      setLlamaStatus('✓ Llama 3.2 1B 準備完了', '#c8a96e');
+      return _llamaEngine;
+    }
+
+    async function generateDevicra(specText, similarCases = []) {
+      const engine = await getLlamaEngine();
+      const ctxParts = similarCases.slice(0, 2).map(c =>
+        `仕様例: ${c.specText}\nデビクラ例: ${c.devicraText}`
+      ).join('\n\n');
+      const sysMsg = 'あなたはETO製造業（一品一様製造）のデビクラ専門家です。デビクラとは「顧客に提示する懸念事項（Deviation & Clarification）」です。与えられた仕様文に対して、見積・設計・納期を狂わせる懸念事項を1〜2文で簡潔に日本語で述べてください。';
+      const userMsg = ctxParts
+        ? `【参考事例】\n${ctxParts}\n\n【新しい仕様文】「${specText}」\n\n【デビクラ（懸念事項）】`
+        : `【仕様文】「${specText}」\n\n【デビクラ（懸念事項）】`;
+      const reply = await engine.chat.completions.create({
+        messages: [{ role:'system', content:sysMsg }, { role:'user', content:userMsg }],
+        temperature: 0.3,
+        max_tokens: 180,
+      });
+      return reply.choices[0].message.content.trim();
+    }
+
+    // モード切替UI
+    document.querySelectorAll('input[name="ai-mode"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const modeB = document.querySelector('input[name="ai-mode"]:checked').value === 'B';
+        document.getElementById('llama-init-area').style.display = modeB ? 'block' : 'none';
+      });
+    });
+
+    // Llamaモデル読込ボタン
+    document.getElementById('btn-llama-init').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-llama-init');
+      btn.disabled = true;
+      setLlamaStatus('初期化中...', 'rgba(200,169,110,0.7)');
+      try {
+        await getLlamaEngine();
+      } catch (err) {
+        setLlamaStatus('❌ ' + err.message, '#ff8888');
       }
+      btn.disabled = false;
+    });
+
+    // AI類似検索（モードA/B共通）
+    document.getElementById('btn-ai-search').addEventListener('click', async () => {
+      const modeB = document.querySelector('input[name="ai-mode"]:checked').value === 'B';
+      const all = await dbGetAll('pastCases');
       if (currentResults.length === 0) {
         document.getElementById('ai-search-results').innerHTML =
           '<div style="color:#ff8888;font-size:0.78rem;padding:0.5rem;">先にデビクラ抽出を実行してください。</div>';
@@ -2743,18 +2847,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       progressEl.style.display = 'block';
       resultsEl.innerHTML = '';
 
-      // 過去事例のembeddingが無いものはスキップ
       const validPast = all.filter(c => Array.isArray(c.embedding) && c.embedding.length > 0);
+      const total = currentResults.length;
 
-      // 抽出候補ごとに類似検索
-      const found = [];
+      // モードBでLlamaが未初期化の場合は事前チェック
+      if (modeB && !_llamaEngine) {
+        progressTxt.textContent = 'Llamaモデルを初期化中...';
+        try { await getLlamaEngine(); }
+        catch (err) {
+          progressEl.style.display = 'none';
+          resultsEl.innerHTML = `<div style="color:#ff8888;font-size:0.78rem;padding:0.5rem;">❌ ${err.message}</div>`;
+          return;
+        }
+      }
+
+      // 各候補を処理
+      const rows = [];
       for (let i = 0; i < currentResults.length; i++) {
         const r = currentResults[i];
-        progressTxt.textContent = `Embedding処理中... ${i + 1}/${currentResults.length}`;
-        progressBar.style.width = `${Math.round((i + 1) / currentResults.length * 100)}%`;
+        const phase = modeB ? `Embedding+生成中 ${i+1}/${total}` : `Embedding処理中 ${i+1}/${total}`;
+        progressTxt.textContent = phase;
+        progressBar.style.width = `${Math.round((i + 1) / total * 100)}%`;
+
         let qVec;
         try { qVec = await embedText(r.spec); }
-        catch (err) { progressTxt.textContent = '❌ ' + err.message; return; }
+        catch (err) { progressTxt.textContent = '❌ ' + err.message; progressEl.style.display='none'; return; }
 
         const matches = validPast
           .map(c => ({ ...c, sim: cosineSim(qVec, c.embedding) }))
@@ -2762,18 +2879,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           .sort((a, b) => b.sim - a.sim)
           .slice(0, 3);
 
-        if (matches.length > 0) found.push({ candidate: r, matches });
-        await new Promise(r => setTimeout(r, 0)); // UI更新のための yield
+        let generated = null;
+        if (modeB) {
+          // 過去事例あり → 類似事例をコンテキストとして生成 / なし → コンテキストなしで生成
+          progressTxt.textContent = `Llama生成中 ${i+1}/${total}...`;
+          try { generated = await generateDevicra(r.spec, matches); }
+          catch (err) { generated = '(生成エラー: ' + err.message + ')'; }
+        }
+
+        rows.push({ candidate: r, matches, generated });
+        await new Promise(rb => setTimeout(rb, 0));
       }
 
       progressEl.style.display = 'none';
 
-      if (found.length === 0) {
-        resultsEl.innerHTML = `<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;padding:0.5rem;">類似度 ${threshold} 以上の過去事例が見つかりませんでした。閾値を下げるか、過去事例を追加してください。</div>`;
+      const visibleRows = rows.filter(row =>
+        row.matches.length > 0 || (modeB && row.generated)
+      );
+
+      if (visibleRows.length === 0) {
+        resultsEl.innerHTML = `<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;padding:0.5rem;">類似度 ${threshold} 以上の過去事例が見つかりませんでした。${modeB ? '' : '閾値を下げるか、モードBに切替えてください。'}</div>`;
         return;
       }
 
-      resultsEl.innerHTML = found.map(({ candidate: r, matches }) => `
+      resultsEl.innerHTML = visibleRows.map(({ candidate: r, matches, generated }) => `
         <div style="border:1px solid rgba(110,200,151,0.15);margin-bottom:0.75rem;background:#0a0a0c;">
           <div style="padding:0.6rem 0.85rem;background:rgba(110,200,151,0.05);border-bottom:1px solid rgba(110,200,151,0.1);">
             <span style="color:rgba(255,255,255,0.4);font-size:0.65rem;">行${r.rowNum} &nbsp;|&nbsp; </span>
@@ -2781,17 +2910,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </div>
           ${matches.map(m => `
             <div style="padding:0.55rem 0.85rem;border-bottom:1px solid rgba(255,255,255,0.04);">
-              <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.3rem;">
+              <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.3rem;flex-wrap:wrap;">
                 <span style="background:rgba(110,200,151,0.15);color:#6ec897;font-size:0.68rem;padding:0.1rem 0.45rem;border-radius:2px;">類似度 ${m.sim.toFixed(2)}</span>
                 <span style="color:rgba(255,255,255,0.35);font-size:0.65rem;">過去仕様文:</span>
                 <span style="color:rgba(237,237,232,0.7);font-size:0.73rem;">${m.specText}</span>
               </div>
               <div style="display:flex;gap:0.5rem;align-items:flex-start;">
-                <span style="color:#c8a96e;font-size:0.65rem;flex-shrink:0;margin-top:0.1rem;">提案デビクラ:</span>
+                <span style="color:#c8a96e;font-size:0.65rem;flex-shrink:0;margin-top:0.1rem;">過去デビクラ:</span>
                 <span style="color:#c8a96e;font-size:0.76rem;font-weight:500;line-height:1.55;">${m.devicraText}</span>
               </div>
             </div>
           `).join('')}
+          ${generated ? `
+            <div style="padding:0.6rem 0.85rem;background:rgba(200,169,110,0.04);border-top:1px dashed rgba(200,169,110,0.18);">
+              <div style="display:flex;gap:0.5rem;align-items:flex-start;">
+                <span style="background:rgba(200,169,110,0.15);color:#c8a96e;font-size:0.65rem;padding:0.1rem 0.45rem;border-radius:2px;flex-shrink:0;">🦙 Llama生成</span>
+                <span style="color:#c8a96e;font-size:0.77rem;font-weight:500;line-height:1.6;">${generated}</span>
+              </div>
+            </div>
+          ` : ''}
         </div>
       `).join('');
     });
