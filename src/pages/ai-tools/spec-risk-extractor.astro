@@ -2575,7 +2575,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return Array.from(out.data);
     }
 
-    function cosineSim(a, b) {
+    function embeddingSim(a, b) {
       let dot = 0;
       for (let i = 0; i < a.length; i++) dot += a[i] * b[i];
       return dot; // normalize:true なので単位ベクトル済み
@@ -2881,7 +2881,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         catch (err) { progressTxt.textContent = '❌ ' + err.message; progressEl.style.display='none'; return; }
 
         const matches = validPast
-          .map(c => ({ ...c, sim: cosineSim(qVec, c.embedding) }))
+          .map(c => ({ ...c, sim: embeddingSim(qVec, c.embedding) }))
           .filter(c => c.sim >= threshold)
           .sort((a, b) => b.sim - a.sim)
           .slice(0, 3);
