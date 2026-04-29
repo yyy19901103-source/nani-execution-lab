@@ -2800,10 +2800,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         currentRows = sentences.map((s, i) => ({ _pdfText: s.text, _page: s.page, rowNum: i + 1 }));
         showFileInfo(`PDF: ${file.name} / ${sentences.length}文 / ${(await (await fetch(URL.createObjectURL(file))).blob()).size ? '' : ''}${sentences.length}行読込完了`);
         // col-spec を _pdfText に固定マッピング
+        // col-spec は class=field-input なので querySelectorAll('.col-select') に含まれない → 個別に設定
+        const csEl = document.getElementById('col-spec');
+        csEl.innerHTML = '<option value="_pdfText">仕様文（PDF抽出）</option>';
+        csEl.value = '_pdfText';
         document.querySelectorAll('.col-select').forEach(sel => {
           sel.innerHTML = '<option value="_pdfText">仕様文（PDF抽出）</option>';
         });
-        document.getElementById('col-spec').value = '_pdfText';
         document.getElementById('mapping-section').style.display = 'block';
         document.getElementById('execute-section').style.display = 'flex';
         prog.style.display = 'none';
