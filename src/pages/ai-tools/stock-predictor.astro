@@ -1,0 +1,233 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="株式AI予測ダッシュボード — NaNi Execution Lab"
+  description="LightGBM+69エージェントによる米国株AI予測。推奨銘柄・上昇確率・過去の的中率をリアルタイム公開。"
+>
+
+<style>
+  .sp-wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .sp-header { text-align: center; padding: 2.5rem 0 2rem; border-bottom: 1px solid rgba(200,169,110,0.2); margin-bottom: 2rem; }
+  .sp-header h1 { font-size: clamp(1.4rem,4vw,2rem); font-weight: 300; letter-spacing: 0.1em; color: #edede8; margin-bottom: 0.5rem; }
+  .sp-header p  { color: #888; font-size: 0.85rem; }
+  .sp-updated   { font-size: 0.72rem; color: #555; margin-top: 0.4rem; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .kpi { background: #111; border: 1px solid #222; padding: 1.1rem; text-align: center; }
+  .kpi-label { font-size: 0.62rem; letter-spacing: 0.2em; color: #888; margin-bottom: 0.4rem; }
+  .kpi-val   { font-size: 1.6rem; font-weight: 300; color: #c8a96e; }
+  .kpi-sub   { font-size: 0.68rem; color: #555; margin-top: 0.2rem; }
+
+  .section-title { font-size: 0.65rem; letter-spacing: 0.25em; color: #c8a96e; border-bottom: 1px solid rgba(200,169,110,0.3); padding-bottom: 0.4rem; margin: 2rem 0 1rem; }
+
+  .rank-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .rank-table th { font-size: 0.6rem; letter-spacing: 0.15em; color: #888; padding: 0.5rem 0.75rem; border-bottom: 1px solid #222; text-align: left; }
+  .rank-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid #1a1a1a; color: #ddd; }
+  .rank-table tr:hover td { background: #141414; }
+
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; font-size: 0.65rem; letter-spacing: 0.1em; border-radius: 2px; }
+  .badge-sb { background: rgba(80,200,80,0.2);  color: #6ec86e; border: 1px solid rgba(80,200,80,0.3); }
+  .badge-b  { background: rgba(80,200,80,0.12); color: #6ec86e; border: 1px solid rgba(80,200,80,0.2); }
+  .badge-wb { background: rgba(200,200,80,0.15);color: #c8c86e; border: 1px solid rgba(200,200,80,0.2); }
+  .badge-w  { background: rgba(150,150,150,0.1);color: #888;    border: 1px solid #333; }
+  .badge-ws { background: rgba(200,100,80,0.12);color: #c87e6e; border: 1px solid rgba(200,100,80,0.2); }
+  .badge-s  { background: rgba(200,80,80,0.15); color: #c86e6e; border: 1px solid rgba(200,80,80,0.2); }
+  .badge-ss { background: rgba(200,50,50,0.2);  color: #c86e6e; border: 1px solid rgba(200,50,50,0.3); }
+
+  .prob-bar { display: inline-block; width: 60px; height: 6px; background: #222; border-radius: 3px; vertical-align: middle; margin-right: 0.4rem; }
+  .prob-fill { height: 100%; border-radius: 3px; background: #c8a96e; }
+
+  .chart-wrap { background: #0d0d0d; border: 1px solid #1e1e1e; padding: 1.25rem; margin-bottom: 1.5rem; }
+  canvas { max-height: 220px; }
+
+  .history-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  .history-table th { font-size: 0.58rem; letter-spacing: 0.12em; color: #666; padding: 0.4rem 0.6rem; border-bottom: 1px solid #1e1e1e; }
+  .history-table td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #141414; color: #aaa; }
+  .r-hit     { color: #6ec86e; }
+  .r-miss    { color: #c86e6e; }
+  .r-pending { color: #555; }
+
+  .disclaimer { font-size: 0.7rem; color: #444; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 1rem 1.25rem; margin-top: 2.5rem; line-height: 1.7; }
+</style>
+
+<div class="sp-wrap">
+  <div class="sp-header">
+    <h1>📈 株式AI予測ダッシュボード</h1>
+    <p>LightGBM + 69エージェントによる米国株予測を公開しています</p>
+    <p class="sp-updated" id="updated-at">データ読み込み中…</p>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpi-row" id="kpi-row">
+    <div class="kpi"><div class="kpi-label">MONITORED</div><div class="kpi-val" id="kpi-stocks">—</div><div class="kpi-sub">監視銘柄数</div></div>
+    <div class="kpi"><div class="kpi-label">ACCURACY</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">5日後的中率</div></div>
+    <div class="kpi"><div class="kpi-label">JUDGED</div><div class="kpi-val" id="kpi-judged">—</div><div class="kpi-sub">判定済み予測</div></div>
+    <div class="kpi"><div class="kpi-label">PENDING</div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-sub">判定待ち</div></div>
+  </div>
+
+  <!-- 的中率グラフ -->
+  <div class="section-title">月別的中率</div>
+  <div class="chart-wrap">
+    <canvas id="acc-chart"></canvas>
+  </div>
+
+  <!-- 現在のランキング -->
+  <div class="section-title">現在のAIランキング</div>
+  <table class="rank-table">
+    <thead>
+      <tr>
+        <th>銘柄</th><th>ランク</th><th>AIスコア</th><th>5日上昇確率</th><th>期待リターン</th><th>更新日時</th>
+      </tr>
+    </thead>
+    <tbody id="ranking-tbody"></tbody>
+  </table>
+
+  <!-- 過去予測履歴 -->
+  <div class="section-title">過去の予測履歴</div>
+  <table class="history-table">
+    <thead>
+      <tr>
+        <th>日付</th><th>銘柄</th><th>ランク</th><th>上昇確率</th><th>実績</th><th>判定</th>
+      </tr>
+    </thead>
+    <tbody id="history-tbody"></tbody>
+  </table>
+
+  <!-- 免責事項 -->
+  <div class="disclaimer">
+    ⚠️ 本ページの情報は個人の学習・研究目的で公開しています。投資判断の根拠としないでください。<br>
+    予測はLightGBM（機械学習モデル）と独自エージェントによるものであり、将来の結果を保証するものではありません。<br>
+    保有株数・購入単価・損益金額は一切公開していません。
+  </div>
+</div>
+
+<script>
+  const BASE = import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
+
+  const BADGE_CLASS = {
+    strong_buy:'badge-sb', buy:'badge-b', weak_buy:'badge-wb',
+    watch:'badge-w', neutral:'badge-w',
+    weak_sell:'badge-ws', sell:'badge-s', strong_sell:'badge-ss', avoid:'badge-ss'
+  };
+
+  async function load() {
+    let data;
+    try {
+      const res = await fetch(`${BASE}/data/stock.json`);
+      data = await res.json();
+    } catch(e) {
+      document.getElementById('updated-at').textContent = 'データ読み込みエラー';
+      return;
+    }
+
+    document.getElementById('updated-at').textContent = `最終更新: ${data.generated_at}`;
+    const acc = data.accuracy;
+
+    document.getElementById('kpi-stocks').textContent  = data.rankings.length;
+    document.getElementById('kpi-acc').textContent     = acc.rate != null ? (acc.rate*100).toFixed(1)+'%' : '—';
+    document.getElementById('kpi-judged').textContent  = acc.total;
+    document.getElementById('kpi-pending').textContent = acc.pending;
+
+    // 月別グラフ（Chart.js）
+    if (acc.monthly && acc.monthly.length > 0) {
+      const labels = acc.monthly.map(m => m.month);
+      const rates  = acc.monthly.map(m => m.rate != null ? (m.rate*100).toFixed(1) : null);
+      const totals = acc.monthly.map(m => m.total);
+
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
+      script.onload = () => {
+        const ctx = document.getElementById('acc-chart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [
+              {
+                label: '的中率(%)',
+                data: rates,
+                backgroundColor: rates.map(r => r >= 60 ? 'rgba(110,200,110,0.5)' : r >= 50 ? 'rgba(200,169,110,0.5)' : 'rgba(200,110,110,0.5)'),
+                borderColor:     rates.map(r => r >= 60 ? '#6ec86e' : r >= 50 ? '#c8a96e' : '#c86e6e'),
+                borderWidth: 1,
+                yAxisID: 'y',
+              },
+              {
+                label: '判定数',
+                data: totals,
+                type: 'line',
+                borderColor: '#444',
+                backgroundColor: 'transparent',
+                pointRadius: 3,
+                yAxisID: 'y2',
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: { legend: { labels: { color:'#888', font:{size:11} } } },
+            scales: {
+              x:  { ticks:{color:'#666'}, grid:{color:'#1a1a1a'} },
+              y:  { ticks:{color:'#888',callback:v=>v+'%'}, grid:{color:'#1a1a1a'}, min:0, max:100 },
+              y2: { position:'right', ticks:{color:'#444'}, grid:{display:false} },
+            }
+          }
+        });
+      };
+      document.head.appendChild(script);
+    } else {
+      document.querySelector('.chart-wrap').innerHTML =
+        '<p style="color:#444;text-align:center;padding:2rem;">判定データ蓄積後に表示されます（予測から5営業日後）</p>';
+    }
+
+    // ランキングテーブル
+    const tbody = document.getElementById('ranking-tbody');
+    data.rankings.forEach(r => {
+      const badgeClass = BADGE_CLASS[r.rank] || 'badge-w';
+      const prob = r.prob_up_5d != null ? r.prob_up_5d : 0;
+      const probPct = (prob*100).toFixed(0);
+      const er = r.expected_return != null ? (r.expected_return > 0 ? '+' : '') + r.expected_return.toFixed(1)+'%' : '—';
+      const updAt = r.updated_at ? r.updated_at.slice(0,16) : '—';
+      tbody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td><strong style="color:#edede8">${r.ticker}</strong></td>
+          <td><span class="badge ${badgeClass}">${r.rank_ja || r.rank || '—'}</span></td>
+          <td>${r.score != null ? r.score : '—'}</td>
+          <td>
+            <span class="prob-bar"><span class="prob-fill" style="width:${probPct}%"></span></span>
+            ${probPct}%
+          </td>
+          <td style="color:${r.expected_return>0?'#6ec86e':r.expected_return<0?'#c86e6e':'#888'}">${er}</td>
+          <td style="color:#555;font-size:0.7rem">${updAt}</td>
+        </tr>
+      `);
+    });
+
+    // 履歴テーブル
+    const hbody = document.getElementById('history-tbody');
+    data.history.forEach(h => {
+      const badgeClass = BADGE_CLASS[h.rank] || 'badge-w';
+      const prob = h.prob_up_5d != null ? (h.prob_up_5d*100).toFixed(0)+'%' : '—';
+      const ret  = h.actual_ret != null ? (h.actual_ret>0?'+':'')+h.actual_ret.toFixed(1)+'%' : '—';
+      const resultLabel = h.result==='hit' ? '✅ 当たり' : h.result==='miss' ? '❌ 外れ' : '⏳ 待ち';
+      const resultClass = h.result==='hit' ? 'r-hit' : h.result==='miss' ? 'r-miss' : 'r-pending';
+      hbody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td style="color:#555">${h.date}</td>
+          <td><strong style="color:#ddd">${h.ticker}</strong></td>
+          <td><span class="badge ${badgeClass}" style="font-size:0.6rem">${h.rank||'—'}</span></td>
+          <td>${prob}</td>
+          <td style="color:${h.actual_ret>0?'#6ec86e':h.actual_ret<0?'#c86e6e':'#888'}">${ret}</td>
+          <td class="${resultClass}">${resultLabel}</td>
+        </tr>
+      `);
+    });
+  }
+
+  load();
+</script>
+
+</BaseLayout>

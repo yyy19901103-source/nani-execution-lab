@@ -1,0 +1,330 @@
+{
+  "generated_at": "2026-04-29 11:49",
+  "accuracy": {
+    "total": 0,
+    "hit": 0,
+    "miss": 0,
+    "pending": 15,
+    "rate": null,
+    "threshold": 0.55,
+    "monthly": [
+      {
+        "month": "2026-04",
+        "total": 0,
+        "hit": 0,
+        "rate": null
+      }
+    ]
+  },
+  "rankings": [
+    {
+      "ticker": "NVDA",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 55,
+      "prob_up_5d": 0.54,
+      "expected_return": 1.32,
+      "risk_reward": 0.33,
+      "updated_at": "2026-04-29 10:50:24"
+    },
+    {
+      "ticker": "SOUN",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 52,
+      "prob_up_5d": 0.627,
+      "expected_return": 2.02,
+      "risk_reward": 8.08,
+      "updated_at": "2026-04-29 11:04:52"
+    },
+    {
+      "ticker": "PATH",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "expected_return": 1.55,
+      "risk_reward": 6.2,
+      "updated_at": "2026-04-29 10:52:21"
+    },
+    {
+      "ticker": "AI",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 49,
+      "prob_up_5d": 0.569,
+      "expected_return": 1.55,
+      "risk_reward": 6.2,
+      "updated_at": "2026-04-29 10:52:20"
+    },
+    {
+      "ticker": "AAPL",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    },
+    {
+      "ticker": "AMD",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    },
+    {
+      "ticker": "GOOGL",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    },
+    {
+      "ticker": "LLY",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    },
+    {
+      "ticker": "META",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    },
+    {
+      "ticker": "MSFT",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    },
+    {
+      "ticker": "QQQ",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    },
+    {
+      "ticker": "VOO",
+      "rank": null,
+      "rank_ja": "—",
+      "score": null,
+      "prob_up_5d": null,
+      "expected_return": null,
+      "risk_reward": null,
+      "updated_at": null
+    }
+  ],
+  "history": [
+    {
+      "ticker": "SOUN",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.627,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "SOUN",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.627,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "PATH",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AI",
+      "rank": "watch",
+      "score": 49,
+      "prob_up_5d": 0.569,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "NVDA",
+      "rank": "watch",
+      "score": 55,
+      "prob_up_5d": 0.54,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "NVDA",
+      "rank": "watch",
+      "score": 55,
+      "prob_up_5d": 0.54,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "NVDA",
+      "rank": "watch",
+      "score": 55,
+      "prob_up_5d": 0.54,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "NVDA",
+      "rank": "watch",
+      "score": 55,
+      "prob_up_5d": 0.54,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "SOUN",
+      "rank": "watch",
+      "score": 50,
+      "prob_up_5d": 0.627,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "PATH",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AI",
+      "rank": "watch",
+      "score": 48,
+      "prob_up_5d": 0.569,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "SOUN",
+      "rank": "watch",
+      "score": 49,
+      "prob_up_5d": 0.373,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AI",
+      "rank": "neutral",
+      "score": 47,
+      "prob_up_5d": 0.373,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "PATH",
+      "rank": "watch",
+      "score": 50,
+      "prob_up_5d": 0.373,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "NVDA",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d": 0.54,
+      "date": "2026-04-29",
+      "actual_ret": null,
+      "result": "pending"
+    }
+  ],
+  "earnings": [
+    {
+      "ticker": "GOOGL",
+      "date": "2026-04-30",
+      "estimated_eps": 2.63
+    },
+    {
+      "ticker": "LLY",
+      "date": "2026-04-30",
+      "estimated_eps": 6.79
+    },
+    {
+      "ticker": "META",
+      "date": "2026-04-30",
+      "estimated_eps": 6.82
+    },
+    {
+      "ticker": "MSFT",
+      "date": "2026-04-30",
+      "estimated_eps": 4.07
+    },
+    {
+      "ticker": "AAPL",
+      "date": "2026-05-01",
+      "estimated_eps": 1.94
+    },
+    {
+      "ticker": "AMD",
+      "date": "2026-05-06",
+      "estimated_eps": 1.28
+    },
+    {
+      "ticker": "SOUN",
+      "date": "2026-05-08",
+      "estimated_eps": -0.04
+    },
+    {
+      "ticker": "NVDA",
+      "date": "2026-05-21",
+      "estimated_eps": 1.77
+    },
+    {
+      "ticker": "AI",
+      "date": "2026-05-28",
+      "estimated_eps": -0.38
+    },
+    {
+      "ticker": "PATH",
+      "date": "2026-05-29",
+      "estimated_eps": 0.16
+    }
+  ]
+}
