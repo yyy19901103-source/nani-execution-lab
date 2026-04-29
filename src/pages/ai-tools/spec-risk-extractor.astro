@@ -864,10 +864,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <!-- Transformers.js: ブラウザ内多言語Embedding（117MB・初回DL後キャッシュ） -->
   <script type="module">
-    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js';
-    env.allowLocalModels = false;
-    env.useBrowserCache  = true;
-    window._txPipeline = pipeline;
+    try {
+      const { pipeline, env } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js');
+      env.allowLocalModels = false;
+      env.useBrowserCache  = true;
+      window._txPipeline = pipeline;
+    } catch (e) { window._txPipeline = null; }
   </script>
   <!-- WebLLM: Llama 3.2 1B ブラウザ内推論（WebGPU必須・~700MB・モードB用） -->
   <script type="module">
@@ -1552,11 +1554,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       renderTable();
       document.getElementById('result-area').style.display = 'block';
-      // 過去事例DBに1件でも登録があれば AI検索セクションを表示
-      dbGetAll('pastCases').then(all => {
-        document.getElementById('ai-search-section').style.display = all.length > 0 ? 'block' : 'none';
-        document.getElementById('ai-search-results').innerHTML = '';
-      });
+      // 抽出結果がある限り AI検索セクションを表示（過去事例0件でもモードBで生成可）
+      document.getElementById('ai-search-section').style.display = 'block';
+      document.getElementById('ai-search-results').innerHTML = '';
     }
 
     function renderTable() {
@@ -2486,6 +2486,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           await dbClear('reviews');
           await dbClear('dictVersions');
           await dbClear('modelMeta');
+          activeDictVersion = null;
+          extendedDicts = {};
         }
         // dictVersions: version をキーにした upsert
         let dictUp = 0;
@@ -2545,7 +2547,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     async function getEmbedder() {
       if (_embedder) return _embedder;
       const pipeline = window._txPipeline;
-      if (!pipeline) throw new Error('Transformers.jsがまだ読込中です。少し待ってから再試行してください。');
+      if (pipeline === null) throw new Error('Transformers.jsの読込に失敗しました。CDN障害またはCSP設定をご確認ください。');
+      if (!pipeline) throw new Error('Transformers.jsをまだ読込中です。少し待ってから再試行してください。');
       setAIModelStatus('モデルをダウンロード中... (117MB・初回のみ)');
       _embedder = await pipeline('feature-extraction', 'Xenova/paraphrase-multilingual-MiniLM-L12-v2', {
         progress_callback: p => {
@@ -2587,7 +2590,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const content = await page.getTextContent();
-        const raw = content.items.map(it => it.str).join('');
+        // hasEOL=true のアイテム後に改行を挿入して段組み・セル境界を保持
+        const raw = content.items.map(it => it.str + (it.hasEOL ? '\n' : '')).join('');
         raw.split(/[。\n；;]/).forEach(s => {
           const t = s.trim().replace(/\s+/g, ' ');
           if (t.length >= minLen) results.push({ text: t, page: i });
@@ -2776,7 +2780,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     async function getLlamaEngine() {
       if (_llamaEngine) return _llamaEngine;
       const create = window._webllmCreate;
-      if (!create) throw new Error('WebLLMがまだ読込中です。少し待ってから再試行してください。');
+      if (create === null) throw new Error('WebLLM(esm.run)の読込に失敗しました。CDN障害・CSP・ネットワーク制限をご確認ください。');
+      if (!create) throw new Error('WebLLMをまだ読込中です。少し待ってから再試行してください。');
       if (!await checkWebGPU()) throw new Error('WebGPU非対応ブラウザです。Chrome/Edge 113以降が必要です。');
       const wrap = document.getElementById('llama-dl-wrap');
       const bar  = document.getElementById('llama-dl-bar');
@@ -2847,7 +2852,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       progressEl.style.display = 'block';
       resultsEl.innerHTML = '';
 
-      const validPast = all.filter(c => Array.isArray(c.embedding) && c.embedding.length > 0);
+      const validPast = all.filter(c =>
+        Array.isArray(c.embedding) && c.embedding.length > 0 && c.preset === currentPreset
+      );
       const total = currentResults.length;
 
       // モードBでLlamaが未初期化の場合は事前チェック
