@@ -1,0 +1,317 @@
+{
+  "ticker": "AAPL",
+  "generated_at": "2026-04-30 17:10",
+  "summary": {
+    "rank": "weak_buy",
+    "score": 56,
+    "prob_up_5d": 0.627,
+    "prob_down_5pct": 0.05,
+    "expected_return": 2.02,
+    "risk_reward": 8.08,
+    "max_loss_est": -0.25,
+    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-04-30 16:57",
+    "prediction_date": "2026-04-30"
+  },
+  "agent_summary": {
+    "total_agents": 69,
+    "signal_distribution": {
+      "STRONG_BUY": 6,
+      "BUY": 17,
+      "WEAK BUY": 1,
+      "HOLD": 7,
+      "WATCH": 37,
+      "REDUCE": 1
+    },
+    "category_stats": {
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.7
+      },
+      "analysis": {
+        "count": 10,
+        "buy": 4,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 56.4
+      },
+      "trade_style": {
+        "count": 7,
+        "buy": 3,
+        "sell": 0,
+        "hold": 4,
+        "avg_score": 62.6
+      },
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.5
+      },
+      "sector": {
+        "count": 19,
+        "buy": 2,
+        "sell": 0,
+        "hold": 17,
+        "avg_score": 52.2
+      },
+      "prediction": {
+        "count": 10,
+        "buy": 5,
+        "sell": 1,
+        "hold": 4,
+        "avg_score": 59.2
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 3,
+        "sell": 0,
+        "hold": 4,
+        "avg_score": 55.3
+      }
+    }
+  },
+  "top_buys": [
+    {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 90.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 1/9位"
+    },
+    {
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 85.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:0.0"
+    },
+    {
+      "agent": "dividend_income",
+      "category": "trade_style",
+      "score": 83.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "高配当(38.0%) / 高利益率(35%) / ROE高(152%)"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
+    },
+    {
+      "agent": "japan_dividend",
+      "category": "sector",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "高配当38.0% / ROE良好152.0% / 利益率安定35.4%"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 79.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=79% / ROIC=24% / PER=34x"
+    },
+    {
+      "agent": "growth_invest",
+      "category": "trade_style",
+      "score": 74.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "売上高成長(16%) / EPS成長(18%) / ROIC優秀(24%)"
+    },
+    {
+      "agent": "fundamental",
+      "category": "analysis",
+      "score": 73.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ROIC優秀(24%) / 高利益率(35%)"
+    },
+    {
+      "agent": "supply_demand",
+      "category": "analysis",
+      "score": 71.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "MFI買い圧力(71) / OBV上昇（蓄積） / VWAP上方"
+    },
+    {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
+    }
+  ],
+  "top_risks": [
+    {
+      "agent": "swing_trade",
+      "category": "trade_style",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
+    },
+    {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率58% / P10=-0.5% P90=+0.7%"
+    },
+    {
+      "agent": "score_integration",
+      "category": "integration",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=56"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(45.0x) / ROE高(152%) / 配当利回り38.0%"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "short_term_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "1d/5d上昇確率=54% / RSI=63 / MACD正"
+    },
+    {
+      "agent": "bayesian",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "過去勝率=50% / 事後確率=55%"
+    }
+  ],
+  "fundamentals": {
+    "PER": 34.2,
+    "PBR": 45.0,
+    "ROE": 1.52,
+    "operating_margin": 0.354,
+    "revenue_growth": 0.157,
+    "eps_growth": 0.183
+  },
+  "historical_50y": {
+    "first_data_date": "1990-01-02",
+    "total_days": 9147,
+    "all_time_high": 285.92,
+    "current_close": 270.71,
+    "current_drawdown_pct": -5.3,
+    "max_drawdown_pct": -81.8,
+    "days_below_30pct_dd": 3292,
+    "pct_time_below_30pct": 36.0,
+    "current_pct_of_ath": 94.7
+  },
+  "backtest": {
+    "strategy": "lgbm_rule_v1_AAPL",
+    "period": "2000-01-01 〜 2024-12-31",
+    "cagr_pct": 1.12,
+    "total_return_pct": 32.18,
+    "max_drawdown_pct": -10.06,
+    "sharpe_ratio": 0.54,
+    "win_rate_pct": 58.7,
+    "profit_factor": 1.43,
+    "total_trades": 445,
+    "tested_at": "2026-04-29 09:55:10"
+  },
+  "news": [
+    {
+      "headline": "Apple's new CEO Ternus likely to get earnings spotlight as strong results loom",
+      "sentiment": 0.82,
+      "importance": 5,
+      "published_at": "Wed, 29 Apr 2026 10",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Market mayhem? Powell's last stand, Big Tech earnings in focus",
+      "sentiment": 0.49,
+      "importance": 5,
+      "published_at": "Wed, 29 Apr 2026 10",
+      "source": "yahoo"
+    },
+    {
+      "headline": "80 Seconds of Big Tech Earnings Will Decide Stock Market’s Fate",
+      "sentiment": -0.91,
+      "importance": 5,
+      "published_at": "Wed, 29 Apr 2026 09",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Tech Giants Set to Report Earnings Wednesday—And Big Stock Moves Are Likely",
+      "sentiment": 0.18,
+      "importance": 5,
+      "published_at": "Tue, 28 Apr 2026 21",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Big Tech: What this strategist is looking for on earnings calls",
+      "sentiment": -0.38,
+      "importance": 5,
+      "published_at": "Tue, 28 Apr 2026 20",
+      "source": "yahoo"
+    }
+  ],
+  "earnings_recent": [
+    {
+      "date": "2026-05-01",
+      "estimated_eps": 1.94491,
+      "actual_eps": null,
+      "surprise_pct": null
+    }
+  ]
+}

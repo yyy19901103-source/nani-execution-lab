@@ -1,0 +1,296 @@
+{
+  "ticker": "SOUN",
+  "generated_at": "2026-04-30 17:10",
+  "summary": {
+    "rank": "watch",
+    "score": 52,
+    "prob_up_5d": 0.627,
+    "prob_down_5pct": 0.05,
+    "expected_return": 2.02,
+    "risk_reward": 8.08,
+    "max_loss_est": -0.25,
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-04-30 16:57",
+    "prediction_date": "2026-04-30"
+  },
+  "agent_summary": {
+    "total_agents": 69,
+    "signal_distribution": {
+      "BUY": 10,
+      "HOLD": 11,
+      "WATCH": 48
+    },
+    "category_stats": {
+      "prediction": {
+        "count": 10,
+        "buy": 3,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 57.5
+      },
+      "analysis": {
+        "count": 10,
+        "buy": 1,
+        "sell": 0,
+        "hold": 9,
+        "avg_score": 50.7
+      },
+      "personal": {
+        "count": 10,
+        "buy": 3,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 54.0
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 2,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 52.1
+      },
+      "trade_style": {
+        "count": 7,
+        "buy": 1,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 50.6
+      },
+      "integration": {
+        "count": 6,
+        "buy": 0,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 48.5
+      },
+      "sector": {
+        "count": 19,
+        "buy": 0,
+        "sell": 0,
+        "hold": 19,
+        "avg_score": 50.0
+      }
+    }
+  },
+  "top_buys": [
+    {
+      "agent": "expected_value",
+      "category": "prediction",
+      "score": 68.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+    },
+    {
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 67.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 67.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "集中度ルール違反: 25%"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 62.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "高ボラ流動性リスク(5.2%)"
+    },
+    {
+      "agent": "downside_risk",
+      "category": "prediction",
+      "score": 61.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "3%下落確率=23% / 5%下落確率=38% / 10%下落確率=70%"
+    },
+    {
+      "agent": "trend_direction",
+      "category": "market_monitor",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "中期・長期MA上向き / 200MA下 / MACD正"
+    },
+    {
+      "agent": "emotion_bias",
+      "category": "personal",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "感情バイアスなし"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ストキャスOver売(0) / ストキャスKD売り"
+    }
+  ],
+  "top_risks": [
+    {
+      "agent": "short_term_prob",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "1d/5d上昇確率=59% / RSI=65 / MACD正"
+    },
+    {
+      "agent": "swing_trade",
+      "category": "trade_style",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
+    },
+    {
+      "agent": "supply_demand",
+      "category": "analysis",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MFI買い圧力(70)"
+    },
+    {
+      "agent": "sector_rotation",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "S&P500比 月次強い(+21.1%)"
+    },
+    {
+      "agent": "mid_term_prob",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=56% / MA20=+9.2% / 売上成長=0%"
+    },
+    {
+      "agent": "news_impact",
+      "category": "analysis",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ニュース中立"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
+    }
+  ],
+  "fundamentals": null,
+  "historical_50y": {
+    "first_data_date": "2024-04-29",
+    "total_days": 501,
+    "all_time_high": 24.23,
+    "current_close": 8.06,
+    "current_drawdown_pct": -66.7,
+    "max_drawdown_pct": -75.7,
+    "days_below_30pct_dd": 303,
+    "pct_time_below_30pct": 60.5,
+    "current_pct_of_ath": 33.3
+  },
+  "backtest": null,
+  "news": [
+    {
+      "headline": "Is SoundHound AI's Latest Acquisition a Game Changer for the Stock?",
+      "sentiment": 0.48,
+      "importance": 5,
+      "published_at": "Fri, 24 Apr 2026 14",
+      "source": "yahoo"
+    },
+    {
+      "headline": "SoundHound AI (SOUN) Expands Partnership With Casey’s Across 2,600 Locations",
+      "sentiment": 0.8,
+      "importance": 3,
+      "published_at": "Sat, 25 Apr 2026 21",
+      "source": "yahoo"
+    },
+    {
+      "headline": "SoundHound AI Stock Down 66% From Its High -- Is It Finally a Screaming Buy?",
+      "sentiment": -0.45,
+      "importance": 2,
+      "published_at": "Wed, 29 Apr 2026 02",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Why the \"Great Repricing\" of AI Software Stocks Is a Gift for Long-Term Investors",
+      "sentiment": 0.87,
+      "importance": 2,
+      "published_at": "Tue, 28 Apr 2026 21",
+      "source": "yahoo"
+    },
+    {
+      "headline": "SoundHound AI, Inc. (SOUN) Sees a More Significant Dip Than Broader Market: Some Facts to Know",
+      "sentiment": 0.27,
+      "importance": 2,
+      "published_at": "Tue, 28 Apr 2026 21",
+      "source": "yahoo"
+    }
+  ],
+  "earnings_recent": [
+    {
+      "date": "2026-05-08",
+      "estimated_eps": -0.035,
+      "actual_eps": null,
+      "surprise_pct": null
+    }
+  ]
+}

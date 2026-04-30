@@ -1,0 +1,273 @@
+{
+  "ticker": "TSLA",
+  "generated_at": "2026-04-30 17:10",
+  "summary": {
+    "rank": "watch",
+    "score": 51,
+    "prob_up_5d": 0.569,
+    "prob_down_5pct": 0.05,
+    "expected_return": 1.55,
+    "risk_reward": 6.2,
+    "max_loss_est": -0.25,
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-04-30 16:57",
+    "prediction_date": "2026-04-30"
+  },
+  "agent_summary": {
+    "total_agents": 69,
+    "signal_distribution": {
+      "BUY": 11,
+      "HOLD": 10,
+      "WATCH": 46,
+      "REDUCE": 1,
+      "SELL": 1
+    },
+    "category_stats": {
+      "analysis": {
+        "count": 10,
+        "buy": 3,
+        "sell": 1,
+        "hold": 6,
+        "avg_score": 49.1
+      },
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 58.5
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 1,
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 50.6
+      },
+      "prediction": {
+        "count": 10,
+        "buy": 2,
+        "sell": 0,
+        "hold": 8,
+        "avg_score": 54.6
+      },
+      "sector": {
+        "count": 19,
+        "buy": 0,
+        "sell": 0,
+        "hold": 19,
+        "avg_score": 50.3
+      },
+      "integration": {
+        "count": 6,
+        "buy": 0,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 49.0
+      },
+      "trade_style": {
+        "count": 7,
+        "buy": 0,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 49.0
+      }
+    }
+  },
+  "top_buys": [
+    {
+      "agent": "supply_demand",
+      "category": "analysis",
+      "score": 71.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "MFI買い圧力(64) / OBV上昇（蓄積） / VWAP上方"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "決算前ルール違反: 決算まで0日"
+    },
+    {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
+    },
+    {
+      "agent": "expected_value",
+      "category": "prediction",
+      "score": 68.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+    },
+    {
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "portfolio_fit",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 61.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=61% / ROIC=2% / PER=345x"
+    },
+    {
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 61.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル中立 / 強弱比=2.5:2.3"
+    },
+    {
+      "agent": "emotion_bias",
+      "category": "personal",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "感情バイアスなし"
+    }
+  ],
+  "top_risks": [
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
+    },
+    {
+      "agent": "mid_term_prob",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=56% / MA20=+1.4% / 売上成長=16%"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=56% / LGBM=57% / ルール=57% / ファンダ=54%"
+    },
+    {
+      "agent": "sector_ev",
+      "category": "sector",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "EVマージン改善中"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
+      "agent": "growth_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "売上高成長(16%) / ROIC低(2%)"
+    },
+    {
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ADXトレンド強(=25)"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
+    }
+  ],
+  "fundamentals": {
+    "PER": 345.2,
+    "PBR": 17.0,
+    "ROE": 0.049,
+    "operating_margin": 0.042,
+    "revenue_growth": 0.158,
+    "eps_growth": 0.083
+  },
+  "historical_50y": {
+    "first_data_date": "2010-06-29",
+    "total_days": 3982,
+    "all_time_high": 489.88,
+    "current_close": 376.02,
+    "current_drawdown_pct": -23.2,
+    "max_drawdown_pct": -73.6,
+    "days_below_30pct_dd": 1128,
+    "pct_time_below_30pct": 28.3,
+    "current_pct_of_ath": 76.8
+  },
+  "backtest": {
+    "strategy": "lgbm_rule_v1_TSLA",
+    "period": "2000-01-01 〜 2024-12-31",
+    "cagr_pct": 1.0,
+    "total_return_pct": 28.38,
+    "max_drawdown_pct": -6.46,
+    "sharpe_ratio": 0.53,
+    "win_rate_pct": 53.6,
+    "profit_factor": 1.38,
+    "total_trades": 280,
+    "tested_at": "2026-04-29 09:55:10"
+  },
+  "news": [],
+  "earnings_recent": []
+}

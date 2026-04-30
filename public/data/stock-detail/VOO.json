@@ -1,0 +1,309 @@
+{
+  "ticker": "VOO",
+  "generated_at": "2026-04-30 17:10",
+  "summary": {
+    "rank": "watch",
+    "score": 52,
+    "prob_up_5d": 0.529,
+    "prob_down_5pct": 0.05,
+    "expected_return": 1.24,
+    "risk_reward": 4.96,
+    "max_loss_est": -0.25,
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-04-30 16:57",
+    "prediction_date": "2026-04-30"
+  },
+  "agent_summary": {
+    "total_agents": 69,
+    "signal_distribution": {
+      "STRONG_BUY": 1,
+      "BUY": 14,
+      "HOLD": 10,
+      "WATCH": 41,
+      "REDUCE": 3
+    },
+    "category_stats": {
+      "trade_style": {
+        "count": 7,
+        "buy": 2,
+        "sell": 1,
+        "hold": 4,
+        "avg_score": 53.1
+      },
+      "analysis": {
+        "count": 10,
+        "buy": 3,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 51.9
+      },
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 58.5
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 3,
+        "sell": 1,
+        "hold": 3,
+        "avg_score": 54.3
+      },
+      "sector": {
+        "count": 19,
+        "buy": 1,
+        "sell": 0,
+        "hold": 18,
+        "avg_score": 50.9
+      },
+      "prediction": {
+        "count": 10,
+        "buy": 1,
+        "sell": 1,
+        "hold": 8,
+        "avg_score": 49.3
+      },
+      "integration": {
+        "count": 6,
+        "buy": 0,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 50.0
+      }
+    }
+  },
+  "top_buys": [
+    {
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 75.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "52週高値近傍(-0.5%) / ADXトレンド強(=43) / 200MA大幅上回り"
+    },
+    {
+      "agent": "supply_demand",
+      "category": "analysis",
+      "score": 71.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "MFI買い圧力(67) / OBV上昇（蓄積） / VWAP上方"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "決算前ルール違反: 決算まで0日"
+    },
+    {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
+    },
+    {
+      "agent": "dividend_income",
+      "category": "trade_style",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "高配当(119.0%)"
+    },
+    {
+      "agent": "japan_dividend",
+      "category": "sector",
+      "score": 68.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "高配当119.0%"
+    },
+    {
+      "agent": "market_regime",
+      "category": "market_monitor",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "強気レジーム"
+    },
+    {
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "portfolio_fit",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
+    }
+  ],
+  "top_risks": [
+    {
+      "agent": "swing_trade",
+      "category": "trade_style",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
+    },
+    {
+      "agent": "expected_value",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
+    },
+    {
+      "agent": "mid_term_prob",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=55% / MA20=+3.3% / 売上成長=0%"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=52% / LGBM=53% / ルール=53% / ファンダ=50%"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=53% / 20d=53% / 3m=52% / 期待値=+1.24%"
+    },
+    {
+      "agent": "score_integration",
+      "category": "integration",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=52"
+    }
+  ],
+  "fundamentals": {
+    "PER": 28.2,
+    "PBR": 1.7,
+    "ROE": null,
+    "operating_margin": null,
+    "revenue_growth": null,
+    "eps_growth": null
+  },
+  "historical_50y": {
+    "first_data_date": "2010-09-09",
+    "total_days": 3932,
+    "all_time_high": 657.5,
+    "current_close": 654.26,
+    "current_drawdown_pct": -0.5,
+    "max_drawdown_pct": -34.0,
+    "days_below_30pct_dd": 2,
+    "pct_time_below_30pct": 0.1,
+    "current_pct_of_ath": 99.5
+  },
+  "backtest": {
+    "strategy": "lgbm_rule_v1_VOO",
+    "period": "2000-01-01 〜 2024-12-31",
+    "cagr_pct": 0.4,
+    "total_return_pct": 10.62,
+    "max_drawdown_pct": -1.82,
+    "sharpe_ratio": 0.84,
+    "win_rate_pct": 63.8,
+    "profit_factor": 1.72,
+    "total_trades": 268,
+    "tested_at": "2026-04-29 09:55:10"
+  },
+  "news": [
+    {
+      "headline": "Suze Orman Says Put 50% in VOO. Here’s Why She’s Right",
+      "sentiment": -0.3,
+      "importance": 2,
+      "published_at": "Wed, 22 Apr 2026 19",
+      "source": "yahoo"
+    },
+    {
+      "headline": "ETF Fund Flows as of April 28, 2026",
+      "sentiment": null,
+      "importance": 2,
+      "published_at": "Tue, 28 Apr 2026 21",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Investors Worry About Mounting Debt — 7 S&P 500 Companies Owe Most",
+      "sentiment": -0.88,
+      "importance": 2,
+      "published_at": "Tue, 28 Apr 2026 11",
+      "source": "yahoo"
+    },
+    {
+      "headline": "4 Brilliant ETFs to Buy in April and Hold for the Next Decade",
+      "sentiment": 0.76,
+      "importance": 2,
+      "published_at": "Thu, 23 Apr 2026 15",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Buy These 3 Vanguard Index Funds and You Could Beat the S&P 500 Over the Next 5 Years",
+      "sentiment": 0.4,
+      "importance": 2,
+      "published_at": "Sat, 25 Apr 2026 14",
+      "source": "yahoo"
+    }
+  ],
+  "earnings_recent": []
+}

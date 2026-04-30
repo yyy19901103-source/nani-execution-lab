@@ -51,6 +51,40 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .r-pending { color: #555; }
 
   .disclaimer { font-size: 0.7rem; color: #444; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 1rem 1.25rem; margin-top: 2.5rem; line-height: 1.7; }
+
+  /* 銘柄詳細モーダル */
+  .ticker-link { cursor: pointer; color: #c8a96e; text-decoration: underline dotted; }
+  .ticker-link:hover { color: #e0c08a; }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; z-index: 1000; overflow-y: auto; }
+  .modal-backdrop.open { display: block; }
+  .modal-card { max-width: 920px; margin: 3rem auto; background: #0d0d0d; border: 1px solid #2a2418; padding: 2rem; color: #ddd; }
+  .modal-close { float: right; cursor: pointer; color: #888; font-size: 1.4rem; line-height: 1; }
+  .modal-close:hover { color: #fff; }
+  .modal-title { font-size: 1.3rem; color: #c8a96e; margin: 0 0 0.5rem; }
+  .modal-sub   { font-size: 0.75rem; color: #666; margin-bottom: 1.5rem; }
+  .detail-section { margin: 1.5rem 0; }
+  .detail-section h3 { font-size: 0.7rem; letter-spacing: 0.2em; color: #c8a96e; border-bottom: 1px solid rgba(200,169,110,0.2); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  .stat-cell { background: #141414; padding: 0.7rem; border: 1px solid #1f1f1f; }
+  .stat-label { font-size: 0.6rem; color: #888; letter-spacing: 0.15em; }
+  .stat-value { font-size: 1rem; color: #edede8; margin-top: 0.2rem; }
+  .agent-list { font-size: 0.75rem; }
+  .agent-item { padding: 0.5rem 0.7rem; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; gap: 0.5rem; }
+  .agent-score { display: inline-block; min-width: 32px; padding: 0.1rem 0.35rem; border-radius: 2px; font-weight: 600; text-align: center; }
+  .agent-buy  { background: rgba(80,200,80,0.15); color: #6ec86e; }
+  .agent-sell { background: rgba(200,80,80,0.15); color: #c86e6e; }
+  .agent-hold { background: rgba(150,150,150,0.1); color: #888; }
+  .agent-name { color: #aaa; min-width: 130px; font-size: 0.7rem; }
+  .agent-reason { color: #888; font-size: 0.7rem; flex: 1; }
+  .news-item { font-size: 0.75rem; padding: 0.4rem 0; border-bottom: 1px solid #1a1a1a; }
+  .news-meta { font-size: 0.65rem; color: #555; }
+  .verdict-box { background: #141414; padding: 1rem; border-left: 3px solid #c8a96e; font-size: 0.8rem; white-space: pre-wrap; line-height: 1.6; color: #ccc; }
+  .cat-bar-wrap { display: flex; gap: 0.5rem; align-items: center; font-size: 0.7rem; color: #aaa; padding: 0.3rem 0; }
+  .cat-bar { flex: 1; height: 8px; background: #1a1a1a; border-radius: 2px; overflow: hidden; display: flex; }
+  .cat-bar-buy  { background: #6ec86e; }
+  .cat-bar-hold { background: #555; }
+  .cat-bar-sell { background: #c86e6e; }
 </style>
 
 <div class="sp-wrap">
@@ -95,6 +129,64 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </thead>
     <tbody id="history-tbody"></tbody>
   </table>
+
+  <!-- 銘柄詳細モーダル -->
+  <div class="modal-backdrop" id="modal" role="dialog" aria-hidden="true">
+    <div class="modal-card" id="modal-card">
+      <span class="modal-close" id="modal-close">×</span>
+      <h2 class="modal-title" id="m-title">—</h2>
+      <p class="modal-sub" id="m-sub">—</p>
+
+      <div class="detail-section">
+        <h3>判定サマリー</h3>
+        <div class="grid3">
+          <div class="stat-cell"><div class="stat-label">RANK</div><div class="stat-value" id="m-rank">—</div></div>
+          <div class="stat-cell"><div class="stat-label">SCORE</div><div class="stat-value" id="m-score">—</div></div>
+          <div class="stat-cell"><div class="stat-label">RR</div><div class="stat-value" id="m-rr">—</div></div>
+          <div class="stat-cell"><div class="stat-label">5日上昇確率</div><div class="stat-value" id="m-pup">—</div></div>
+          <div class="stat-cell"><div class="stat-label">5%下落確率</div><div class="stat-value" id="m-pdown">—</div></div>
+          <div class="stat-cell"><div class="stat-label">期待値</div><div class="stat-value" id="m-er">—</div></div>
+        </div>
+        <div class="verdict-box" id="m-verdict" style="margin-top:0.8rem">—</div>
+      </div>
+
+      <div class="detail-section">
+        <h3>69エージェント シグナル分布</h3>
+        <div id="m-cats"></div>
+      </div>
+
+      <div class="detail-section">
+        <h3>過去50年DB分析（IPO以降）</h3>
+        <div class="grid3" id="m-hist"></div>
+      </div>
+
+      <div class="detail-section">
+        <h3>バックテスト的中率（ルールベース戦略）</h3>
+        <div class="grid3" id="m-bt"></div>
+        <p class="modal-sub" id="m-bt-period" style="margin-top:0.5rem">—</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>主要ファンダメンタル</h3>
+        <div class="grid3" id="m-fund"></div>
+      </div>
+
+      <div class="detail-section">
+        <h3>BUYシグナル根拠（上位）</h3>
+        <div class="agent-list" id="m-buys"></div>
+      </div>
+
+      <div class="detail-section">
+        <h3>リスク警告（上位）</h3>
+        <div class="agent-list" id="m-risks"></div>
+      </div>
+
+      <div class="detail-section">
+        <h3>関連ニュース（72h）</h3>
+        <div id="m-news"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- 免責事項 -->
   <div class="disclaimer">
@@ -193,7 +285,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const updAt = r.updated_at ? r.updated_at.slice(0,16) : '—';
       tbody.insertAdjacentHTML('beforeend', `
         <tr>
-          <td><strong style="color:#edede8">${r.ticker}</strong></td>
+          <td><span class="ticker-link" data-ticker="${r.ticker}"><strong>${r.ticker}</strong></span></td>
           <td><span class="badge ${badgeClass}">${r.rank_ja || r.rank || '—'}</span></td>
           <td>${r.score != null ? r.score : '—'}</td>
           <td>
@@ -204,6 +296,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <td style="color:#555;font-size:0.7rem">${updAt}</td>
         </tr>
       `);
+    });
+
+    // 銘柄リンクのクリックイベント
+    document.querySelectorAll('.ticker-link').forEach(el => {
+      el.addEventListener('click', () => openTickerDetail(el.dataset.ticker));
     });
 
     // 履歴テーブル
@@ -228,6 +325,147 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   load();
+
+  // ============ 銘柄詳細モーダル ============
+  const RANK_LABEL = {
+    strong_buy:'強い買い', buy:'買い', weak_buy:'やや買い',
+    watch:'様子見', neutral:'中立',
+    weak_sell:'やや売り', sell:'売り', strong_sell:'強い売り', avoid:'回避'
+  };
+
+  async function openTickerDetail(ticker) {
+    const modal = document.getElementById('modal');
+    modal.classList.add('open');
+    document.getElementById('m-title').textContent = `📊 ${ticker} — 判断根拠`;
+    document.getElementById('m-sub').textContent   = 'データ読み込み中…';
+
+    let d;
+    try {
+      const res = await fetch(`${BASE}/data/stock-detail/${ticker}.json`);
+      d = await res.json();
+    } catch(e) {
+      document.getElementById('m-sub').textContent = `読み込みエラー: ${e.message}`;
+      return;
+    }
+
+    const s = d.summary || {};
+    document.getElementById('m-sub').textContent = `更新: ${d.generated_at} / 予測日: ${s.prediction_date || '—'}`;
+    document.getElementById('m-rank').textContent  = RANK_LABEL[s.rank] || s.rank || '—';
+    document.getElementById('m-score').textContent = s.score != null ? s.score : '—';
+    document.getElementById('m-rr').textContent    = s.risk_reward != null ? s.risk_reward.toFixed(2) : '—';
+    document.getElementById('m-pup').textContent   = s.prob_up_5d != null ? (s.prob_up_5d*100).toFixed(0)+'%' : '—';
+    document.getElementById('m-pdown').textContent = s.prob_down_5pct != null ? (s.prob_down_5pct*100).toFixed(0)+'%' : '—';
+    document.getElementById('m-er').textContent    = s.expected_return != null ? (s.expected_return>0?'+':'')+s.expected_return.toFixed(2)+'%' : '—';
+    document.getElementById('m-verdict').textContent = s.verdict || '—';
+
+    // カテゴリ別シグナル
+    const catWrap = document.getElementById('m-cats');
+    catWrap.innerHTML = '';
+    const cats = (d.agent_summary && d.agent_summary.category_stats) || {};
+    Object.entries(cats).forEach(([cat, v]) => {
+      const tot = v.count;
+      const buyW  = (v.buy /tot*100).toFixed(0);
+      const sellW = (v.sell/tot*100).toFixed(0);
+      const holdW = 100 - buyW - sellW;
+      catWrap.insertAdjacentHTML('beforeend', `
+        <div class="cat-bar-wrap">
+          <span style="min-width:120px">${cat}</span>
+          <span class="cat-bar">
+            <span class="cat-bar-buy"  style="width:${buyW}%"></span>
+            <span class="cat-bar-hold" style="width:${holdW}%"></span>
+            <span class="cat-bar-sell" style="width:${sellW}%"></span>
+          </span>
+          <span style="min-width:120px;text-align:right">BUY ${v.buy} / HOLD ${v.hold} / SELL ${v.sell} (avg ${v.avg_score})</span>
+        </div>
+      `);
+    });
+
+    // 過去50年DD
+    const histWrap = document.getElementById('m-hist');
+    const h = d.historical_50y;
+    if (h) {
+      histWrap.innerHTML = `
+        <div class="stat-cell"><div class="stat-label">最大DD</div><div class="stat-value" style="color:#c86e6e">${h.max_drawdown_pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">現在DD</div><div class="stat-value" style="color:${h.current_drawdown_pct < -20 ? '#c86e6e' : '#c8a96e'}">${h.current_drawdown_pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">最高値からの位置</div><div class="stat-value">${h.current_pct_of_ath}%</div></div>
+        <div class="stat-cell"><div class="stat-label">DB期間</div><div class="stat-value" style="font-size:0.78rem">${h.first_data_date}〜 (${h.total_days}日)</div></div>
+        <div class="stat-cell"><div class="stat-label">-30%以下日数</div><div class="stat-value">${h.days_below_30pct_dd} / ${h.total_days}</div></div>
+        <div class="stat-cell"><div class="stat-label">-30%以下の比率</div><div class="stat-value">${h.pct_time_below_30pct}%</div></div>
+      `;
+    } else {
+      histWrap.innerHTML = '<div style="color:#666">過去価格データなし</div>';
+    }
+
+    // バックテスト
+    const btWrap = document.getElementById('m-bt');
+    const bt = d.backtest;
+    if (bt) {
+      btWrap.innerHTML = `
+        <div class="stat-cell"><div class="stat-label">勝率</div><div class="stat-value" style="color:${bt.win_rate_pct >= 55 ? '#6ec86e' : '#c8a96e'}">${bt.win_rate_pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">CAGR</div><div class="stat-value">${bt.cagr_pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">Sharpe</div><div class="stat-value">${bt.sharpe_ratio}</div></div>
+        <div class="stat-cell"><div class="stat-label">最大DD</div><div class="stat-value" style="color:#c86e6e">${bt.max_drawdown_pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">PF</div><div class="stat-value">${bt.profit_factor}</div></div>
+        <div class="stat-cell"><div class="stat-label">取引数</div><div class="stat-value">${bt.total_trades}</div></div>
+      `;
+      document.getElementById('m-bt-period').textContent = `${bt.strategy} / 期間: ${bt.period}`;
+    } else {
+      btWrap.innerHTML = '<div style="color:#666">バックテスト結果なし</div>';
+      document.getElementById('m-bt-period').textContent = '';
+    }
+
+    // ファンダメンタル
+    const fundWrap = document.getElementById('m-fund');
+    const f = d.fundamentals;
+    if (f) {
+      fundWrap.innerHTML = `
+        <div class="stat-cell"><div class="stat-label">PER</div><div class="stat-value">${f.PER ?? '—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">PBR</div><div class="stat-value">${f.PBR ?? '—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">ROE</div><div class="stat-value">${f.ROE != null ? (f.ROE*100).toFixed(1)+'%' : '—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">営業利益率</div><div class="stat-value">${f.operating_margin != null ? (f.operating_margin*100).toFixed(1)+'%' : '—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">売上成長</div><div class="stat-value">${f.revenue_growth != null ? (f.revenue_growth*100).toFixed(1)+'%' : '—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">EPS成長</div><div class="stat-value">${f.eps_growth != null ? (f.eps_growth*100).toFixed(1)+'%' : '—'}</div></div>
+      `;
+    } else {
+      fundWrap.innerHTML = '<div style="color:#666">ファンダデータなし</div>';
+    }
+
+    // BUYシグナル
+    const buysWrap = document.getElementById('m-buys');
+    buysWrap.innerHTML = (d.top_buys || []).map(a => `
+      <div class="agent-item">
+        <span class="agent-score agent-buy">${a.score}</span>
+        <span class="agent-name">${a.agent}</span>
+        <span class="agent-reason">${a.reason || '—'}</span>
+      </div>
+    `).join('') || '<div style="color:#666;padding:0.5rem">買いシグナル該当なし</div>';
+
+    // リスク
+    const risksWrap = document.getElementById('m-risks');
+    risksWrap.innerHTML = (d.top_risks || []).map(a => `
+      <div class="agent-item">
+        <span class="agent-score ${a.judgment === 'SELL' || a.judgment === 'STRONG_SELL' ? 'agent-sell' : 'agent-hold'}">${a.score}</span>
+        <span class="agent-name">${a.agent}</span>
+        <span class="agent-reason">${a.reason || '—'}</span>
+      </div>
+    `).join('') || '<div style="color:#666;padding:0.5rem">リスク警告なし</div>';
+
+    // ニュース
+    const newsWrap = document.getElementById('m-news');
+    newsWrap.innerHTML = (d.news || []).map(n => `
+      <div class="news-item">
+        <div>${n.headline}</div>
+        <div class="news-meta">${n.published_at?.slice(0,16) || ''} / ${n.source || ''} / 重要度${n.importance ?? '—'} / 感情${n.sentiment != null ? (n.sentiment > 0 ? '+' : '') + n.sentiment.toFixed(2) : '—'}</div>
+      </div>
+    `).join('') || '<div style="color:#666">関連ニュースなし</div>';
+  }
+
+  document.getElementById('modal-close').addEventListener('click', () => {
+    document.getElementById('modal').classList.remove('open');
+  });
+  document.getElementById('modal').addEventListener('click', (e) => {
+    if (e.target.id === 'modal') document.getElementById('modal').classList.remove('open');
+  });
 </script>
 
 </BaseLayout>

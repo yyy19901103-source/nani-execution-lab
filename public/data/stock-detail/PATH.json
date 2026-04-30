@@ -1,0 +1,289 @@
+{
+  "ticker": "PATH",
+  "generated_at": "2026-04-30 17:10",
+  "summary": {
+    "rank": "watch",
+    "score": 51,
+    "prob_up_5d": 0.569,
+    "prob_down_5pct": 0.05,
+    "expected_return": 1.55,
+    "risk_reward": 6.2,
+    "max_loss_est": -0.25,
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-04-30 16:57",
+    "prediction_date": "2026-04-30"
+  },
+  "agent_summary": {
+    "total_agents": 69,
+    "signal_distribution": {
+      "BUY": 9,
+      "HOLD": 8,
+      "WATCH": 50,
+      "REDUCE": 2
+    },
+    "category_stats": {
+      "market_monitor": {
+        "count": 7,
+        "buy": 3,
+        "sell": 1,
+        "hold": 3,
+        "avg_score": 52.9
+      },
+      "prediction": {
+        "count": 10,
+        "buy": 1,
+        "sell": 0,
+        "hold": 9,
+        "avg_score": 54.9
+      },
+      "personal": {
+        "count": 10,
+        "buy": 3,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 54.5
+      },
+      "analysis": {
+        "count": 10,
+        "buy": 1,
+        "sell": 0,
+        "hold": 9,
+        "avg_score": 50.3
+      },
+      "trade_style": {
+        "count": 7,
+        "buy": 1,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 48.3
+      },
+      "integration": {
+        "count": 6,
+        "buy": 0,
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 46.8
+      },
+      "sector": {
+        "count": 19,
+        "buy": 0,
+        "sell": 0,
+        "hold": 19,
+        "avg_score": 50.0
+      }
+    }
+  },
+  "top_buys": [
+    {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
+    },
+    {
+      "agent": "expected_value",
+      "category": "prediction",
+      "score": 68.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "集中度ルール違反: 20%"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 63.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル中立 / 強弱比=4.5:3.3"
+    },
+    {
+      "agent": "trend_direction",
+      "category": "market_monitor",
+      "score": 62.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "短期・中期MA上向き / 200MA下 / MACD正"
+    },
+    {
+      "agent": "market_sentiment",
+      "category": "market_monitor",
+      "score": 61.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "RSI中立ゾーン / 直近ニュース良好(0.41)"
+    },
+    {
+      "agent": "emotion_bias",
+      "category": "personal",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "感情バイアスなし"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ストキャスOver売(0) / ストキャスKD売り"
+    }
+  ],
+  "top_risks": [
+    {
+      "agent": "short_term_prob",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "1d/5d上昇確率=59% / RSI=52 / MACD正"
+    },
+    {
+      "agent": "news_impact",
+      "category": "analysis",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ニュース中立"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
+    },
+    {
+      "agent": "bayesian",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "downside_risk",
+      "category": "prediction",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "3%下落確率=32% / 5%下落確率=54% / 10%下落確率=70% / ⚠下落リスク高"
+    },
+    {
+      "agent": "swing_trade",
+      "category": "trade_style",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
+    }
+  ],
+  "fundamentals": null,
+  "historical_50y": {
+    "first_data_date": "2024-04-29",
+    "total_days": 501,
+    "all_time_high": 20.74,
+    "current_close": 10.56,
+    "current_drawdown_pct": -49.1,
+    "max_drawdown_pct": -54.8,
+    "days_below_30pct_dd": 411,
+    "pct_time_below_30pct": 82.0,
+    "current_pct_of_ath": 50.9
+  },
+  "backtest": null,
+  "news": [
+    {
+      "headline": "UiPath Advances AI-Driven Enterprise Operations with Databricks Partnership",
+      "sentiment": 0.61,
+      "importance": 3,
+      "published_at": "Mon, 27 Apr 2026 12",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Will Deeper Gemini Integrations Across Clouds and Partners Change UiPath's (PATH) Automation Narrative",
+      "sentiment": 0.59,
+      "importance": 2,
+      "published_at": "Tue, 28 Apr 2026 08",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Why UiPath (PATH) Dipped More Than Broader Market Today",
+      "sentiment": null,
+      "importance": 2,
+      "published_at": "Thu, 23 Apr 2026 21",
+      "source": "yahoo"
+    },
+    {
+      "headline": "UiPath vs. AppLovin: Which AI-driven Tech Stock is Worth Considering?",
+      "sentiment": 0.81,
+      "importance": 2,
+      "published_at": "Thu, 23 Apr 2026 17",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Is UiPath, Inc. (PATH) A Good Stock To Buy Now?",
+      "sentiment": 0.87,
+      "importance": 2,
+      "published_at": "Thu, 23 Apr 2026 17",
+      "source": "yahoo"
+    }
+  ],
+  "earnings_recent": [
+    {
+      "date": "2026-05-29",
+      "estimated_eps": 0.15874,
+      "actual_eps": null,
+      "surprise_pct": null
+    }
+  ]
+}
