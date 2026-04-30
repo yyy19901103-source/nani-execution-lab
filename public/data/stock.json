@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-30 16:05",
+  "generated_at": "2026-04-30 16:57",
   "accuracy": {
     "total": 0,
     "hit": 0,
     "miss": 0,
-    "pending": 16,
+    "pending": 19,
     "rate": null,
     "threshold": 0.55,
     "monthly": [
@@ -25,7 +25,17 @@
       "prob_up_5d": 0.627,
       "expected_return": 2.02,
       "risk_reward": 8.08,
-      "updated_at": "2026-04-30 16:04:51"
+      "updated_at": "2026-04-30 16:57:20"
+    },
+    {
+      "ticker": "JPM",
+      "rank": "weak_buy",
+      "rank_ja": "やや買い",
+      "score": 56,
+      "prob_up_5d": 0.569,
+      "expected_return": 1.55,
+      "risk_reward": 6.2,
+      "updated_at": "2026-04-30 16:57:25"
     },
     {
       "ticker": "GOOGL",
@@ -35,7 +45,7 @@
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:04:49"
+      "updated_at": "2026-04-30 16:57:19"
     },
     {
       "ticker": "META",
@@ -45,7 +55,7 @@
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:04:48"
+      "updated_at": "2026-04-30 16:57:17"
     },
     {
       "ticker": "NVDA",
@@ -55,17 +65,7 @@
       "prob_up_5d": 0.54,
       "expected_return": 1.32,
       "risk_reward": 1.08,
-      "updated_at": "2026-04-30 16:04:45"
-    },
-    {
-      "ticker": "LLY",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 54,
-      "prob_up_5d": 0.471,
-      "expected_return": 0.76,
-      "risk_reward": 3.04,
-      "updated_at": "2026-04-30 16:04:54"
+      "updated_at": "2026-04-30 16:57:14"
     },
     {
       "ticker": "MSFT",
@@ -75,27 +75,17 @@
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:04:46"
+      "updated_at": "2026-04-30 16:57:16"
     },
     {
-      "ticker": "AMD",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 53,
-      "prob_up_5d": 0.529,
-      "expected_return": 1.24,
-      "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:04:52"
-    },
-    {
-      "ticker": "QQQ",
+      "ticker": "AMZN",
       "rank": "watch",
       "rank_ja": "様子見",
       "score": 52,
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:04:57"
+      "updated_at": "2026-04-30 16:57:23"
     },
     {
       "ticker": "SOUN",
@@ -105,7 +95,7 @@
       "prob_up_5d": 0.627,
       "expected_return": 2.02,
       "risk_reward": 8.08,
-      "updated_at": "2026-04-30 16:04:40"
+      "updated_at": "2026-04-30 16:57:09"
     },
     {
       "ticker": "VOO",
@@ -115,7 +105,7 @@
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:04:55"
+      "updated_at": "2026-04-30 16:57:22"
     },
     {
       "ticker": "PATH",
@@ -125,7 +115,17 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-04-30 16:04:44"
+      "updated_at": "2026-04-30 16:57:13"
+    },
+    {
+      "ticker": "TSLA",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "expected_return": 1.55,
+      "risk_reward": 6.2,
+      "updated_at": "2026-04-30 16:57:26"
     },
     {
       "ticker": "AI",
@@ -135,12 +135,30 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-04-30 16:04:42"
+      "updated_at": "2026-04-30 16:57:11"
     }
   ],
   "history": [
     {
-      "ticker": "QQQ",
+      "ticker": "TSLA",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "date": "2026-04-30",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "JPM",
+      "rank": "weak_buy",
+      "score": 56,
+      "prob_up_5d": 0.569,
+      "date": "2026-04-30",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AMZN",
       "rank": "watch",
       "score": 52,
       "prob_up_5d": 0.529,
@@ -152,24 +170,6 @@
       "ticker": "VOO",
       "rank": "watch",
       "score": 52,
-      "prob_up_5d": 0.529,
-      "date": "2026-04-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "LLY",
-      "rank": "watch",
-      "score": 54,
-      "prob_up_5d": 0.471,
-      "date": "2026-04-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "AMD",
-      "rank": "watch",
-      "score": 53,
       "prob_up_5d": 0.529,
       "date": "2026-04-30",
       "actual_ret": null,
@@ -243,6 +243,33 @@
       "rank": "watch",
       "score": 52,
       "prob_up_5d": 0.627,
+      "date": "2026-04-30",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "QQQ",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.529,
+      "date": "2026-04-30",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "LLY",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d": 0.471,
+      "date": "2026-04-30",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AMD",
+      "rank": "watch",
+      "score": 53,
+      "prob_up_5d": 0.529,
       "date": "2026-04-30",
       "actual_ret": null,
       "result": "pending"
