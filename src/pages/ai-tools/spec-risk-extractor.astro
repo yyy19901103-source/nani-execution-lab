@@ -924,11 +924,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     } catch (e) { window._txPipeline = null; }
   </script>
   <!-- WebLLM: Llama 3.2 1B ブラウザ内推論（WebGPU必須・~700MB・モードB用） -->
+  <!-- バージョン固定 + esm.sh フォールバックで CDN 不安定を回避 -->
   <script type="module">
-    try {
-      const { CreateMLCEngine } = await import('https://esm.run/@mlc-ai/web-llm');
-      window._webllmCreate = CreateMLCEngine;
-    } catch (e) { window._webllmCreate = null; }
+    const WEBLLM_VER = '0.2.73';
+    const CDNS = [
+      `https://esm.run/@mlc-ai/web-llm@${WEBLLM_VER}`,
+      `https://esm.sh/@mlc-ai/web-llm@${WEBLLM_VER}`,
+    ];
+    let loaded = false;
+    for (const url of CDNS) {
+      try {
+        const { CreateMLCEngine } = await import(url);
+        window._webllmCreate = CreateMLCEngine;
+        loaded = true;
+        break;
+      } catch (_) {}
+    }
+    if (!loaded) window._webllmCreate = null;
   </script>
 
   <script>
@@ -2852,19 +2864,54 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return _llamaEngine;
     }
 
+    // ===== RAG+LLM 構造化出力パーサー =====
+    // LLM出力から「判定: X」と「デビクラ: Y」を抽出する
+    function parseRagOutput(text) {
+      const judgmentMatch = text.match(/判定[:：]\s*(対象外|要確認|対象)/);
+      const devicraMatch  = text.match(/デビクラ[:：]\s*(.+?)(?:\n|$)/s);
+      const judgment = judgmentMatch ? judgmentMatch[1] : null;
+      // デビクラ行が取れない場合は出力全体を使う（フォールバック）
+      const devicra  = devicraMatch
+        ? devicraMatch[1].trim()
+        : text.replace(/判定[:：][^\n]*/g, '').replace(/^[\s\n]+/, '').trim();
+      return { judgment, devicra };
+    }
+
+    // ===== RAG統合デビクラ生成（プロンプト再設計版） =====
     async function generateDevicra(specText, similarCases = []) {
       const engine = await getLlamaEngine();
-      const ctxParts = similarCases.slice(0, 2).map(c =>
-        `仕様例: ${c.specText}\nデビクラ例: ${c.devicraText}`
-      ).join('\n\n');
-      const sysMsg = 'あなたはETO製造業（一品一様製造）のデビクラ専門家です。デビクラとは「顧客に提示する懸念事項（Deviation & Clarification）」です。与えられた仕様文に対して、見積・設計・納期を狂わせる懸念事項を1〜2文で簡潔に日本語で述べてください。';
-      const userMsg = ctxParts
-        ? `【参考事例】\n${ctxParts}\n\n【新しい仕様文】「${specText}」\n\n【デビクラ（懸念事項）】`
-        : `【仕様文】「${specText}」\n\n【デビクラ（懸念事項）】`;
+
+      // コンテキスト: 上位3事例を類似度スコア付きで整形
+      const ctxBlock = similarCases.slice(0, 3).map((c, i) => {
+        const pct = Math.round((c.sim || 0) * 100);
+        return `[事例${i + 1}] 類似度${pct}%\n仕様文: ${c.specText}\nデビクラ: ${c.devicraText}`;
+      }).join('\n\n');
+
+      const sysMsg = [
+        'あなたはETO製造業（一品一様受注生産）のデビクラ専門家です。',
+        'デビクラ（Deviation & Clarification）とは、顧客仕様書に対してエンジニアが提示する懸念事項です。',
+        '以下のルールで回答してください：',
+        '1. 判定は「対象」「要確認」「対象外」のいずれか1つのみ。',
+        '   - 対象: コスト超過・納期遅延・設計変更リスクが明確に存在する',
+        '   - 要確認: リスクの可能性があり顧客への確認が必要',
+        '   - 対象外: 標準仕様の範囲内でリスクなし',
+        '2. 回答は必ず次の形式で出力する：',
+        '   判定: [対象/要確認/対象外]',
+        '   デビクラ: [懸念事項を1〜2文で記述]',
+        '3. 余計な説明・前置き・番号は不要。上記2行のみ出力する。',
+      ].join('\n');
+
+      const userMsg = ctxBlock
+        ? `【類似過去事例（参考）】\n${ctxBlock}\n\n【判定対象の仕様文】\n${specText}`
+        : `【判定対象の仕様文】\n${specText}`;
+
       const reply = await engine.chat.completions.create({
-        messages: [{ role:'system', content:sysMsg }, { role:'user', content:userMsg }],
-        temperature: 0.3,
-        max_tokens: 180,
+        messages: [
+          { role: 'system', content: sysMsg },
+          { role: 'user',   content: userMsg },
+        ],
+        temperature: 0.2,
+        max_tokens: 220,
       });
       return reply.choices[0].message.content.trim();
     }
@@ -2941,22 +2988,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           .sort((a, b) => b.sim - a.sim)
           .slice(0, 3);
 
-        let generated = null;
+        // モードB: RAG+Llama で判定+デビクラ文を構造化生成
+        let ragRaw = null;
+        let ragParsed = null;  // { judgment, devicra }
         if (modeB) {
-          // 過去事例あり → 類似事例をコンテキストとして生成 / なし → コンテキストなしで生成
-          progressTxt.textContent = `Llama生成中 ${i+1}/${total}...`;
-          try { generated = await generateDevicra(r.spec, matches); }
-          catch (err) { generated = '(生成エラー: ' + err.message + ')'; }
+          progressTxt.textContent = `RAG+Llama生成中 ${i+1}/${total}...`;
+          try {
+            ragRaw    = await generateDevicra(r.spec, matches);
+            ragParsed = parseRagOutput(ragRaw);
+          } catch (err) {
+            ragRaw    = '(生成エラー: ' + err.message + ')';
+            ragParsed = { judgment: null, devicra: ragRaw };
+          }
         }
 
-        rows.push({ candidate: r, matches, generated });
+        rows.push({ candidate: r, matches, ragParsed });
         await new Promise(rb => setTimeout(rb, 0));
       }
 
       progressEl.style.display = 'none';
 
       const visibleRows = rows.filter(row =>
-        row.matches.length > 0 || (modeB && row.generated)
+        row.matches.length > 0 || (modeB && row.ragParsed)
       );
 
       if (visibleRows.length === 0) {
@@ -2964,35 +3017,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         return;
       }
 
-      resultsEl.innerHTML = visibleRows.map(({ candidate: r, matches, generated }) => `
-        <div style="border:1px solid rgba(110,200,151,0.15);margin-bottom:0.75rem;background:#0a0a0c;">
-          <div style="padding:0.6rem 0.85rem;background:rgba(110,200,151,0.05);border-bottom:1px solid rgba(110,200,151,0.1);">
-            <span style="color:rgba(255,255,255,0.4);font-size:0.65rem;">行${r.rowNum} &nbsp;|&nbsp; </span>
-            <span style="color:#edede8;font-size:0.78rem;">${r.spec}</span>
+      // 判定バッジのスタイル（BM25判定と統一）
+      const judgmentStyle = {
+        '対象':   'background:rgba(220,80,80,0.18);color:#ff8888;',
+        '要確認': 'background:rgba(200,169,110,0.18);color:#c8a96e;',
+        '対象外': 'background:rgba(110,200,151,0.12);color:#6ec897;',
+      };
+
+      resultsEl.innerHTML = visibleRows.map(({ candidate: r, matches, ragParsed }) => {
+        const jStyle = ragParsed && ragParsed.judgment ? (judgmentStyle[ragParsed.judgment] || '') : '';
+        return `
+        <div style="border:1px solid rgba(110,200,151,0.15);margin-bottom:0.85rem;background:#0a0a0c;border-radius:3px;overflow:hidden;">
+          <!-- ヘッダー: BM25判定 × 仕様文 -->
+          <div style="padding:0.6rem 0.85rem;background:rgba(110,200,151,0.05);border-bottom:1px solid rgba(110,200,151,0.1);display:flex;align-items:flex-start;gap:0.6rem;flex-wrap:wrap;">
+            <span style="color:rgba(255,255,255,0.35);font-size:0.65rem;flex-shrink:0;margin-top:0.1rem;">行${r.rowNum}</span>
+            <span style="background:rgba(255,255,255,0.07);color:rgba(237,237,232,0.45);font-size:0.63rem;padding:0.1rem 0.4rem;border-radius:2px;flex-shrink:0;">BM25: ${r.level === 'high' ? '対象' : r.level === 'mid' ? '要確認' : '対象外'}</span>
+            <span style="color:#edede8;font-size:0.78rem;line-height:1.5;">${r.spec}</span>
           </div>
-          ${matches.map(m => `
-            <div style="padding:0.55rem 0.85rem;border-bottom:1px solid rgba(255,255,255,0.04);">
-              <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.3rem;flex-wrap:wrap;">
-                <span style="background:rgba(110,200,151,0.15);color:#6ec897;font-size:0.68rem;padding:0.1rem 0.45rem;border-radius:2px;">類似度 ${m.sim.toFixed(2)}</span>
-                <span style="color:rgba(255,255,255,0.35);font-size:0.65rem;">過去仕様文:</span>
-                <span style="color:rgba(237,237,232,0.7);font-size:0.73rem;">${m.specText}</span>
+          <!-- 類似過去事例 -->
+          ${matches.length > 0 ? matches.map((m, mi) => `
+            <div style="padding:0.5rem 0.85rem;border-bottom:1px solid rgba(255,255,255,0.04);background:${mi % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)'};">
+              <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.28rem;flex-wrap:wrap;">
+                <span style="background:rgba(110,200,151,0.15);color:#6ec897;font-size:0.66rem;padding:0.08rem 0.4rem;border-radius:2px;font-weight:600;">${Math.round(m.sim * 100)}%</span>
+                <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;">過去仕様文:</span>
+                <span style="color:rgba(237,237,232,0.65);font-size:0.72rem;">${m.specText}</span>
               </div>
-              <div style="display:flex;gap:0.5rem;align-items:flex-start;">
-                <span style="color:#c8a96e;font-size:0.65rem;flex-shrink:0;margin-top:0.1rem;">過去デビクラ:</span>
-                <span style="color:#c8a96e;font-size:0.76rem;font-weight:500;line-height:1.55;">${m.devicraText}</span>
+              <div style="display:flex;gap:0.45rem;align-items:flex-start;padding-left:0.2rem;">
+                <span style="color:#c8a96e;font-size:0.62rem;flex-shrink:0;margin-top:0.1rem;">└ 過去デビクラ:</span>
+                <span style="color:#c8a96e;font-size:0.74rem;font-weight:500;line-height:1.55;">${m.devicraText}</span>
               </div>
             </div>
-          `).join('')}
-          ${generated ? `
-            <div style="padding:0.6rem 0.85rem;background:rgba(200,169,110,0.04);border-top:1px dashed rgba(200,169,110,0.18);">
-              <div style="display:flex;gap:0.5rem;align-items:flex-start;">
-                <span style="background:rgba(200,169,110,0.15);color:#c8a96e;font-size:0.65rem;padding:0.1rem 0.45rem;border-radius:2px;flex-shrink:0;">🦙 Llama生成</span>
-                <span style="color:#c8a96e;font-size:0.77rem;font-weight:500;line-height:1.6;">${generated}</span>
+          `).join('') : '<div style="padding:0.45rem 0.85rem;color:rgba(255,255,255,0.25);font-size:0.7rem;">類似過去事例なし（閾値以上のマッチなし）</div>'}
+          <!-- RAG+Llama 判定結果 -->
+          ${ragParsed ? `
+            <div style="padding:0.65rem 0.85rem;background:rgba(200,169,110,0.05);border-top:1px dashed rgba(200,169,110,0.22);">
+              <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.35rem;flex-wrap:wrap;">
+                <span style="background:rgba(200,169,110,0.12);color:#c8a96e;font-size:0.63rem;padding:0.08rem 0.4rem;border-radius:2px;font-weight:600;">🦙 RAG+Llama</span>
+                ${ragParsed.judgment ? `<span style="font-size:0.7rem;padding:0.1rem 0.5rem;border-radius:2px;font-weight:600;${jStyle}">${ragParsed.judgment}</span>` : ''}
               </div>
+              <div style="color:#d4b97a;font-size:0.76rem;font-weight:500;line-height:1.6;padding-left:0.1rem;">${ragParsed.devicra || ''}</div>
             </div>
           ` : ''}
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
     });
 
     // ===== 起動時: 学習DB・モデル版・レビューupsert索引を読み込む =====
