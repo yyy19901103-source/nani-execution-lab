@@ -222,53 +222,65 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- ステップ2: シート選択・列マッピング -->
     <div id="mapping-section" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1rem;">
-      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.4rem;">STEP 2.5 — どの列を使うか確認する</p>
-      <p style="color:rgba(237,237,232,0.5);font-size:0.77rem;margin-bottom:1rem;">Excelのどの列が「仕様書の文章」か自動で推定しています。<b style="color:#edede8;">「要求仕様文の列」だけ</b>確認すれば OK です。他は自動入力です。</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.85rem;margin-bottom:0.85rem;">
+      <p class="section-label">STEP 2.5 — 列の確認</p>
+      <p style="color:rgba(237,237,232,0.55);font-size:0.77rem;margin-bottom:1rem;line-height:1.6;">
+        列が自動検出されています。<b style="color:#c8a96e;">「要求仕様文の列」だけ</b>確認すれば OK です。
+      </p>
+
+      <!-- ★ 必須設定 -->
+      <div class="mapping-required">
         <div>
-          <label class="field-label">シート</label>
+          <label class="field-label">シート選択</label>
           <select id="sheet-select" class="field-input"></select>
         </div>
         <div>
-          <label class="field-label">要求仕様文の列<span style="color:#c8a96e;">*</span></label>
+          <label class="field-label">要求仕様文の列 <span style="color:#c8a96e;font-weight:700;">★ 必須</span></label>
           <select id="col-spec" class="field-input"></select>
-          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">仕様/要求/Requirement系の列名を自動推定</div>
-        </div>
-        <div>
-          <label class="field-label">章番号 列（任意）</label>
-          <select id="col-chapter" class="field-input"></select>
-        </div>
-        <div>
-          <label class="field-label">カテゴリー 列（任意）</label>
-          <select id="col-category" class="field-input"></select>
-          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">安全・品質・性能・環境 等</div>
-        </div>
-        <div>
-          <label class="field-label">仕様種別 列（任意）</label>
-          <select id="col-type" class="field-input"></select>
-        </div>
-        <div>
-          <label class="field-label">所掌 列（任意）</label>
-          <select id="col-owner" class="field-input"></select>
-        </div>
-        <div>
-          <label class="field-label">Project名 列（任意）</label>
-          <select id="col-project" class="field-input"></select>
-        </div>
-        <div>
-          <label class="field-label">引合番号(RFQ) 列（任意）</label>
-          <select id="col-rfq" class="field-input"></select>
-        </div>
-        <div>
-          <label class="field-label">ドキュメント番号 列（任意）</label>
-          <select id="col-doc" class="field-input"></select>
-        </div>
-        <div>
-          <label class="field-label">E&amp;C&amp;LT デビクラ種類 列（任意）</label>
-          <select id="col-impact" class="field-input"></select>
-          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.25rem;">E=技術 / C=コスト / LT=リードタイム デビクラ</div>
+          <div style="color:rgba(255,255,255,0.3);font-size:0.66rem;margin-top:0.3rem;">仕様/要求/Requirement 系の列名を自動推定しています</div>
         </div>
       </div>
+
+      <!-- 任意設定（折りたたみ） -->
+      <details class="mapping-optional">
+        <summary>任意列の追加設定（章番号・カテゴリー・所掌・引合番号など）</summary>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0.75rem;margin-top:0.85rem;padding:0.85rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);">
+          <div>
+            <label class="field-label">章番号 列（任意）</label>
+            <select id="col-chapter" class="field-input"></select>
+          </div>
+          <div>
+            <label class="field-label">カテゴリー 列（任意）</label>
+            <select id="col-category" class="field-input"></select>
+            <div style="color:rgba(255,255,255,0.25);font-size:0.63rem;margin-top:0.2rem;">安全・品質・性能・環境 等</div>
+          </div>
+          <div>
+            <label class="field-label">仕様種別 列（任意）</label>
+            <select id="col-type" class="field-input"></select>
+          </div>
+          <div>
+            <label class="field-label">所掌 列（任意）</label>
+            <select id="col-owner" class="field-input"></select>
+          </div>
+          <div>
+            <label class="field-label">Project名 列（任意）</label>
+            <select id="col-project" class="field-input"></select>
+          </div>
+          <div>
+            <label class="field-label">引合番号(RFQ) 列（任意）</label>
+            <select id="col-rfq" class="field-input"></select>
+          </div>
+          <div>
+            <label class="field-label">ドキュメント番号 列（任意）</label>
+            <select id="col-doc" class="field-input"></select>
+          </div>
+          <div>
+            <label class="field-label">E&amp;C&amp;LT 種類 列（任意）</label>
+            <select id="col-impact" class="field-input"></select>
+            <div style="color:rgba(255,255,255,0.25);font-size:0.63rem;margin-top:0.2rem;">E=技術 / C=コスト / LT=リードタイム</div>
+          </div>
+        </div>
+      </details>
+
       <div id="preview-area" style="margin-top:0.85rem;"></div>
     </div>
 
@@ -442,209 +454,220 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <!-- 学習・モデル版管理パネル（レビュー1件以上で表示） -->
-    <div id="learning-panel" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-top:1.5rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
-        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;">▸ 学習・新旧モデル比較（第5〜第6段階）</p>
-        <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">レビューが累積するほど精度が上がります</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem;margin-bottom:1rem;">
-        <div class="metric-card">
-          <div class="metric-label">蓄積レビュー</div>
-          <div class="metric-value" id="stat-reviews">0</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">✓ 採用</div>
-          <div class="metric-value" id="stat-adopt" style="color:#6ec897;">0</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">✎ 修正採用</div>
-          <div class="metric-value" id="stat-modify" style="color:#c8a96e;">0</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">✗ 不採用</div>
-          <div class="metric-value" id="stat-reject" style="color:#ff8888;">0</div>
-        </div>
-        <div class="metric-card highlight">
-          <div class="metric-label">「対象」候補の人手承認率</div>
-          <div class="metric-value gold" id="stat-recall">0%</div>
-          <div style="color:rgba(255,255,255,0.35);font-size:0.6rem;margin-top:0.2rem;">「対象」判定中で採用/修正された割合</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <button id="btn-train" class="m-btn" style="font-size:0.74rem;padding:0.45rem 1.1rem;">🧠 学習実行 → 新モデル候補生成</button>
-        <button id="btn-clear-reviews" class="m-btn-ghost" style="font-size:0.7rem;padding:0.4rem 0.95rem;">レビュー履歴クリア</button>
-      </div>
-      <div id="compare-result"></div>
+    <!-- ===== 学習・精度向上パネル（タブ型UI）===== -->
+    <div id="learning-panel" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);margin-top:1.5rem;">
 
-      <!-- モデル共有（チーム配布用エクスポート/インポート） -->
-      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed rgba(200,169,110,0.18);">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
-          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin:0;">▸ モデル共有（チーム配布）</p>
-          <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">学習成果を別のPC/別の人と共有</span>
-        </div>
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
-          <button id="btn-export-model" class="m-btn-ghost" style="font-size:0.74rem;padding:0.45rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
-            📥 モデル書き出し（JSON）
-          </button>
-          <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.45rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
-            📤 モデル取り込み（JSON）
-            <input id="model-import-upload" type="file" accept=".json,application/json" style="display:none;">
-          </label>
-          <select id="model-import-mode" class="field-input" style="width:auto;font-size:0.72rem;padding:0.3rem 0.6rem;">
-            <option value="merge">マージ（既存と統合・推奨）</option>
-            <option value="replace">置換（既存を全削除）</option>
-          </select>
-          <span id="model-share-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;flex:1;min-width:200px;"></span>
-        </div>
-        <div style="margin-top:0.6rem;color:rgba(255,255,255,0.4);font-size:0.66rem;line-height:1.55;">
-          書き出し: 辞書バージョン全件 + レビュー履歴全件 + アクティブバージョン情報を含む単一JSONファイル。
-          取り込み: マージは upsert（同一candidateKeyは上書き）。置換は既存を完全削除して読み込む（取り消し不可）。
-        </div>
+      <!-- パネルヘッダー -->
+      <div style="padding:0.85rem 1.5rem 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+        <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.35em;">⚙ 精度向上・カスタマイズ</span>
+        <span style="color:rgba(255,255,255,0.3);font-size:0.68rem;">レビューを積み重ねると次回以降の精度が上がります</span>
       </div>
 
-      <!-- カスタム辞書語登録 -->
-      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed rgba(200,169,110,0.18);">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
-          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin:0;">▸ カスタム辞書語を追加（自社固有語）</p>
-          <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">ベース辞書に無い自社固有のデビクラ語を登録</span>
-        </div>
-        <!-- サンプル -->
-        <div style="background:#0a0a0c;border:1px dashed rgba(200,169,110,0.2);padding:0.65rem 0.85rem;margin-bottom:0.85rem;font-size:0.7rem;color:rgba(255,255,255,0.5);line-height:1.7;">
-          <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.2em;">SAMPLE FORMAT —</span><br/>
-          語: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">特注フランジ</code>&nbsp;
-          判断材料: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">特注品のため設計工数・調達リードタイム増</code>&nbsp;
-          判定: <code style="background:#111;padding:0.1em 0.35em;color:#6ec897;">対象</code>&nbsp;
-          E&amp;C&amp;LT: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">E,LT</code>
-        </div>
-        <!-- 入力フォーム -->
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:0.85rem;">
-          <div>
-            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">語（必須）</div>
-            <input id="cdict-word" type="text" placeholder="例: 特注フランジ" class="field-input" style="width:140px;font-size:0.76rem;padding:0.35rem 0.6rem;">
-          </div>
-          <div style="flex:1;min-width:200px;">
-            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">判断材料 why（推奨）</div>
-            <input id="cdict-why" type="text" placeholder="例: 特注品のため設計工数・調達LT増" class="field-input" style="width:100%;font-size:0.76rem;padding:0.35rem 0.6rem;">
-          </div>
-          <div>
-            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">判定</div>
-            <select id="cdict-level" class="field-input" style="font-size:0.74rem;padding:0.35rem 0.55rem;">
-              <option value="high">対象（高）</option>
-              <option value="mid">要確認（中）</option>
-              <option value="low">対象外（低）</option>
-            </select>
-          </div>
-          <div>
-            <div style="color:rgba(255,255,255,0.45);font-size:0.62rem;margin-bottom:0.25rem;">E&amp;C&amp;LT 種類</div>
-            <div style="display:flex;gap:0.4rem;align-items:center;height:2rem;">
-              <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-e" type="checkbox"> E技術</label>
-              <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-c" type="checkbox"> Cコスト</label>
-              <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-lt" type="checkbox"> LTリードタイム</label>
+      <!-- タブバー -->
+      <div class="tab-bar" style="padding:0 1.5rem;">
+        <button class="tab-btn active" data-target="tab-learn">📚 学習</button>
+        <button class="tab-btn" data-target="tab-dict">📖 辞書</button>
+        <button class="tab-btn" data-target="tab-ai">🧠 AI事例DB</button>
+      </div>
+
+      <div style="padding:1.25rem 1.5rem 1.5rem;">
+
+        <!-- ========== TAB 1: 学習 ========== -->
+        <div id="tab-learn" class="tab-panel active">
+          <!-- 統計カード -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:0.6rem;margin-bottom:1.1rem;">
+            <div class="metric-card">
+              <div class="metric-label">蓄積レビュー</div>
+              <div class="metric-value" id="stat-reviews">0</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">✓ 採用</div>
+              <div class="metric-value" id="stat-adopt" style="color:#6ec897;">0</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">✎ 修正採用</div>
+              <div class="metric-value" id="stat-modify" style="color:#c8a96e;">0</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">✗ 不採用</div>
+              <div class="metric-value" id="stat-reject" style="color:#ff8888;">0</div>
+            </div>
+            <div class="metric-card highlight">
+              <div class="metric-label">対象 承認率</div>
+              <div class="metric-value gold" id="stat-recall">0%</div>
+              <div style="color:rgba(255,255,255,0.3);font-size:0.58rem;margin-top:0.2rem;">採用+修正÷対象判定</div>
             </div>
           </div>
-          <button id="btn-cdict-add" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1rem;white-space:nowrap;">＋ 追加</button>
-        </div>
-        <!-- 登録済みカスタム語テーブル -->
-        <div id="cdict-table-wrap" style="display:none;">
-          <div style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.15em;margin-bottom:0.4rem;">▸ 登録済みカスタム語（<span id="cdict-count">0</span>語）</div>
-          <table style="width:100%;border-collapse:collapse;font-size:0.72rem;">
-            <thead>
-              <tr style="color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.1em;border-bottom:1px solid rgba(255,255,255,0.07);">
-                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">語</th>
-                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">判断材料</th>
-                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">判定</th>
-                <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">E&amp;C&amp;LT</th>
-                <th style="padding:0.35rem 0.5rem;font-weight:400;"></th>
-              </tr>
-            </thead>
-            <tbody id="cdict-tbody"></tbody>
-          </table>
-        </div>
-        <div id="cdict-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.4rem;min-height:1.2em;"></div>
-      </div>
 
-      <!-- ===== 過去事例DB（AI類似検索用）===== -->
-      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed rgba(110,200,151,0.25);">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
-          <p style="color:#6ec897;font-size:0.62rem;letter-spacing:0.35em;margin:0;">▸ 過去事例DB — AI類似検索用（仕様文 × デビクラ文ペア）</p>
-          <span id="past-cases-count-badge" style="color:rgba(110,200,151,0.6);font-size:0.7rem;">0件登録済み</span>
-        </div>
-        <div style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:0.85rem;line-height:1.6;">
-          過去仕様書PDF から仕様文を抽出し、そのときに出したデビクラ文とセットで登録します。<br/>
-          登録数が増えるほどAI類似検索の精度が上がります（初回モデルDL: 約117MB）。
-        </div>
-
-        <!-- ★ Excel一括取込（推奨）-->
-        <div style="background:rgba(110,200,151,0.04);border:1px solid rgba(110,200,151,0.2);padding:0.75rem;margin-bottom:0.75rem;border-radius:2px;">
-          <div style="color:rgba(110,200,151,0.7);font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.5rem;">★ Excel一括取込（推奨）</div>
-          <div style="color:rgba(255,255,255,0.35);font-size:0.68rem;margin-bottom:0.6rem;line-height:1.55;">
-            列「<code style="color:#6ec897;">要求仕様</code>」×「<code style="color:#6ec897;">devicra_text</code>」を自動検出して一括登録します。<br>
-            判定列（デビクラ）がある場合は「対象外」行を自動除外。<code>past_devicra_learning.xlsx</code> をそのまま投入できます。
+          <!-- 学習実行 -->
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+            <button id="btn-train" class="m-btn" style="font-size:0.74rem;padding:0.45rem 1.1rem;">🧠 学習実行 → 新モデル候補生成</button>
+            <button id="btn-clear-reviews" class="m-btn-ghost" style="font-size:0.7rem;padding:0.4rem 0.95rem;">レビュー履歴クリア</button>
           </div>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
-            <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.45);color:#6ec897;">
+          <div id="compare-result"></div>
+
+          <!-- モデル共有 -->
+          <div style="margin-top:1.1rem;padding-top:1rem;border-top:1px dashed rgba(200,169,110,0.15);">
+            <p style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;margin-bottom:0.65rem;">▸ モデル共有（チーム配布）</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:0.5rem;">
+              <button id="btn-export-model" class="m-btn-ghost" style="font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
+                📥 モデル書き出し（JSON）
+              </button>
+              <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
+                📤 モデル取り込み（JSON）
+                <input id="model-import-upload" type="file" accept=".json,application/json" style="display:none;">
+              </label>
+              <select id="model-import-mode" class="field-input" style="width:auto;font-size:0.72rem;padding:0.3rem 0.6rem;">
+                <option value="merge">マージ（既存と統合・推奨）</option>
+                <option value="replace">置換（既存を全削除）</option>
+              </select>
+            </div>
+            <span id="model-share-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;"></span>
+            <div style="margin-top:0.5rem;color:rgba(255,255,255,0.35);font-size:0.65rem;line-height:1.55;">
+              書き出し: 辞書バージョン + レビュー履歴 + アクティブバージョン情報を含む単一JSON。取り込み: マージはupsert / 置換は全削除（取り消し不可）。
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== TAB 2: 辞書 ========== -->
+        <div id="tab-dict" class="tab-panel">
+          <p style="color:rgba(255,255,255,0.38);font-size:0.72rem;margin-bottom:1rem;line-height:1.6;">
+            BM25ベース辞書にない自社固有のデビクラ語を追加します。追加後は即座に抽出に反映されます。
+          </p>
+          <!-- サンプル -->
+          <div style="background:#0a0a0c;border:1px dashed rgba(200,169,110,0.2);padding:0.65rem 0.85rem;margin-bottom:0.85rem;font-size:0.7rem;color:rgba(255,255,255,0.5);line-height:1.7;">
+            <span style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.2em;">SAMPLE FORMAT —</span><br/>
+            語: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">特注フランジ</code>&nbsp;
+            判断材料: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">特注品のため設計工数・調達リードタイム増</code>&nbsp;
+            判定: <code style="background:#111;padding:0.1em 0.35em;color:#6ec897;">対象</code>&nbsp;
+            E&amp;C&amp;LT: <code style="background:#111;padding:0.1em 0.35em;color:#edede8;">E,LT</code>
+          </div>
+          <!-- 入力フォーム -->
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:0.85rem;">
+            <div>
+              <div class="field-label">語（必須）</div>
+              <input id="cdict-word" type="text" placeholder="例: 特注フランジ" class="field-input" style="width:140px;font-size:0.76rem;padding:0.35rem 0.6rem;">
+            </div>
+            <div style="flex:1;min-width:200px;">
+              <div class="field-label">判断材料 why（推奨）</div>
+              <input id="cdict-why" type="text" placeholder="例: 特注品のため設計工数・調達LT増" class="field-input" style="width:100%;font-size:0.76rem;padding:0.35rem 0.6rem;">
+            </div>
+            <div>
+              <div class="field-label">判定</div>
+              <select id="cdict-level" class="field-input" style="font-size:0.74rem;padding:0.35rem 0.55rem;">
+                <option value="high">対象（高）</option>
+                <option value="mid">要確認（中）</option>
+                <option value="low">対象外（低）</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label">E&amp;C&amp;LT 種類</div>
+              <div style="display:flex;gap:0.4rem;align-items:center;height:2rem;">
+                <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-e" type="checkbox"> E技術</label>
+                <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-c" type="checkbox"> Cコスト</label>
+                <label style="display:flex;align-items:center;gap:0.25rem;color:rgba(255,255,255,0.7);font-size:0.74rem;cursor:pointer;"><input id="cdict-lt" type="checkbox"> LTリードタイム</label>
+              </div>
+            </div>
+            <button id="btn-cdict-add" class="m-btn" style="font-size:0.74rem;padding:0.4rem 1rem;white-space:nowrap;">＋ 追加</button>
+          </div>
+          <!-- 登録済みカスタム語テーブル -->
+          <div id="cdict-table-wrap" style="display:none;">
+            <div style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.15em;margin-bottom:0.4rem;">▸ 登録済みカスタム語（<span id="cdict-count">0</span>語）</div>
+            <table style="width:100%;border-collapse:collapse;font-size:0.72rem;">
+              <thead>
+                <tr style="color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.1em;border-bottom:1px solid rgba(255,255,255,0.07);">
+                  <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">語</th>
+                  <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">判断材料</th>
+                  <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">判定</th>
+                  <th style="text-align:left;padding:0.35rem 0.5rem;font-weight:400;">E&amp;C&amp;LT</th>
+                  <th style="padding:0.35rem 0.5rem;font-weight:400;"></th>
+                </tr>
+              </thead>
+              <tbody id="cdict-tbody"></tbody>
+            </table>
+          </div>
+          <div id="cdict-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.4rem;min-height:1.2em;"></div>
+        </div>
+
+        <!-- ========== TAB 3: AI事例DB ========== -->
+        <div id="tab-ai" class="tab-panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.85rem;">
+            <p style="color:rgba(255,255,255,0.55);font-size:0.72rem;line-height:1.6;margin:0;">
+              仕様文とデビクラ文のペアを登録すると、AI類似検索の精度が上がります。
+            </p>
+            <span id="past-cases-count-badge" style="background:rgba(110,200,151,0.12);color:#6ec897;font-size:0.7rem;padding:0.2rem 0.65rem;font-weight:600;">0件登録済み</span>
+          </div>
+
+          <!-- 方法① Excel一括（推奨・強調表示） -->
+          <div class="past-method" style="border-color:rgba(110,200,151,0.3);background:rgba(110,200,151,0.03);">
+            <div class="past-method-label" style="color:#6ec897;">① Excel一括取込（推奨）</div>
+            <div class="section-note" style="margin-bottom:0.65rem;">
+              列「<code style="color:#6ec897;background:#0a0a0c;padding:0.1em 0.3em;">要求仕様</code>」×「<code style="color:#6ec897;background:#0a0a0c;padding:0.1em 0.3em;">devicra_text</code>」を自動検出して一括登録。<br>
+              「対象外」行は自動除外。<code style="color:rgba(255,255,255,0.5);">past_devicra_learning.xlsx</code>をそのまま投入可能。
+            </div>
+            <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.45);color:#6ec897;display:inline-flex;align-items:center;gap:0.4rem;">
               📊 過去デビクラExcelを一括取込
               <input id="past-excel-upload" type="file" accept=".xlsx,.xls" style="display:none;">
             </label>
-          </div>
-          <!-- プログレスバー -->
-          <div id="past-excel-progress" style="display:none;margin-top:0.6rem;">
-            <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:5px;margin-bottom:0.3rem;">
-              <div id="past-excel-bar" style="background:#6ec897;height:5px;border-radius:9999px;transition:width 0.15s;width:0%;"></div>
+            <div id="past-excel-progress" style="display:none;margin-top:0.6rem;">
+              <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:5px;margin-bottom:0.3rem;">
+                <div id="past-excel-bar" style="background:#6ec897;height:5px;border-radius:9999px;transition:width 0.15s;width:0%;"></div>
+              </div>
+              <span id="past-excel-progress-text" style="color:rgba(255,255,255,0.4);font-size:0.68rem;"></span>
             </div>
-            <span id="past-excel-progress-text" style="color:rgba(255,255,255,0.4);font-size:0.68rem;"></span>
+            <div id="past-excel-status" style="font-size:0.7rem;margin-top:0.4rem;min-height:1.1em;"></div>
           </div>
-          <div id="past-excel-status" style="font-size:0.7rem;margin-top:0.4rem;min-height:1.1em;"></div>
-        </div>
 
-        <!-- PDF → 仕様文抽出 -->
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:0.85rem;">
-          <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.2);color:rgba(110,200,151,0.6);">
-            📄 過去仕様書PDFを読込
-            <input id="past-pdf-upload" type="file" accept=".pdf" style="display:none;">
-          </label>
-          <span id="past-pdf-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
-        </div>
-
-        <!-- 抽出された仕様文リスト（PDF読込後に表示） -->
-        <div id="past-pdf-sentences" style="display:none;max-height:320px;overflow-y:auto;border:1px solid rgba(255,255,255,0.07);margin-bottom:0.85rem;">
-          <div style="padding:0.5rem 0.75rem;color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.15em;border-bottom:1px solid rgba(255,255,255,0.05);position:sticky;top:0;background:#0f0f12;">
-            デビクラを出した仕様文の行に「出したデビクラ文」を入力して「登録」してください
-          </div>
-          <div id="past-pdf-list"></div>
-        </div>
-
-        <!-- 手動登録フォーム -->
-        <div style="background:#0a0a0c;border:1px dashed rgba(110,200,151,0.15);padding:0.75rem;margin-bottom:0.85rem;">
-          <div style="color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.15em;margin-bottom:0.5rem;">手動登録（仕様文を直接入力）</div>
-          <div style="display:flex;flex-direction:column;gap:0.4rem;">
-            <input id="past-spec-input" type="text" class="field-input" placeholder="仕様文（例: 公差±0.05mm以内の加工精度を要求する）" style="width:100%;font-size:0.76rem;padding:0.4rem 0.65rem;">
-            <div style="display:flex;gap:0.4rem;">
-              <textarea id="past-devicra-input" class="field-input" placeholder="デビクラ文（例: 寸法精度保証のための工程能力確認が必要。Cp値1.33以上の場合、設備投資が発生する可能性がある）" rows="2" style="flex:1;font-size:0.76rem;padding:0.4rem 0.65rem;resize:vertical;font-family:inherit;"></textarea>
-              <button id="btn-past-add" class="m-btn" style="font-size:0.74rem;padding:0.4rem 0.9rem;white-space:nowrap;align-self:flex-end;">＋ 登録</button>
+          <!-- 方法② PDF読込 -->
+          <div class="past-method">
+            <div class="past-method-label" style="color:rgba(110,200,151,0.6);">② 過去仕様書PDFから抽出</div>
+            <div class="section-note" style="margin-bottom:0.6rem;">PDFから仕様文を抽出し、デビクラ文を1件ずつ入力して登録します。</div>
+            <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.35rem 0.85rem;border-color:rgba(110,200,151,0.18);color:rgba(110,200,151,0.55);display:inline-flex;gap:0.4rem;">
+              📄 過去仕様書PDFを読込
+              <input id="past-pdf-upload" type="file" accept=".pdf" style="display:none;">
+            </label>
+            <span id="past-pdf-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-left:0.75rem;"></span>
+            <div id="past-pdf-sentences" style="display:none;max-height:300px;overflow-y:auto;border:1px solid rgba(255,255,255,0.07);margin-top:0.65rem;">
+              <div style="padding:0.5rem 0.75rem;color:rgba(255,255,255,0.35);font-size:0.62rem;letter-spacing:0.15em;border-bottom:1px solid rgba(255,255,255,0.05);position:sticky;top:0;background:#0f0f12;">
+                デビクラを出した仕様文の行に「出したデビクラ文」を入力して「登録」してください
+              </div>
+              <div id="past-pdf-list"></div>
             </div>
           </div>
-          <div id="past-add-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.35rem;min-height:1.1em;"></div>
-        </div>
 
-        <!-- 登録済み事例テーブル -->
-        <div id="past-cases-table-wrap" style="display:none;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
-            <span style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.15em;">▸ 登録済み過去事例</span>
-            <button id="btn-past-clear-all" class="m-btn-ghost" style="font-size:0.65rem;padding:0.2rem 0.6rem;border-color:rgba(255,100,100,0.2);color:#ff8888;">全件削除</button>
+          <!-- 方法③ 手動入力 -->
+          <div class="past-method">
+            <div class="past-method-label" style="color:rgba(255,255,255,0.4);">③ 手動登録（1件ずつ）</div>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;">
+              <input id="past-spec-input" type="text" class="field-input" placeholder="仕様文（例: 公差±0.05mm以内の加工精度を要求する）" style="width:100%;font-size:0.76rem;padding:0.4rem 0.65rem;">
+              <div style="display:flex;gap:0.4rem;">
+                <textarea id="past-devicra-input" class="field-input" placeholder="デビクラ文（例: 寸法精度保証のための工程能力確認が必要。Cp値1.33以上の場合、設備投資が発生する可能性がある）" rows="2" style="flex:1;font-size:0.76rem;padding:0.4rem 0.65rem;resize:vertical;font-family:inherit;"></textarea>
+                <button id="btn-past-add" class="m-btn" style="font-size:0.74rem;padding:0.4rem 0.9rem;white-space:nowrap;align-self:flex-end;">＋ 登録</button>
+              </div>
+            </div>
+            <div id="past-add-status" style="color:rgba(255,255,255,0.5);font-size:0.7rem;margin-top:0.35rem;min-height:1.1em;"></div>
           </div>
-          <div id="past-cases-list" style="max-height:220px;overflow-y:auto;border:1px solid rgba(255,255,255,0.06);"></div>
+
+          <!-- 登録済み事例リスト -->
+          <div id="past-cases-table-wrap" style="display:none;margin-top:0.75rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+              <span style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.15em;">▸ 登録済み過去事例</span>
+              <button id="btn-past-clear-all" class="m-btn-ghost" style="font-size:0.65rem;padding:0.2rem 0.6rem;border-color:rgba(255,100,100,0.2);color:#ff8888;">全件削除</button>
+            </div>
+            <div id="past-cases-list" style="max-height:220px;overflow-y:auto;border:1px solid rgba(255,255,255,0.06);"></div>
+          </div>
+
+          <!-- Embeddingモデル状態 -->
+          <div style="margin-top:1rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;padding-top:0.85rem;border-top:1px dashed rgba(110,200,151,0.15);">
+            <button id="btn-ai-model-init" class="m-btn-ghost" style="font-size:0.72rem;padding:0.35rem 0.9rem;border-color:rgba(110,200,151,0.3);color:#6ec897;">
+              🧠 Embeddingモデル読込（117MB・初回のみ）
+            </button>
+            <span id="ai-model-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
+          </div>
         </div>
 
-        <!-- AIモデル状態 -->
-        <div style="margin-top:0.75rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
-          <button id="btn-ai-model-init" class="m-btn-ghost" style="font-size:0.72rem;padding:0.35rem 0.9rem;border-color:rgba(110,200,151,0.3);color:#6ec897;">
-            🧠 Embeddingモデル読込（117MB・初回のみ）
-          </button>
-          <span id="ai-model-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
-        </div>
-      </div>
-    </div>
+      </div><!-- /padding wrapper -->
+    </div><!-- /learning-panel -->
 
     <!-- 操作ログ -->
     <details style="margin-top:1.25rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);">
@@ -932,6 +955,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     .adv-details summary::-webkit-details-marker { display:none; }
     .adv-details summary::before { content:'▸ '; }
     details[open].adv-details summary::before { content:'▾ '; }
+    /* ===== タブ UI（learning-panel） ===== */
+    .tab-bar { display:flex;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:1.25rem;gap:0; }
+    .tab-btn { background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,0.42);cursor:pointer;font-family:inherit;font-size:0.78rem;letter-spacing:0.06em;padding:0.7rem 1.35rem;transition:all 0.15s;white-space:nowrap;margin-bottom:-1px; }
+    .tab-btn:hover { color:rgba(255,255,255,0.75); }
+    .tab-btn.active { border-bottom-color:#c8a96e;color:#c8a96e;font-weight:600; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+    /* ===== 列マッピング: 必須ブロック ===== */
+    .mapping-required { background:rgba(200,169,110,0.05);border:1px solid rgba(200,169,110,0.28);padding:1rem 1.25rem;margin-bottom:0.85rem;display:grid;grid-template-columns:1fr 2fr;gap:1rem; }
+    @media(max-width:600px){ .mapping-required { grid-template-columns:1fr; } }
+    .mapping-optional { margin-bottom:0.75rem; }
+    .mapping-optional summary { cursor:pointer;color:rgba(255,255,255,0.42);font-size:0.72rem;letter-spacing:0.08em;padding:0.5rem 0;outline:none;list-style:none;user-select:none; }
+    .mapping-optional summary::-webkit-details-marker { display:none; }
+    .mapping-optional summary::before { content:'▸ '; color:rgba(255,255,255,0.3); }
+    details[open].mapping-optional summary::before { content:'▾ '; }
+    /* ===== セクションヘッダー ===== */
+    .section-label { color:#c8a96e;font-size:0.6rem;letter-spacing:0.35em;margin-bottom:0.35rem; }
+    .section-note { color:rgba(255,255,255,0.38);font-size:0.7rem;line-height:1.6; }
+    /* ===== 過去事例DB 入力方法 ===== */
+    .past-method { border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1rem;margin-bottom:0.6rem;background:#0a0a0c; }
+    .past-method-label { font-size:0.62rem;letter-spacing:0.18em;margin-bottom:0.5rem;font-weight:600; }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -3174,6 +3218,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           ` : ''}
         </div>`;
       }).join('');
+    });
+
+    // ===== タブUI切替（learning-panel） =====
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(target)?.classList.add('active');
+      });
     });
 
     // ===== 起動時: 学習DB・モデル版・レビューupsert索引を読み込む =====
