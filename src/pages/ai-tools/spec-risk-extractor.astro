@@ -574,9 +574,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           登録数が増えるほどAI類似検索の精度が上がります（初回モデルDL: 約117MB）。
         </div>
 
+        <!-- ★ Excel一括取込（推奨）-->
+        <div style="background:rgba(110,200,151,0.04);border:1px solid rgba(110,200,151,0.2);padding:0.75rem;margin-bottom:0.75rem;border-radius:2px;">
+          <div style="color:rgba(110,200,151,0.7);font-size:0.62rem;letter-spacing:0.2em;margin-bottom:0.5rem;">★ Excel一括取込（推奨）</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:0.68rem;margin-bottom:0.6rem;line-height:1.55;">
+            列「<code style="color:#6ec897;">要求仕様</code>」×「<code style="color:#6ec897;">devicra_text</code>」を自動検出して一括登録します。<br>
+            判定列（デビクラ）がある場合は「対象外」行を自動除外。<code>past_devicra_learning.xlsx</code> をそのまま投入できます。
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+            <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.45);color:#6ec897;">
+              📊 過去デビクラExcelを一括取込
+              <input id="past-excel-upload" type="file" accept=".xlsx,.xls" style="display:none;">
+            </label>
+          </div>
+          <!-- プログレスバー -->
+          <div id="past-excel-progress" style="display:none;margin-top:0.6rem;">
+            <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:5px;margin-bottom:0.3rem;">
+              <div id="past-excel-bar" style="background:#6ec897;height:5px;border-radius:9999px;transition:width 0.15s;width:0%;"></div>
+            </div>
+            <span id="past-excel-progress-text" style="color:rgba(255,255,255,0.4);font-size:0.68rem;"></span>
+          </div>
+          <div id="past-excel-status" style="font-size:0.7rem;margin-top:0.4rem;min-height:1.1em;"></div>
+        </div>
+
         <!-- PDF → 仕様文抽出 -->
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:0.85rem;">
-          <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.35);color:#6ec897;">
+          <label class="m-btn-ghost" style="cursor:pointer;font-size:0.74rem;padding:0.4rem 1rem;border-color:rgba(110,200,151,0.2);color:rgba(110,200,151,0.6);">
             📄 過去仕様書PDFを読込
             <input id="past-pdf-upload" type="file" accept=".pdf" style="display:none;">
           </label>
@@ -2786,6 +2809,97 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const all = await dbGetAll('pastCases');
       for (const c of all) await deletePastCase(c.id);
       await refreshPastCasesUI();
+    });
+
+    // ===== 過去事例DB Excel一括取込 =====
+    document.getElementById('past-excel-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      e.target.value = '';
+      if (!file) return;
+
+      const statusEl  = document.getElementById('past-excel-status');
+      const progressEl = document.getElementById('past-excel-progress');
+      const bar       = document.getElementById('past-excel-bar');
+      const progressTxt = document.getElementById('past-excel-progress-text');
+
+      const setStatus = (msg, color) => {
+        statusEl.textContent = msg;
+        statusEl.style.color = color || 'rgba(255,255,255,0.5)';
+      };
+
+      setStatus('Excelを読込中...', '#c8a96e');
+      try {
+        // Excel読込
+        const buf = await file.arrayBuffer();
+        const wb  = XLSX.read(buf, { type: 'array' });
+        const sheetName = wb.SheetNames[0];
+        const ws  = wb.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+        if (rows.length === 0) throw new Error('シートに行がありません');
+
+        // 列自動検出（学習取込と同じパターン）
+        const cols = Object.keys(rows[0]);
+        const lc   = cols.map(c => String(c).toLowerCase());
+        const find = (kws) => {
+          for (const kw of kws) {
+            const idx = lc.findIndex(c => c.includes(kw.toLowerCase()));
+            if (idx >= 0) return cols[idx];
+          }
+          return '';
+        };
+        // 仕様文列
+        const specCol    = find(['要求仕様', '仕様文', '要求事項', 'requirement', 'spec_text', 'spec']);
+        // デビクラ文列（判定ラベルではなく実際の文）
+        const devicraCol = find(['devicra_text', 'デビクラ文', '懸念事項', 'clarification', 'deviation_text']);
+        // 判定列（対象外フィルタ用・任意）
+        const judgmentCol = find(['デビクラ', '判定', '正解', 'judgment']);
+
+        if (!specCol)    throw new Error('仕様文の列が見つかりません（要求仕様/仕様文/spec）');
+        if (!devicraCol) throw new Error('デビクラ文の列が見つかりません（devicra_text/デビクラ文）');
+
+        // 有効行フィルタ
+        const validRows = rows.filter(r => {
+          const spec    = String(r[specCol]    || '').trim();
+          const devicra = String(r[devicraCol] || '').trim();
+          if (!spec || !devicra) return false;
+          // 判定列があれば「対象外」を除外（RAGに不要なノイズを入れない）
+          if (judgmentCol) {
+            const j = String(r[judgmentCol] || '').trim();
+            if (j === '対象外') return false;
+          }
+          return true;
+        });
+
+        if (validRows.length === 0)
+          throw new Error('登録できる行がありません（仕様文＋デビクラ文が両方必要）');
+
+        // Embeddingモデルをウォームアップ（初回DLをここで実行）
+        setStatus(`Embeddingモデル初期化中...（初回117MB）`, '#c8a96e');
+        await getEmbedder();
+
+        // 一括登録ループ
+        progressEl.style.display = 'block';
+        bar.style.width = '0%';
+        let added = 0;
+        for (let i = 0; i < validRows.length; i++) {
+          const r         = validRows[i];
+          const specText  = String(r[specCol]    || '').trim();
+          const devText   = String(r[devicraCol] || '').trim();
+          bar.style.width = `${Math.round((i + 1) / validRows.length * 100)}%`;
+          progressTxt.textContent = `Embedding生成中 ${i + 1} / ${validRows.length} 件`;
+          await addPastCase(specText, devText);
+          added++;
+          await new Promise(rb => setTimeout(rb, 0)); // UI更新タイミングを確保
+        }
+
+        progressEl.style.display = 'none';
+        setStatus(`✓ ${added}件を登録しました（対象外は除外済み）`, '#6ec897');
+        await refreshPastCasesUI();
+
+      } catch (err) {
+        progressEl.style.display = 'none';
+        setStatus('❌ ' + err.message, '#ff8888');
+      }
     });
 
     // Embeddingモデル手動初期化ボタン
