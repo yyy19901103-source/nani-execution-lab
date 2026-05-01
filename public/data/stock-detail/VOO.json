@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -245,9 +245,11 @@
     "revenue_growth": null,
     "eps_growth": null
   },
-  "historical_50y": {
+  "historical": {
     "first_data_date": "2010-09-09",
     "total_days": 3934,
+    "approx_years": 15.6,
+    "data_span_label": "IPO以降 約15.6年（2010-09-09〜）",
     "all_time_high": 660.58,
     "current_close": 660.58,
     "current_drawdown_pct": 0.0,

@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -245,9 +245,11 @@
     "revenue_growth": 0.136,
     "eps_growth": 0.05
   },
-  "historical_50y": {
+  "historical": {
     "first_data_date": "1997-05-15",
     "total_days": 7285,
+    "approx_years": 28.9,
+    "data_span_label": "IPO以降 約28.9年（1997-05-15〜）",
     "all_time_high": 265.06,
     "current_close": 265.06,
     "current_drawdown_pct": 0.0,

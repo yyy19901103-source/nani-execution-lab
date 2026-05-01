@@ -156,7 +156,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
 
       <div class="detail-section">
-        <h3>過去50年DB分析（IPO以降）</h3>
+        <h3>過去ドローダウン分析（DB保有期間全体）</h3>
+        <p class="modal-sub" id="m-hist-span">—</p>
         <div class="grid3" id="m-hist"></div>
       </div>
 
@@ -380,19 +381,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       `);
     });
 
-    // 過去50年DD
+    // 過去DD分析
     const histWrap = document.getElementById('m-hist');
-    const h = d.historical_50y;
+    const histSpan = document.getElementById('m-hist-span');
+    const h = d.historical || d.historical_50y; // 互換性
     if (h) {
+      histSpan.textContent = h.data_span_label || `${h.first_data_date}〜 (${h.total_days}日 = 約${(h.total_days/252).toFixed(1)}年)`;
       histWrap.innerHTML = `
         <div class="stat-cell"><div class="stat-label">最大DD</div><div class="stat-value" style="color:#c86e6e">${h.max_drawdown_pct}%</div></div>
         <div class="stat-cell"><div class="stat-label">現在DD</div><div class="stat-value" style="color:${h.current_drawdown_pct < -20 ? '#c86e6e' : '#c8a96e'}">${h.current_drawdown_pct}%</div></div>
         <div class="stat-cell"><div class="stat-label">最高値からの位置</div><div class="stat-value">${h.current_pct_of_ath}%</div></div>
-        <div class="stat-cell"><div class="stat-label">DB期間</div><div class="stat-value" style="font-size:0.78rem">${h.first_data_date}〜 (${h.total_days}日)</div></div>
         <div class="stat-cell"><div class="stat-label">-30%以下日数</div><div class="stat-value">${h.days_below_30pct_dd} / ${h.total_days}</div></div>
         <div class="stat-cell"><div class="stat-label">-30%以下の比率</div><div class="stat-value">${h.pct_time_below_30pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">対象期間</div><div class="stat-value" style="font-size:0.85rem">約${h.approx_years || (h.total_days/252).toFixed(1)}年</div></div>
       `;
     } else {
+      histSpan.textContent = '';
       histWrap.innerHTML = '<div style="color:#666">過去価格データなし</div>';
     }
 

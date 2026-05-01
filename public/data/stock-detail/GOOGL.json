@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 56,
@@ -245,9 +245,11 @@
     "revenue_growth": 0.18,
     "eps_growth": 0.311
   },
-  "historical_50y": {
+  "historical": {
     "first_data_date": "2004-08-19",
     "total_days": 5459,
+    "approx_years": 21.7,
+    "data_span_label": "IPO以降 約21.7年（2004-08-19〜）",
     "all_time_high": 384.8,
     "current_close": 384.8,
     "current_drawdown_pct": 0.0,

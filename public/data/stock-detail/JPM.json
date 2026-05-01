@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 55,
@@ -245,9 +245,11 @@
     "revenue_growth": 0.127,
     "eps_growth": 0.172
   },
-  "historical_50y": {
+  "historical": {
     "first_data_date": "1990-01-02",
     "total_days": 9149,
+    "approx_years": 36.3,
+    "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
     "all_time_high": 332.91,
     "current_close": 313.23,
     "current_drawdown_pct": -5.9,

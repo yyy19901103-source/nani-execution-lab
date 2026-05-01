@@ -1,6 +1,6 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 49,
@@ -205,9 +205,11 @@
     }
   ],
   "fundamentals": null,
-  "historical_50y": {
+  "historical": {
     "first_data_date": "2024-04-29",
     "total_days": 501,
+    "approx_years": 2.0,
+    "data_span_label": "IPO以降 約2.0年（2024-04-29〜）",
     "all_time_high": 42.94,
     "current_close": 8.97,
     "current_drawdown_pct": -79.1,

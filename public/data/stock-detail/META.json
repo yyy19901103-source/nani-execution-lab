@@ -1,6 +1,6 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -246,9 +246,11 @@
     "revenue_growth": 0.238,
     "eps_growth": 0.107
   },
-  "historical_50y": {
+  "historical": {
     "first_data_date": "2012-05-18",
     "total_days": 3507,
+    "approx_years": 13.9,
+    "data_span_label": "IPO以降 約13.9年（2012-05-18〜）",
     "all_time_high": 788.15,
     "current_close": 611.91,
     "current_drawdown_pct": -22.4,

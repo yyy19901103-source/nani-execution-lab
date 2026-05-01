@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 56,
@@ -245,9 +245,11 @@
     "revenue_growth": 0.732,
     "eps_growth": 0.956
   },
-  "historical_50y": {
+  "historical": {
     "first_data_date": "1999-01-22",
     "total_days": 6860,
+    "approx_years": 27.2,
+    "data_span_label": "IPO以降 約27.2年（1999-01-22〜）",
     "all_time_high": 216.61,
     "current_close": 199.57,
     "current_drawdown_pct": -7.9,

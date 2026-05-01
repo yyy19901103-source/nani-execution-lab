@@ -1,6 +1,6 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-05-01 09:21",
+  "generated_at": "2026-05-01 09:27",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -245,9 +245,11 @@
     "revenue_growth": 0.158,
     "eps_growth": 0.083
   },
-  "historical_50y": {
+  "historical": {
     "first_data_date": "2010-06-29",
     "total_days": 3984,
+    "approx_years": 15.8,
+    "data_span_label": "IPO以降 約15.8年（2010-06-29〜）",
     "all_time_high": 489.88,
     "current_close": 381.63,
     "current_drawdown_pct": -22.1,
