@@ -1,28 +1,33 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-01 09:58",
+  "generated_at": "2026-05-02 08:18",
   "summary": {
-    "rank": "weak_buy",
-    "score": 55,
-    "prob_up_5d": 0.569,
-    "prob_down_5pct": 0.05,
-    "expected_return": 1.55,
-    "risk_reward": 6.2,
-    "max_loss_est": -0.25,
-    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:58",
-    "prediction_date": "2026-05-01"
+    "rank": "watch",
+    "score": 56,
+    "prob_up_5d": 0.537,
+    "prob_down_5pct": 0.184,
+    "expected_return": 1.3,
+    "risk_reward": 1.41,
+    "max_loss_est": -0.92,
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=49% / 3ヶ月=62% / 12ヶ月=72%\n下落確率: 3%=35% / 5%=18% / 10%=6%\n期待値: +1.30% / リスクリワード: 1.41\n判定時刻: 2026-05-02 08:18",
+    "prediction_date": "2026-05-02"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 4,
-      "BUY": 17,
-      "WEAK BUY": 1,
+      "STRONG_BUY": 5,
+      "BUY": 15,
       "HOLD": 7,
-      "WATCH": 39,
-      "REDUCE": 1
+      "WATCH": 42
     },
     "category_stats": {
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 57.0
+      },
       "trade_style": {
         "count": 7,
         "buy": 3,
@@ -44,37 +49,38 @@
         "hold": 17,
         "avg_score": 52.9
       },
-      "prediction": {
-        "count": 10,
-        "buy": 3,
-        "sell": 1,
-        "hold": 6,
-        "avg_score": 54.4
-      },
-      "market_monitor": {
-        "count": 7,
-        "buy": 2,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 53.6
-      },
       "analysis": {
         "count": 10,
         "buy": 5,
         "sell": 0,
         "hold": 5,
-        "avg_score": 57.2
+        "avg_score": 57.5
       },
-      "integration": {
-        "count": 6,
+      "prediction": {
+        "count": 10,
+        "buy": 3,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 56.2
+      },
+      "market_monitor": {
+        "count": 7,
         "buy": 1,
         "sell": 0,
-        "hold": 5,
-        "avg_score": 55.8
+        "hold": 6,
+        "avg_score": 52.9
       }
     }
   },
   "top_buys": [
+    {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 84.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 2/10位"
+    },
     {
       "agent": "dividend_income",
       "category": "trade_style",
@@ -116,12 +122,20 @@
       "reason": "売上高成長(17%) / EPS急成長(60%)"
     },
     {
+      "agent": "supply_demand",
+      "category": "analysis",
+      "score": 71.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "MFI買い圧力(67) / OBV上昇（蓄積） / VWAP上方"
+    },
+    {
       "agent": "mid_term_prob",
       "category": "prediction",
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+1.1% / 売上成長=17%"
+      "reason": "20d/3m上昇確率=71% / MA20=+2.2% / 売上成長=17%"
     },
     {
       "agent": "liquidity_risk",
@@ -138,22 +152,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "テクニカル総合買いシグナル / 強弱比=3.3:1.5"
-    },
-    {
-      "agent": "expected_value",
-      "category": "prediction",
-      "score": 68.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
-    },
-    {
-      "agent": "fundamental",
-      "category": "analysis",
-      "score": 68.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高利益率(47%)"
     }
   ],
   "top_risks": [
@@ -171,31 +169,23 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "直近ニュース良好(0.42)"
+      "reason": "直近ニュース良好(0.45)"
     },
     {
-      "agent": "ensemble",
+      "agent": "monte_carlo",
       "category": "prediction",
       "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=57% / LGBM=57% / ルール=57% / ファンダ=58%"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率59% / P10=-0.7% P90=+0.9%"
     },
     {
-      "agent": "lgbm_prob",
-      "category": "prediction",
+      "agent": "score_integration",
+      "category": "integration",
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
-    },
-    {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=51)"
+      "reason": "全エージェント統合スコア=56"
     },
     {
       "agent": "investor_profile",
@@ -214,6 +204,14 @@
       "reason": "バリュエーション中立"
     },
     {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "alert",
       "category": "integration",
       "score": 55.0,
@@ -222,20 +220,20 @@
       "reason": "異常なし"
     },
     {
-      "agent": "score_integration",
-      "category": "integration",
+      "agent": "ensemble",
+      "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=55"
+      "reason": "アンサンブル=56% / LGBM=54% / ルール=57% / ファンダ=58%"
     },
     {
-      "agent": "short_term_prob",
-      "category": "prediction",
-      "score": 54.0,
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "1d/5d上昇確率=54% / RSI=65 / MACD正"
+      "reason": "ADXトレンド強(=53)"
     }
   ],
   "fundamentals": {
@@ -248,16 +246,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9149,
+    "total_days": 9150,
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 407.78,
-    "current_drawdown_pct": -24.5,
+    "current_close": 414.44,
+    "current_drawdown_pct": -23.2,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3311,
     "pct_time_below_30pct": 36.2,
-    "current_pct_of_ath": 75.5
+    "current_pct_of_ath": 76.8
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -273,45 +271,45 @@
   },
   "news": [
     {
+      "headline": "US Equity Indexes Scale New Peaks This Week Amid Lift From Mega-Cap Earnings, Crude Oil",
+      "sentiment": -0.38,
+      "importance": 5,
+      "published_at": "2026-05-02 05:53:49",
+      "source": "yahoo"
+    },
+    {
+      "headline": "S&P 500 Marks Fifth Weekly Gain, Reaches New Records on Earnings Strength",
+      "sentiment": 0.78,
+      "importance": 5,
+      "published_at": "2026-05-02 05:49:44",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Earnings: Google is biggest AI winner, OpenAI could be a 'surprise' loser",
+      "sentiment": 0.92,
+      "importance": 5,
+      "published_at": "2026-05-02 04:56:54",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Sandisk Earnings Were Excellent. Why This Analyst Says the Stock Could Double.",
+      "sentiment": 0.49,
+      "importance": 5,
+      "published_at": "2026-05-02 03:56:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "Five9 Q1 Earnings Call Highlights",
       "sentiment": 0.38,
       "importance": 5,
       "published_at": "2026-04-30 23:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Here's Why This Remains My Least Favorite \"Magnificent Seven\" Stock -- Even After a Strong Earnings Report",
-      "sentiment": -0.11,
-      "importance": 5,
-      "published_at": "2026-04-30 22:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Stock Market Today, April 30: U.S. Markets Surge Higher Despite a Mixed Bag of Earnings From Big Tech",
-      "sentiment": 0.49,
-      "importance": 5,
-      "published_at": "2026-04-30 21:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "US Equity Futures Largely Flat as Traders Await Tech Earnings, Fed Rate Decision",
-      "sentiment": 0.1,
-      "importance": 5,
-      "published_at": "2026-04-29 12:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Dow Jones Futures: Seagate, Bloom Energy, Teradyne Lead Earnings Movers As Oil Prices Jump",
-      "sentiment": 0.6,
-      "importance": 5,
-      "published_at": "2026-04-29 12:00:00",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-07-30",
-      "estimated_eps": 4.05827,
+      "estimated_eps": 4.23075,
       "actual_eps": null,
       "surprise_pct": null
     },

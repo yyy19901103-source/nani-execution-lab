@@ -1,16 +1,16 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-05-01 09:58",
+  "generated_at": "2026-05-02 08:18",
   "summary": {
     "rank": "watch",
     "score": 52,
-    "prob_up_5d": 0.627,
-    "prob_down_5pct": 0.05,
-    "expected_return": 2.02,
-    "risk_reward": 8.08,
-    "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-01 09:58",
-    "prediction_date": "2026-05-01"
+    "prob_up_5d": 0.431,
+    "prob_down_5pct": 0.359,
+    "expected_return": 0.45,
+    "risk_reward": 0.25,
+    "max_loss_est": -1.79,
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=43% / 20日=41% / 3ヶ月=36% / 12ヶ月=42%\n下落確率: 3%=39% / 5%=36% / 10%=26%\n期待値: +0.45% / リスクリワード: 0.25\n判定時刻: 2026-05-02 08:18",
+    "prediction_date": "2026-05-02"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -34,28 +34,28 @@
         "buy": 3,
         "sell": 1,
         "hold": 6,
-        "avg_score": 49.9
+        "avg_score": 50.7
       },
       "market_monitor": {
         "count": 7,
-        "buy": 1,
+        "buy": 2,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 52.0
+        "hold": 5,
+        "avg_score": 55.0
       },
       "prediction": {
         "count": 10,
-        "buy": 4,
+        "buy": 3,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 57.3
+        "hold": 7,
+        "avg_score": 54.2
       },
-      "integration": {
-        "count": 6,
+      "trade_style": {
+        "count": 7,
         "buy": 0,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 51.7
+        "hold": 7,
+        "avg_score": 49.9
       },
       "sector": {
         "count": 19,
@@ -64,12 +64,12 @@
         "hold": 19,
         "avg_score": 50.3
       },
-      "trade_style": {
-        "count": 7,
+      "integration": {
+        "count": 6,
         "buy": 0,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 49.0
+        "hold": 6,
+        "avg_score": 50.5
       }
     }
   },
@@ -88,7 +88,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MFI買い圧力(65) / OBV上昇（蓄積） / VWAP上方"
+      "reason": "MFI買い圧力(66) / OBV上昇（蓄積） / VWAP上方"
     },
     {
       "agent": "liquidity_risk",
@@ -99,20 +99,20 @@
       "reason": "流動性良好"
     },
     {
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 69.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル総合買いシグナル / 強弱比=3.3:1.5"
+    },
+    {
       "agent": "expected_value",
       "category": "prediction",
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
-    },
-    {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 67.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
     },
     {
       "agent": "risk_assessment",
@@ -139,46 +139,62 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 61.0,
+      "agent": "trend_direction",
+      "category": "market_monitor",
+      "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "12m上昇確率=61% / ROIC=2% / PER=353x"
-    },
-    {
-      "agent": "technical_summary",
-      "category": "analysis",
-      "score": 61.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "テクニカル中立 / 強弱比=2.5:2.3"
-    }
-  ],
-  "top_risks": [
-    {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率61% / P10=-0.8% P90=+1.2%"
+      "reason": "中期・長期MA上向き / 200MA下 / MACD正"
     },
     {
       "agent": "mid_term_prob",
       "category": "prediction",
-      "score": 56.0,
+      "score": 62.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=62% / MA20=+4.9% / 売上成長=16%"
+    }
+  ],
+  "top_risks": [
+    {
+      "agent": "swing_trade",
+      "category": "trade_style",
+      "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=56% / MA20=+2.8% / 売上成長=16%"
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "comparative",
-      "category": "integration",
+      "agent": "monte_carlo",
+      "category": "prediction",
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 6/11位"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率58% / P10=-0.7% P90=+1.0%"
+    },
+    {
+      "agent": "institutional_flow",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "静かな蓄積パターン"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "sector_ev",
@@ -187,6 +203,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "EVマージン改善中"
+    },
+    {
+      "agent": "growth_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "売上高成長(16%) / ROIC低(2%)"
     },
     {
       "agent": "investor_profile",
@@ -205,36 +229,12 @@
       "reason": "異常なし"
     },
     {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
-    },
-    {
-      "agent": "growth_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "売上高成長(16%) / ROIC低(2%)"
-    },
-    {
       "agent": "momentum",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ADXトレンド強(=27)"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "ADXトレンド強(=28)"
     }
   ],
   "fundamentals": {
@@ -247,16 +247,16 @@
   },
   "historical": {
     "first_data_date": "2010-06-29",
-    "total_days": 3984,
+    "total_days": 3985,
     "approx_years": 15.8,
     "data_span_label": "IPO以降 約15.8年（2010-06-29〜）",
     "all_time_high": 489.88,
-    "current_close": 381.63,
-    "current_drawdown_pct": -22.1,
+    "current_close": 390.82,
+    "current_drawdown_pct": -20.2,
     "max_drawdown_pct": -73.6,
     "days_below_30pct_dd": 1128,
     "pct_time_below_30pct": 28.3,
-    "current_pct_of_ath": 77.9
+    "current_pct_of_ath": 79.8
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_TSLA",

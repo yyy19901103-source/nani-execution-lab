@@ -1,41 +1,40 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-01 09:58",
+  "generated_at": "2026-05-02 08:18",
   "summary": {
-    "rank": "weak_buy",
+    "rank": "watch",
     "score": 56,
-    "prob_up_5d": 0.569,
-    "prob_down_5pct": 0.05,
-    "expected_return": 1.55,
-    "risk_reward": 6.2,
-    "max_loss_est": -0.25,
-    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:58",
-    "prediction_date": "2026-05-01"
+    "prob_up_5d": 0.543,
+    "prob_down_5pct": 0.261,
+    "expected_return": 1.35,
+    "risk_reward": 1.03,
+    "max_loss_est": -1.31,
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=64% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=12%\n期待値: +1.35% / リスクリワード: 1.03\n判定時刻: 2026-05-02 08:18",
+    "prediction_date": "2026-05-02"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 6,
-      "BUY": 15,
-      "WEAK BUY": 1,
+      "BUY": 17,
       "HOLD": 7,
-      "WATCH": 39,
+      "WATCH": 38,
       "REDUCE": 1
     },
     "category_stats": {
-      "analysis": {
-        "count": 10,
-        "buy": 4,
+      "integration": {
+        "count": 6,
+        "buy": 1,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 56.6
+        "hold": 5,
+        "avg_score": 58.0
       },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
-        "avg_score": 62.6
+        "avg_score": 63.7
       },
       "personal": {
         "count": 10,
@@ -53,17 +52,17 @@
       },
       "prediction": {
         "count": 10,
-        "buy": 3,
+        "buy": 4,
         "sell": 1,
-        "hold": 6,
-        "avg_score": 57.2
+        "hold": 5,
+        "avg_score": 58.0
       },
-      "integration": {
-        "count": 6,
-        "buy": 1,
+      "analysis": {
+        "count": 10,
+        "buy": 5,
         "sell": 0,
         "hold": 5,
-        "avg_score": 57.3
+        "avg_score": 56.2
       },
       "market_monitor": {
         "count": 7,
@@ -76,12 +75,12 @@
   },
   "top_buys": [
     {
-      "agent": "technical_summary",
-      "category": "analysis",
-      "score": 85.0,
+      "agent": "comparative",
+      "category": "integration",
+      "score": 90.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:0.0"
+      "reason": "ウォッチリスト内 1/10位"
     },
     {
       "agent": "dividend_income",
@@ -116,12 +115,12 @@
       "reason": "12m上昇確率=79% / ROIC=24% / PER=34x"
     },
     {
-      "agent": "comparative",
-      "category": "integration",
+      "agent": "technical_summary",
+      "category": "analysis",
       "score": 76.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 3/10位"
+      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:1.0"
     },
     {
       "agent": "growth_invest",
@@ -145,7 +144,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MFI買い圧力(69) / OBV上昇（蓄積） / VWAP上方"
+      "reason": "MFI買い圧力(76) / OBV上昇（蓄積） / VWAP上方"
     },
     {
       "agent": "liquidity_risk",
@@ -168,18 +167,10 @@
     {
       "agent": "ensemble",
       "category": "prediction",
-      "score": 57.0,
+      "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=58% / LGBM=57% / ルール=57% / ファンダ=60%"
-    },
-    {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
+      "reason": "アンサンブル=59% / LGBM=54% / ルール=63% / ファンダ=60%"
     },
     {
       "agent": "score_integration",
@@ -188,6 +179,22 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "全エージェント統合スコア=56"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "day_trade",
@@ -214,28 +221,20 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "value_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
-    },
-    {
       "agent": "short_term_prob",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "1d/5d上昇確率=54% / RSI=62 / MACD正"
+      "reason": "1d/5d上昇確率=54% / RSI=69 / MACD正"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=54% / 20d=57% / 3m=64% / 期待値=+1.35%"
     }
   ],
   "fundamentals": {
@@ -248,16 +247,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9149,
+    "total_days": 9150,
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
     "all_time_high": 285.92,
-    "current_close": 271.35,
-    "current_drawdown_pct": -5.1,
+    "current_close": 280.14,
+    "current_drawdown_pct": -2.0,
     "max_drawdown_pct": -81.8,
     "days_below_30pct_dd": 3292,
     "pct_time_below_30pct": 36.0,
-    "current_pct_of_ath": 94.9
+    "current_pct_of_ath": 98.0
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_AAPL",
@@ -294,21 +293,27 @@
       "source": "yahoo"
     },
     {
-      "headline": "Tech Giants Set to Report Earnings Wednesday—And Big Stock Moves Are Likely",
-      "sentiment": 0.18,
-      "importance": 5,
-      "published_at": "2026-04-28 21:00:00",
+      "headline": "‘American industry is winning’: White House touts factory boom — how investors can ride the reshoring wave",
+      "sentiment": -0.03,
+      "importance": 2,
+      "published_at": "2026-04-29 10:00:00",
       "source": "yahoo"
     },
     {
-      "headline": "Big Tech: What this strategist is looking for on earnings calls",
-      "sentiment": -0.38,
-      "importance": 5,
-      "published_at": "2026-04-28 20:00:00",
+      "headline": "Greg Abel Has Over 50% of Berkshire Hathaway's Stock Portfolio Invested in 3 Forever Stocks",
+      "sentiment": 0.8,
+      "importance": 2,
+      "published_at": "2026-04-29 09:00:00",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
+    {
+      "date": "2026-07-31",
+      "estimated_eps": 1.88292,
+      "actual_eps": null,
+      "surprise_pct": null
+    },
     {
       "date": "2026-05-01",
       "estimated_eps": 1.94223,

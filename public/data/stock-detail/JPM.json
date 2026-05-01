@@ -1,24 +1,24 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-01 09:58",
+  "generated_at": "2026-05-02 08:18",
   "summary": {
     "rank": "watch",
     "score": 55,
-    "prob_up_5d": 0.529,
-    "prob_down_5pct": 0.05,
-    "expected_return": 1.24,
-    "risk_reward": 4.96,
-    "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:58",
-    "prediction_date": "2026-05-01"
+    "prob_up_5d": 0.543,
+    "prob_down_5pct": 0.19,
+    "expected_return": 1.35,
+    "risk_reward": 1.42,
+    "max_loss_est": -0.95,
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=58% / 3ヶ月=61% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=8%\n期待値: +1.35% / リスクリワード: 1.42\n判定時刻: 2026-05-02 08:18",
+    "prediction_date": "2026-05-02"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 16,
+      "BUY": 15,
       "HOLD": 5,
-      "WATCH": 43,
+      "WATCH": 44,
       "REDUCE": 1
     },
     "category_stats": {
@@ -45,31 +45,31 @@
       },
       "analysis": {
         "count": 10,
-        "buy": 5,
+        "buy": 4,
         "sell": 0,
-        "hold": 5,
-        "avg_score": 58.0
+        "hold": 6,
+        "avg_score": 55.9
       },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 56.6
-      },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 54.5
+        "avg_score": 55.1
       },
       "prediction": {
         "count": 10,
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 53.2
+        "avg_score": 52.7
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 53.3
       }
     }
   },
@@ -107,14 +107,6 @@
       "reason": "PER割安(15.0x) / ROE高(16%) / 配当利回り194.0%"
     },
     {
-      "agent": "supply_demand",
-      "category": "analysis",
-      "score": 71.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "MFI買い圧力(68) / OBV上昇（蓄積） / VWAP上方"
-    },
-    {
       "agent": "fundamental",
       "category": "analysis",
       "score": 71.0,
@@ -139,20 +131,28 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "comparative",
-      "category": "integration",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 4/11位"
-    },
-    {
       "agent": "market_regime",
       "category": "market_monitor",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "強気レジーム"
+    },
+    {
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "portfolio_fit",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
     }
   ],
   "top_risks": [
@@ -165,12 +165,20 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 58.0,
+      "agent": "supply_demand",
+      "category": "analysis",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率60% / P10=-0.3% P90=+0.6%"
+      "reason": "MFI買い圧力(67) / OBV下降（分散） / VWAP上方"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "investor_profile",
@@ -189,28 +197,12 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
       "agent": "volatility_env",
       "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "低ボラ環境"
-    },
-    {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "score_integration",
@@ -227,6 +219,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=54% / 20d=58% / 3m=61% / 期待値=+1.35%"
     },
     {
       "agent": "market_sentiment",
@@ -247,16 +247,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9149,
+    "total_days": 9150,
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
     "all_time_high": 332.91,
-    "current_close": 313.23,
-    "current_drawdown_pct": -5.9,
+    "current_close": 312.47,
+    "current_drawdown_pct": -6.1,
     "max_drawdown_pct": -74.0,
     "days_below_30pct_dd": 1622,
     "pct_time_below_30pct": 17.7,
-    "current_pct_of_ath": 94.1
+    "current_pct_of_ath": 93.9
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_JPM",

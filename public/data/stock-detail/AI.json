@@ -1,6 +1,6 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-05-01 09:58",
+  "generated_at": "2026-05-02 08:18",
   "summary": {
     "rank": "watch",
     "score": 49,
@@ -9,8 +9,8 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:58",
-    "prediction_date": "2026-05-01"
+    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-02 08:18",
+    "prediction_date": "2026-05-02"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -33,7 +33,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 55.7
+        "avg_score": 55.8
       },
       "personal": {
         "count": 10,
@@ -47,7 +47,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 47.7
+        "avg_score": 47.2
       },
       "trade_style": {
         "count": 7,
@@ -148,20 +148,20 @@
       "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
     },
     {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.2% / 上昇確率57% / P10=-1.4% P90=+1.8%"
+    },
+    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
-    },
-    {
-      "agent": "bayesian",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
       "agent": "long_term_prob",
@@ -172,12 +172,12 @@
       "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
     },
     {
-      "agent": "monte_carlo",
+      "agent": "bayesian",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率56% / P10=-1.5% P90=+1.8%"
+      "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
       "agent": "swing_trade",
@@ -211,36 +211,7 @@
     "current_pct_of_ath": 20.9
   },
   "backtest": null,
-  "news": [
-    {
-      "headline": "C3.ai, Inc. (AI) Advances While Market Declines: Some Information for Investors",
-      "sentiment": null,
-      "importance": 2,
-      "published_at": "2026-04-28 21:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Why the \"Great Repricing\" of AI Software Stocks Is a Gift for Long-Term Investors",
-      "sentiment": 0.87,
-      "importance": 2,
-      "published_at": "2026-04-28 21:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "C3.ai, Inc. (AI) Advances While Market Declines: Some Information for Investors",
-      "sentiment": null,
-      "importance": 2,
-      "published_at": "2026-04-28 21:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Why the \"Great Repricing\" of AI Software Stocks Is a Gift for Long-Term Investors",
-      "sentiment": 0.87,
-      "importance": 2,
-      "published_at": "2026-04-28 21:00:00",
-      "source": "yahoo"
-    }
-  ],
+  "news": [],
   "earnings_recent": [
     {
       "date": "2026-05-28",
