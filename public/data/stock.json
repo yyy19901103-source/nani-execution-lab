@@ -1,15 +1,21 @@
 {
-  "generated_at": "2026-04-30 17:10",
+  "generated_at": "2026-05-01 09:21",
   "accuracy": {
     "total": 0,
     "hit": 0,
     "miss": 0,
-    "pending": 19,
+    "pending": 31,
     "rate": null,
     "threshold": 0.55,
     "monthly": [
       {
         "month": "2026-04",
+        "total": 0,
+        "hit": 0,
+        "rate": null
+      },
+      {
+        "month": "2026-05",
         "total": 0,
         "hit": 0,
         "rate": null
@@ -22,70 +28,70 @@
       "rank": "weak_buy",
       "rank_ja": "やや買い",
       "score": 56,
-      "prob_up_5d": 0.627,
-      "expected_return": 2.02,
-      "risk_reward": 8.08,
-      "updated_at": "2026-04-30 16:57:20"
-    },
-    {
-      "ticker": "JPM",
-      "rank": "weak_buy",
-      "rank_ja": "やや買い",
-      "score": 56,
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-04-30 16:57:25"
+      "updated_at": "2026-05-01 09:21:17"
     },
     {
       "ticker": "GOOGL",
       "rank": "watch",
       "rank_ja": "様子見",
-      "score": 55,
+      "score": 56,
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:57:19"
-    },
-    {
-      "ticker": "META",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 55,
-      "prob_up_5d": 0.529,
-      "expected_return": 1.24,
-      "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:57:17"
+      "updated_at": "2026-05-01 09:21:15"
     },
     {
       "ticker": "NVDA",
       "rank": "watch",
       "rank_ja": "様子見",
-      "score": 55,
+      "score": 56,
       "prob_up_5d": 0.54,
       "expected_return": 1.32,
-      "risk_reward": 1.08,
-      "updated_at": "2026-04-30 16:57:14"
+      "risk_reward": 1.16,
+      "updated_at": "2026-05-01 09:21:11"
     },
     {
-      "ticker": "MSFT",
+      "ticker": "JPM",
       "rank": "watch",
       "rank_ja": "様子見",
-      "score": 54,
+      "score": 55,
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:57:16"
+      "updated_at": "2026-05-01 09:21:21"
+    },
+    {
+      "ticker": "MSFT",
+      "rank": "weak_buy",
+      "rank_ja": "やや買い",
+      "score": 55,
+      "prob_up_5d": 0.569,
+      "expected_return": 1.55,
+      "risk_reward": 6.2,
+      "updated_at": "2026-05-01 09:21:13"
     },
     {
       "ticker": "AMZN",
       "rank": "watch",
       "rank_ja": "様子見",
-      "score": 52,
+      "score": 53,
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:57:23"
+      "updated_at": "2026-05-01 09:21:20"
+    },
+    {
+      "ticker": "META",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 52,
+      "prob_up_5d": 0.373,
+      "expected_return": -0.02,
+      "risk_reward": 0.08,
+      "updated_at": "2026-05-01 09:21:14"
     },
     {
       "ticker": "SOUN",
@@ -95,7 +101,17 @@
       "prob_up_5d": 0.627,
       "expected_return": 2.02,
       "risk_reward": 8.08,
-      "updated_at": "2026-04-30 16:57:09"
+      "updated_at": "2026-05-01 09:21:07"
+    },
+    {
+      "ticker": "TSLA",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 52,
+      "prob_up_5d": 0.627,
+      "expected_return": 2.02,
+      "risk_reward": 8.08,
+      "updated_at": "2026-05-01 09:21:23"
     },
     {
       "ticker": "VOO",
@@ -105,7 +121,7 @@
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-04-30 16:57:22"
+      "updated_at": "2026-05-01 09:21:19"
     },
     {
       "ticker": "PATH",
@@ -115,17 +131,7 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-04-30 16:57:13"
-    },
-    {
-      "ticker": "TSLA",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 51,
-      "prob_up_5d": 0.569,
-      "expected_return": 1.55,
-      "risk_reward": 6.2,
-      "updated_at": "2026-04-30 16:57:26"
+      "updated_at": "2026-05-01 09:21:08"
     },
     {
       "ticker": "AI",
@@ -135,10 +141,118 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-04-30 16:57:11"
+      "updated_at": "2026-05-01 09:21:10"
     }
   ],
   "history": [
+    {
+      "ticker": "TSLA",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.627,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "JPM",
+      "rank": "watch",
+      "score": 55,
+      "prob_up_5d": 0.529,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AMZN",
+      "rank": "watch",
+      "score": 53,
+      "prob_up_5d": 0.529,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "VOO",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.529,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AAPL",
+      "rank": "weak_buy",
+      "score": 56,
+      "prob_up_5d": 0.569,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "GOOGL",
+      "rank": "watch",
+      "score": 56,
+      "prob_up_5d": 0.529,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "META",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.373,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "MSFT",
+      "rank": "weak_buy",
+      "score": 55,
+      "prob_up_5d": 0.569,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "NVDA",
+      "rank": "watch",
+      "score": 56,
+      "prob_up_5d": 0.54,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AI",
+      "rank": "watch",
+      "score": 49,
+      "prob_up_5d": 0.569,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "PATH",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "SOUN",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.627,
+      "date": "2026-05-01",
+      "actual_ret": null,
+      "result": "pending"
+    },
     {
       "ticker": "TSLA",
       "rank": "watch",
@@ -313,26 +427,6 @@
   ],
   "earnings": [
     {
-      "ticker": "GOOGL",
-      "date": "2026-04-30",
-      "estimated_eps": 2.63
-    },
-    {
-      "ticker": "LLY",
-      "date": "2026-04-30",
-      "estimated_eps": 6.79
-    },
-    {
-      "ticker": "META",
-      "date": "2026-04-30",
-      "estimated_eps": 6.82
-    },
-    {
-      "ticker": "MSFT",
-      "date": "2026-04-30",
-      "estimated_eps": 4.07
-    },
-    {
       "ticker": "AAPL",
       "date": "2026-05-01",
       "estimated_eps": 1.94
@@ -361,6 +455,26 @@
       "ticker": "PATH",
       "date": "2026-05-29",
       "estimated_eps": 0.16
+    },
+    {
+      "ticker": "JPM",
+      "date": "2026-07-14",
+      "estimated_eps": 5.38
+    },
+    {
+      "ticker": "TSLA",
+      "date": "2026-07-23",
+      "estimated_eps": 0.45
+    },
+    {
+      "ticker": "GOOGL",
+      "date": "2026-07-24",
+      "estimated_eps": 2.63
+    },
+    {
+      "ticker": "META",
+      "date": "2026-07-30",
+      "estimated_eps": 6.82
     }
   ]
 }

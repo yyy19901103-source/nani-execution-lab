@@ -1,26 +1,25 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-04-30 17:10",
+  "generated_at": "2026-05-01 09:21",
   "summary": {
     "rank": "watch",
-    "score": 55,
+    "score": 56,
     "prob_up_5d": 0.54,
-    "prob_down_5pct": 0.244,
+    "prob_down_5pct": 0.229,
     "expected_return": 1.32,
-    "risk_reward": 1.08,
-    "max_loss_est": -1.22,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=24% / 10%=5%\n期待値: +1.32% / リスクリワード: 1.08\n判定時刻: 2026-04-30 16:57",
-    "prediction_date": "2026-04-30"
+    "risk_reward": 1.16,
+    "max_loss_est": -1.14,
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=23% / 10%=5%\n期待値: +1.32% / リスクリワード: 1.16\n判定時刻: 2026-05-01 09:21",
+    "prediction_date": "2026-05-01"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 7,
-      "BUY": 16,
-      "HOLD": 11,
-      "WATCH": 33,
-      "REDUCE": 1,
-      "SELL": 1
+      "BUY": 17,
+      "HOLD": 7,
+      "WATCH": 37,
+      "REDUCE": 1
     },
     "category_stats": {
       "sector": {
@@ -33,16 +32,16 @@
       "trade_style": {
         "count": 7,
         "buy": 3,
-        "sell": 1,
-        "hold": 3,
-        "avg_score": 56.1
+        "sell": 0,
+        "hold": 4,
+        "avg_score": 60.3
       },
-      "integration": {
-        "count": 6,
-        "buy": 1,
+      "analysis": {
+        "count": 10,
+        "buy": 5,
         "sell": 0,
         "hold": 5,
-        "avg_score": 56.5
+        "avg_score": 58.3
       },
       "personal": {
         "count": 10,
@@ -51,26 +50,26 @@
         "hold": 5,
         "avg_score": 59.5
       },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 56.3
+      },
       "prediction": {
         "count": 10,
-        "buy": 3,
-        "sell": 1,
-        "hold": 6,
-        "avg_score": 52.8
-      },
-      "analysis": {
-        "count": 10,
         "buy": 4,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 56.7
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 56.2
       },
       "market_monitor": {
         "count": 7,
-        "buy": 4,
+        "buy": 3,
         "sell": 0,
-        "hold": 3,
-        "avg_score": 58.3
+        "hold": 4,
+        "avg_score": 57.1
       }
     }
   },
@@ -92,12 +91,12 @@
       "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
     },
     {
-      "agent": "comparative",
-      "category": "integration",
-      "score": 82.0,
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 85.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 2/9位"
+      "reason": "テクニカル総合買いシグナル / 強弱比=5.3:0.0"
     },
     {
       "agent": "rule_compliance",
@@ -108,12 +107,20 @@
       "reason": "全ルール遵守"
     },
     {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 1/4位"
+    },
+    {
       "agent": "long_term_prob",
       "category": "prediction",
       "score": 79.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "12m上昇確率=79% / ROIC=51% / PER=43x"
+      "reason": "12m上昇確率=79% / ROIC=51% / PER=41x"
     },
     {
       "agent": "fundamental",
@@ -124,14 +131,6 @@
       "reason": "ROIC優秀(51%) / 高利益率(65%) / 高成長(73%)"
     },
     {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 75.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "52週高値近傍(-1.6%) / ADXトレンド強(=49) / 200MA大幅上回り"
-    },
-    {
       "agent": "sector_ai_datacenter",
       "category": "sector",
       "score": 73.0,
@@ -140,12 +139,12 @@
       "reason": "semiconductor: 売上成長=73%"
     },
     {
-      "agent": "supply_demand",
-      "category": "analysis",
+      "agent": "mid_term_prob",
+      "category": "prediction",
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MFI買い圧力(68) / OBV上昇（蓄積） / VWAP上方"
+      "reason": "20d/3m上昇確率=71% / MA20=+1.7% / 売上成長=73%"
     },
     {
       "agent": "liquidity_risk",
@@ -166,28 +165,20 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "expected_value",
-      "category": "prediction",
-      "score": 58.0,
+      "agent": "score_integration",
+      "category": "integration",
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
+      "reason": "全エージェント統合スコア=56"
     },
     {
-      "agent": "technical_summary",
-      "category": "analysis",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "テクニカル中立 / 強弱比=4.8:5.5"
-    },
-    {
-      "agent": "institutional_flow",
-      "category": "analysis",
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "静かな蓄積パターン"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "investor_profile",
@@ -206,20 +197,20 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
+      "agent": "short_term_prob",
+      "category": "prediction",
+      "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "1d/5d上昇確率=54% / RSI=60 / MACD正"
     },
     {
-      "agent": "score_integration",
-      "category": "integration",
-      "score": 55.0,
+      "agent": "bayesian",
+      "category": "prediction",
+      "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=55"
+      "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
       "agent": "lgbm_prob",
@@ -227,7 +218,15 @@
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=54% / 20d=53% / 3m=52% / 期待値=+1.32%"
+      "reason": "5d上昇確率=54% / 20d=56% / 3m=55% / 期待値=+1.32%"
+    },
+    {
+      "agent": "market_sentiment",
+      "category": "market_monitor",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "RSI中立ゾーン"
     },
     {
       "agent": "final_judgment",
@@ -235,12 +234,12 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=24% / 10%=5%\n期待値: +1.32% / リスクリワード: 1.08\n判定時刻: 2026-04-30 16:57"
+      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=23% / 10%=5%\n期待値: +1.32% / リスクリワード: 1.16\n判定時刻: 2026-05-01 09:21"
     }
   ],
   "fundamentals": {
-    "PER": 42.7,
-    "PBR": 32.3,
+    "PER": 40.7,
+    "PBR": 30.8,
     "ROE": 1.015,
     "operating_margin": 0.65,
     "revenue_growth": 0.732,
@@ -248,14 +247,14 @@
   },
   "historical_50y": {
     "first_data_date": "1999-01-22",
-    "total_days": 6858,
+    "total_days": 6860,
     "all_time_high": 216.61,
-    "current_close": 213.17,
-    "current_drawdown_pct": -1.6,
+    "current_close": 199.57,
+    "current_drawdown_pct": -7.9,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
     "pct_time_below_30pct": 53.9,
-    "current_pct_of_ath": 98.4
+    "current_pct_of_ath": 92.1
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_NVDA",
@@ -292,17 +291,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "Here Are Wednesday’s Top Wall Street Analyst Research Calls: Alibaba, Boston Scientific, Brown-Forman, Charter Communications, Franklin Resources, Spotify, T-Mobile, and More",
-      "sentiment": 0.01,
-      "importance": 4,
-      "published_at": "Wed, 29 Apr 2026 11",
+      "headline": "Here's Why This Remains My Least Favorite \"Magnificent Seven\" Stock -- Even After a Strong Earnings Report",
+      "sentiment": -0.11,
+      "importance": 5,
+      "published_at": "Thu, 30 Apr 2026 22",
       "source": "yahoo"
     },
     {
-      "headline": "Is Eli Lilly Stock Undervalued at $870? 1 Top Wall Street Analyst Thinks So",
-      "sentiment": 0.2,
-      "importance": 4,
-      "published_at": "Tue, 28 Apr 2026 22",
+      "headline": "Dow Jones Futures Rise As Apple Jumps On Earnings, Sandisk Skids; Stock Market At High",
+      "sentiment": 0.03,
+      "importance": 5,
+      "published_at": "Fri, 01 May 2026 00",
       "source": "yahoo"
     }
   ],

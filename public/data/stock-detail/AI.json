@@ -1,6 +1,6 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-04-30 17:10",
+  "generated_at": "2026-05-01 09:21",
   "summary": {
     "rank": "watch",
     "score": 49,
@@ -9,15 +9,15 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-04-30 16:57",
-    "prediction_date": "2026-04-30"
+    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:21",
+    "prediction_date": "2026-05-01"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "BUY": 6,
-      "HOLD": 13,
-      "WATCH": 47,
+      "HOLD": 12,
+      "WATCH": 48,
       "SELL": 3
     },
     "category_stats": {
@@ -26,14 +26,14 @@
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 51.1
+        "avg_score": 52.3
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 55.7
+        "avg_score": 55.5
       },
       "personal": {
         "count": 10,
@@ -47,7 +47,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 49.1
+        "avg_score": 49.3
       },
       "trade_style": {
         "count": 7,
@@ -188,20 +188,20 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率55% / P10=-1.4% P90=+1.7%"
-    },
-    {
       "agent": "swing_trade",
       "category": "trade_style",
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
+    },
+    {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率54% / P10=-1.5% P90=+1.7%"
     }
   ],
   "fundamentals": null,

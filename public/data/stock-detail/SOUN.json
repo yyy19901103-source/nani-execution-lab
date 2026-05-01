@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-04-30 17:10",
+  "generated_at": "2026-05-01 09:21",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,15 +9,16 @@
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-04-30 16:57",
-    "prediction_date": "2026-04-30"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-01 09:21",
+    "prediction_date": "2026-05-01"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "BUY": 10,
-      "HOLD": 11,
-      "WATCH": 48
+      "HOLD": 8,
+      "WATCH": 50,
+      "SELL": 1
     },
     "category_stats": {
       "prediction": {
@@ -25,21 +26,21 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 57.5
+        "avg_score": 57.4
       },
       "analysis": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 50.7
+        "avg_score": 52.4
       },
       "personal": {
         "count": 10,
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 54.0
+        "avg_score": 56.2
       },
       "market_monitor": {
         "count": 7,
@@ -58,9 +59,9 @@
       "integration": {
         "count": 6,
         "buy": 0,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 48.5
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 45.7
       },
       "sector": {
         "count": 19,
@@ -102,7 +103,7 @@
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "集中度ルール違反: 25%"
+      "reason": "集中度ルール違反: 13%"
     },
     {
       "agent": "failure_pattern",
@@ -129,20 +130,20 @@
       "reason": "3%下落確率=23% / 5%下落確率=38% / 10%下落確率=70%"
     },
     {
-      "agent": "trend_direction",
-      "category": "market_monitor",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "中期・長期MA上向き / 200MA下 / MACD正"
-    },
-    {
       "agent": "emotion_bias",
       "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "感情バイアスなし"
+    },
+    {
+      "agent": "trend_direction",
+      "category": "market_monitor",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "中期・長期MA上向き / 200MA下 / MACD正"
     },
     {
       "agent": "day_trade",
@@ -192,15 +193,15 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+21.1%)"
+      "reason": "S&P500比 月次強い(+24.0%)"
     },
     {
-      "agent": "mid_term_prob",
-      "category": "prediction",
-      "score": 56.0,
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=56% / MA20=+9.2% / 売上成長=0%"
+      "reason": "高ボラ(5.2%)"
     },
     {
       "agent": "news_impact",
@@ -211,28 +212,28 @@
       "reason": "ニュース中立"
     },
     {
+      "agent": "mid_term_prob",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=56% / MA20=+9.2% / 売上成長=0%"
+    },
+    {
+      "agent": "money_management",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
+    },
+    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
-    },
-    {
-      "agent": "alert",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
-    },
-    {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
     }
   ],
   "fundamentals": null,
