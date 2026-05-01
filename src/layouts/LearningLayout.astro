@@ -4,10 +4,12 @@ import { getCollection } from 'astro:content';
 
 export interface Props {
   title: string;
+  description?: string;
   currentSlug?: string;
 }
 
-const { title, currentSlug } = Astro.props;
+const { title, description, currentSlug } = Astro.props;
+const layoutDescription = description || `${title} — 製造業DX × ETO（一品一様製造）の学習ロードマップ16週。実務で使える知識を体系化。`;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // 全learning記事を取得してナビゲーション構築
@@ -92,7 +94,7 @@ const navGroups = [
 const currentGroupKey = navGroups.find(g => g.items.some(i => i.id === currentSlug))?.phaseKey || '';
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} description={layoutDescription}>
   <!-- Reading progress bar -->
   <div id="reading-progress-bar" style="position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,#c8a96e,#e0a040);z-index:200;transition:width 0.1s linear;pointer-events:none;"></div>
 

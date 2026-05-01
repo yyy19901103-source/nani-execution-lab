@@ -16,6 +16,7 @@ const { Content } = await render(entry);
 
 <PostLayout
   title={entry.data.title}
+  description={entry.data.description || `${entry.data.title} — NaNi Execution Lab のお知らせ。製造業DX × ETO（一品一様製造）の実行事例・AI活用知見を発信。`}
   date={entry.data.date}
   type="news"
   category={entry.data.category}

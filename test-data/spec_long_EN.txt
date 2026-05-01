@@ -1,0 +1,349 @@
+================================================================================
+TECHNICAL SPECIFICATION
+CENTRIFUGAL COMPRESSOR PACKAGE – OFFGAS COMPRESSION SERVICE
+================================================================================
+Document No. : SAEC-ROT-SP-CM-002 Rev.C
+Project       : Southeast Asia Ethylene Complex – Offgas Compression Unit
+Purchaser     : SAEC Consortium (Lead: Pacific Chemical Engineering Co.)
+Equipment Tag : 50-K-201
+Quantity      : 1 set (including installed spare rotor)
+Date          : April 2026
+================================================================================
+
+1. SCOPE OF SUPPLY
+1.1 The Vendor shall supply one (1) complete centrifugal compressor package
+    including but not limited to:
+    a) Centrifugal compressor body (barrel-type, horizontally split casing
+       not acceptable for this service)
+    b) Integrally geared speed increasing gear unit
+    c) Lube oil console (integrated on common base frame)
+    d) Dry gas seal system (both inboard and outboard)
+    e) Process gas coolers (two inter-stage + one discharge)
+    f) Steam turbine driver
+    g) Inlet filter/separator with automatic drain
+    h) Anti-surge control valve and recycle line (within package boundary)
+    i) Local control panel (LCP) with PLC
+    j) Machine monitoring system (MMS) per API 670
+    k) Coupling and coupling guard (between compressor and gearbox,
+       and between gearbox and steam turbine)
+    l) Common base frame, anchor bolts, and leveling pads
+    m) All instrumentation, valves, and piping within package battery limit
+    n) Installed spare rotor (fully assembled with seals)
+    o) Special tools and commissioning spare parts (24 months operation)
+
+1.2 The following items are excluded from Vendor scope but shall be coordinated:
+    a) Lube oil piping beyond package battery limit
+    b) Seal gas supply piping from plant utility header
+    c) Condensate drain collection header
+    d) Electrical power cables beyond local junction box
+    e) DCS (Purchaser-supplied; Vendor to provide signal interface list)
+
+2. APPLICABLE CODES AND STANDARDS
+2.1 Compressor design and manufacture: API 617, 8th Edition (Chapters 1 and 2).
+    All requirements of API 617 shall be met unless specifically noted herein.
+2.2 Steam turbine driver: API 611, 5th Edition (general-purpose industrial
+    steam turbines up to 750 kW) or API 612, 3rd Edition as applicable.
+2.3 Gearbox: API 613, 5th Edition.
+2.4 Lube oil system: API 614, 4th Edition.
+2.5 Dry gas seals: API 692, 1st Edition.
+2.6 Machine monitoring: API 670, 5th Edition.
+2.7 Pressure vessels (gas coolers, KO drums): ASME Section VIII Division 1,
+    with full U-stamp certification.
+2.8 Flanges: ASME B16.5. No JIS or other flange standards will be accepted
+    for nozzle connections.
+2.9 Electrical area classification: Class I, Division 2, Group D (NEC)
+    for all electrical equipment within 7.5 m of the compressor package.
+    IEC 60079 equivalent (Zone 2) is acceptable only with written approval.
+2.10 Welding: ASME Section IX. All weld procedures and welder qualifications
+     shall be submitted for Purchaser's review before commencement of welding.
+2.11 Material certification: EN 10204 Type 3.2 for all pressure-containing parts
+     and rotating components. Type 3.1 is not acceptable for rotor components.
+2.12 NACE MR0175/ISO 15156 compliance is required for all wetted parts, as
+     the gas stream contains up to 15 ppm H2S.
+2.13 Vendor shall list all deviations from the above codes in a Deviation Register,
+     submitted at bid stage and updated at order placement.
+
+3. PROCESS AND DESIGN BASIS
+3.1 Service                   : Ethylene plant offgas (C2/C3 mixture)
+3.2 Gas composition (mol%)    :
+    Ethylene       42.5%
+    Ethane         18.3%
+    Propylene      15.1%
+    Propane         8.4%
+    Hydrogen        6.2%
+    Methane         5.1%
+    Others          4.4%
+3.3 Molecular weight          : 33.4 (design) / 35.0 (maximum, fouling condition)
+3.4 Suction conditions (1st stage):
+    Flow               : 85,000 Nm³/h (normal) / 95,000 Nm³/h (maximum)
+    Temperature        : 40°C
+    Pressure           : 1.2 barg
+3.5 Interstage conditions     : As determined by Vendor thermodynamic calculation;
+    Purchaser to review and approve before detailed design.
+3.6 Discharge conditions      :
+    Pressure           : 18.5 barg
+    Temperature        : 55°C (maximum, after final cooler)
+3.7 Driver power (estimated)  : 4,200 kW (Vendor to confirm by calculation)
+3.8 Design ambient temperature : 35°C (normal) / 42°C (maximum) / 5°C (minimum)
+3.9 Relative humidity         : up to 95% non-condensing
+3.10 Seismic zone             : Zone 2B per UBC 1997. Vendor shall confirm
+     package natural frequencies do not coincide with seismic frequency range.
+
+4. COMPRESSOR MECHANICAL REQUIREMENTS
+4.1 The compressor shall be a two-section, integrally geared centrifugal
+    compressor. Inline (single-shaft) configuration will not be accepted.
+4.2 Rotor dynamic stability analysis (Level 2 per API 617 Annex I) shall be
+    performed and submitted for Purchaser's review.
+4.3 All critical speeds shall be at least 15% away from the operating speed
+    range (5% margin from trip speed and 105% of maximum continuous speed).
+4.4 Maximum allowable vibration (unfiltered, peak-to-peak) at rated conditions:
+    25.4 µm or 30% of the alert setpoint per API 670, whichever is less.
+4.5 Maximum bearing temperature (white metal): 110°C at rated conditions.
+4.6 Impellers shall be three-dimensional (3D) milled from a single billet of
+    AISI 17-4PH (H1025 condition) stainless steel. No welded impellers.
+4.7 Rotor assembly shall be balanced to ISO 1940/1 Grade G1.0 (not G2.5).
+4.8 Rotor shall withstand an overspeed test at 115% of maximum continuous
+    speed with no permanent deformation.
+4.9 Minimum distance between impellers and casing walls shall be confirmed
+    by FEA (Finite Element Analysis); results to be submitted for review.
+4.10 All gas-side O-rings shall be of Viton (FKM) material. PTFE-encapsulated
+     O-rings are not acceptable.
+4.11 Compressor inlet and discharge nozzles shall be top-entry (both inlet and
+     outlet from the top of casing) to facilitate piping layout.
+     Bottom-entry discharge nozzle requires written deviation approval.
+
+5. GEARBOX REQUIREMENTS
+5.1 Gearbox shall be of the integrally geared type, with a service factor of
+    minimum 1.25 on rated power.
+5.2 Gear tooth contact pattern shall be checked and documented during assembly.
+5.3 Gearbox oil mist lubrication is not acceptable. Forced-feed lubrication
+    from the shared lube oil console is required.
+5.4 Vendor shall confirm gearbox noise level does not exceed 85 dB(A) at 1 m
+    distance under full-load operating condition.
+
+6. STEAM TURBINE DRIVER REQUIREMENTS
+6.1 Steam turbine type: condensing or backpressure, as determined by Vendor's
+    thermodynamic optimization. Purchaser to review turbine selection.
+6.2 Inlet steam conditions: 42 barg / 400°C (superheat).
+    Minimum inlet steam quality: 99.5% dryness.
+6.3 Exhaust steam condition: 4.5 barg (backpressure) or condensing to 0.1 bara.
+    Vendor to propose optimum cycle and justify in technical bid.
+6.4 Governor shall be an electronic speed governor (ESG) with remote speed
+    setpoint capability via 4-20 mA signal from DCS.
+6.5 Steam turbine trip functions shall be hardwired (not via DCS) and shall
+    include as a minimum: overspeed, low lube oil pressure, high vibration,
+    high axial displacement, and high exhaust temperature.
+6.6 The turbine shall be capable of motoring (driving the compressor at low
+    load) without condensate accumulation in the exhaust.
+6.7 Turning gear shall be supplied for cool-down rotation after shutdown.
+
+7. LUBE OIL SYSTEM REQUIREMENTS
+7.1 Lube oil system shall conform to API 614 Chapter 1 and 3.
+7.2 System shall include: main oil pump (shaft-driven), standby oil pump
+    (motor-driven), oil reservoir (minimum 5-minute hold-up), dual oil coolers
+    (100% standby), dual oil filters (changeable under pressure), oil conditioner
+    unit (electrostatic precipitator type), and all instrumentation.
+7.3 Lube oil specification: Turbine oil ISO VG 46. Vendor shall confirm
+    compatibility with all bearings and seals in the package.
+7.4 Reservoir shall be internally coated with two-component epoxy coating,
+    minimum 200 microns DFT.
+7.5 Oil coolers shall be of the shell-and-tube type, ASME U-stamp, with
+    cooling water on the tube side to facilitate cleaning.
+7.6 Oil supply temperature to bearings: 45°C ±3°C. Vendor shall size
+    coolers and confirm temperature control valve Cv.
+7.7 Oil supply pressure at compressor bearings: minimum 1.0 barg.
+7.8 Low-low oil pressure trip setpoint shall be set at 0.5 barg.
+7.9 High oil temperature alarm: 60°C. High-high trip: 65°C.
+
+8. DRY GAS SEAL SYSTEM REQUIREMENTS
+8.1 Dry gas seals shall be tandem-type (primary + secondary) per API 692.
+8.2 Seal gas supply: clean, dry process gas or N2 (instrument grade 99.998%)
+    as primary seal gas at a pressure of at least 0.5 bar above the process
+    gas pressure at the seal.
+8.3 Primary seal gas flow: maximum 50 Nm³/h per seal at rated conditions.
+    Vendor to confirm by calculation and supply control/monitoring system.
+8.4 Seal gas panel shall include: dual filters (automatic switchover), flow
+    indicators, pressure indicators, and differential pressure switches.
+8.5 The secondary containment gas shall be N2 at 0.5 barg from Purchaser's
+    utility header.
+8.6 Gas seal vent shall be routed to the flare header (by Purchaser); Vendor to
+    confirm required vent pipe size based on maximum seal leak rate.
+8.7 Seal supplier shall be Vendor's standard proven seal supplier with at least
+    5 years' service history in ethylene plant service. Purchaser reserves the
+    right to approve seal supplier selection.
+
+9. PROCESS GAS COOLERS
+9.1 Coolers shall be shell-and-tube heat exchangers, TEMA type BEU or AEU,
+    ASME Section VIII Div.1 U-stamp.
+9.2 Process gas shall be on the shell side. Cooling water on tube side.
+9.3 Cooling water inlet: 32°C / outlet: maximum 45°C.
+9.4 Minimum approach temperature on process gas side: 5°C above cooling
+    water inlet temperature.
+9.5 Tube material: ASTM A249 TP316L for all coolers.
+9.6 Cooler design shall include provisions for CIP (Clean-In-Place) with
+    N2 purge inlet and drain nozzles.
+9.7 Fouling factors per TEMA, Tables 5.1 and 5.2, plus an additional 25%
+    margin on the calculated dirty U-value.
+
+10. INSTRUMENTATION AND CONTROL REQUIREMENTS
+10.1 Machine monitoring system (MMS) shall be a dedicated, stand-alone system
+     per API 670. The MMS shall not be integrated with the DCS.
+10.2 All transmitters shall be HART-compatible. 4-20 mA output to DCS.
+10.3 Speed transmitters: three (3) per shaft, voting 2-out-of-3 logic for trip.
+10.4 Vibration probes: eddy-current type, two (2) radial + one (1) axial per
+     bearing housing.
+10.5 Process connection instrument flanges shall be ASME B16.5 Class 300 RF.
+     Thread connections are not acceptable for process measurements.
+10.6 The local control panel (LCP) shall be stainless steel (316SS), IP65
+     minimum, and shall contain the PLC, HMI touchscreen (minimum 15"),
+     MMS, and all local controls.
+10.7 Anti-surge control shall use a dedicated anti-surge controller (ASC),
+     not implemented in the DCS. Vendor to supply ASC as part of LCP.
+10.8 Vendor shall provide full cause-and-effect matrix and interlock logic
+     diagram for Purchaser's review and approval before software coding.
+10.9 All signal cables within the package shall be in metallic conduit.
+     Flexible conduit shall be limited to final 500 mm connections only.
+10.10 Vendor shall provide a DCS interface description document listing all
+      hardwired trip signals, 4-20 mA signals, and optional Modbus/Profibus
+      communication points.
+
+11. INSPECTION AND TESTING REQUIREMENTS
+11.1 Vendor shall submit ITP within 21 days of order. ITP requires written
+     approval before any manufacturing begins.
+11.2 Compressor mechanical test requirements (Hold points = H, Witness = W):
+     a) Casing hydrostatic test at 1.5× MAWP: H
+     b) Rotor balance check after final assembly: H
+     c) Rotor overspeed test (115% MCS): H
+     d) Mechanical run test (API 617 Clause 8.3.3, minimum 4 hours): H
+     e) Performance test (API 617 Clause 8.3.4): H
+     f) Vibration and bearing temperature confirmation during full-load test: H
+     g) Seal gas consumption measurement during performance test: W
+     h) Strip-down inspection after mechanical run test: H
+     i) String test (compressor + gearbox + driver assembled): H
+11.3 Gearbox: Full-load Factory Acceptance Test (FAT), all hold points per
+     API 613 test requirements.
+11.4 Steam turbine: Full-load test at Vendor's test facility or sub-vendor
+     facility with 48-hour advance notice to Purchaser.
+11.5 Lube oil system: Cleanliness flushing to ISO 4406 cleanliness level 16/14/11
+     minimum; to be demonstrated by particle count analysis submitted to Purchaser.
+11.6 Gas coolers: Hydrostatic test on both shell and tube side, witnessed.
+11.7 Control panel (LCP): Factory Acceptance Test (FAT) including full
+     simulation of all interlock and ESD functions. Duration: minimum 2 days.
+     Purchaser to participate. Vendor to provide FAT procedure 2 weeks in advance.
+11.8 Purchaser reserves the right to conduct supplementary third-party inspection
+     at any time at any fabrication facility (including sub-vendors) with minimum
+     24 hours advance notice.
+
+12. DOCUMENTATION REQUIREMENTS
+12.1 All documentation: English only, unless otherwise agreed in writing.
+12.2 Engineering drawing approval: Vendor to respond within 10 working days
+     of receiving Purchaser comments. Drawings returned "Approved as Noted"
+     shall be resubmitted within 5 working days.
+12.3 The following documents require approval before manufacture:
+     a) General Arrangement (GA) drawing of complete package
+     b) Compressor cross-section and rotor assembly drawing
+     c) P&ID of complete package (process, lube oil, seal gas)
+     d) API 617 datasheet
+     e) Rotor dynamic analysis report (Level 2)
+     f) ITP
+     g) Cause-and-effect matrix / interlock logic diagram
+     h) DCS interface document
+     i) Equipment layout within LCP
+12.4 The following documents are required for Purchaser's information
+     (submit within 60 days of order):
+     a) Material traceability plan
+     b) Welding procedure register and WPS summaries
+     c) Third-party inspection agency nomination (for Purchaser's approval)
+12.5 Final documentation (MDR) shall be delivered as:
+     - 4 hard copies (bound)
+     - Electronic copies: PDF + native format on USB drives (2 sets)
+12.6 All vendor-supplied drawings shall use Purchaser's drawing numbering
+     system as specified in Attachment E (Document Control Procedure).
+12.7 Operating and Maintenance Manual (O&M Manual) shall be delivered in
+     two volumes: Vol.1 Operation, Vol.2 Maintenance. Submit 6 weeks before
+     shipment.
+
+13. PAINTING AND SURFACE TREATMENT
+13.1 Surface preparation: Sa 2.5 per ISO 8501-1 (near-white blast cleaning).
+     Sa 3 is required for all lube oil reservoir internal surfaces.
+13.2 Paint system for external carbon steel surfaces:
+     Primer     : Epoxy zinc-rich, DFT ≥ 75 µm
+     Intermediate: Epoxy MIO (micaceous iron oxide), DFT ≥ 100 µm
+     Topcoat    : Aliphatic polyurethane, DFT ≥ 75 µm
+     Total DFT  : Minimum 250 µm
+     Final color: RAL 9002 (grey white) for package; RAL 3000 (flame red)
+                  for fire-fighting connections only.
+13.3 Stainless steel and non-ferrous surfaces shall not be painted.
+13.4 All machined mating surfaces and flange faces shall be protected with
+     Tectyl 511M or approved equivalent. Plastic flange protectors are
+     not acceptable; steel blank flanges required.
+13.5 Internal carbon steel surfaces of lube oil system: Two-coat epoxy,
+     minimum 200 µm DFT, non-toxic and compatible with ISO VG 46 turbine oil.
+
+14. PRESERVATION AND PACKING
+14.1 Prior to shipment, all gas-path internals shall be purged with dry N2
+     and sealed with nitrogen blanket (positive N2 pressure 0.2 barg) for
+     ocean freight.
+14.2 Lube oil system shall be flushed, drained, and internally preserved
+     with oil mist or VCI (Vapor Corrosion Inhibitor) capsules.
+14.3 All external shafts, machined surfaces, and threaded connections shall
+     be coated with long-term rust inhibitor and covered.
+14.4 All instruments and electrical equipment shall be individually wrapped
+     in moisture-absorbing packaging and packed in foam-padded cases.
+14.5 The complete package shall be mounted on a heavy-duty steel skid and
+     crated with fully enclosed weather-proof wooden crating for ocean freight
+     (ISPM 15 heat-treated timber required).
+14.6 Maximum individual lift weight: 30 metric tons. If the package exceeds
+     this limit, Vendor shall propose lifting arrangement and confirm with
+     Purchaser's site rigging contractor before shipment.
+14.7 Packing list shall be supplied in triplicate showing: item description,
+     quantity, weight (net/gross), dimensions, and equipment tag number.
+
+15. SPARE PARTS
+15.1 Commissioning spares (24-month operation, included in base price):
+     a) Complete set of shaft end seals
+     b) All instrument tubing fittings and O-rings × 2 sets
+     c) Lube oil filter elements × 12
+     d) Seal gas filter elements × 6
+     e) Complete coupling spacer assembly × 1
+     f) All gaskets for each flanged connection × 2 sets
+15.2 Installed spare rotor (as listed in 1.1(n)):
+     Spare rotor shall be fully assembled with impellers, sleeves, and seals,
+     ready to install. It shall be preserved and stored in dedicated transport
+     frame with N2 blanket.
+15.3 Vendor shall submit a recommended 2-year and 5-year spare parts list
+     with unit prices at time of bid. This list shall not be binding but serves
+     as a reference for Purchaser's long-term spares procurement planning.
+
+16. DELIVERY, SCHEDULE AND LIQUIDATED DAMAGES
+16.1 Required delivery: 52 weeks from Purchase Order effective date.
+     Delivery to be free on board (FOB) at Port of Kobe, Japan.
+16.2 Partial shipments are acceptable with Purchaser's prior approval.
+     Priority shipment sequence: (1) LCP, (2) lube oil console,
+     (3) compressor + gearbox + turbine assembled on base frame.
+16.3 Vendor shall submit a Level 3 manufacturing schedule in Primavera P6
+     or Microsoft Project format within 21 days of order.
+     Schedule shall be updated monthly.
+16.4 Liquidated damages for late delivery:
+     First 4 weeks: 0.5% of contract value per week.
+     After 4 weeks: 1.0% of contract value per week.
+     Maximum total LD: 10% of contract value.
+16.5 Vendor shall give minimum 6 weeks' advance notice of readiness for
+     Purchaser's pre-shipment inspection.
+
+17. HEALTH, SAFETY AND ENVIRONMENT (HSE) REQUIREMENTS
+17.1 Noise level shall not exceed 85 dB(A) at 1 m from the package
+     boundary under rated operating conditions.
+     If this limit cannot be met, Vendor shall propose an acoustic enclosure.
+17.2 All lifting attachments (lugs, trunnions) shall be proof-tested to 150%
+     of maximum lift weight and certified by an independent inspection body.
+17.3 Vendor's manufacturing facility shall hold ISO 45001 (or OHSAS 18001)
+     and ISO 14001 certifications. Certificates to be submitted at bid.
+17.4 No asbestos-containing materials shall be used in any part of the package.
+     Vendor to provide declaration of compliance.
+17.5 All grease fittings shall be of type compatible with bio-degradable grease
+     per ISO 15380 Type L-EAL.
+
+================================================================================
+END OF SPECIFICATION
+================================================================================

@@ -30,6 +30,7 @@ const news = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/news' }),
   schema: z.object({
     title: z.string(),
+    description: z.string().optional(),  // SEO対応・無ければレイアウト側で汎用文を使用
     date: z.string(),
     category: z.string().optional().default('お知らせ'),
   }),
@@ -39,6 +40,7 @@ const learning = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/learning' }),
   schema: z.object({
     title: z.string(),
+    description: z.string().optional(),  // SEO対応・無ければレイアウト側で汎用文を使用
     week: z.number().optional(),
     phase: z.number().optional(),
     priority: z.string().optional(),

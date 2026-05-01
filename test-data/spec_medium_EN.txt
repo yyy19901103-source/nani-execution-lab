@@ -1,0 +1,155 @@
+================================================================================
+TECHNICAL SPECIFICATION
+CENTRIFUGAL PUMP PACKAGE – CRUDE OIL FEED SERVICE
+================================================================================
+Document No. : NRP2-MEC-SP-PP-001 Rev.B
+Project       : Nippon Refinery Expansion Project Phase 2
+Purchaser     : Nippon Petroleum Refining Co., Ltd.
+Equipment Tag : 12-P-101 A/B
+Quantity      : 2 sets (1 operating + 1 standby)
+Date          : April 2026
+================================================================================
+
+1. SCOPE OF SUPPLY
+1.1 The Vendor shall supply a complete centrifugal pump package in accordance with
+    this specification, including pump, base plate, coupling, coupling guard, and
+    all appurtenances necessary for a complete and operable unit.
+1.2 The supply shall include all instruments mounted on the package as listed in
+    the Instrument Index (Attachment A).
+1.3 Commissioning spare parts for 2 years of continuous operation shall be included
+    in the scope.
+1.4 All special tools required for maintenance shall be included.
+
+2. APPLICABLE CODES AND STANDARDS
+2.1 The pump shall be designed and manufactured in full conformance with
+    API 610, 12th Edition (latest edition at time of order placement).
+2.2 Pressure-containing parts shall conform to ASME Section VIII Division 1.
+2.3 All flanges shall be ASME B16.5 Class 300 rating minimum.
+2.4 Electrical equipment in the vicinity of the pump shall comply with IEC 60079
+    (Zone 1 classification).
+2.5 All materials shall be fully traceable and certified to EN 10204 Type 3.1
+    material test reports.
+2.6 Where conflicts exist between codes, the more stringent requirement shall apply.
+    Any conflicts shall be reported to Purchaser in writing within 14 days of
+    order placement.
+
+3. DESIGN CONDITIONS
+3.1 Fluid                    : Crude oil (API gravity 28–34)
+3.2 Rated flow               : 450 m³/h
+3.3 Differential head        : 180 m
+3.4 Suction pressure         : 0.5 barg (min) / 2.0 barg (max)
+3.5 Discharge pressure       : 19.5 barg
+3.6 Operating temperature    : 60°C normal / 80°C maximum
+3.7 Minimum operating temperature : -10°C (winter startup condition)
+3.8 Specific gravity         : 0.87 at operating temperature
+3.9 Viscosity                : 25 cSt at 60°C
+3.10 Vapor pressure          : 0.08 barg at 60°C
+3.11 NPSH available          : 4.5 m (minimum, at rated flow)
+
+4. MECHANICAL DESIGN REQUIREMENTS
+4.1 Pump type shall be API 610 type OH2 (overhung, between bearing).
+4.2 The pump shall be capable of operating continuously at any flow between
+    70% and 110% of best efficiency point (BEP) without mechanical seal failure
+    or excessive vibration.
+4.3 The pump shall be designed for a minimum service life of 25 years.
+4.4 Impeller shall be of the closed type with wear rings on both impeller and casing.
+4.5 The minimum radial clearance between impeller and casing shall be 0.3 mm
+    per side.
+4.6 Shaft deflection at the seal faces shall not exceed 0.05 mm under any
+    operating condition.
+4.7 The baseplate shall be of the sole-plate type, fabricated from structural steel,
+    stress-relieved, and hot-dip galvanized after fabrication.
+4.8 All external bolting shall be 316 stainless steel, minimum Grade B8.
+4.9 The pump unit weight shall not exceed 2,500 kg including base plate.
+    If this limit cannot be met, Vendor shall notify Purchaser within 21 days
+    of order.
+
+5. MATERIAL REQUIREMENTS
+5.1 Casing and cover         : ASTM A351 CF8M (316SS equivalent) minimum
+5.2 Impeller                 : ASTM A351 CF8M
+5.3 Shaft                    : ASTM A564 Type 630 (17-4PH, H1150 condition)
+5.4 Wear rings               : ASTM A276 Type 316L with stellite overlay
+5.5 Casing bolting           : ASTM A193 B8M / A194 8M
+5.6 No cast iron shall be used for any pressure-containing or rotating parts.
+5.7 All materials in contact with process fluid shall be suitable for H2S service
+    per NACE MR0175/ISO 15156.
+
+6. MECHANICAL SEAL REQUIREMENTS
+6.1 Mechanical seal shall be API 682 Plan 32 (flush from external clean source)
+    with Plan 52 (unpressurized buffer fluid) as secondary containment.
+6.2 Seal flush fluid shall be provided by Purchaser at 4 barg, 40°C max.
+6.3 Seal face materials: primary—silicon carbide/silicon carbide;
+    secondary—carbon/silicon carbide.
+6.4 Mean time between planned maintenance (MTBPM) for seal shall be minimum
+    25,000 hours under rated operating conditions.
+6.5 Dual mechanical seal arrangement (Type C per API 682) is mandatory.
+    Single seals will not be accepted.
+
+7. DRIVER REQUIREMENTS
+7.1 Drive motor shall be supplied by Purchaser. Motor details are given in
+    Attachment B (Motor Data Sheet).
+7.2 Vendor shall supply coupling, coupling guard, and shaft alignment report.
+7.3 Vendor shall confirm motor shaft dimensions within 14 days of order to
+    allow motor procurement in parallel.
+7.4 The coupling shall be of the disc-type, non-lubricated, with a service factor
+    of minimum 1.5 on rated torque.
+
+8. INSPECTION AND TESTING
+8.1 Vendor shall prepare and submit an Inspection and Test Plan (ITP) within
+    28 days of order placement for Purchaser's written approval.
+8.2 The following tests are MANDATORY with Purchaser witness (H – Hold point):
+    a) Hydrostatic test of casing at 1.5 × design pressure: H
+    b) NPSH performance test per API 610 Annex F: H
+    c) Complete performance test (H-Q curve, efficiency, power): H
+    d) Mechanical run test at rated speed, minimum 4 hours: H
+    e) Vibration measurement per API 670 during mechanical run: H
+    f) API 610 Annex E strip-down inspection after mechanical run: H
+8.3 All test results shall be within the tolerances of API 610 Table 2.
+    Any deviation shall require re-test after Purchaser approval.
+8.4 Third-party inspection by Purchaser's nominated TPI agency shall be
+    accommodated at all stages of manufacture at no additional cost.
+8.5 Purchaser's inspector shall have unrestricted access to the manufacturing
+    facility at all times during the contract period.
+
+9. DOCUMENTATION REQUIREMENTS
+9.1 All documentation shall be submitted in English language only.
+9.2 Drawing approval cycle: Vendor shall resubmit within 10 working days
+    of receiving Purchaser's comments.
+9.3 The following documents are required for approval before manufacture:
+    a) General Arrangement drawing
+    b) Cross-section drawing
+    c) Bill of Materials
+    d) ITP
+    e) Mechanical Seal data sheet
+9.4 Final documentation shall be delivered as 3 hard copies + 1 electronic copy
+    (PDF + native CAD format) in a Master Document Register (MDR).
+9.5 All drawings shall use the Purchaser's title block format (template in
+    Attachment C).
+9.6 Operating and Maintenance Manual shall be submitted 4 weeks before
+    shipment.
+
+10. PAINTING, PRESERVATION AND PACKING
+10.1 External surfaces shall be painted per Purchaser's paint specification
+     NPR-PAINT-001 (Attachment D): DFT minimum 250 microns total,
+     final color RAL 5015 (sky blue).
+10.2 All machined surfaces shall be protected with temporary rust-preventive
+     compound, removable by solvent cleaning.
+10.3 Pump casing internals shall be flushed with clean rust inhibitor oil and
+     all openings blanked with steel plates, not plastic caps.
+10.4 The unit shall be crated in wooden export packing suitable for ocean
+     freight. Packing shall withstand 3 months outdoor storage.
+10.5 Packing marking shall include: Project name, PO number, equipment tag,
+     net weight, gross weight, and center-of-gravity marking.
+
+11. DELIVERY AND SCHEDULE
+11.1 Required delivery date: within 28 weeks from the date of Purchase Order.
+11.2 Vendor shall submit a detailed manufacturing schedule within 14 days of
+     order, showing all critical milestones.
+11.3 Liquidated damages for late delivery: 0.5% of contract value per week,
+     maximum 10% total.
+11.4 Vendor shall notify Purchaser in writing of any anticipated delay immediately
+     upon becoming aware of it.
+
+================================================================================
+END OF SPECIFICATION
+================================================================================
