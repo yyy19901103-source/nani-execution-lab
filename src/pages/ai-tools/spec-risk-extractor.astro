@@ -1183,7 +1183,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         { ch:'6.2', type:'据付', spec:'試運転は当社現地で立会、運転員教育を 5日間実施すること。' },
       ],
       vehicle: [
-        { ch:'1.1', type:'シャシ', spec:'三菱ふそうキャンター 4WD ベース、最大積載量 3t、車両総重量 7.5t を超えないこと。' },
+        { ch:'1.1', type:'シャシ', spec:'国産 4WD キャブオーバートラック ベース、最大積載量 3t、車両総重量 7.5t を超えないこと。' },
         { ch:'1.2', type:'シャシ', spec:'消防車仕様の特装架装とし、公道走行に必要な型式認定を取得すること。' },
         { ch:'2.1', type:'装備', spec:'警光灯（赤色LED式）、サイレン（90dB以上）、車載無線機を標準装備すること。' },
         { ch:'2.2', type:'装備', spec:'CAFS（圧縮空気泡消火装置）、ホースリール 50m×2、放水ノズルを装備。' },
@@ -2895,8 +2895,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const specCol    = find(['要求仕様', '仕様文', '要求事項', 'requirement', 'spec_text', 'spec']);
         // デビクラ文列（判定ラベルではなく実際の文）
         const devicraCol = find(['devicra_text', 'デビクラ文', '懸念事項', 'clarification', 'deviation_text']);
-        // 判定列（対象外フィルタ用・任意）
-        const judgmentCol = find(['デビクラ', '判定', '正解', 'judgment']);
+        // 判定列（対象外フィルタ用・任意）— devicraColと衝突しない語のみ
+        const judgmentColCandidates = ['デビクラ判定', '判定', '正解', 'judgment', 'label'].filter(k => k !== devicraCol);
+        const judgmentCol = find(judgmentColCandidates);
 
         if (!specCol)    throw new Error('仕様文の列が見つかりません（要求仕様/仕様文/spec）');
         if (!devicraCol) throw new Error('デビクラ文の列が見つかりません（devicra_text/デビクラ文）');
@@ -3005,7 +3006,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     async function getLlamaEngine() {
       if (_llamaEngine) return _llamaEngine;
       const create = window._webllmCreate;
-      if (create === null) throw new Error('WebLLM(esm.run)の読込に失敗しました。CDN障害・CSP・ネットワーク制限をご確認ください。');
+      if (create === null) throw new Error('WebLLMの読込に失敗しました。CDN障害・CSP・ネットワーク制限をご確認ください（複数CDNを試みましたが全て失敗しました）。');
       if (!create) throw new Error('WebLLMをまだ読込中です。少し待ってから再試行してください。');
       if (!await checkWebGPU()) throw new Error('WebGPU非対応ブラウザです。Chrome/Edge 113以降が必要です。');
       const wrap = document.getElementById('llama-dl-wrap');
