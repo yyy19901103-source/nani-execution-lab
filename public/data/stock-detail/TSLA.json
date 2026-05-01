@@ -1,6 +1,6 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
@@ -48,7 +48,14 @@
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 57.2
+        "avg_score": 57.3
+      },
+      "integration": {
+        "count": 6,
+        "buy": 0,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 51.7
       },
       "sector": {
         "count": 19,
@@ -63,13 +70,6 @@
         "sell": 0,
         "hold": 7,
         "avg_score": 49.0
-      },
-      "integration": {
-        "count": 6,
-        "buy": 0,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 50.5
       }
     }
   },
@@ -123,20 +123,20 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "failure_pattern",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
-    },
-    {
       "agent": "portfolio_fit",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
     },
     {
       "agent": "long_term_prob",
@@ -159,10 +159,10 @@
     {
       "agent": "monte_carlo",
       "category": "prediction",
-      "score": 58.0,
+      "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率60% / P10=-0.7% P90=+1.2%"
+      "reason": "MC 20日後: 中央値+0.2% / 上昇確率61% / P10=-0.8% P90=+1.2%"
     },
     {
       "agent": "mid_term_prob",
@@ -173,12 +173,12 @@
       "reason": "20d/3m上昇確率=56% / MA20=+2.8% / 売上成長=16%"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
+      "agent": "comparative",
+      "category": "integration",
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "ウォッチリスト内 6/11位"
     },
     {
       "agent": "sector_ev",
@@ -187,14 +187,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "EVマージン改善中"
-    },
-    {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "investor_profile",
@@ -213,6 +205,14 @@
       "reason": "異常なし"
     },
     {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
       "agent": "growth_invest",
       "category": "trade_style",
       "score": 55.0,
@@ -229,12 +229,12 @@
       "reason": "ADXトレンド強(=27)"
     },
     {
-      "agent": "short_term_prob",
-      "category": "prediction",
-      "score": 54.0,
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "1d/5d上昇確率=54% / RSI=65 / MACD正"
+      "reason": "OBV上昇トレンド"
     }
   ],
   "fundamentals": {

@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 1.24,
     "risk_reward": 4.96,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=6%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=6%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
@@ -43,13 +43,6 @@
         "hold": 3,
         "avg_score": 54.3
       },
-      "personal": {
-        "count": 10,
-        "buy": 5,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 58.5
-      },
       "sector": {
         "count": 19,
         "buy": 1,
@@ -57,19 +50,26 @@
         "hold": 18,
         "avg_score": 50.9
       },
+      "personal": {
+        "count": 10,
+        "buy": 4,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 55.5
+      },
       "prediction": {
         "count": 10,
-        "buy": 1,
+        "buy": 2,
         "sell": 1,
-        "hold": 8,
-        "avg_score": 50.8
+        "hold": 7,
+        "avg_score": 51.2
       },
       "integration": {
         "count": 6,
         "buy": 0,
         "sell": 0,
         "hold": 6,
-        "avg_score": 51.5
+        "avg_score": 51.0
       }
     }
   },
@@ -99,14 +99,6 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "決算前ルール違反: 決算まで0日"
-    },
-    {
       "agent": "dividend_income",
       "category": "trade_style",
       "score": 70.0,
@@ -131,12 +123,12 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "market_regime",
-      "category": "market_monitor",
+      "agent": "failure_pattern",
+      "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "強気レジーム"
+      "reason": "失敗パターンなし"
     },
     {
       "agent": "portfolio_fit",
@@ -147,12 +139,20 @@
       "reason": "未保有・新規可能"
     },
     {
-      "agent": "failure_pattern",
-      "category": "personal",
+      "agent": "market_regime",
+      "category": "market_monitor",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "失敗パターンなし"
+      "reason": "強気レジーム"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 64.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=64% / ROIC=0% / PER=29x"
     }
   ],
   "top_risks": [
@@ -173,28 +173,20 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率61% / P10=-0.2% P90=+0.3%"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
       "agent": "mid_term_prob",
       "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "20d/3m上昇確率=55% / MA20=+3.4% / 売上成長=0%"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
     },
     {
       "agent": "investor_profile",
@@ -213,20 +205,12 @@
       "reason": "異常なし"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "配当利回り119.0%"
-    },
-    {
-      "agent": "comparative",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 5/9位"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "lgbm_prob",
@@ -235,6 +219,22 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "5d上昇確率=53% / 20d=53% / 3m=52% / 期待値=+1.24%"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=52% / LGBM=53% / ルール=53% / ファンダ=50%"
+    },
+    {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 6/10位"
     }
   ],
   "fundamentals": {
@@ -272,38 +272,17 @@
   },
   "news": [
     {
-      "headline": "Suze Orman Says Put 50% in VOO. Here’s Why She’s Right",
-      "sentiment": -0.3,
-      "importance": 2,
-      "published_at": "Wed, 22 Apr 2026 19",
-      "source": "yahoo"
-    },
-    {
       "headline": "ETF Fund Flows as of April 28, 2026",
       "sentiment": null,
       "importance": 2,
-      "published_at": "Tue, 28 Apr 2026 21",
+      "published_at": "2026-04-28 21:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Investors Worry About Mounting Debt — 7 S&P 500 Companies Owe Most",
       "sentiment": -0.88,
       "importance": 2,
-      "published_at": "Tue, 28 Apr 2026 11",
-      "source": "yahoo"
-    },
-    {
-      "headline": "4 Brilliant ETFs to Buy in April and Hold for the Next Decade",
-      "sentiment": 0.76,
-      "importance": 2,
-      "published_at": "Thu, 23 Apr 2026 15",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Buy These 3 Vanguard Index Funds and You Could Beat the S&P 500 Over the Next 5 Years",
-      "sentiment": 0.4,
-      "importance": 2,
-      "published_at": "Sat, 25 Apr 2026 14",
+      "published_at": "2026-04-28 11:00:00",
       "source": "yahoo"
     }
   ],

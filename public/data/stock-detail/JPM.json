@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "watch",
     "score": 55,
@@ -9,7 +9,7 @@
     "expected_return": 1.24,
     "risk_reward": 4.96,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
@@ -69,7 +69,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 53.3
+        "avg_score": 53.2
       }
     }
   },
@@ -107,14 +107,6 @@
       "reason": "PER割安(15.0x) / ROE高(16%) / 配当利回り194.0%"
     },
     {
-      "agent": "fundamental",
-      "category": "analysis",
-      "score": 71.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高利益率(43%) / PER割安(15x)"
-    },
-    {
       "agent": "supply_demand",
       "category": "analysis",
       "score": 71.0,
@@ -123,12 +115,12 @@
       "reason": "MFI買い圧力(68) / OBV上昇（蓄積） / VWAP上方"
     },
     {
-      "agent": "liquidity_risk",
-      "category": "market_monitor",
-      "score": 70.0,
+      "agent": "fundamental",
+      "category": "analysis",
+      "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "流動性良好"
+      "reason": "高利益率(43%) / PER割安(15x)"
     },
     {
       "agent": "technical_summary",
@@ -137,6 +129,14 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "テクニカル総合買いシグナル / 強弱比=3.8:1.5"
+    },
+    {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
     },
     {
       "agent": "comparative",
@@ -157,14 +157,6 @@
   ],
   "top_risks": [
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率61% / P10=-0.4% P90=+0.6%"
-    },
-    {
       "agent": "expected_value",
       "category": "prediction",
       "score": 58.0,
@@ -173,20 +165,12 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "volatility_env",
-      "category": "market_monitor",
-      "score": 55.0,
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "低ボラ環境"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率60% / P10=-0.3% P90=+0.6%"
     },
     {
       "agent": "investor_profile",
@@ -203,6 +187,22 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "volatility_env",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "低ボラ環境"
     },
     {
       "agent": "day_trade",

@@ -1,6 +1,6 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -9,17 +9,16 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "BUY": 9,
+      "BUY": 8,
       "HOLD": 8,
-      "WATCH": 50,
-      "REDUCE": 1,
-      "SELL": 1
+      "WATCH": 51,
+      "REDUCE": 2
     },
     "category_stats": {
       "market_monitor": {
@@ -38,10 +37,10 @@
       },
       "personal": {
         "count": 10,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 54.5
+        "hold": 8,
+        "avg_score": 52.0
       },
       "analysis": {
         "count": 10,
@@ -62,7 +61,7 @@
         "buy": 0,
         "sell": 1,
         "hold": 5,
-        "avg_score": 45.5
+        "avg_score": 46.8
       },
       "sector": {
         "count": 19,
@@ -99,14 +98,6 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "集中度ルール違反: 57%"
-    },
-    {
       "agent": "technical_summary",
       "category": "analysis",
       "score": 63.0,
@@ -131,20 +122,20 @@
       "reason": "RSI中立ゾーン / 直近ニュース良好(0.41)"
     },
     {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "ストキャスOver売(0) / ストキャスKD売り"
-    },
-    {
       "agent": "emotion_bias",
       "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "感情バイアスなし"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ストキャスOver売(0) / ストキャスKD売り"
     }
   ],
   "top_risks": [
@@ -157,14 +148,6 @@
       "reason": "1d/5d上昇確率=59% / RSI=52 / MACD正"
     },
     {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
-    },
-    {
       "agent": "news_impact",
       "category": "analysis",
       "score": 56.0,
@@ -173,12 +156,12 @@
       "reason": "ニュース中立"
     },
     {
-      "agent": "ensemble",
+      "agent": "lgbm_prob",
       "category": "prediction",
-      "score": 55.0,
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
+      "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
     },
     {
       "agent": "investor_profile",
@@ -195,6 +178,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
     },
     {
       "agent": "long_term_prob",
@@ -244,43 +235,7 @@
     "current_pct_of_ath": 50.9
   },
   "backtest": null,
-  "news": [
-    {
-      "headline": "UiPath Advances AI-Driven Enterprise Operations with Databricks Partnership",
-      "sentiment": 0.61,
-      "importance": 3,
-      "published_at": "Mon, 27 Apr 2026 12",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Will Deeper Gemini Integrations Across Clouds and Partners Change UiPath's (PATH) Automation Narrative",
-      "sentiment": 0.59,
-      "importance": 2,
-      "published_at": "Tue, 28 Apr 2026 08",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Why UiPath (PATH) Dipped More Than Broader Market Today",
-      "sentiment": null,
-      "importance": 2,
-      "published_at": "Thu, 23 Apr 2026 21",
-      "source": "yahoo"
-    },
-    {
-      "headline": "UiPath vs. AppLovin: Which AI-driven Tech Stock is Worth Considering?",
-      "sentiment": 0.81,
-      "importance": 2,
-      "published_at": "Thu, 23 Apr 2026 17",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Is UiPath, Inc. (PATH) A Good Stock To Buy Now?",
-      "sentiment": 0.87,
-      "importance": 2,
-      "published_at": "Thu, 23 Apr 2026 17",
-      "source": "yahoo"
-    }
-  ],
+  "news": [],
   "earnings_recent": [
     {
       "date": "2026-05-29",

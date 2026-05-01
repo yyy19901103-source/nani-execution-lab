@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,16 +9,15 @@
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "BUY": 10,
-      "HOLD": 8,
-      "WATCH": 50,
-      "SELL": 1
+      "BUY": 9,
+      "HOLD": 10,
+      "WATCH": 50
     },
     "category_stats": {
       "prediction": {
@@ -26,28 +25,28 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 57.4
+        "avg_score": 57.6
       },
       "analysis": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 52.4
+        "avg_score": 51.4
       },
       "personal": {
         "count": 10,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 56.2
+        "hold": 8,
+        "avg_score": 53.7
       },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.1
+        "avg_score": 50.7
       },
       "trade_style": {
         "count": 7,
@@ -59,9 +58,9 @@
       "integration": {
         "count": 6,
         "buy": 0,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 45.7
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 48.3
       },
       "sector": {
         "count": 19,
@@ -82,14 +81,6 @@
       "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
     },
     {
-      "agent": "technical_summary",
-      "category": "analysis",
-      "score": 67.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
-    },
-    {
       "agent": "lgbm_prob",
       "category": "prediction",
       "score": 67.0,
@@ -98,12 +89,12 @@
       "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
-      "score": 65.0,
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 67.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "集中度ルール違反: 13%"
+      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
     },
     {
       "agent": "failure_pattern",
@@ -130,6 +121,14 @@
       "reason": "3%下落確率=23% / 5%下落確率=38% / 10%下落確率=70%"
     },
     {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ストキャスOver売(0) / ストキャスKD売り"
+    },
+    {
       "agent": "emotion_bias",
       "category": "personal",
       "score": 60.0,
@@ -144,17 +143,17 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "中期・長期MA上向き / 200MA下 / MACD正"
-    },
-    {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "ストキャスOver売(0) / ストキャスKD売り"
     }
   ],
   "top_risks": [
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
+    },
     {
       "agent": "short_term_prob",
       "category": "prediction",
@@ -170,14 +169,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
-    },
-    {
-      "agent": "ensemble",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
     },
     {
       "agent": "supply_demand",
@@ -204,14 +195,6 @@
       "reason": "高ボラ(5.2%)"
     },
     {
-      "agent": "news_impact",
-      "category": "analysis",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ニュース中立"
-    },
-    {
       "agent": "mid_term_prob",
       "category": "prediction",
       "score": 56.0,
@@ -226,6 +209,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
     },
     {
       "agent": "investor_profile",
@@ -253,38 +244,24 @@
   "backtest": null,
   "news": [
     {
-      "headline": "Is SoundHound AI's Latest Acquisition a Game Changer for the Stock?",
-      "sentiment": 0.48,
-      "importance": 5,
-      "published_at": "Fri, 24 Apr 2026 14",
-      "source": "yahoo"
-    },
-    {
-      "headline": "SoundHound AI (SOUN) Expands Partnership With Casey’s Across 2,600 Locations",
-      "sentiment": 0.8,
-      "importance": 3,
-      "published_at": "Sat, 25 Apr 2026 21",
-      "source": "yahoo"
-    },
-    {
       "headline": "SoundHound AI Stock Down 66% From Its High -- Is It Finally a Screaming Buy?",
       "sentiment": -0.45,
       "importance": 2,
-      "published_at": "Wed, 29 Apr 2026 02",
+      "published_at": "2026-04-29 02:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Why the \"Great Repricing\" of AI Software Stocks Is a Gift for Long-Term Investors",
       "sentiment": 0.87,
       "importance": 2,
-      "published_at": "Tue, 28 Apr 2026 21",
+      "published_at": "2026-04-28 21:00:00",
       "source": "yahoo"
     },
     {
       "headline": "SoundHound AI, Inc. (SOUN) Sees a More Significant Dip Than Broader Market: Some Facts to Know",
       "sentiment": 0.27,
       "importance": 2,
-      "published_at": "Tue, 28 Apr 2026 21",
+      "published_at": "2026-04-28 21:00:00",
       "source": "yahoo"
     }
   ],

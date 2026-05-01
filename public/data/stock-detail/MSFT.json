@@ -1,6 +1,6 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "weak_buy",
     "score": 55,
@@ -9,17 +9,17 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 16,
+      "BUY": 17,
       "WEAK BUY": 1,
       "HOLD": 7,
-      "WATCH": 40,
+      "WATCH": 39,
       "REDUCE": 1
     },
     "category_stats": {
@@ -49,21 +49,21 @@
         "buy": 3,
         "sell": 1,
         "hold": 6,
-        "avg_score": 54.3
+        "avg_score": 54.4
       },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.4
+        "avg_score": 53.6
       },
       "analysis": {
         "count": 10,
-        "buy": 4,
+        "buy": 5,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 56.1
+        "hold": 5,
+        "avg_score": 57.2
       },
       "integration": {
         "count": 6,
@@ -166,6 +166,14 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
+      "agent": "market_sentiment",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "直近ニュース良好(0.42)"
+    },
+    {
       "agent": "ensemble",
       "category": "prediction",
       "score": 57.0,
@@ -180,6 +188,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
+    },
+    {
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ADXトレンド強(=51)"
     },
     {
       "agent": "investor_profile",
@@ -206,14 +222,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=51)"
-    },
-    {
       "agent": "score_integration",
       "category": "integration",
       "score": 55.0,
@@ -228,14 +236,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "1d/5d上昇確率=54% / RSI=65 / MACD正"
-    },
-    {
-      "agent": "bayesian",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "過去勝率=50% / 事後確率=55%"
     }
   ],
   "fundamentals": {
@@ -273,38 +273,38 @@
   },
   "news": [
     {
+      "headline": "Five9 Q1 Earnings Call Highlights",
+      "sentiment": 0.38,
+      "importance": 5,
+      "published_at": "2026-04-30 23:00:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Here's Why This Remains My Least Favorite \"Magnificent Seven\" Stock -- Even After a Strong Earnings Report",
+      "sentiment": -0.11,
+      "importance": 5,
+      "published_at": "2026-04-30 22:00:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Stock Market Today, April 30: U.S. Markets Surge Higher Despite a Mixed Bag of Earnings From Big Tech",
+      "sentiment": 0.49,
+      "importance": 5,
+      "published_at": "2026-04-30 21:00:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "US Equity Futures Largely Flat as Traders Await Tech Earnings, Fed Rate Decision",
       "sentiment": 0.1,
       "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 12",
+      "published_at": "2026-04-29 12:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Dow Jones Futures: Seagate, Bloom Energy, Teradyne Lead Earnings Movers As Oil Prices Jump",
       "sentiment": 0.6,
       "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 12",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Microsoft Stock Shrugs Off OpenAI Shock As Earnings Loom; Is Microsoft A Buy Now?",
-      "sentiment": -0.35,
-      "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 12",
-      "source": "yahoo"
-    },
-    {
-      "headline": "US Equity Futures Largely Flat as Traders Await Tech Earnings, Fed Rate Decision",
-      "sentiment": 0.1,
-      "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 12",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Dow Jones Futures: Seagate, Bloom Energy, Teradyne Lead Earnings Movers As Oil Prices Jump",
-      "sentiment": 0.6,
-      "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 12",
+      "published_at": "2026-04-29 12:00:00",
       "source": "yahoo"
     }
   ],

@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "weak_buy",
     "score": 56,
@@ -9,14 +9,14 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
-      "BUY": 16,
+      "STRONG_BUY": 6,
+      "BUY": 15,
       "WEAK BUY": 1,
       "HOLD": 7,
       "WATCH": 39,
@@ -58,19 +58,19 @@
         "hold": 6,
         "avg_score": 57.2
       },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 57.3
+      },
       "market_monitor": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
         "avg_score": 56.0
-      },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 56.3
       }
     }
   },
@@ -116,6 +116,14 @@
       "reason": "12m上昇確率=79% / ROIC=24% / PER=34x"
     },
     {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 76.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 3/10位"
+    },
+    {
       "agent": "growth_invest",
       "category": "trade_style",
       "score": 74.0,
@@ -146,14 +154,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
-    },
-    {
-      "agent": "comparative",
-      "category": "integration",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 3/8位"
     }
   ],
   "top_risks": [
@@ -190,6 +190,22 @@
       "reason": "全エージェント統合スコア=56"
     },
     {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
       "agent": "alert",
       "category": "integration",
       "score": 55.0,
@@ -204,22 +220,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "investor_profile",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "value_invest",
@@ -276,35 +276,35 @@
       "headline": "Apple's new CEO Ternus likely to get earnings spotlight as strong results loom",
       "sentiment": 0.82,
       "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 10",
+      "published_at": "2026-04-29 10:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Market mayhem? Powell's last stand, Big Tech earnings in focus",
       "sentiment": 0.49,
       "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 10",
+      "published_at": "2026-04-29 10:00:00",
       "source": "yahoo"
     },
     {
       "headline": "80 Seconds of Big Tech Earnings Will Decide Stock Market’s Fate",
       "sentiment": -0.91,
       "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 09",
+      "published_at": "2026-04-29 09:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Tech Giants Set to Report Earnings Wednesday—And Big Stock Moves Are Likely",
       "sentiment": 0.18,
       "importance": 5,
-      "published_at": "Tue, 28 Apr 2026 21",
+      "published_at": "2026-04-28 21:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Big Tech: What this strategist is looking for on earnings calls",
       "sentiment": -0.38,
       "importance": 5,
-      "published_at": "Tue, 28 Apr 2026 20",
+      "published_at": "2026-04-28 20:00:00",
       "source": "yahoo"
     }
   ],

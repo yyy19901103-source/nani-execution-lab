@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-01 09:27",
+  "generated_at": "2026-05-01 09:58",
   "summary": {
     "rank": "watch",
     "score": 56,
@@ -9,7 +9,7 @@
     "expected_return": 1.24,
     "risk_reward": 4.96,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:21",
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:58",
     "prediction_date": "2026-05-01"
   },
   "agent_summary": {
@@ -22,19 +22,19 @@
       "REDUCE": 1
     },
     "category_stats": {
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 54.5
+      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
         "avg_score": 60.0
-      },
-      "prediction": {
-        "count": 10,
-        "buy": 3,
-        "sell": 1,
-        "hold": 6,
-        "avg_score": 56.5
       },
       "personal": {
         "count": 10,
@@ -50,19 +50,19 @@
         "hold": 17,
         "avg_score": 52.2
       },
+      "prediction": {
+        "count": 10,
+        "buy": 3,
+        "sell": 1,
+        "hold": 6,
+        "avg_score": 56.4
+      },
       "analysis": {
         "count": 10,
         "buy": 4,
         "sell": 0,
         "hold": 6,
         "avg_score": 58.7
-      },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 53.3
       },
       "market_monitor": {
         "count": 7,
@@ -75,20 +75,20 @@
   },
   "top_buys": [
     {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 84.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 2/10位"
+    },
+    {
       "agent": "dividend_income",
       "category": "trade_style",
       "score": 83.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "高配当(24.0%) / 高利益率(32%) / ROE高(36%)"
-    },
-    {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 81.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.8% / 上昇確率88% / P10=-0.1% P90=+1.7%"
     },
     {
       "agent": "rule_compliance",
@@ -107,6 +107,14 @@
       "reason": "高配当24.0% / ROE良好35.7% / 利益率安定31.6%"
     },
     {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.8% / 上昇確率87% / P10=-0.1% P90=+1.7%"
+    },
+    {
       "agent": "supply_demand",
       "category": "analysis",
       "score": 79.0,
@@ -121,14 +129,6 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "12m上昇確率=79% / ROIC=15% / PER=29x"
-    },
-    {
-      "agent": "comparative",
-      "category": "integration",
-      "score": 77.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 2/7位"
     },
     {
       "agent": "institutional_flow",
@@ -197,20 +197,20 @@
       "reason": "全エージェント統合スコア=56"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
     },
     {
       "agent": "ensemble",
@@ -234,7 +234,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:21"
+      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-01 09:58"
     }
   ],
   "fundamentals": {
@@ -275,35 +275,35 @@
       "headline": "US Equity Futures Largely Flat as Traders Await Tech Earnings, Fed Rate Decision",
       "sentiment": 0.1,
       "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 12",
+      "published_at": "2026-04-29 12:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Dow Jones Futures: Seagate, Bloom Energy, Teradyne Lead Earnings Movers As Oil Prices Jump",
       "sentiment": 0.6,
       "importance": 5,
-      "published_at": "Wed, 29 Apr 2026 12",
+      "published_at": "2026-04-29 12:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Why data storage stocks are a key AI play",
       "sentiment": 0.42,
       "importance": 2,
-      "published_at": "Wed, 29 Apr 2026 13",
+      "published_at": "2026-04-29 13:00:00",
       "source": "yahoo"
     },
     {
       "headline": "NYSE Content Update: Bill Ackman Raises $5 Billion in Pershing Square IPO",
       "sentiment": null,
       "importance": 2,
-      "published_at": "Wed, 29 Apr 2026 12",
+      "published_at": "2026-04-29 12:00:00",
       "source": "yahoo"
     },
     {
       "headline": "Big Tech results day: $750 billion move at stake",
       "sentiment": 0.18,
       "importance": 2,
-      "published_at": "Wed, 29 Apr 2026 12",
+      "published_at": "2026-04-29 12:00:00",
       "source": "yahoo"
     }
   ],
