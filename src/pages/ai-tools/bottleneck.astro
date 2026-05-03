@@ -49,6 +49,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">TOC理論に基づきボトルネック1箇所に集中投資</div>
       </div>
     </div>
+
+    <!-- 5秒クイックスタート -->
+    <div style="margin-top:1rem;background:linear-gradient(90deg,rgba(110,200,151,0.06) 0%,transparent 100%);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;display:flex;flex-wrap:wrap;gap:1.25rem;align-items:center;">
+      <div style="color:#6ec897;font-size:0.6rem;letter-spacing:0.3em;white-space:nowrap;">⚡ 5秒で試す</div>
+      <div style="display:flex;gap:0.5rem;align-items:center;font-size:0.78rem;color:rgba(237,237,232,0.85);flex-wrap:wrap;">
+        <span style="color:#c8a96e;font-weight:600;">①</span> 業界プリセットをクリック
+        <span style="color:rgba(255,255,255,0.3);">→</span>
+        <span style="color:#c8a96e;font-weight:600;">②</span> 各工程のCT・稼働率を確認
+        <span style="color:rgba(255,255,255,0.3);">→</span>
+        <span style="color:#c8a96e;font-weight:600;">③</span> 「分析実行」をクリック
+      </div>
+    </div>
   </div>
 
   <div style="max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;">
@@ -180,6 +192,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <li>BN解消後の次BN候補（CT・稼働率上位）を予測し、次の改善計画を準備</li>
         </ol>
       </div>
+    </div>
+
+    <!-- 関連ツール -->
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);">
+      <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:1rem;">▸ 他のツールも組み合わせる</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.85rem;margin-bottom:1.5rem;">
+        <a href={`${base}/ai-tools/production-schedule/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(200,169,110,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">スケジュール最適化</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">🧬 生産スケジュール最適化</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">BN特定後の最適ジョブ順序をGAで自動計算</div>
+        </a>
+        <a href={`${base}/ai-tools/demand-forecast/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(200,169,110,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">需要計画</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">📈 需要予測 (Holt-Winters)</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">需要変動に合わせたBN工程のキャパ計画を立案</div>
+        </a>
+      </div>
+      <a href={`${base}/ai-tools/`} style="display:block;background:#0f0f12;border:1px solid rgba(200,169,110,0.2);padding:1rem 1.25rem;text-decoration:none;" onmouseover="this.style.borderColor='rgba(200,169,110,0.4)'" onmouseout="this.style.borderColor='rgba(200,169,110,0.2)'">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.4rem;">🤖 全AIツール</div>
+        <div style="color:#edede8;font-size:0.85rem;">製造DX向けAIツール一覧 — 全10本のツールを確認する →</div>
+      </a>
     </div>
 
   </div>

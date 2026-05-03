@@ -15,6 +15,43 @@ const { Content } = await render(entry);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const slug = entry.id.replace(/\.md$/, '');
 
+// Per-case AI tool links
+const caseAiTools: Record<string, Array<{name: string, href: string}>> = {
+  'eto-ai-utilization': [
+    { name: '🔎 類似案件見積りツール', href: `${base}/ai-tools/eto-similar-quote/` },
+    { name: '🎲 モンテカルロ納期シミュ', href: `${base}/ai-tools/project-monte-carlo/` },
+    { name: '🛠 ETO Job Shopスケジューラ', href: `${base}/ai-tools/eto-job-shop/` },
+  ],
+  'dashboard': [
+    { name: '🔍 工程ボトルネック分析', href: `${base}/ai-tools/bottleneck/` },
+    { name: '📈 需要予測 (Holt-Winters)', href: `${base}/ai-tools/demand-forecast/` },
+  ],
+  'supplier-quality': [
+    { name: '📊 SPC管理図', href: `${base}/ai-tools/spc-chart/` },
+    { name: '🎯 品質予測 (NN)', href: `${base}/ai-tools/quality-prediction/` },
+  ],
+  'email-task': [
+    { name: '🧬 生産スケジュール最適化', href: `${base}/ai-tools/production-schedule/` },
+  ],
+  'project-optimizer': [
+    { name: '🎲 モンテカルロ納期シミュ', href: `${base}/ai-tools/project-monte-carlo/` },
+    { name: '🔍 工程ボトルネック分析', href: `${base}/ai-tools/bottleneck/` },
+  ],
+  'yomimiru-qc-forecast': [
+    { name: '🎯 品質予測 (NN)', href: `${base}/ai-tools/quality-prediction/` },
+    { name: '📊 SPC管理図', href: `${base}/ai-tools/spc-chart/` },
+    { name: '🔔 異常検知デモ', href: `${base}/ai-tools/anomaly-detection/` },
+  ],
+  'oee-monitoring': [
+    { name: '🔍 工程ボトルネック分析', href: `${base}/ai-tools/bottleneck/` },
+    { name: '🔔 異常検知デモ', href: `${base}/ai-tools/anomaly-detection/` },
+  ],
+  'nani-execution-lab-build': [
+    { name: '📝 仕様リスク抽出ツール', href: `${base}/ai-tools/spec-risk-extractor/` },
+  ],
+};
+const toolLinks = caseAiTools[slug] ?? [];
+
 // Hero images per case
 const heroImages: Record<string, string> = {
   'email-task':       'https://images.unsplash.com/photo-1596526131083-e8c633c948d2?auto=format&fit=crop&w=1920&q=80',
@@ -71,6 +108,58 @@ const relatedCases = allCases
   <article class="prose-custom" style="max-width:56rem;margin:0 auto;padding:3rem 1.5rem;">
     <Content />
   </article>
+
+  <!-- 使ったAIツール / 関連学習 / 関連用語 -->
+  <div style="max-width:56rem;margin:0 auto;padding:0 1.5rem 3rem;border-top:1px solid rgba(255,255,255,0.06);padding-top:2.5rem;">
+    <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.3em;margin-bottom:1.25rem;">▸ このプロジェクトで使ったリソース</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;">
+
+      <!-- 使ったAIツール -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.06);padding:1.1rem 1.25rem;">
+        <div style="color:rgba(255,255,255,0.4);font-size:0.58rem;letter-spacing:0.25em;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);">🤖 使ったAIツール</div>
+        {toolLinks.length > 0 ? (
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;">
+            {toolLinks.map(t => (
+              <li>
+                <a href={t.href} style="color:rgba(237,237,232,0.7);font-size:0.78rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(237,237,232,0.7)'">{t.name}</a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <a href={`${base}/ai-tools/`} style="color:rgba(200,169,110,0.7);font-size:0.78rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(200,169,110,0.7)'">AIツール一覧を見る →</a>
+        )}
+      </div>
+
+      <!-- 関連学習 -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.06);padding:1.1rem 1.25rem;">
+        <div style="color:rgba(255,255,255,0.4);font-size:0.58rem;letter-spacing:0.25em;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);">📚 関連学習</div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <a href={`${base}/learning/`} style="color:rgba(237,237,232,0.7);font-size:0.78rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(237,237,232,0.7)'">製造DX学習ロードマップ（16週）→</a>
+          <a href={`${base}/blog/`} style="color:rgba(237,237,232,0.7);font-size:0.78rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(237,237,232,0.7)'">関連ブログ記事を探す →</a>
+        </div>
+      </div>
+
+      <!-- 関連用語 -->
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.06);padding:1.1rem 1.25rem;">
+        <div style="color:rgba(255,255,255,0.4);font-size:0.58rem;letter-spacing:0.25em;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);">📖 関連用語</div>
+        {entry.data.tags && entry.data.tags.length > 0 ? (
+          <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+            {entry.data.tags.slice(0, 6).map((tag: string) => (
+              <a
+                href={`${base}/glossary/?q=${encodeURIComponent(tag)}`}
+                style="font-size:0.62rem;color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.08);padding:0.15rem 0.55rem;text-decoration:none;transition:all 0.2s;"
+                onmouseover="this.style.color='#c8a96e';this.style.borderColor='rgba(200,169,110,0.3)'"
+                onmouseout="this.style.color='rgba(255,255,255,0.35)';this.style.borderColor='rgba(255,255,255,0.08)'"
+              >{tag}</a>
+            ))}
+          </div>
+        ) : (
+          <a href={`${base}/glossary/`} style="color:rgba(200,169,110,0.7);font-size:0.78rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#c8a96e'" onmouseout="this.style.color='rgba(200,169,110,0.7)'">用語集を開く →</a>
+        )}
+      </div>
+
+    </div>
+  </div>
 
   <!-- CTA section -->
   <div style="max-width:56rem;margin:0 auto;padding:0 1.5rem 3rem;">

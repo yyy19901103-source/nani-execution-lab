@@ -50,18 +50,25 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     </nav>
 
     <!-- Mobile hamburger -->
-    <button id="menu-btn" style="display:none;padding:0.5rem;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.6);" class="mobile-btn" aria-label="メニュー">
-      <svg id="icon-open" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button
+      id="menu-btn"
+      style="display:none;padding:0.5rem;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.6);"
+      class="mobile-btn"
+      aria-label="メニューを開く"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg id="icon-open" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
-      <svg id="icon-close" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display:none;">
+      <svg id="icon-close" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display:none;" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
       </svg>
     </button>
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" style="display:none;background:#0c0c0e;border-top:1px solid rgba(255,255,255,0.05);">
+  <div id="mobile-menu" style="display:none;background:#0c0c0e;border-top:1px solid rgba(255,255,255,0.05);" role="navigation" aria-label="モバイルナビゲーション">
     <nav style="max-width:1280px;margin:0 auto;padding:1rem 1.5rem;display:flex;flex-direction:column;gap:0;">
       {navItems.map(item => {
         const isActive = currentPath === item.href.replace(/\/$/, '') || (item.label !== 'TOP' && currentPath.startsWith(item.href));
@@ -105,5 +112,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     menu!.style.display  = isOpen ? 'block' : 'none';
     iOpen!.style.display = isOpen ? 'none'  : 'block';
     iClose!.style.display= isOpen ? 'block' : 'none';
+    btn!.setAttribute('aria-expanded', String(isOpen));
+    btn!.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
   });
 </script>

@@ -367,6 +367,24 @@
   outline-offset: 2px;
 }
 
+/* ─── Contrast floor for interactive elements (WCAG AA 4.5:1 on #0c0c0e) ─── */
+/* Minimum readable contrast: rgba(255,255,255,0.45) ≈ 4.5:1 on bg #0c0c0e */
+/* Secondary/metadata text intentionally uses lower contrast as decorative text */
+/* Interactive elements (links, buttons) must meet AA in hover state */
+a:hover,
+button:hover {
+  text-decoration-color: rgba(200,169,110,0.5);
+}
+
+/* Navigation links – ensure minimum legibility at rest */
+nav a {
+  color: rgba(255,255,255,0.5);
+}
+nav a:hover,
+nav a[aria-current="page"] {
+  color: #c8a96e;
+}
+
 /* ─── Smooth image loading ─── */
 img {
   transition: opacity 0.3s;

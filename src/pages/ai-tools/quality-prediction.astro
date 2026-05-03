@@ -53,6 +53,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.5;">条件パターンを一括予測し最適点を絞り込み</div>
       </div>
     </div>
+
+    <!-- 5秒クイックスタート -->
+    <div style="margin-top:1rem;background:linear-gradient(90deg,rgba(110,200,151,0.06) 0%,transparent 100%);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;display:flex;flex-wrap:wrap;gap:1.25rem;align-items:center;">
+      <div style="color:#6ec897;font-size:0.6rem;letter-spacing:0.3em;white-space:nowrap;">⚡ 5秒で試す</div>
+      <div style="display:flex;gap:0.5rem;align-items:center;font-size:0.78rem;color:rgba(237,237,232,0.85);flex-wrap:wrap;">
+        <span style="color:#c8a96e;font-weight:600;">①</span> 業界プリセットをクリック
+        <span style="color:rgba(255,255,255,0.3);">→</span>
+        <span style="color:#c8a96e;font-weight:600;">②</span> 「サンプルデータを読み込む」をクリック
+        <span style="color:rgba(255,255,255,0.3);">→</span>
+        <span style="color:#c8a96e;font-weight:600;">③</span> 「モデル学習 ▶」をクリック
+      </div>
+    </div>
   </div>
 
   <div style="max-width:1200px;margin:0 auto;padding:2rem 1rem 5rem;">
@@ -294,6 +306,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <li>得られた最適点をDoE（実験計画法）に取り込み、追加試験で再現性確認</li>
         </ol>
       </div>
+    </div>
+
+    <!-- 関連ツール -->
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);">
+      <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:1rem;">▸ 他のツールも組み合わせる</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.85rem;margin-bottom:1.5rem;">
+        <a href={`${base}/ai-tools/anomaly-detection/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(200,169,110,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">異常検知</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">🔔 異常検知デモ</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">品質予測モデルの入力パラメータが正常範囲内かを監視</div>
+        </a>
+        <a href={`${base}/ai-tools/spc-chart/`} style="display:block;background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1rem 1.1rem;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(200,169,110,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+          <div style="color:#c8a96e;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.4rem;">プロセス管理</div>
+          <div style="color:#edede8;font-size:0.88rem;margin-bottom:0.3rem;">📊 SPC管理図</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.72rem;line-height:1.5;">最適条件を管理限界として設定し、工程安定性を継続監視</div>
+        </a>
+      </div>
+      <a href={`${base}/ai-tools/`} style="display:block;background:#0f0f12;border:1px solid rgba(200,169,110,0.2);padding:1rem 1.25rem;text-decoration:none;" onmouseover="this.style.borderColor='rgba(200,169,110,0.4)'" onmouseout="this.style.borderColor='rgba(200,169,110,0.2)'">
+        <div style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.4rem;">🤖 全AIツール</div>
+        <div style="color:#edede8;font-size:0.85rem;">製造DX向けAIツール一覧 — 全10本のツールを確認する →</div>
+      </a>
     </div>
 
   </div>
