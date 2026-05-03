@@ -52,6 +52,33 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .disclaimer { font-size: 0.7rem; color: #444; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 1rem 1.25rem; margin-top: 2.5rem; line-height: 1.7; }
 
+  /* 🆕 マクロボード */
+  .macro-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  @media (max-width: 720px) { .macro-grid { grid-template-columns: 1fr 1fr; } }
+  .macro-tile { background: linear-gradient(135deg, #0f0f0f 0%, #181818 100%); border: 1px solid #222; padding: 1rem; position: relative; overflow: hidden; }
+  .macro-tile-label { font-size: 0.6rem; letter-spacing: 0.2em; color: #888; }
+  .macro-tile-value { font-size: 1.8rem; font-weight: 300; color: #edede8; margin: 0.4rem 0; }
+  .macro-tile-change { font-size: 0.75rem; }
+  .vix-meter { position: relative; height: 80px; margin-top: 0.6rem; background: linear-gradient(90deg, #6ec86e 0%, #c8a96e 40%, #c87e6e 70%, #c84e4e 100%); border-radius: 4px; overflow: hidden; }
+  .vix-needle { position: absolute; top: -8px; width: 3px; height: 96px; background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.7); transition: left 0.8s ease; }
+  .vix-scale { display: flex; justify-content: space-between; font-size: 0.55rem; color: #555; padding: 0 4px; margin-top: 0.2rem; }
+
+  /* 🆕 類似日マッチング */
+  .similar-card { background: #0d0d0d; border: 1px solid #1f1f1f; padding: 1rem 1.2rem; margin-bottom: 0.8rem; border-left: 3px solid #c8a96e; }
+  .similar-date { font-size: 1rem; color: #c8a96e; font-weight: 500; }
+  .similar-context { display: inline-block; padding: 0.1rem 0.5rem; font-size: 0.65rem; background: rgba(200,169,110,0.15); color: #c8a96e; margin-left: 0.5rem; border-radius: 2px; }
+  .similar-stats { font-size: 0.78rem; color: #aaa; margin-top: 0.4rem; }
+  .similar-fwd { font-size: 0.85rem; color: #6ec86e; margin-top: 0.4rem; font-weight: 500; }
+  .similar-fwd.neg { color: #c86e6e; }
+  .today-tile { background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.3); padding: 0.8rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: #ddd; }
+
+  /* 🆕 ポジショニングマップ */
+  .scatter-wrap { background: #0d0d0d; border: 1px solid #1e1e1e; padding: 1.25rem; margin-bottom: 1.5rem; }
+  #scatter-chart { max-height: 380px; }
+  .scatter-legend { display: flex; gap: 1.2rem; font-size: 0.7rem; color: #888; margin-top: 0.6rem; flex-wrap: wrap; }
+  .scatter-legend-item { display: flex; align-items: center; gap: 0.3rem; }
+  .scatter-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
   /* 銘柄詳細モーダル */
   .ticker-link { cursor: pointer; color: #c8a96e; text-decoration: underline dotted; }
   .ticker-link:hover { color: #e0c08a; }
@@ -100,6 +127,50 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="kpi"><div class="kpi-label">ACCURACY</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">5日後的中率</div></div>
     <div class="kpi"><div class="kpi-label">JUDGED</div><div class="kpi-val" id="kpi-judged">—</div><div class="kpi-sub">判定済み予測</div></div>
     <div class="kpi"><div class="kpi-label">PENDING</div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-sub">判定待ち</div></div>
+  </div>
+
+  <!-- 🆕 マクロボード -->
+  <div class="section-title">市場恐怖メーター + マクロ環境</div>
+  <div class="macro-grid">
+    <div class="macro-tile">
+      <div class="macro-tile-label">VIX 恐怖指数</div>
+      <div class="macro-tile-value" id="m-vix-val">—</div>
+      <div class="macro-tile-change" id="m-vix-chg">—</div>
+      <div class="vix-meter"><div class="vix-needle" id="vix-needle" style="left:50%"></div></div>
+      <div class="vix-scale"><span>0</span><span>15</span><span>25</span><span>35</span><span>50+</span></div>
+    </div>
+    <div class="macro-tile">
+      <div class="macro-tile-label">米10年金利</div>
+      <div class="macro-tile-value" id="m-10y-val">—</div>
+      <div class="macro-tile-change" id="m-10y-chg">—</div>
+    </div>
+    <div class="macro-tile">
+      <div class="macro-tile-label">S&amp;P 500</div>
+      <div class="macro-tile-value" id="m-sp-val">—</div>
+      <div class="macro-tile-change" id="m-sp-chg">—</div>
+    </div>
+    <div class="macro-tile">
+      <div class="macro-tile-label">USDJPY</div>
+      <div class="macro-tile-value" id="m-jpy-val">—</div>
+      <div class="macro-tile-change" id="m-jpy-chg">—</div>
+    </div>
+  </div>
+
+  <!-- 🆕 過去類似日マッチング -->
+  <div class="section-title">過去36年DBから類似日マッチング</div>
+  <div id="similar-today" class="today-tile">読み込み中…</div>
+  <div id="similar-list"></div>
+
+  <!-- 🆕 ポジショニングマップ -->
+  <div class="section-title">ポジショニングマップ（リスク × 期待値）</div>
+  <div class="scatter-wrap">
+    <canvas id="scatter-chart"></canvas>
+    <div class="scatter-legend">
+      <div class="scatter-legend-item"><span class="scatter-legend-dot" style="background:#6ec86e"></span> 買い系</div>
+      <div class="scatter-legend-item"><span class="scatter-legend-dot" style="background:#c8a96e"></span> 様子見</div>
+      <div class="scatter-legend-item"><span class="scatter-legend-dot" style="background:#c86e6e"></span> 売り系</div>
+      <div class="scatter-legend-item">X軸: 期待リターン% / Y軸: 5%下落確率% / サイズ: AIスコア</div>
+    </div>
   </div>
 
   <!-- 的中率グラフ -->
@@ -326,6 +397,157 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   load();
+
+  // ============ 🆕 マクロボード ============
+  async function loadMacro() {
+    try {
+      const res = await fetch(`${BASE}/data/stock-macro.json`);
+      const m = await res.json();
+      const setTile = (id, obj, suffix='') => {
+        if (!obj) return;
+        document.getElementById(`m-${id}-val`).textContent = obj.value + suffix;
+        const chg = obj.change_pct;
+        const el = document.getElementById(`m-${id}-chg`);
+        if (chg != null) {
+          const sign = chg > 0 ? '▲ +' : chg < 0 ? '▼ ' : '― ';
+          el.textContent = `${sign}${chg.toFixed(2)}% (${obj.date})`;
+          el.style.color = chg > 0 ? '#6ec86e' : chg < 0 ? '#c86e6e' : '#888';
+        }
+      };
+      setTile('vix', m.vix);
+      setTile('10y', m.us10y, '%');
+      setTile('sp', m.sp500);
+      setTile('jpy', m.usdjpy);
+      // VIX needle 位置（0-50を100%にマッピング）
+      if (m.vix) {
+        const pct = Math.min(100, Math.max(0, m.vix.value / 50 * 100));
+        document.getElementById('vix-needle').style.left = `${pct}%`;
+      }
+    } catch (e) {
+      console.error('macro load error', e);
+    }
+  }
+  loadMacro();
+
+  // ============ 🆕 過去類似日マッチング ============
+  async function loadSimilarDays() {
+    try {
+      const res = await fetch(`${BASE}/data/stock-similar-days.json`);
+      const s = await res.json();
+      const todayEl = document.getElementById('similar-today');
+      if (s.today) {
+        todayEl.innerHTML = `📅 <strong>今日（${s.today.date}）</strong>: VIX <strong>${s.today.vix}</strong> / 10年金利 <strong>${s.today.us10y}%</strong> / SP500 20日リターン <strong>${s.today.sp500_ret_20d_pct}%</strong>`;
+      }
+      const listEl = document.getElementById('similar-list');
+      listEl.innerHTML = '';
+      (s.similar_days || []).forEach((d, i) => {
+        const fwd = d.next_30d_return_pct;
+        const fwdClass = fwd != null && fwd < 0 ? 'similar-fwd neg' : 'similar-fwd';
+        const fwdText = fwd != null ? `→ その後30営業日: ${fwd > 0 ? '+' : ''}${fwd}%` : '→ 30日後データなし';
+        listEl.insertAdjacentHTML('beforeend', `
+          <div class="similar-card">
+            <span class="similar-date">#${i+1}: ${d.date}</span>
+            <span class="similar-context">${d.context}</span>
+            <div class="similar-stats">VIX ${d.vix} / 10Y ${d.us10y}% / SP500 20日 ${d.sp500_ret_20d_pct}% (類似度 ${d.distance})</div>
+            <div class="${fwdClass}">${fwdText}</div>
+          </div>
+        `);
+      });
+    } catch (e) {
+      console.error('similar days load error', e);
+    }
+  }
+  loadSimilarDays();
+
+  // ============ 🆕 ポジショニングマップ ============
+  async function loadScatter() {
+    try {
+      const res = await fetch(`${BASE}/data/stock.json`);
+      const data = await res.json();
+      // Chart.js が既にロードされていない場合があるので動的ロード
+      const ensureChart = () => new Promise(resolve => {
+        if (window.Chart) return resolve();
+        const sc = document.createElement('script');
+        sc.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
+        sc.onload = resolve;
+        document.head.appendChild(sc);
+      });
+      await ensureChart();
+
+      const colorOf = (rank) => {
+        if (['strong_buy','buy','weak_buy'].includes(rank)) return 'rgba(110,200,110,0.8)';
+        if (['weak_sell','sell','strong_sell','avoid'].includes(rank)) return 'rgba(200,110,110,0.8)';
+        return 'rgba(200,169,110,0.8)';
+      };
+
+      // 各銘柄の (期待値, 下落確率%, スコア)
+      const points = [];
+      for (const r of data.rankings) {
+        try {
+          const dRes = await fetch(`${BASE}/data/stock-detail/${r.ticker}.json`);
+          const dd = await dRes.json();
+          const er = r.expected_return ?? 0;
+          const pdown = (dd.summary?.prob_down_5pct ?? 0.05) * 100;
+          const score = r.score ?? 50;
+          points.push({
+            x: er, y: pdown,
+            r: Math.max(6, score / 5),
+            ticker: r.ticker,
+            rank: r.rank,
+            color: colorOf(r.rank),
+          });
+        } catch {}
+      }
+
+      const ctx = document.getElementById('scatter-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bubble',
+        data: {
+          datasets: [{
+            data: points,
+            backgroundColor: points.map(p => p.color),
+            borderColor: points.map(p => p.color.replace('0.8','1')),
+            borderWidth: 1.5,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const p = ctx.raw;
+                  return `${p.ticker} (${p.rank}): 期待値${p.x.toFixed(2)}% / 下落${p.y.toFixed(0)}% / スコア${(p.r * 5).toFixed(0)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: { title: { display: true, text: '期待リターン (%)', color: '#888' }, ticks: { color: '#888' }, grid: { color: '#1a1a1a' }},
+            y: { title: { display: true, text: '5%下落確率 (%)', color: '#888' }, ticks: { color: '#888' }, grid: { color: '#1a1a1a' }, reverse: true },
+          },
+          animation: { duration: 1200, easing: 'easeOutCubic' },
+        },
+        plugins: [{
+          afterDatasetsDraw: (chart) => {
+            const {ctx} = chart;
+            chart.data.datasets[0].data.forEach((p, i) => {
+              const meta = chart.getDatasetMeta(0).data[i];
+              ctx.font = '10px sans-serif';
+              ctx.fillStyle = '#edede8';
+              ctx.textAlign = 'center';
+              ctx.fillText(p.ticker, meta.x, meta.y - meta.options.radius - 4);
+            });
+          }
+        }]
+      });
+    } catch (e) {
+      console.error('scatter load error', e);
+    }
+  }
+  loadScatter();
 
   // ============ 銘柄詳細モーダル ============
   const RANK_LABEL = {
