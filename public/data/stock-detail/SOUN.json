@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-05-02 08:18",
+  "generated_at": "2026-05-03 11:13",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,8 +9,8 @@
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-02 08:18",
-    "prediction_date": "2026-05-02"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-03 11:13",
+    "prediction_date": "2026-05-03"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -25,14 +25,14 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 57.3
+        "avg_score": 57.6
       },
       "analysis": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 50.9
+        "avg_score": 50.6
       },
       "personal": {
         "count": 10,
@@ -129,31 +129,23 @@
       "reason": "感情バイアスなし"
     },
     {
-      "agent": "trend_direction",
-      "category": "market_monitor",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "中期・長期MA上向き / 200MA下 / MACD正"
-    },
-    {
       "agent": "day_trade",
       "category": "trade_style",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "ストキャスOver売(0) / ストキャスKD売り"
+    },
+    {
+      "agent": "trend_direction",
+      "category": "market_monitor",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "中期・長期MA上向き / 200MA下 / MACD正"
     }
   ],
   "top_risks": [
-    {
-      "agent": "swing_trade",
-      "category": "trade_style",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
-    },
     {
       "agent": "short_term_prob",
       "category": "prediction",
@@ -161,6 +153,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "1d/5d上昇確率=59% / RSI=65 / MACD正"
+    },
+    {
+      "agent": "swing_trade",
+      "category": "trade_style",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
       "agent": "ensemble",
@@ -171,20 +171,20 @@
       "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
     },
     {
-      "agent": "sector_rotation",
-      "category": "market_monitor",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+23.8%)"
-    },
-    {
       "agent": "supply_demand",
       "category": "analysis",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "MFI買い圧力(70)"
+    },
+    {
+      "agent": "sector_rotation",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "S&P500比 月次強い(+23.8%)"
     },
     {
       "agent": "risk_assessment",

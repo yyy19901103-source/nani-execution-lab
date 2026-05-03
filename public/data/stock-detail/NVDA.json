@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-02 08:18",
+  "generated_at": "2026-05-03 11:13",
   "summary": {
     "rank": "watch",
     "score": 55,
@@ -9,31 +9,31 @@
     "expected_return": 1.2,
     "risk_reward": 1.14,
     "max_loss_est": -1.05,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=59% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=23% / 5%=21% / 10%=16%\n期待値: +1.20% / リスクリワード: 1.14\n判定時刻: 2026-05-02 08:18",
-    "prediction_date": "2026-05-02"
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=59% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=23% / 5%=21% / 10%=16%\n期待値: +1.20% / リスクリワード: 1.14\n判定時刻: 2026-05-03 11:13",
+    "prediction_date": "2026-05-03"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 5,
-      "BUY": 16,
+      "BUY": 14,
       "HOLD": 9,
-      "WATCH": 39
+      "WATCH": 41
     },
     "category_stats": {
-      "sector": {
-        "count": 19,
-        "buy": 3,
-        "sell": 0,
-        "hold": 16,
-        "avg_score": 53.8
-      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
         "avg_score": 58.6
+      },
+      "sector": {
+        "count": 19,
+        "buy": 3,
+        "sell": 0,
+        "hold": 16,
+        "avg_score": 53.8
       },
       "personal": {
         "count": 10,
@@ -51,17 +51,17 @@
       },
       "analysis": {
         "count": 10,
-        "buy": 4,
+        "buy": 3,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 54.7
+        "hold": 7,
+        "avg_score": 53.7
       },
       "market_monitor": {
         "count": 7,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 52.7
+        "hold": 5,
+        "avg_score": 51.3
       },
       "integration": {
         "count": 6,
@@ -74,20 +74,20 @@
   },
   "top_buys": [
     {
-      "agent": "sector_semiconductor",
-      "category": "sector",
-      "score": 88.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "半導体専門: 売上成長=73% OPM=65%"
-    },
-    {
       "agent": "growth_invest",
       "category": "trade_style",
       "score": 88.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
+    },
+    {
+      "agent": "sector_semiconductor",
+      "category": "sector",
+      "score": 88.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "半導体専門: 売上成長=73% OPM=65%"
     },
     {
       "agent": "rule_compliance",
@@ -217,23 +217,23 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=59% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=23% / 5%=21% / 10%=16%\n期待値: +1.20% / リスクリワード: 1.14\n判定時刻: 2026-05-02 08:18"
+      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=59% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=23% / 5%=21% / 10%=16%\n期待値: +1.20% / リスクリワード: 1.14\n判定時刻: 2026-05-03 11:13"
     },
     {
-      "agent": "earnings_momentum",
+      "agent": "news_impact",
       "category": "analysis",
-      "score": 50.0,
+      "score": 51.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "決算特記事項なし"
+      "reason": "重大ネガティブニュース / 高関心・ポジティブ"
     },
     {
-      "agent": "institutional_flow",
-      "category": "analysis",
-      "score": 50.0,
+      "agent": "market_sentiment",
+      "category": "market_monitor",
+      "score": 51.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "機関動向不明瞭"
+      "reason": "RSI中立ゾーン / 直近ニュース良好(0.43) / ネガティブニュース検知"
     }
   ],
   "fundamentals": {
@@ -271,6 +271,13 @@
   },
   "news": [
     {
+      "headline": "Major Hyperscalers Just Reported Earnings. Nvidia Was The Winner",
+      "sentiment": 0.82,
+      "importance": 5,
+      "published_at": "2026-05-03 05:50:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "Dow Jones Futures Rise As Apple Jumps On Earnings, Sandisk Skids; Stock Market At High",
       "sentiment": 0.03,
       "importance": 5,
@@ -285,10 +292,10 @@
       "source": "yahoo"
     },
     {
-      "headline": "SoFi Slides 9% After Q1 Earnings: Is the Sell-On-Beat Pattern Repeating Again?",
-      "sentiment": -0.29,
-      "importance": 5,
-      "published_at": "2026-04-29 12:00:00",
+      "headline": "Top 3 Unstoppable Dividend Growth Stocks to Buy (and Hold) for the Next Decade",
+      "sentiment": 0.71,
+      "importance": 4,
+      "published_at": "2026-05-03 05:06:00",
       "source": "yahoo"
     },
     {
@@ -296,13 +303,6 @@
       "sentiment": 0.74,
       "importance": 4,
       "published_at": "2026-04-30 21:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Here Are Wednesday’s Top Wall Street Analyst Research Calls: Alibaba, Boston Scientific, Brown-Forman, Charter Communications, Franklin Resources, Spotify, T-Mobile, and More",
-      "sentiment": 0.01,
-      "importance": 4,
-      "published_at": "2026-04-29 11:00:00",
       "source": "yahoo"
     }
   ],

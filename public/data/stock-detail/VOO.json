@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-02 08:18",
+  "generated_at": "2026-05-03 11:13",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,8 +9,8 @@
     "expected_return": 1.84,
     "risk_reward": 2.75,
     "max_loss_est": -0.67,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=60% / 20日=67% / 3ヶ月=73% / 12ヶ月=66%\n下落確率: 3%=15% / 5%=13% / 10%=0%\n期待値: +1.84% / リスクリワード: 2.75\n判定時刻: 2026-05-02 08:18",
-    "prediction_date": "2026-05-02"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=60% / 20日=67% / 3ヶ月=73% / 12ヶ月=66%\n下落確率: 3%=15% / 5%=13% / 10%=0%\n期待値: +1.84% / リスクリワード: 2.75\n判定時刻: 2026-05-03 11:13",
+    "prediction_date": "2026-05-03"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -116,20 +116,20 @@
       "reason": "高配当119.0%"
     },
     {
-      "agent": "risk_assessment",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
-    },
-    {
       "agent": "market_regime",
       "category": "market_monitor",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "強気レジーム"
+    },
+    {
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
     },
     {
       "agent": "lgbm_prob",
@@ -182,6 +182,14 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "value_invest",
       "category": "trade_style",
       "score": 55.0,
@@ -227,15 +235,7 @@
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.0% / 上昇確率57% / P10=-0.2% P90=+0.3%"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "MC 20日後: 中央値+0.0% / 上昇確率56% / P10=-0.3% P90=+0.3%"
     }
   ],
   "fundamentals": {

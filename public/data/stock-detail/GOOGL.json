@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-02 08:18",
+  "generated_at": "2026-05-03 11:13",
   "summary": {
     "rank": "watch",
     "score": 55,
@@ -9,14 +9,14 @@
     "expected_return": 1.3,
     "risk_reward": 1.59,
     "max_loss_est": -0.82,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=58% / 3ヶ月=62% / 12ヶ月=75%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.30% / リスクリワード: 1.59\n判定時刻: 2026-05-02 08:18",
-    "prediction_date": "2026-05-02"
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=58% / 3ヶ月=62% / 12ヶ月=75%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.30% / リスクリワード: 1.59\n判定時刻: 2026-05-03 11:13",
+    "prediction_date": "2026-05-03"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
-      "BUY": 15,
+      "STRONG_BUY": 6,
+      "BUY": 14,
       "HOLD": 8,
       "WATCH": 39,
       "REDUCE": 2
@@ -48,7 +48,14 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 52.8
+        "avg_score": 53.1
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 55.5
       },
       "analysis": {
         "count": 10,
@@ -63,13 +70,6 @@
         "sell": 0,
         "hold": 3,
         "avg_score": 59.4
-      },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 54.2
       }
     }
   },
@@ -115,6 +115,14 @@
       "reason": "12m上昇確率=79% / ROIC=15% / PER=29x"
     },
     {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 76.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 3/10位"
+    },
+    {
       "agent": "growth_invest",
       "category": "trade_style",
       "score": 72.0,
@@ -137,14 +145,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
-    },
-    {
-      "agent": "sector_rotation",
-      "category": "market_monitor",
-      "score": 68.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "S&P500比 直近強い(+11.1%) / S&P500比 月次強い(+20.6%)"
     },
     {
       "agent": "fundamental",
@@ -189,6 +189,14 @@
       "reason": "テクニカル中立 / 強弱比=4.8:6.5"
     },
     {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "institutional_flow",
       "category": "analysis",
       "score": 55.0,
@@ -211,14 +219,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "RSI極値: 87"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "value_invest",
@@ -270,43 +270,7 @@
     "total_trades": 373,
     "tested_at": "2026-04-29 09:55:10"
   },
-  "news": [
-    {
-      "headline": "US Equity Futures Largely Flat as Traders Await Tech Earnings, Fed Rate Decision",
-      "sentiment": 0.1,
-      "importance": 5,
-      "published_at": "2026-04-29 12:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Dow Jones Futures: Seagate, Bloom Energy, Teradyne Lead Earnings Movers As Oil Prices Jump",
-      "sentiment": 0.6,
-      "importance": 5,
-      "published_at": "2026-04-29 12:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Why data storage stocks are a key AI play",
-      "sentiment": 0.42,
-      "importance": 2,
-      "published_at": "2026-04-29 13:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "NYSE Content Update: Bill Ackman Raises $5 Billion in Pershing Square IPO",
-      "sentiment": null,
-      "importance": 2,
-      "published_at": "2026-04-29 12:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Big Tech results day: $750 billion move at stake",
-      "sentiment": 0.18,
-      "importance": 2,
-      "published_at": "2026-04-29 12:00:00",
-      "source": "yahoo"
-    }
-  ],
+  "news": [],
   "earnings_recent": [
     {
       "date": "2026-07-24",

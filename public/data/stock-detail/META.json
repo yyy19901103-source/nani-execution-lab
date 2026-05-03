@@ -1,6 +1,6 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-02 08:18",
+  "generated_at": "2026-05-03 11:13",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,16 +9,16 @@
     "expected_return": 1.54,
     "risk_reward": 1.48,
     "max_loss_est": -1.04,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=68% / 3ヶ月=78% / 12ヶ月=97%\n下落確率: 3%=18% / 5%=21% / 10%=8%\n期待値: +1.54% / リスクリワード: 1.48\n判定時刻: 2026-05-02 08:18",
-    "prediction_date": "2026-05-02"
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=68% / 3ヶ月=78% / 12ヶ月=97%\n下落確率: 3%=18% / 5%=21% / 10%=8%\n期待値: +1.54% / リスクリワード: 1.48\n判定時刻: 2026-05-03 11:13",
+    "prediction_date": "2026-05-03"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 13,
-      "HOLD": 8,
-      "WATCH": 43,
+      "BUY": 11,
+      "HOLD": 9,
+      "WATCH": 44,
       "SELL": 1
     },
     "category_stats": {
@@ -45,24 +45,24 @@
       },
       "analysis": {
         "count": 10,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 53.4
+        "hold": 8,
+        "avg_score": 52.4
       },
       "market_monitor": {
         "count": 7,
-        "buy": 2,
+        "buy": 1,
         "sell": 1,
-        "hold": 4,
-        "avg_score": 46.6
+        "hold": 5,
+        "avg_score": 44.0
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 52.8
+        "avg_score": 52.5
       },
       "integration": {
         "count": 6,
@@ -139,20 +139,20 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "failure_pattern",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
-    },
-    {
       "agent": "portfolio_fit",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
@@ -189,20 +189,20 @@
       "reason": "ストキャスKD売り / RSI7売られ過ぎ"
     },
     {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=50)"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
+    },
+    {
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ADXトレンド強(=50)"
     },
     {
       "agent": "alert",
@@ -272,6 +272,27 @@
   },
   "news": [
     {
+      "headline": "Missed Advanced Micro Devices' Big Move? Here's Why It's Still a Buy",
+      "sentiment": -0.3,
+      "importance": 5,
+      "published_at": "2026-05-03 02:57:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Here's the Real Problem With Meta's Latest Earnings Report",
+      "sentiment": -0.37,
+      "importance": 5,
+      "published_at": "2026-05-03 00:56:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "USA Today Q1 Earnings Call Highlights",
+      "sentiment": 0.78,
+      "importance": 5,
+      "published_at": "2026-05-02 23:27:03",
+      "source": "yahoo"
+    },
+    {
       "headline": "US Equity Indexes Scale New Peaks This Week Amid Lift From Mega-Cap Earnings, Crude Oil",
       "sentiment": -0.38,
       "importance": 5,
@@ -283,27 +304,6 @@
       "sentiment": 0.15,
       "importance": 5,
       "published_at": "2026-05-02 05:42:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Apple Stock Surged After Earnings. 3 Concerns Lurking Beneath the Surface.",
-      "sentiment": -0.13,
-      "importance": 5,
-      "published_at": "2026-05-02 04:25:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Sandisk Earnings Were Excellent. Why This Analyst Says the Stock Could Double.",
-      "sentiment": 0.49,
-      "importance": 5,
-      "published_at": "2026-05-02 03:56:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Stock Market Today, April 30: U.S. Markets Surge Higher Despite a Mixed Bag of Earnings From Big Tech",
-      "sentiment": 0.49,
-      "importance": 5,
-      "published_at": "2026-04-30 21:00:00",
       "source": "yahoo"
     }
   ],
