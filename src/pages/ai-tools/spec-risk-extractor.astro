@@ -288,14 +288,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div id="execute-section" class="wiz-card active" style="display:flex;">
       <div class="wiz-num green">3</div>
       <div style="flex:1;">
-        <div class="wiz-title green">注意ポイントを探す</div>
-        <div class="wiz-desc">
-          ここを押すと、仕様書の中から<b>コスト・納期・設計に影響しそうなポイント</b>が一覧で表示されます。<br>
-          結果を見て「採用 / 不採用」を選ぶと、次回からの精度が上がっていきます。
+        <div class="wiz-title green">分析方法を選んで実行する</div>
+        <div class="wiz-desc" style="margin-bottom:0.85rem;">
+          分析エンジンを選んでから実行してください。<b>BM25ルール</b>は即座にオフラインで動きます。<b>類似検索</b>や<b>LLM生成</b>は初回のみダウンロードが発生します。
         </div>
+
+        <!-- ★ エンジン選択 -->
+        <div style="margin-bottom:0.85rem;">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.18em;margin-bottom:0.5rem;">分析エンジン</div>
+          <div class="engine-opts">
+            <label class="engine-opt">
+              <input type="radio" name="engine" value="bm25" checked>
+              ⚡ BM25ルール<small>辞書マッチング・即座</small>
+            </label>
+            <label class="engine-opt">
+              <input type="radio" name="engine" value="embed">
+              🔍 +類似検索<small>Embedding・初回117MB</small>
+            </label>
+            <label class="engine-opt llm-opt">
+              <input type="radio" name="engine" value="llm">
+              🦙 +LLM生成<small>WebGPU必須・初回700MB</small>
+            </label>
+          </div>
+
+          <!-- LLM選択時: Llama初期化（事前に実行可能） -->
+          <div id="llm-init-inline" style="display:none;background:rgba(200,169,110,0.04);border:1px dashed rgba(200,169,110,0.2);padding:0.65rem 0.85rem;margin-top:0.5rem;">
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.4rem;">
+              <button id="btn-llama-init" class="m-btn-ghost" style="font-size:0.72rem;padding:0.35rem 0.9rem;border-color:rgba(200,169,110,0.35);color:#c8a96e;">
+                🦙 Llama 3.2 1B を事前読込（初回~700MB）
+              </button>
+              <span id="llama-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
+            </div>
+            <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:4px;display:none;" id="llama-dl-wrap">
+              <div id="llama-dl-bar" style="background:#c8a96e;height:4px;border-radius:9999px;transition:width 0.2s;width:0%;"></div>
+            </div>
+            <div style="color:rgba(255,255,255,0.28);font-size:0.63rem;margin-top:0.4rem;line-height:1.5;">
+              実行前に読込しておくと待ち時間が減ります。WebGPU非対応ブラウザは自動で類似検索のみに切替。
+            </div>
+          </div>
+        </div>
+
         <div style="display:flex;gap:0.85rem;align-items:center;flex-wrap:wrap;">
           <button id="btn-extract" style="background:#6ec897;color:#0c0c0e;font-weight:700;font-size:1.05rem;padding:0.9rem 2.25rem;cursor:pointer;font-family:inherit;border:none;letter-spacing:0.03em;transition:all 0.15s;">
-            🔍 注意ポイントを探す ▶
+            🔍 分析する ▶
           </button>
           <span style="color:rgba(255,255,255,0.3);font-size:0.72rem;">Ctrl+Enter でも実行できます</span>
           <button id="btn-reset" class="m-btn-ghost" style="font-size:0.74rem;">リセット</button>
@@ -391,37 +426,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <!-- AI類似検索 実行ボタン＋結果 -->
       <div id="ai-search-section" style="display:none;margin-top:1rem;background:#0d1a12;border:1px solid rgba(110,200,151,0.2);padding:1.25rem 1.5rem;">
-        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">🔍 AI類似事例検索 + デビクラ生成</div>
+        <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.85rem;">🔍 AI分析結果</div>
 
-        <!-- モード選択 -->
-        <div style="display:flex;gap:0.65rem;flex-wrap:wrap;margin-bottom:0.85rem;">
-          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;background:#111114;border:1px solid rgba(110,200,151,0.35);padding:0.4rem 0.85rem;font-size:0.73rem;color:#6ec897;">
-            <input type="radio" name="ai-mode" value="A" checked style="accent-color:#6ec897;">
-            モードA &nbsp;— 類似検索のみ（117MB）
-          </label>
-          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;background:#111114;border:1px solid rgba(200,169,110,0.3);padding:0.4rem 0.85rem;font-size:0.73rem;color:#c8a96e;">
-            <input type="radio" name="ai-mode" value="B" style="accent-color:#c8a96e;">
-            モードB &nbsp;— +Llama生成（WebGPU必須・+~700MB）
-          </label>
-        </div>
-
-        <!-- モードB: Llama初期化エリア -->
-        <div id="llama-init-area" style="display:none;background:rgba(200,169,110,0.04);border:1px dashed rgba(200,169,110,0.2);padding:0.75rem;margin-bottom:0.85rem;">
-          <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem;">
-            <button id="btn-llama-init" class="m-btn-ghost" style="font-size:0.72rem;padding:0.35rem 0.9rem;border-color:rgba(200,169,110,0.35);color:#c8a96e;">
-              🦙 Llama 3.2 1B 読込（初回~700MB）
-            </button>
-            <span id="llama-status" style="color:rgba(255,255,255,0.4);font-size:0.7rem;"></span>
-          </div>
-          <div style="width:100%;background:#1a1a1d;border-radius:9999px;height:4px;display:none;" id="llama-dl-wrap">
-            <div id="llama-dl-bar" style="background:#c8a96e;height:4px;border-radius:9999px;transition:width 0.2s;width:0%;"></div>
-          </div>
-          <div style="color:rgba(255,255,255,0.3);font-size:0.65rem;margin-top:0.4rem;line-height:1.5;">
-            過去事例なし → Llamaがデビクラ文を自動生成。WebGPU非対応ブラウザはモードAに自動切替。
-          </div>
-        </div>
-
-        <!-- 検索オプション＋実行 -->
+        <!-- 検索オプション＋実行（手動で閾値変更・再実行する場合） -->
         <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.85rem;">
           <label style="display:flex;align-items:center;gap:0.35rem;color:rgba(255,255,255,0.6);font-size:0.72rem;">
             類似度閾値:
@@ -455,7 +462,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- 学習・モデル版管理パネル（レビュー1件以上で表示） -->
     <!-- ===== 学習・精度向上パネル（タブ型UI）===== -->
-    <div id="learning-panel" style="display:none;background:#111114;border:1px solid rgba(255,255,255,0.07);margin-top:1.5rem;">
+    <div id="learning-panel" style="background:#111114;border:1px solid rgba(255,255,255,0.07);margin-top:1.5rem;">
 
       <!-- パネルヘッダー -->
       <div style="padding:0.85rem 1.5rem 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
@@ -970,6 +977,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     .mapping-optional summary::-webkit-details-marker { display:none; }
     .mapping-optional summary::before { content:'▸ '; color:rgba(255,255,255,0.3); }
     details[open].mapping-optional summary::before { content:'▾ '; }
+    /* ===== エンジン選択 ===== */
+    .engine-opts { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.65rem; }
+    .engine-opt { display:flex;flex-direction:column;gap:0.15rem;cursor:pointer;border:1px solid rgba(255,255,255,0.1);padding:0.5rem 0.9rem;font-size:0.75rem;color:rgba(255,255,255,0.55);transition:all 0.15s;background:#0a0a0c;user-select:none; }
+    .engine-opt:has(input:checked) { border-color:#6ec897;color:#6ec897;background:rgba(110,200,151,0.05); }
+    .engine-opt.llm-opt:has(input:checked) { border-color:#c8a96e;color:#c8a96e;background:rgba(200,169,110,0.05); }
+    .engine-opt input { display:none; }
+    .engine-opt small { font-size:0.62rem;color:rgba(255,255,255,0.3);letter-spacing:0.04em; }
+    .engine-opt:has(input:checked) small { color:inherit;opacity:0.7; }
     /* ===== セクションヘッダー ===== */
     .section-label { color:#c8a96e;font-size:0.6rem;letter-spacing:0.35em;margin-bottom:0.35rem; }
     .section-note { color:rgba(255,255,255,0.38);font-size:0.7rem;line-height:1.6; }
@@ -1685,9 +1700,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       renderTable();
       document.getElementById('result-area').style.display = 'block';
-      // 抽出結果がある限り AI検索セクションを表示（過去事例0件でもモードBで生成可）
-      document.getElementById('ai-search-section').style.display = 'block';
       document.getElementById('ai-search-results').innerHTML = '';
+
+      // ★ 選択エンジンに応じて自動でAI検索を実行
+      const engine = document.querySelector('input[name="engine"]:checked')?.value || 'bm25';
+      if (engine === 'embed' || engine === 'llm') {
+        // ai-mode ラジオを同期
+        const modeVal = engine === 'llm' ? 'B' : 'A';
+        const modeRadio = document.querySelector(`input[name="ai-mode"][value="${modeVal}"]`);
+        if (modeRadio) modeRadio.checked = true;
+        document.getElementById('ai-search-section').style.display = 'block';
+        // 少し遅延してから自動実行（renderTable完了待ち）
+        setTimeout(() => document.getElementById('btn-ai-search')?.click(), 150);
+      } else {
+        document.getElementById('ai-search-section').style.display = 'none';
+      }
     }
 
     function renderTable() {
@@ -2270,8 +2297,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       elMd.textContent = modify;
       elRj.textContent = reject;
       elRc.textContent = `${acceptRate}%`;
+      // learning-panel は常時表示（辞書・AI事例DBを最初から使えるように）
       const panel = document.getElementById('learning-panel');
-      if (panel && reviews.length > 0) panel.style.display = 'block';
+      if (panel) panel.style.display = 'block';
     }
 
     // ===== 第6段階: 学習実行（CODEX指摘 Critical#2: 実際に extendedDicts を更新する） =====
@@ -3219,6 +3247,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           ` : ''}
         </div>`;
       }).join('');
+    });
+
+    // ===== エンジン選択ラジオ連動 =====
+    document.querySelectorAll('input[name="engine"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const val = radio.value;
+        const llmInline = document.getElementById('llm-init-inline');
+        if (llmInline) llmInline.style.display = val === 'llm' ? 'block' : 'none';
+        // ai-mode ラジオを隠れた形で同期（実行時に参照される）
+        const modeVal = val === 'llm' ? 'B' : 'A';
+        const modeRadio = document.querySelector(`input[name="ai-mode"][value="${modeVal}"]`);
+        if (modeRadio) modeRadio.checked = true;
+      });
     });
 
     // ===== タブUI切替（learning-panel） =====
