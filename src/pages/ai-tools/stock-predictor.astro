@@ -9,239 +9,282 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 >
 
 <style>
-  .sp-wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .sp-header { text-align: center; padding: 2.5rem 0 2rem; border-bottom: 1px solid rgba(200,169,110,0.2); margin-bottom: 2rem; }
-  .sp-header h1 { font-size: clamp(1.4rem,4vw,2rem); font-weight: 300; letter-spacing: 0.1em; color: #edede8; margin-bottom: 0.5rem; }
-  .sp-header p  { color: #888; font-size: 0.85rem; }
-  .sp-updated   { font-size: 0.72rem; color: #555; margin-top: 0.4rem; }
+  /* ========== レイアウト基本 ========== */
+  .sp-wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+  .sp-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; padding: 1.5rem 0 0.8rem; border-bottom: 1px solid rgba(200,169,110,0.15); margin-bottom: 1.2rem; }
+  .sp-title { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 300; letter-spacing: 0.08em; color: #edede8; margin: 0; }
+  .sp-title-icon { color: #c8a96e; margin-right: 0.4rem; }
+  .sp-meta { font-size: 0.7rem; color: #666; }
 
-  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 1rem; margin-bottom: 2rem; }
-  .kpi { background: #111; border: 1px solid #222; padding: 1.1rem; text-align: center; }
-  .kpi-label { font-size: 0.62rem; letter-spacing: 0.2em; color: #888; margin-bottom: 0.4rem; }
-  .kpi-val   { font-size: 1.6rem; font-weight: 300; color: #c8a96e; }
-  .kpi-sub   { font-size: 0.68rem; color: #555; margin-top: 0.2rem; }
+  /* ========== 鮮度ピル ========== */
+  .fresh-pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.7rem; border-radius: 999px; font-size: 0.7rem; font-weight: 500; }
+  .fresh-ok   { background: rgba(110,200,110,0.12); color: #88c888; border: 1px solid rgba(110,200,110,0.3); }
+  .fresh-warn { background: rgba(200,150,80,0.12); color: #c8a96e; border: 1px solid rgba(200,150,80,0.4); }
+  .fresh-bad  { background: rgba(200,80,80,0.12); color: #c87e6e; border: 1px solid rgba(200,80,80,0.4); }
+  .fresh-detail { font-size: 0.65rem; color: #666; margin-left: 0.5rem; }
 
-  .section-title { font-size: 0.65rem; letter-spacing: 0.25em; color: #c8a96e; border-bottom: 1px solid rgba(200,169,110,0.3); padding-bottom: 0.4rem; margin: 2rem 0 1rem; }
+  /* ========== HERO: 今日のおすすめ ========== */
+  .hero { background: linear-gradient(135deg, #0d0d0d 0%, #161616 50%, #0d0d0d 100%); border: 1px solid rgba(200,169,110,0.25); padding: 1.5rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -50%; right: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%); pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; position: relative; }
+  @media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.25em; color: #c8a96e; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .hero-headline { font-size: clamp(1.1rem, 2.6vw, 1.5rem); color: #edede8; line-height: 1.5; margin-bottom: 0.8rem; font-weight: 400; }
+  .hero-cta-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+  .hero-cta { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 1rem; background: rgba(200,169,110,0.06); border: 1px solid rgba(200,169,110,0.2); border-radius: 4px; font-size: 0.85rem; color: #ddd; transition: all 0.2s; cursor: pointer; }
+  .hero-cta:hover { background: rgba(200,169,110,0.12); border-color: rgba(200,169,110,0.5); transform: translateX(4px); }
+  .hero-cta-rank { padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; }
+  .hero-cta-info { flex: 1; font-size: 0.78rem; color: #999; }
+  .hero-side { display: flex; flex-direction: column; gap: 0.6rem; }
+  .hero-stat { background: rgba(0,0,0,0.4); border: 1px solid #1a1a1a; padding: 0.7rem 0.9rem; border-radius: 4px; }
+  .hero-stat-label { font-size: 0.6rem; letter-spacing: 0.18em; color: #888; text-transform: uppercase; }
+  .hero-stat-value { font-size: 1.4rem; font-weight: 300; color: #edede8; margin-top: 0.2rem; }
+  .hero-stat-sub { font-size: 0.7rem; color: #666; margin-top: 0.1rem; }
 
-  .rank-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-  .rank-table th { font-size: 0.6rem; letter-spacing: 0.15em; color: #888; padding: 0.5rem 0.75rem; border-bottom: 1px solid #222; text-align: left; }
-  .rank-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid #1a1a1a; color: #ddd; }
-  .rank-table tr:hover td { background: #141414; }
+  /* ========== タブナビゲーション ========== */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #1f1f1f; margin-bottom: 1.5rem; overflow-x: auto; }
+  .tab-btn { padding: 0.85rem 1.5rem; background: transparent; border: 0; color: #888; cursor: pointer; font-size: 0.85rem; letter-spacing: 0.05em; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; font-family: inherit; }
+  .tab-btn:hover { color: #c8a96e; }
+  .tab-btn.active { color: #c8a96e; border-bottom-color: #c8a96e; background: rgba(200,169,110,0.04); }
+  .tab-content { display: none; animation: fadeIn 0.4s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  .badge { display: inline-block; padding: 0.15rem 0.5rem; font-size: 0.65rem; letter-spacing: 0.1em; border-radius: 2px; }
-  .badge-sb { background: rgba(80,200,80,0.2);  color: #6ec86e; border: 1px solid rgba(80,200,80,0.3); }
-  .badge-b  { background: rgba(80,200,80,0.12); color: #6ec86e; border: 1px solid rgba(80,200,80,0.2); }
-  .badge-wb { background: rgba(200,200,80,0.15);color: #c8c86e; border: 1px solid rgba(200,200,80,0.2); }
-  .badge-w  { background: rgba(150,150,150,0.1);color: #888;    border: 1px solid #333; }
-  .badge-ws { background: rgba(200,100,80,0.12);color: #c87e6e; border: 1px solid rgba(200,100,80,0.2); }
-  .badge-s  { background: rgba(200,80,80,0.15); color: #c86e6e; border: 1px solid rgba(200,80,80,0.2); }
-  .badge-ss { background: rgba(200,50,50,0.2);  color: #c86e6e; border: 1px solid rgba(200,50,50,0.3); }
+  /* ========== セクションタイトル ========== */
+  .sec-title { font-size: 0.65rem; letter-spacing: 0.25em; color: #c8a96e; text-transform: uppercase; padding-bottom: 0.5rem; margin: 1.8rem 0 1rem; border-bottom: 1px solid rgba(200,169,110,0.2); display: flex; align-items: center; gap: 0.5rem; }
+  .sec-title-count { font-size: 0.6rem; color: #555; letter-spacing: 0.1em; margin-left: auto; text-transform: none; }
 
-  .prob-bar { display: inline-block; width: 60px; height: 6px; background: #222; border-radius: 3px; vertical-align: middle; margin-right: 0.4rem; }
-  .prob-fill { height: 100%; border-radius: 3px; background: #c8a96e; }
+  /* ========== KPI ========== */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 0.8rem; margin-bottom: 1.5rem; }
+  .kpi { background: #0f0f0f; border: 1px solid #1d1d1d; padding: 1rem; text-align: center; border-radius: 4px; transition: all 0.25s; }
+  .kpi:hover { border-color: rgba(200,169,110,0.4); transform: translateY(-2px); }
+  .kpi-label { font-size: 0.6rem; letter-spacing: 0.2em; color: #888; margin-bottom: 0.3rem; }
+  .kpi-val { font-size: 1.7rem; font-weight: 300; color: #c8a96e; }
+  .kpi-sub { font-size: 0.65rem; color: #555; margin-top: 0.15rem; }
 
-  .chart-wrap { background: #0d0d0d; border: 1px solid #1e1e1e; padding: 1.25rem; margin-bottom: 1.5rem; }
-  canvas { max-height: 220px; }
+  /* ========== ランキングテーブル（強化版） ========== */
+  .rank-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+  .rank-row { display: grid; grid-template-columns: 60px 110px 1fr 1fr 90px 80px; gap: 0.8rem; align-items: center; padding: 0.8rem 1rem; background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 4px; transition: all 0.2s; cursor: pointer; }
+  .rank-row:hover { background: #141414; border-color: rgba(200,169,110,0.4); transform: translateX(3px); }
+  @media (max-width: 720px) { .rank-row { grid-template-columns: 50px 90px 1fr 80px; gap: 0.5rem; padding: 0.6rem; } .rank-row .rank-col-er, .rank-row .rank-col-time { display: none; } }
+  .rank-ticker { font-weight: 600; font-size: 1rem; color: #edede8; }
+  .rank-bar-wrap { background: #1a1a1a; height: 8px; border-radius: 4px; overflow: hidden; position: relative; }
+  .rank-bar-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
+  .rank-bar-text { font-size: 0.7rem; color: #aaa; margin-top: 0.2rem; }
+  .rank-score-num { font-size: 1.1rem; color: #edede8; font-weight: 500; text-align: right; }
+  .rank-er { font-size: 0.85rem; }
+  .rank-time { font-size: 0.65rem; color: #555; text-align: right; }
 
-  .history-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
-  .history-table th { font-size: 0.58rem; letter-spacing: 0.12em; color: #666; padding: 0.4rem 0.6rem; border-bottom: 1px solid #1e1e1e; }
-  .history-table td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #141414; color: #aaa; }
-  .r-hit     { color: #6ec86e; }
-  .r-miss    { color: #c86e6e; }
-  .r-pending { color: #555; }
+  /* ========== バッジ ========== */
+  .badge { display: inline-block; padding: 0.2rem 0.55rem; font-size: 0.65rem; letter-spacing: 0.05em; border-radius: 3px; font-weight: 500; white-space: nowrap; }
+  .badge-sb { background: rgba(80,200,80,0.25);  color: #88e088; border: 1px solid rgba(80,200,80,0.4); }
+  .badge-b  { background: rgba(80,200,80,0.15); color: #6ec86e; border: 1px solid rgba(80,200,80,0.3); }
+  .badge-wb { background: rgba(200,200,80,0.15);color: #d8d878; border: 1px solid rgba(200,200,80,0.3); }
+  .badge-w  { background: rgba(150,150,150,0.1);color: #999;    border: 1px solid #2a2a2a; }
+  .badge-ws { background: rgba(200,100,80,0.15);color: #d8896e; border: 1px solid rgba(200,100,80,0.3); }
+  .badge-s  { background: rgba(200,80,80,0.18); color: #d87878; border: 1px solid rgba(200,80,80,0.3); }
+  .badge-ss { background: rgba(200,50,50,0.25); color: #e07878; border: 1px solid rgba(200,50,50,0.4); }
 
-  .disclaimer { font-size: 0.7rem; color: #444; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 1rem 1.25rem; margin-top: 2.5rem; line-height: 1.7; }
+  /* ========== マクロボード ========== */
+  .macro-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 0.9rem; margin-bottom: 1rem; }
+  @media (max-width: 720px) { .macro-grid { grid-template-columns: 1fr 1fr; } }
+  .macro-tile { background: linear-gradient(135deg, #0f0f0f 0%, #181818 100%); border: 1px solid #222; padding: 1rem; border-radius: 4px; position: relative; overflow: hidden; transition: all 0.25s; }
+  .macro-tile:hover { transform: translateY(-2px); border-color: rgba(200,169,110,0.3); }
+  .macro-label { font-size: 0.6rem; letter-spacing: 0.18em; color: #888; }
+  .macro-val { font-size: 1.7rem; font-weight: 300; color: #edede8; margin: 0.3rem 0 0.1rem; }
+  .macro-chg { font-size: 0.72rem; }
+  .vix-meter { position: relative; height: 70px; margin-top: 0.5rem; background: linear-gradient(90deg, #6ec86e 0%, #c8a96e 40%, #c87e6e 70%, #c84e4e 100%); border-radius: 4px; overflow: hidden; }
+  .vix-needle { position: absolute; top: -6px; width: 3px; height: 82px; background: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.8); transition: left 1s cubic-bezier(0.34, 1.3, 0.64, 1); }
+  .vix-scale { display: flex; justify-content: space-between; font-size: 0.55rem; color: #666; padding: 0 4px; margin-top: 0.2rem; }
 
-  /* 🆕 鮮度バナー */
-  .freshness-banner { padding: 0.7rem 1rem; margin-bottom: 1.2rem; font-size: 0.78rem; border-radius: 3px; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-  .freshness-ok    { background: rgba(110,200,110,0.08); border: 1px solid rgba(110,200,110,0.3); color: #88c888; }
-  .freshness-warn  { background: rgba(200,150,80,0.10); border: 1px solid rgba(200,150,80,0.4); color: #c8a96e; }
-  .freshness-bad   { background: rgba(200,80,80,0.10); border: 1px solid rgba(200,80,80,0.4); color: #c87e6e; }
-  .freshness-gap   { font-size: 0.7rem; color: #888; }
+  /* ========== 類似日カード ========== */
+  .similar-today { background: rgba(200,169,110,0.06); border: 1px solid rgba(200,169,110,0.25); padding: 0.8rem 1rem; margin-bottom: 0.8rem; border-radius: 4px; font-size: 0.82rem; color: #ddd; }
+  .similar-card { background: #0f0f0f; border: 1px solid #1f1f1f; border-left: 3px solid #c8a96e; padding: 0.9rem 1.1rem; margin-bottom: 0.6rem; border-radius: 0 4px 4px 0; transition: all 0.2s; }
+  .similar-card:hover { background: #141414; transform: translateX(3px); }
+  .similar-date { font-size: 0.95rem; color: #c8a96e; font-weight: 500; }
+  .similar-context { display: inline-block; padding: 0.1rem 0.5rem; font-size: 0.65rem; background: rgba(200,169,110,0.18); color: #c8a96e; margin-left: 0.5rem; border-radius: 2px; letter-spacing: 0.05em; }
+  .similar-stats { font-size: 0.75rem; color: #888; margin-top: 0.3rem; }
+  .similar-fwd { font-size: 0.85rem; margin-top: 0.4rem; font-weight: 500; }
+  .similar-fwd.pos { color: #6ec86e; }
+  .similar-fwd.neg { color: #c86e6e; }
 
-  /* 🆕 振り返りセクション */
-  .pm-summary { background: #0d0d0d; border: 1px solid #1f1f1f; padding: 1rem 1.2rem; margin-bottom: 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  .pm-summary-item { font-size: 0.8rem; color: #aaa; }
-  .pm-summary-val { font-size: 1.4rem; color: #c8a96e; font-weight: 300; margin-right: 0.3rem; }
-  .pm-card { background: #0d0d0d; border: 1px solid #1f1f1f; border-left: 3px solid #c8a96e; padding: 1rem 1.2rem; margin-bottom: 0.8rem; font-size: 0.8rem; }
+  /* ========== 振り返りカード ========== */
+  .pm-summary { display: flex; gap: 1.2rem; flex-wrap: wrap; padding: 1rem 1.2rem; background: #0f0f0f; border: 1px solid #1f1f1f; border-radius: 4px; margin-bottom: 1rem; }
+  .pm-stat { font-size: 0.78rem; color: #888; display: flex; align-items: baseline; gap: 0.4rem; }
+  .pm-stat-num { font-size: 1.5rem; font-weight: 300; color: #c8a96e; }
+  .pm-card { background: #0f0f0f; border: 1px solid #1f1f1f; border-left: 3px solid #c8a96e; padding: 1rem 1.1rem; margin-bottom: 0.7rem; border-radius: 0 4px 4px 0; }
   .pm-card.hit  { border-left-color: #6ec86e; }
   .pm-card.miss { border-left-color: #c86e6e; }
-  .pm-header { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.5rem; }
-  .pm-ticker { font-size: 1rem; color: #edede8; font-weight: 500; }
+  .pm-head { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+  .pm-tk { font-size: 1rem; color: #edede8; font-weight: 600; }
+  .pm-verdict { font-size: 0.78rem; font-weight: 500; }
   .pm-verdict.hit  { color: #6ec86e; }
   .pm-verdict.miss { color: #c86e6e; }
-  .pm-meta { font-size: 0.7rem; color: #666; }
-  .pm-stats { color: #aaa; margin: 0.4rem 0; }
+  .pm-meta-mini { font-size: 0.66rem; color: #555; margin-left: auto; }
+  .pm-stats-line { color: #aaa; font-size: 0.78rem; margin: 0.4rem 0; }
   .pm-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.5rem; }
   @media (max-width: 600px) { .pm-grid2 { grid-template-columns: 1fr; } }
-  .pm-block-label { font-size: 0.65rem; color: #c8a96e; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
-  .pm-agent { padding: 0.25rem 0; font-size: 0.72rem; color: #888; border-bottom: 1px solid #181818; }
-  .pm-agent-name { color: #aaa; font-weight: 500; }
-  .pm-suggest { background: rgba(200,169,110,0.06); border: 1px dashed rgba(200,169,110,0.3); padding: 0.5rem 0.7rem; margin-top: 0.5rem; font-size: 0.72rem; color: #c8a96e; }
-  .pm-weight-hist { margin-top: 1rem; }
-  .pm-weight-row { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid #181818; font-size: 0.75rem; color: #aaa; }
+  .pm-block-label { font-size: 0.62rem; color: #c8a96e; letter-spacing: 0.12em; margin-bottom: 0.3rem; text-transform: uppercase; }
+  .pm-agent { padding: 0.28rem 0.4rem; font-size: 0.72rem; color: #888; border-bottom: 1px solid #181818; transition: background 0.15s; }
+  .pm-agent:hover { background: rgba(200,169,110,0.04); }
+  .pm-agent-name { color: #ddd; font-weight: 500; }
+  .pm-agent-score { display: inline-block; min-width: 26px; padding: 0.05rem 0.3rem; border-radius: 2px; font-size: 0.65rem; font-weight: 600; text-align: center; margin-right: 0.4rem; }
+  .pm-suggest { background: rgba(200,169,110,0.06); border: 1px dashed rgba(200,169,110,0.3); padding: 0.5rem 0.7rem; margin-top: 0.6rem; font-size: 0.72rem; color: #c8a96e; border-radius: 3px; }
 
-  /* 🆕 マクロボード */
-  .macro-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-  @media (max-width: 720px) { .macro-grid { grid-template-columns: 1fr 1fr; } }
-  .macro-tile { background: linear-gradient(135deg, #0f0f0f 0%, #181818 100%); border: 1px solid #222; padding: 1rem; position: relative; overflow: hidden; }
-  .macro-tile-label { font-size: 0.6rem; letter-spacing: 0.2em; color: #888; }
-  .macro-tile-value { font-size: 1.8rem; font-weight: 300; color: #edede8; margin: 0.4rem 0; }
-  .macro-tile-change { font-size: 0.75rem; }
-  .vix-meter { position: relative; height: 80px; margin-top: 0.6rem; background: linear-gradient(90deg, #6ec86e 0%, #c8a96e 40%, #c87e6e 70%, #c84e4e 100%); border-radius: 4px; overflow: hidden; }
-  .vix-needle { position: absolute; top: -8px; width: 3px; height: 96px; background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.7); transition: left 0.8s ease; }
-  .vix-scale { display: flex; justify-content: space-between; font-size: 0.55rem; color: #555; padding: 0 4px; margin-top: 0.2rem; }
+  /* ========== チャート系 ========== */
+  .chart-card { background: #0d0d0d; border: 1px solid #1e1e1e; padding: 1.2rem; border-radius: 4px; margin-bottom: 1.2rem; }
+  canvas { max-height: 280px; }
+  .scatter-legend { display: flex; gap: 1rem; font-size: 0.7rem; color: #888; margin-top: 0.5rem; flex-wrap: wrap; }
+  .scatter-legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.3rem; vertical-align: middle; }
 
-  /* 🆕 類似日マッチング */
-  .similar-card { background: #0d0d0d; border: 1px solid #1f1f1f; padding: 1rem 1.2rem; margin-bottom: 0.8rem; border-left: 3px solid #c8a96e; }
-  .similar-date { font-size: 1rem; color: #c8a96e; font-weight: 500; }
-  .similar-context { display: inline-block; padding: 0.1rem 0.5rem; font-size: 0.65rem; background: rgba(200,169,110,0.15); color: #c8a96e; margin-left: 0.5rem; border-radius: 2px; }
-  .similar-stats { font-size: 0.78rem; color: #aaa; margin-top: 0.4rem; }
-  .similar-fwd { font-size: 0.85rem; color: #6ec86e; margin-top: 0.4rem; font-weight: 500; }
-  .similar-fwd.neg { color: #c86e6e; }
-  .today-tile { background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.3); padding: 0.8rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: #ddd; }
+  /* ========== 過去履歴 ========== */
+  .hist-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  .hist-table th { font-size: 0.58rem; letter-spacing: 0.12em; color: #666; padding: 0.4rem 0.6rem; border-bottom: 1px solid #1e1e1e; text-align: left; }
+  .hist-table td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #141414; color: #aaa; }
+  .hist-table tr:hover td { background: #131313; }
+  .r-hit { color: #6ec86e; }
+  .r-miss { color: #c86e6e; }
+  .r-pending { color: #555; }
 
-  /* 🆕 ポジショニングマップ */
-  .scatter-wrap { background: #0d0d0d; border: 1px solid #1e1e1e; padding: 1.25rem; margin-bottom: 1.5rem; }
-  #scatter-chart { max-height: 380px; }
-  .scatter-legend { display: flex; gap: 1.2rem; font-size: 0.7rem; color: #888; margin-top: 0.6rem; flex-wrap: wrap; }
-  .scatter-legend-item { display: flex; align-items: center; gap: 0.3rem; }
-  .scatter-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-
-  /* 銘柄詳細モーダル */
-  .ticker-link { cursor: pointer; color: #c8a96e; text-decoration: underline dotted; }
-  .ticker-link:hover { color: #e0c08a; }
-  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; z-index: 1000; overflow-y: auto; }
-  .modal-backdrop.open { display: block; }
-  .modal-card { max-width: 920px; margin: 3rem auto; background: #0d0d0d; border: 1px solid #2a2418; padding: 2rem; color: #ddd; }
-  .modal-close { float: right; cursor: pointer; color: #888; font-size: 1.4rem; line-height: 1; }
+  /* ========== モーダル ========== */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; z-index: 1000; overflow-y: auto; backdrop-filter: blur(4px); }
+  .modal-backdrop.open { display: block; animation: fadeIn 0.25s ease; }
+  .modal-card { max-width: 920px; margin: 3rem auto; background: #0d0d0d; border: 1px solid #2a2418; padding: 1.8rem; color: #ddd; border-radius: 6px; }
+  .modal-close { float: right; cursor: pointer; color: #888; font-size: 1.6rem; line-height: 1; transition: color 0.15s; }
   .modal-close:hover { color: #fff; }
-  .modal-title { font-size: 1.3rem; color: #c8a96e; margin: 0 0 0.5rem; }
-  .modal-sub   { font-size: 0.75rem; color: #666; margin-bottom: 1.5rem; }
+  .modal-title { font-size: 1.3rem; color: #c8a96e; margin: 0 0 0.4rem; }
+  .modal-sub { font-size: 0.7rem; color: #666; margin-bottom: 1.5rem; }
   .detail-section { margin: 1.5rem 0; }
-  .detail-section h3 { font-size: 0.7rem; letter-spacing: 0.2em; color: #c8a96e; border-bottom: 1px solid rgba(200,169,110,0.2); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
-  .stat-cell { background: #141414; padding: 0.7rem; border: 1px solid #1f1f1f; }
-  .stat-label { font-size: 0.6rem; color: #888; letter-spacing: 0.15em; }
+  .detail-section h3 { font-size: 0.65rem; letter-spacing: 0.18em; color: #c8a96e; border-bottom: 1px solid rgba(200,169,110,0.2); padding-bottom: 0.4rem; margin-bottom: 0.8rem; text-transform: uppercase; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  @media (max-width: 600px) { .grid3 { grid-template-columns: 1fr 1fr; } }
+  .stat-cell { background: #141414; padding: 0.65rem; border: 1px solid #1f1f1f; border-radius: 3px; }
+  .stat-label { font-size: 0.58rem; color: #888; letter-spacing: 0.12em; text-transform: uppercase; }
   .stat-value { font-size: 1rem; color: #edede8; margin-top: 0.2rem; }
   .agent-list { font-size: 0.75rem; }
-  .agent-item { padding: 0.5rem 0.7rem; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; gap: 0.5rem; }
-  .agent-score { display: inline-block; min-width: 32px; padding: 0.1rem 0.35rem; border-radius: 2px; font-weight: 600; text-align: center; }
-  .agent-buy  { background: rgba(80,200,80,0.15); color: #6ec86e; }
-  .agent-sell { background: rgba(200,80,80,0.15); color: #c86e6e; }
-  .agent-hold { background: rgba(150,150,150,0.1); color: #888; }
+  .agent-item { padding: 0.45rem 0.5rem; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; gap: 0.5rem; }
+  .agent-score { display: inline-block; min-width: 32px; padding: 0.1rem 0.35rem; border-radius: 2px; font-weight: 600; text-align: center; font-size: 0.7rem; }
+  .agent-buy { background: rgba(80,200,80,0.18); color: #88e088; }
+  .agent-sell { background: rgba(200,80,80,0.18); color: #e07878; }
+  .agent-hold { background: rgba(150,150,150,0.12); color: #888; }
   .agent-name { color: #aaa; min-width: 130px; font-size: 0.7rem; }
-  .agent-reason { color: #888; font-size: 0.7rem; flex: 1; }
+  .agent-reason { color: #777; font-size: 0.7rem; flex: 1; }
   .news-item { font-size: 0.75rem; padding: 0.4rem 0; border-bottom: 1px solid #1a1a1a; }
-  .news-meta { font-size: 0.65rem; color: #555; }
-  .verdict-box { background: #141414; padding: 1rem; border-left: 3px solid #c8a96e; font-size: 0.8rem; white-space: pre-wrap; line-height: 1.6; color: #ccc; }
-  .cat-bar-wrap { display: flex; gap: 0.5rem; align-items: center; font-size: 0.7rem; color: #aaa; padding: 0.3rem 0; }
-  .cat-bar { flex: 1; height: 8px; background: #1a1a1a; border-radius: 2px; overflow: hidden; display: flex; }
+  .news-meta { font-size: 0.62rem; color: #555; margin-top: 0.15rem; }
+  .verdict-box { background: #141414; padding: 0.9rem 1rem; border-left: 3px solid #c8a96e; font-size: 0.78rem; white-space: pre-wrap; line-height: 1.55; color: #ccc; border-radius: 0 3px 3px 0; }
+  .cat-bar-wrap { display: flex; gap: 0.5rem; align-items: center; font-size: 0.7rem; color: #aaa; padding: 0.25rem 0; }
+  .cat-bar { flex: 1; height: 7px; background: #1a1a1a; border-radius: 2px; overflow: hidden; display: flex; }
   .cat-bar-buy  { background: #6ec86e; }
   .cat-bar-hold { background: #555; }
   .cat-bar-sell { background: #c86e6e; }
+
+  /* ========== 免責 ========== */
+  .disclaimer { font-size: 0.7rem; color: #555; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 0.9rem 1.1rem; margin-top: 2.5rem; line-height: 1.7; border-radius: 4px; }
 </style>
 
 <div class="sp-wrap">
-  <div class="sp-header">
-    <h1>📈 株式AI予測ダッシュボード</h1>
-    <p>LightGBM + 69エージェントによる米国株予測を公開しています</p>
-    <p class="sp-updated" id="updated-at">データ読み込み中…</p>
+  <!-- ヘッダー -->
+  <div class="sp-head">
+    <h1 class="sp-title"><span class="sp-title-icon">📈</span>株式AI予測ダッシュボード</h1>
+    <div class="sp-meta" id="sp-meta">読み込み中…</div>
   </div>
 
-  <!-- 🆕 鮮度バナー -->
-  <div id="freshness-banner" class="freshness-banner freshness-ok" style="display:none">
-    <span id="freshness-icon">📅</span>
-    <span><strong id="freshness-main">最終分析: ―</strong></span>
-    <span class="freshness-gap" id="freshness-gap"></span>
-  </div>
-
-  <!-- KPI -->
-  <div class="kpi-row" id="kpi-row">
-    <div class="kpi"><div class="kpi-label">MONITORED</div><div class="kpi-val" id="kpi-stocks">—</div><div class="kpi-sub">監視銘柄数</div></div>
-    <div class="kpi"><div class="kpi-label">ACCURACY</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">5日後的中率</div></div>
-    <div class="kpi"><div class="kpi-label">JUDGED</div><div class="kpi-val" id="kpi-judged">—</div><div class="kpi-sub">判定済み予測</div></div>
-    <div class="kpi"><div class="kpi-label">PENDING</div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-sub">判定待ち</div></div>
-  </div>
-
-  <!-- 🆕 マクロボード -->
-  <div class="section-title">市場恐怖メーター + マクロ環境</div>
-  <div class="macro-grid">
-    <div class="macro-tile">
-      <div class="macro-tile-label">VIX 恐怖指数</div>
-      <div class="macro-tile-value" id="m-vix-val">—</div>
-      <div class="macro-tile-change" id="m-vix-chg">—</div>
-      <div class="vix-meter"><div class="vix-needle" id="vix-needle" style="left:50%"></div></div>
-      <div class="vix-scale"><span>0</span><span>15</span><span>25</span><span>35</span><span>50+</span></div>
-    </div>
-    <div class="macro-tile">
-      <div class="macro-tile-label">米10年金利</div>
-      <div class="macro-tile-value" id="m-10y-val">—</div>
-      <div class="macro-tile-change" id="m-10y-chg">—</div>
-    </div>
-    <div class="macro-tile">
-      <div class="macro-tile-label">S&amp;P 500</div>
-      <div class="macro-tile-value" id="m-sp-val">—</div>
-      <div class="macro-tile-change" id="m-sp-chg">—</div>
-    </div>
-    <div class="macro-tile">
-      <div class="macro-tile-label">USDJPY</div>
-      <div class="macro-tile-value" id="m-jpy-val">—</div>
-      <div class="macro-tile-change" id="m-jpy-chg">—</div>
+  <!-- ヒーロー: 今日のおすすめ -->
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">TODAY'S BRIEFING</div>
+        <div class="hero-headline" id="hero-headline">本日のAI判定を読み込み中…</div>
+        <div class="hero-cta-list" id="hero-cta-list"></div>
+      </div>
+      <div class="hero-side">
+        <div class="hero-stat">
+          <div class="hero-stat-label">VIX 恐怖指数</div>
+          <div class="hero-stat-value" id="hero-vix">—</div>
+          <div class="hero-stat-sub" id="hero-vix-sub">—</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">最終分析</div>
+          <div class="hero-stat-value" id="hero-fresh" style="font-size:1rem">—</div>
+          <div class="hero-stat-sub" id="hero-fresh-sub">—</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- 🆕 過去類似日マッチング -->
-  <div class="section-title">過去36年DBから類似日マッチング</div>
-  <div id="similar-today" class="today-tile">読み込み中…</div>
-  <div id="similar-list"></div>
+  <!-- タブナビゲーション -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="today" role="tab">📊 今日</button>
+    <button class="tab-btn" data-tab="review" role="tab">📋 振り返り</button>
+    <button class="tab-btn" data-tab="market" role="tab">🌐 市場分析</button>
+  </div>
 
-  <!-- 🆕 ポジショニングマップ -->
-  <div class="section-title">ポジショニングマップ（リスク × 期待値）</div>
-  <div class="scatter-wrap">
-    <canvas id="scatter-chart"></canvas>
-    <div class="scatter-legend">
-      <div class="scatter-legend-item"><span class="scatter-legend-dot" style="background:#6ec86e"></span> 買い系</div>
-      <div class="scatter-legend-item"><span class="scatter-legend-dot" style="background:#c8a96e"></span> 様子見</div>
-      <div class="scatter-legend-item"><span class="scatter-legend-dot" style="background:#c86e6e"></span> 売り系</div>
-      <div class="scatter-legend-item">X軸: 期待リターン% / Y軸: 5%下落確率% / サイズ: AIスコア</div>
+  <!-- ========== TAB 1: 今日 ========== -->
+  <div class="tab-content active" id="tab-today">
+    <!-- KPI -->
+    <div class="kpi-row" id="kpi-row">
+      <div class="kpi"><div class="kpi-label">MONITORED</div><div class="kpi-val" id="kpi-stocks">—</div><div class="kpi-sub">監視銘柄</div></div>
+      <div class="kpi"><div class="kpi-label">ACCURACY</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">5日後的中率</div></div>
+      <div class="kpi"><div class="kpi-label">JUDGED</div><div class="kpi-val" id="kpi-judged">—</div><div class="kpi-sub">判定済み</div></div>
+      <div class="kpi"><div class="kpi-label">PENDING</div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-sub">判定待ち</div></div>
+    </div>
+
+    <!-- AIランキング -->
+    <div class="sec-title">AIランキング — クリックで根拠表示
+      <span class="sec-title-count" id="ranking-count"></span>
+    </div>
+    <div class="rank-grid" id="ranking-grid"></div>
+
+    <!-- ポジショニングマップ -->
+    <div class="sec-title">ポジショニングマップ — リスク × 期待値</div>
+    <div class="chart-card">
+      <canvas id="scatter-chart"></canvas>
+      <div class="scatter-legend">
+        <span><span class="scatter-legend-dot" style="background:#6ec86e"></span>買い系</span>
+        <span><span class="scatter-legend-dot" style="background:#c8a96e"></span>様子見</span>
+        <span><span class="scatter-legend-dot" style="background:#c86e6e"></span>売り系</span>
+        <span style="color:#555">X: 期待リターン% / Y: 5%下落確率% / サイズ: AIスコア</span>
+      </div>
     </div>
   </div>
 
-  <!-- 的中率グラフ -->
-  <div class="section-title">月別的中率</div>
-  <div class="chart-wrap">
-    <canvas id="acc-chart"></canvas>
+  <!-- ========== TAB 2: 振り返り ========== -->
+  <div class="tab-content" id="tab-review">
+    <div class="sec-title">📋 5営業日経過分の的中分析 + エージェント反省</div>
+    <div id="pm-summary" class="pm-summary">読み込み中…</div>
+    <div id="pm-list"></div>
+    <div id="pm-weight-hist"></div>
+
+    <div class="sec-title">月別的中率推移</div>
+    <div class="chart-card"><canvas id="acc-chart"></canvas></div>
+
+    <div class="sec-title">過去の予測履歴 <span class="sec-title-count" id="history-count"></span></div>
+    <table class="hist-table">
+      <thead><tr><th>日付</th><th>銘柄</th><th>ランク</th><th>上昇確率</th><th>実績</th><th>判定</th></tr></thead>
+      <tbody id="history-tbody"></tbody>
+    </table>
   </div>
 
-  <!-- 現在のランキング -->
-  <div class="section-title">現在のAIランキング</div>
-  <table class="rank-table">
-    <thead>
-      <tr>
-        <th>銘柄</th><th>ランク</th><th>AIスコア</th><th>5日上昇確率</th><th>期待リターン</th><th>更新日時</th>
-      </tr>
-    </thead>
-    <tbody id="ranking-tbody"></tbody>
-  </table>
+  <!-- ========== TAB 3: 市場分析 ========== -->
+  <div class="tab-content" id="tab-market">
+    <div class="sec-title">市場恐怖メーター + マクロ環境</div>
+    <div class="macro-grid">
+      <div class="macro-tile">
+        <div class="macro-label">VIX 恐怖指数</div>
+        <div class="macro-val" id="m-vix-val">—</div>
+        <div class="macro-chg" id="m-vix-chg">—</div>
+        <div class="vix-meter"><div class="vix-needle" id="vix-needle" style="left:50%"></div></div>
+        <div class="vix-scale"><span>0</span><span>15</span><span>25</span><span>35</span><span>50+</span></div>
+      </div>
+      <div class="macro-tile"><div class="macro-label">米10年金利</div><div class="macro-val" id="m-10y-val">—</div><div class="macro-chg" id="m-10y-chg">—</div></div>
+      <div class="macro-tile"><div class="macro-label">S&amp;P 500</div><div class="macro-val" id="m-sp-val">—</div><div class="macro-chg" id="m-sp-chg">—</div></div>
+      <div class="macro-tile"><div class="macro-label">USDJPY</div><div class="macro-val" id="m-jpy-val">—</div><div class="macro-chg" id="m-jpy-chg">—</div></div>
+    </div>
 
-  <!-- 🆕 振り返り（実績判明分の犯人/功労者分析） -->
-  <div class="section-title">📋 振り返り — 5営業日経過分の的中分析 + エージェント反省</div>
-  <div id="pm-summary" class="pm-summary">読み込み中…</div>
-  <div id="pm-list"></div>
-  <div id="pm-weight-hist"></div>
-
-  <!-- 過去予測履歴 -->
-  <div class="section-title">過去の予測履歴</div>
-  <table class="history-table">
-    <thead>
-      <tr>
-        <th>日付</th><th>銘柄</th><th>ランク</th><th>上昇確率</th><th>実績</th><th>判定</th>
-      </tr>
-    </thead>
-    <tbody id="history-tbody"></tbody>
-  </table>
+    <div class="sec-title">過去36年DBから類似日マッチング</div>
+    <div id="similar-today" class="similar-today">読み込み中…</div>
+    <div id="similar-list"></div>
+  </div>
 
   <!-- 銘柄詳細モーダル -->
   <div class="modal-backdrop" id="modal" role="dialog" aria-hidden="true">
@@ -249,7 +292,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <span class="modal-close" id="modal-close">×</span>
       <h2 class="modal-title" id="m-title">—</h2>
       <p class="modal-sub" id="m-sub">—</p>
-
       <div class="detail-section">
         <h3>判定サマリー</h3>
         <div class="grid3">
@@ -262,39 +304,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
         <div class="verdict-box" id="m-verdict" style="margin-top:0.8rem">—</div>
       </div>
-
       <div class="detail-section">
         <h3>69エージェント シグナル分布</h3>
         <div id="m-cats"></div>
       </div>
-
       <div class="detail-section">
-        <h3>過去ドローダウン分析（DB保有期間全体）</h3>
+        <h3>過去ドローダウン分析</h3>
         <p class="modal-sub" id="m-hist-span">—</p>
         <div class="grid3" id="m-hist"></div>
       </div>
-
       <div class="detail-section">
-        <h3>バックテスト的中率（ルールベース戦略）</h3>
+        <h3>バックテスト的中率</h3>
         <div class="grid3" id="m-bt"></div>
         <p class="modal-sub" id="m-bt-period" style="margin-top:0.5rem">—</p>
       </div>
-
       <div class="detail-section">
         <h3>主要ファンダメンタル</h3>
         <div class="grid3" id="m-fund"></div>
       </div>
-
       <div class="detail-section">
-        <h3>BUYシグナル根拠（上位）</h3>
+        <h3>BUYシグナル根拠</h3>
         <div class="agent-list" id="m-buys"></div>
       </div>
-
       <div class="detail-section">
-        <h3>リスク警告（上位）</h3>
+        <h3>リスク警告</h3>
         <div class="agent-list" id="m-risks"></div>
       </div>
-
       <div class="detail-section">
         <h3>関連ニュース（72h）</h3>
         <div id="m-news"></div>
@@ -302,11 +337,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
-  <!-- 免責事項 -->
   <div class="disclaimer">
-    ⚠️ 本ページの情報は個人の学習・研究目的で公開しています。投資判断の根拠としないでください。<br>
-    予測はLightGBM（機械学習モデル）と独自エージェントによるものであり、将来の結果を保証するものではありません。<br>
-    保有株数・購入単価・損益金額は一切公開していません。
+    ⚠️ 本ページは個人の学習・研究目的で公開しています。投資判断の根拠としないでください。<br>
+    予測はLightGBM + 69エージェントによるものであり将来結果を保証しません。保有株数・購入単価・損益金額は非公開です。
   </div>
 </div>
 
@@ -318,233 +351,213 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     watch:'badge-w', neutral:'badge-w',
     weak_sell:'badge-ws', sell:'badge-s', strong_sell:'badge-ss', avoid:'badge-ss'
   };
+  const RANK_LABEL = {
+    strong_buy:'強い買い', buy:'買い', weak_buy:'やや買い',
+    watch:'様子見', neutral:'中立',
+    weak_sell:'やや売り', sell:'売り', strong_sell:'強い売り', avoid:'回避'
+  };
+  const RANK_COLOR = {
+    strong_buy:'#88e088', buy:'#6ec86e', weak_buy:'#d8d878',
+    watch:'#999', neutral:'#888',
+    weak_sell:'#d8896e', sell:'#d87878', strong_sell:'#e07878', avoid:'#e07878'
+  };
 
-  async function load() {
-    let data;
+  // ========== タブ切替 ==========
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+    });
+  });
+
+  // ========== メイン ==========
+  let stockData = null;
+
+  async function loadAll() {
     try {
       const res = await fetch(`${BASE}/data/stock.json`);
-      data = await res.json();
+      stockData = await res.json();
     } catch(e) {
-      document.getElementById('updated-at').textContent = 'データ読み込みエラー';
+      document.getElementById('sp-meta').textContent = 'データ読み込みエラー';
       return;
     }
 
-    document.getElementById('updated-at').textContent = `最終更新: ${data.generated_at}`;
-    const acc = data.accuracy;
+    renderHeader(stockData);
+    renderHero(stockData);
+    renderKPI(stockData);
+    renderRanking(stockData);
+    renderHistory(stockData);
+    renderAccChart(stockData);
+    loadMacro();
+    loadSimilarDays();
+    loadPostmortem();
+    loadScatter();
+  }
 
-    document.getElementById('kpi-stocks').textContent  = data.rankings.length;
-    document.getElementById('kpi-acc').textContent     = acc.rate != null ? (acc.rate*100).toFixed(1)+'%' : '—';
-    document.getElementById('kpi-judged').textContent  = acc.total;
-    document.getElementById('kpi-pending').textContent = acc.pending;
+  function renderHeader(data) {
+    document.getElementById('sp-meta').textContent = `更新: ${data.generated_at}`;
+  }
 
-    // 月別グラフ（Chart.js）
-    if (acc.monthly && acc.monthly.length > 0) {
-      const labels = acc.monthly.map(m => m.month);
-      const rates  = acc.monthly.map(m => m.rate != null ? (m.rate*100).toFixed(1) : null);
-      const totals = acc.monthly.map(m => m.total);
+  function renderHero(data) {
+    const f = data.freshness || {};
+    const since = f.days_since_last;
+    const gapN = f.gap_count || 0;
+    let cls = 'fresh-ok', icon = '✅', label = '最新';
+    if (gapN >= 3 || (since || 0) >= 3) { cls='fresh-bad'; icon='⚠'; label=`${since}日経過`; }
+    else if (gapN >= 1 || (since || 0) >= 1) { cls='fresh-warn'; icon='📅'; label=`${since}日経過`; }
 
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
-      script.onload = () => {
-        const ctx = document.getElementById('acc-chart').getContext('2d');
-        new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels,
-            datasets: [
-              {
-                label: '的中率(%)',
-                data: rates,
-                backgroundColor: rates.map(r => r >= 60 ? 'rgba(110,200,110,0.5)' : r >= 50 ? 'rgba(200,169,110,0.5)' : 'rgba(200,110,110,0.5)'),
-                borderColor:     rates.map(r => r >= 60 ? '#6ec86e' : r >= 50 ? '#c8a96e' : '#c86e6e'),
-                borderWidth: 1,
-                yAxisID: 'y',
-              },
-              {
-                label: '判定数',
-                data: totals,
-                type: 'line',
-                borderColor: '#444',
-                backgroundColor: 'transparent',
-                pointRadius: 3,
-                yAxisID: 'y2',
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: { legend: { labels: { color:'#888', font:{size:11} } } },
-            scales: {
-              x:  { ticks:{color:'#666'}, grid:{color:'#1a1a1a'} },
-              y:  { ticks:{color:'#888',callback:v=>v+'%'}, grid:{color:'#1a1a1a'}, min:0, max:100 },
-              y2: { position:'right', ticks:{color:'#444'}, grid:{display:false} },
-            }
-          }
-        });
-      };
-      document.head.appendChild(script);
+    document.getElementById('hero-fresh').textContent = f.last_analyzed_date || '未実行';
+    document.getElementById('hero-fresh-sub').innerHTML = `<span class="fresh-pill ${cls}">${icon} ${label}</span>` + (gapN>0?`<span class="fresh-detail">欠落${gapN}日</span>`:'');
+
+    // 今日のおすすめ: weak_buy 以上の上位2銘柄をピックアップ
+    const recs = (data.rankings || []).filter(r => ['strong_buy','buy','weak_buy'].includes(r.rank)).slice(0,2);
+    let headline;
+    if (recs.length === 0) {
+      headline = `本日は<strong style="color:#c8a96e">買いシグナル該当なし</strong>。様子見継続を推奨します。`;
     } else {
-      document.querySelector('.chart-wrap').innerHTML =
-        '<p style="color:#444;text-align:center;padding:2rem;">判定データ蓄積後に表示されます（予測から5営業日後）</p>';
+      headline = `本日の買い候補は <strong style="color:#88e088">${recs.length}銘柄</strong>。クリックで根拠を確認してください。`;
     }
+    document.getElementById('hero-headline').innerHTML = headline;
 
-    // ランキングテーブル
-    const tbody = document.getElementById('ranking-tbody');
-    data.rankings.forEach(r => {
-      const badgeClass = BADGE_CLASS[r.rank] || 'badge-w';
-      const prob = r.prob_up_5d != null ? r.prob_up_5d : 0;
-      const probPct = (prob*100).toFixed(0);
-      const er = r.expected_return != null ? (r.expected_return > 0 ? '+' : '') + r.expected_return.toFixed(1)+'%' : '—';
-      const updAt = r.updated_at ? r.updated_at.slice(0,16) : '—';
-      tbody.insertAdjacentHTML('beforeend', `
-        <tr>
-          <td><span class="ticker-link" data-ticker="${r.ticker}"><strong>${r.ticker}</strong></span></td>
-          <td><span class="badge ${badgeClass}">${r.rank_ja || r.rank || '—'}</span></td>
-          <td>${r.score != null ? r.score : '—'}</td>
-          <td>
-            <span class="prob-bar"><span class="prob-fill" style="width:${probPct}%"></span></span>
-            ${probPct}%
-          </td>
-          <td style="color:${r.expected_return>0?'#6ec86e':r.expected_return<0?'#c86e6e':'#888'}">${er}</td>
-          <td style="color:#555;font-size:0.7rem">${updAt}</td>
-        </tr>
-      `);
-    });
-
-    // 銘柄リンクのクリックイベント
-    document.querySelectorAll('.ticker-link').forEach(el => {
-      el.addEventListener('click', () => openTickerDetail(el.dataset.ticker));
-    });
-
-    // 履歴テーブル
-    const hbody = document.getElementById('history-tbody');
-    data.history.forEach(h => {
-      const badgeClass = BADGE_CLASS[h.rank] || 'badge-w';
-      const prob = h.prob_up_5d != null ? (h.prob_up_5d*100).toFixed(0)+'%' : '—';
-      const ret  = h.actual_ret != null ? (h.actual_ret>0?'+':'')+h.actual_ret.toFixed(1)+'%' : '—';
-      const resultLabel = h.result==='hit' ? '✅ 当たり' : h.result==='miss' ? '❌ 外れ' : '⏳ 待ち';
-      const resultClass = h.result==='hit' ? 'r-hit' : h.result==='miss' ? 'r-miss' : 'r-pending';
-      hbody.insertAdjacentHTML('beforeend', `
-        <tr>
-          <td style="color:#555">${h.date}</td>
-          <td><strong style="color:#ddd">${h.ticker}</strong></td>
-          <td><span class="badge ${badgeClass}" style="font-size:0.6rem">${h.rank||'—'}</span></td>
-          <td>${prob}</td>
-          <td style="color:${h.actual_ret>0?'#6ec86e':h.actual_ret<0?'#c86e6e':'#888'}">${ret}</td>
-          <td class="${resultClass}">${resultLabel}</td>
-        </tr>
-      `);
-    });
-  }
-
-  load();
-
-  // ============ 🆕 鮮度バナー ============
-  async function loadFreshness() {
-    try {
-      const res = await fetch(`${BASE}/data/stock.json`);
-      const d = await res.json();
-      const f = d.freshness;
-      if (!f) return;
-      const banner = document.getElementById('freshness-banner');
-      banner.style.display = 'flex';
-      const since = f.days_since_last;
-      const gapN  = f.gap_count || 0;
-      let cls = 'freshness-ok', icon = '✅', label = '最新';
-      if (gapN >= 3 || (since || 0) >= 3) { cls = 'freshness-bad';  icon = '⚠';  label = `${since}日経過`; }
-      else if (gapN >= 1 || (since || 0) >= 1) { cls = 'freshness-warn'; icon = '📅'; label = `${since}日経過`; }
-      banner.className = `freshness-banner ${cls}`;
-      document.getElementById('freshness-icon').textContent = icon;
-      document.getElementById('freshness-main').textContent = `最終分析: ${f.last_analyzed_date || '未実行'} (${label})`;
-      const gapEl = document.getElementById('freshness-gap');
-      if (gapN > 0) {
-        const sample = f.gap_business_days.slice(-5).join(', ');
-        const more = f.gap_business_days.length > 5 ? ` ...他${f.gap_business_days.length - 5}日` : '';
-        gapEl.textContent = `分析未実行: 平日${gapN}日（${sample}${more}）— PCオフ等の理由で当該日は予測なし`;
-      } else {
-        gapEl.textContent = '欠落なし';
-      }
-    } catch(e) { console.error('freshness', e); }
-  }
-  loadFreshness();
-
-  // ============ 🆕 振り返り（postmortem） ============
-  async function loadPostmortem() {
-    try {
-      const res = await fetch(`${BASE}/data/stock-postmortem.json`);
-      const pm = await res.json();
-      const sum = pm.summary || {};
-      const sumEl = document.getElementById('pm-summary');
-      if ((sum.evaluable_count || 0) === 0) {
-        sumEl.innerHTML = '<div style="color:#666">⏳ 5営業日経過分の判定可能予測がまだありません（5/13以降に蓄積予定）</div>';
-        return;
-      }
-      sumEl.innerHTML = `
-        <div class="pm-summary-item"><span class="pm-summary-val">${sum.evaluable_count}</span>判定済み</div>
-        <div class="pm-summary-item"><span class="pm-summary-val" style="color:#6ec86e">${sum.hits}</span>当たり</div>
-        <div class="pm-summary-item"><span class="pm-summary-val" style="color:#c86e6e">${sum.misses}</span>外し</div>
-        <div class="pm-summary-item"><span class="pm-summary-val">${sum.hit_rate != null ? (sum.hit_rate*100).toFixed(0)+'%' : '—'}</span>方向的中率</div>
-        <div class="pm-summary-item" style="font-size:0.7rem;color:#666;align-self:center">閾値: prob_up_5d≥${sum.threshold}</div>
-      `;
-      const list = document.getElementById('pm-list');
-      list.innerHTML = '';
-      (pm.recent_results || []).slice(0, 10).forEach(r => {
-        const cls = r.hit ? 'hit' : 'miss';
-        const verdictCls = r.hit ? 'pm-verdict hit' : 'pm-verdict miss';
-        const culpritsHtml = (r.culprits || []).map(c =>
-          `<div class="pm-agent"><span class="pm-agent-name">${c.agent}</span> [${c.score}] <span style="color:#666">${c.reason}</span></div>`
-        ).join('') || '<div class="pm-agent" style="color:#555">該当なし</div>';
-        const heroesHtml = (r.heroes || []).map(h =>
-          `<div class="pm-agent"><span class="pm-agent-name">${h.agent}</span> [${h.score}] <span style="color:#666">${h.reason}</span></div>`
-        ).join('') || '<div class="pm-agent" style="color:#555">該当なし</div>';
-        const sugg = (r.suggestions || []).map(s => `<div>💡 ${s}</div>`).join('');
-        list.insertAdjacentHTML('beforeend', `
-          <div class="pm-card ${cls}">
-            <div class="pm-header">
-              <span class="pm-ticker">${r.ticker}</span>
-              <span class="${verdictCls}">${r.verdict}</span>
-              <span class="pm-meta">予測日: ${r.prediction_date} → 5営業日後判定</span>
-            </div>
-            <div class="pm-stats">
-              予測 prob_up=<strong>${(r.prob_up_5d_predicted*100).toFixed(0)}%</strong> / 期待<strong>${r.expected_return_pct >= 0 ? '+' : ''}${r.expected_return_pct}%</strong>
-              　|
-              実績 <strong style="color:${r.actual_return_pct >= 0 ? '#6ec86e' : '#c86e6e'}">${r.actual_return_pct >= 0 ? '+' : ''}${r.actual_return_pct}%</strong>
-              　|　誤差 ${r.magnitude_error_pct}pt
-            </div>
-            <div class="pm-grid2">
-              <div>
-                <div class="pm-block-label">⚠ 反省すべきエージェント</div>
-                ${culpritsHtml}
-              </div>
-              <div>
-                <div class="pm-block-label">🏆 的確だったエージェント</div>
-                ${heroesHtml}
-              </div>
-            </div>
-            ${sugg ? `<div class="pm-suggest">${sugg}</div>` : ''}
+    const ctaList = document.getElementById('hero-cta-list');
+    ctaList.innerHTML = '';
+    if (recs.length > 0) {
+      recs.forEach(r => {
+        const cls = BADGE_CLASS[r.rank] || 'badge-w';
+        ctaList.insertAdjacentHTML('beforeend', `
+          <div class="hero-cta" data-ticker="${r.ticker}">
+            <span class="hero-cta-rank badge ${cls}">${RANK_LABEL[r.rank]}</span>
+            <strong style="color:#edede8">${r.ticker}</strong>
+            <span class="hero-cta-info">スコア${r.score} / 上昇${(r.prob_up_5d*100).toFixed(0)}% / 期待${r.expected_return>0?'+':''}${r.expected_return}%</span>
+            <span style="color:#666">→</span>
           </div>
         `);
       });
-
-      // 重み変更履歴
-      const wh = pm.weight_history || [];
-      const whEl = document.getElementById('pm-weight-hist');
-      if (wh.length > 0) {
-        whEl.innerHTML = `
-          <div class="section-title" style="margin-top:1.5rem">エージェント重み調整履歴（自動進化）</div>
-          <div class="pm-weight-hist">
-            ${wh.map(w => `<div class="pm-weight-row"><span>${w.agent}</span><span>weight=${w.current_weight}</span><span style="color:#555">${w.updated_at}</span></div>`).join('')}
+    } else {
+      // 様子見でもランキング1位を表示
+      const top = (data.rankings || [])[0];
+      if (top) {
+        ctaList.insertAdjacentHTML('beforeend', `
+          <div class="hero-cta" data-ticker="${top.ticker}">
+            <span class="hero-cta-rank badge ${BADGE_CLASS[top.rank]||'badge-w'}">${RANK_LABEL[top.rank]||top.rank}</span>
+            <strong style="color:#edede8">${top.ticker}</strong>
+            <span class="hero-cta-info">スコア${top.score}（最上位） / 上昇${(top.prob_up_5d*100).toFixed(0)}%</span>
+            <span style="color:#666">→</span>
           </div>
-        `;
-      } else {
-        whEl.innerHTML = `<div style="color:#666;font-size:0.75rem;margin-top:0.5rem">⏳ 重み調整はまだ実施されていません（n>=20件 蓄積後に自動発動）</div>`;
+        `);
       }
-    } catch(e) { console.error('postmortem', e); }
+    }
+    document.querySelectorAll('.hero-cta').forEach(el => {
+      el.addEventListener('click', () => openTickerDetail(el.dataset.ticker));
+    });
   }
-  loadPostmortem();
 
-  // ============ 🆕 マクロボード ============
+  function renderKPI(data) {
+    const acc = data.accuracy || {};
+    document.getElementById('kpi-stocks').textContent = (data.rankings || []).length;
+    document.getElementById('kpi-acc').textContent = acc.rate != null ? (acc.rate*100).toFixed(0)+'%' : '—';
+    document.getElementById('kpi-judged').textContent = acc.total ?? 0;
+    document.getElementById('kpi-pending').textContent = acc.pending ?? 0;
+  }
+
+  function renderRanking(data) {
+    const grid = document.getElementById('ranking-grid');
+    grid.innerHTML = '';
+    document.getElementById('ranking-count').textContent = `${(data.rankings || []).length}銘柄`;
+    (data.rankings || []).forEach(r => {
+      const badgeClass = BADGE_CLASS[r.rank] || 'badge-w';
+      const probPct = r.prob_up_5d != null ? (r.prob_up_5d*100).toFixed(0) : '—';
+      const er = r.expected_return != null ? (r.expected_return>0?'+':'')+r.expected_return.toFixed(1)+'%' : '—';
+      const erColor = r.expected_return>0?'#6ec86e':r.expected_return<0?'#c86e6e':'#888';
+      const updAt = r.updated_at ? r.updated_at.slice(5,16) : '—';
+      const fillColor = RANK_COLOR[r.rank] || '#c8a96e';
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="rank-row" data-ticker="${r.ticker}">
+          <div class="rank-ticker">${r.ticker}</div>
+          <div><span class="badge ${badgeClass}">${RANK_LABEL[r.rank] || r.rank}</span></div>
+          <div>
+            <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${probPct}%;background:${fillColor}"></div></div>
+            <div class="rank-bar-text">5日上昇 ${probPct}%</div>
+          </div>
+          <div class="rank-score-num">${r.score ?? '—'}</div>
+          <div class="rank-er rank-col-er" style="color:${erColor}">${er}</div>
+          <div class="rank-time rank-col-time">${updAt}</div>
+        </div>
+      `);
+    });
+    document.querySelectorAll('.rank-row').forEach(el => {
+      el.addEventListener('click', () => openTickerDetail(el.dataset.ticker));
+    });
+  }
+
+  function renderHistory(data) {
+    const tbody = document.getElementById('history-tbody');
+    tbody.innerHTML = '';
+    document.getElementById('history-count').textContent = `${(data.history || []).length}件`;
+    (data.history || []).forEach(h => {
+      const badgeClass = BADGE_CLASS[h.rank] || 'badge-w';
+      const prob = h.prob_up_5d != null ? (h.prob_up_5d*100).toFixed(0)+'%' : '—';
+      const ret = h.actual_ret != null ? (h.actual_ret>0?'+':'')+h.actual_ret.toFixed(1)+'%' : '—';
+      const resLabel = h.result==='hit' ? '✅' : h.result==='miss' ? '❌' : '⏳';
+      const resCls = h.result==='hit' ? 'r-hit' : h.result==='miss' ? 'r-miss' : 'r-pending';
+      tbody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td style="color:#555">${h.date}</td>
+          <td><strong style="color:#ddd">${h.ticker}</strong></td>
+          <td><span class="badge ${badgeClass}" style="font-size:0.6rem">${RANK_LABEL[h.rank]||h.rank||'—'}</span></td>
+          <td>${prob}</td>
+          <td style="color:${h.actual_ret>0?'#6ec86e':h.actual_ret<0?'#c86e6e':'#888'}">${ret}</td>
+          <td class="${resCls}">${resLabel}</td>
+        </tr>
+      `);
+    });
+  }
+
+  function renderAccChart(data) {
+    const acc = data.accuracy || {};
+    const monthly = acc.monthly || [];
+    const wrap = document.querySelector('#tab-review .chart-card:last-of-type, #tab-review .chart-card');
+    // 月別がなければ案内
+    const targetCanvasId = 'acc-chart';
+    if (monthly.length === 0) {
+      const c = document.getElementById(targetCanvasId);
+      if (c) c.parentElement.innerHTML = '<p style="color:#555;text-align:center;padding:1.5rem">⏳ 月別データ蓄積後に表示（5/13以降から）</p>';
+      return;
+    }
+    ensureChart().then(() => {
+      const labels = monthly.map(m => m.month);
+      const rates = monthly.map(m => m.rate != null ? (m.rate*100).toFixed(1) : null);
+      const totals = monthly.map(m => m.total);
+      const ctx = document.getElementById(targetCanvasId).getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { label: '的中率(%)', data: rates,
+              backgroundColor: rates.map(r => r>=60?'rgba(110,200,110,0.6)':r>=50?'rgba(200,169,110,0.6)':'rgba(200,110,110,0.6)'),
+              borderColor: rates.map(r => r>=60?'#6ec86e':r>=50?'#c8a96e':'#c86e6e'),
+              borderWidth: 1, yAxisID: 'y' },
+            { label: '判定数', data: totals, type: 'line',
+              borderColor: '#444', backgroundColor: 'transparent', pointRadius: 3, yAxisID: 'y2' }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: true,
+          plugins: { legend: { labels: { color:'#888', font:{size:11} } } },
+          scales: {
+            x: { ticks:{color:'#666'}, grid:{color:'#1a1a1a'} },
+            y: { ticks:{color:'#888',callback:v=>v+'%'}, grid:{color:'#1a1a1a'}, min:0, max:100 },
+            y2: { position:'right', ticks:{color:'#444'}, grid:{display:false} }
+          }
+        }
+      });
+    });
+  }
+
+  // ========== マクロボード ==========
   async function loadMacro() {
     try {
       const res = await fetch(`${BASE}/data/stock-macro.json`);
@@ -557,25 +570,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         if (chg != null) {
           const sign = chg > 0 ? '▲ +' : chg < 0 ? '▼ ' : '― ';
           el.textContent = `${sign}${chg.toFixed(2)}% (${obj.date})`;
-          el.style.color = chg > 0 ? '#6ec86e' : chg < 0 ? '#c86e6e' : '#888';
+          el.style.color = chg>0?'#6ec86e':chg<0?'#c86e6e':'#888';
         }
       };
       setTile('vix', m.vix);
       setTile('10y', m.us10y, '%');
       setTile('sp', m.sp500);
       setTile('jpy', m.usdjpy);
-      // VIX needle 位置（0-50を100%にマッピング）
       if (m.vix) {
         const pct = Math.min(100, Math.max(0, m.vix.value / 50 * 100));
         document.getElementById('vix-needle').style.left = `${pct}%`;
+        // ヒーローのVIXタイル
+        document.getElementById('hero-vix').textContent = m.vix.value;
+        const vchg = m.vix.change_pct;
+        const vsub = vchg!=null ? `${vchg>0?'+':''}${vchg.toFixed(1)}% (${m.vix.date})` : '—';
+        document.getElementById('hero-vix-sub').textContent = vsub;
       }
-    } catch (e) {
-      console.error('macro load error', e);
-    }
+    } catch(e) { console.error('macro', e); }
   }
-  loadMacro();
 
-  // ============ 🆕 過去類似日マッチング ============
+  // ========== 類似日 ==========
   async function loadSimilarDays() {
     try {
       const res = await fetch(`${BASE}/data/stock-similar-days.json`);
@@ -588,93 +602,116 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       listEl.innerHTML = '';
       (s.similar_days || []).forEach((d, i) => {
         const fwd = d.next_30d_return_pct;
-        const fwdClass = fwd != null && fwd < 0 ? 'similar-fwd neg' : 'similar-fwd';
-        const fwdText = fwd != null ? `→ その後30営業日: ${fwd > 0 ? '+' : ''}${fwd}%` : '→ 30日後データなし';
+        const fwdCls = fwd!=null && fwd<0 ? 'similar-fwd neg' : 'similar-fwd pos';
+        const fwdText = fwd!=null ? `→ その後30営業日: ${fwd>0?'+':''}${fwd}%` : '→ 30日後データなし';
         listEl.insertAdjacentHTML('beforeend', `
           <div class="similar-card">
             <span class="similar-date">#${i+1}: ${d.date}</span>
             <span class="similar-context">${d.context}</span>
             <div class="similar-stats">VIX ${d.vix} / 10Y ${d.us10y}% / SP500 20日 ${d.sp500_ret_20d_pct}% (類似度 ${d.distance})</div>
-            <div class="${fwdClass}">${fwdText}</div>
+            <div class="${fwdCls}">${fwdText}</div>
           </div>
         `);
       });
-    } catch (e) {
-      console.error('similar days load error', e);
-    }
+    } catch(e) { console.error('similar', e); }
   }
-  loadSimilarDays();
 
-  // ============ 🆕 ポジショニングマップ ============
+  // ========== 振り返り ==========
+  async function loadPostmortem() {
+    try {
+      const res = await fetch(`${BASE}/data/stock-postmortem.json`);
+      const pm = await res.json();
+      const sum = pm.summary || {};
+      const sumEl = document.getElementById('pm-summary');
+      if ((sum.evaluable_count || 0) === 0) {
+        sumEl.innerHTML = '<div style="color:#666">⏳ 5営業日経過分の判定可能予測がまだありません</div>';
+        return;
+      }
+      sumEl.innerHTML = `
+        <div class="pm-stat"><span class="pm-stat-num">${sum.evaluable_count}</span>判定済み</div>
+        <div class="pm-stat"><span class="pm-stat-num" style="color:#6ec86e">${sum.hits}</span>当たり</div>
+        <div class="pm-stat"><span class="pm-stat-num" style="color:#c86e6e">${sum.misses}</span>外し</div>
+        <div class="pm-stat"><span class="pm-stat-num">${sum.hit_rate!=null?(sum.hit_rate*100).toFixed(0)+'%':'—'}</span>方向的中率</div>
+      `;
+      const list = document.getElementById('pm-list');
+      list.innerHTML = '';
+      (pm.recent_results || []).slice(0, 10).forEach(r => {
+        const cls = r.hit ? 'hit' : 'miss';
+        const verdictCls = r.hit ? 'pm-verdict hit' : 'pm-verdict miss';
+        const culprits = (r.culprits||[]).map(c =>
+          `<div class="pm-agent"><span class="pm-agent-score agent-sell">${c.score}</span><span class="pm-agent-name">${c.agent}</span> <span style="color:#666">${c.reason}</span></div>`
+        ).join('') || '<div class="pm-agent" style="color:#555">該当なし</div>';
+        const heroes = (r.heroes||[]).map(h =>
+          `<div class="pm-agent"><span class="pm-agent-score agent-buy">${h.score}</span><span class="pm-agent-name">${h.agent}</span> <span style="color:#666">${h.reason}</span></div>`
+        ).join('') || '<div class="pm-agent" style="color:#555">該当なし</div>';
+        const sugg = (r.suggestions||[]).map(s => `<div>💡 ${s}</div>`).join('');
+        list.insertAdjacentHTML('beforeend', `
+          <div class="pm-card ${cls}">
+            <div class="pm-head">
+              <span class="pm-tk">${r.ticker}</span>
+              <span class="${verdictCls}">${r.verdict}</span>
+              <span class="pm-meta-mini">予測日: ${r.prediction_date}</span>
+            </div>
+            <div class="pm-stats-line">
+              予測 prob_up=<strong>${(r.prob_up_5d_predicted*100).toFixed(0)}%</strong> / 期待<strong>${r.expected_return_pct>=0?'+':''}${r.expected_return_pct}%</strong>
+              　|　実績 <strong style="color:${r.actual_return_pct>=0?'#6ec86e':'#c86e6e'}">${r.actual_return_pct>=0?'+':''}${r.actual_return_pct}%</strong>
+              　|　誤差 ${r.magnitude_error_pct}pt
+            </div>
+            <div class="pm-grid2">
+              <div><div class="pm-block-label">⚠ 反省すべきエージェント</div>${culprits}</div>
+              <div><div class="pm-block-label">🏆 的確だったエージェント</div>${heroes}</div>
+            </div>
+            ${sugg ? `<div class="pm-suggest">${sugg}</div>` : ''}
+          </div>
+        `);
+      });
+
+      const wh = pm.weight_history || [];
+      const whEl = document.getElementById('pm-weight-hist');
+      if (wh.length > 0) {
+        whEl.innerHTML = `
+          <div class="sec-title" style="margin-top:1.5rem">エージェント重み調整履歴（自動進化）</div>
+          <div>${wh.map(w => `<div style="display:flex;justify-content:space-between;padding:0.4rem 0.6rem;border-bottom:1px solid #181818;font-size:0.75rem;color:#aaa"><span>${w.agent}</span><span>weight=${w.current_weight}</span><span style="color:#555">${w.updated_at}</span></div>`).join('')}</div>`;
+      } else {
+        whEl.innerHTML = `<div style="color:#666;font-size:0.75rem;margin-top:0.5rem">⏳ 重み調整未実施（n>=20件 蓄積後に自動発動）</div>`;
+      }
+    } catch(e) { console.error('postmortem', e); }
+  }
+
+  // ========== ポジショニングマップ ==========
   async function loadScatter() {
     try {
-      const res = await fetch(`${BASE}/data/stock.json`);
-      const data = await res.json();
-      // Chart.js が既にロードされていない場合があるので動的ロード
-      const ensureChart = () => new Promise(resolve => {
-        if (window.Chart) return resolve();
-        const sc = document.createElement('script');
-        sc.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
-        sc.onload = resolve;
-        document.head.appendChild(sc);
-      });
       await ensureChart();
-
-      const colorOf = (rank) => {
-        if (['strong_buy','buy','weak_buy'].includes(rank)) return 'rgba(110,200,110,0.8)';
-        if (['weak_sell','sell','strong_sell','avoid'].includes(rank)) return 'rgba(200,110,110,0.8)';
-        return 'rgba(200,169,110,0.8)';
-      };
-
-      // 各銘柄の (期待値, 下落確率%, スコア)
       const points = [];
-      for (const r of data.rankings) {
+      for (const r of stockData.rankings) {
         try {
           const dRes = await fetch(`${BASE}/data/stock-detail/${r.ticker}.json`);
           const dd = await dRes.json();
           const er = r.expected_return ?? 0;
           const pdown = (dd.summary?.prob_down_5pct ?? 0.05) * 100;
           const score = r.score ?? 50;
-          points.push({
-            x: er, y: pdown,
-            r: Math.max(6, score / 5),
-            ticker: r.ticker,
-            rank: r.rank,
-            color: colorOf(r.rank),
-          });
+          const cls = BADGE_CLASS[r.rank];
+          const color = cls?.includes('-b')||cls?.includes('-sb')||cls?.includes('-wb') ? 'rgba(110,200,110,0.8)'
+                      : cls?.includes('-s')||cls?.includes('-ss')||cls?.includes('-ws') ? 'rgba(200,110,110,0.8)'
+                      : 'rgba(200,169,110,0.8)';
+          points.push({ x: er, y: pdown, r: Math.max(6, score/5), ticker: r.ticker, rank: r.rank, color });
         } catch {}
       }
-
       const ctx = document.getElementById('scatter-chart').getContext('2d');
       new Chart(ctx, {
         type: 'bubble',
-        data: {
-          datasets: [{
-            data: points,
-            backgroundColor: points.map(p => p.color),
-            borderColor: points.map(p => p.color.replace('0.8','1')),
-            borderWidth: 1.5,
-          }]
-        },
+        data: { datasets: [{ data: points, backgroundColor: points.map(p=>p.color), borderColor: points.map(p=>p.color.replace('0.8','1')), borderWidth: 1.5 }] },
         options: {
-          responsive: true,
-          maintainAspectRatio: true,
+          responsive: true, maintainAspectRatio: true,
           plugins: {
             legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => {
-                  const p = ctx.raw;
-                  return `${p.ticker} (${p.rank}): 期待値${p.x.toFixed(2)}% / 下落${p.y.toFixed(0)}% / スコア${(p.r * 5).toFixed(0)}`;
-                }
-              }
-            }
+            tooltip: { callbacks: { label: (c) => { const p=c.raw; return `${p.ticker} (${RANK_LABEL[p.rank]||p.rank}): 期待値${p.x.toFixed(2)}% / 下落${p.y.toFixed(0)}% / スコア${(p.r*5).toFixed(0)}`; }}}
           },
           scales: {
-            x: { title: { display: true, text: '期待リターン (%)', color: '#888' }, ticks: { color: '#888' }, grid: { color: '#1a1a1a' }},
-            y: { title: { display: true, text: '5%下落確率 (%)', color: '#888' }, ticks: { color: '#888' }, grid: { color: '#1a1a1a' }, reverse: true },
+            x: { title:{display:true,text:'期待リターン (%)',color:'#888'}, ticks:{color:'#888'}, grid:{color:'#1a1a1a'} },
+            y: { title:{display:true,text:'5%下落確率 (%)',color:'#888'}, ticks:{color:'#888'}, grid:{color:'#1a1a1a'}, reverse:true }
           },
-          animation: { duration: 1200, easing: 'easeOutCubic' },
+          animation: { duration: 1000, easing: 'easeOutCubic' }
         },
         plugins: [{
           afterDatasetsDraw: (chart) => {
@@ -689,24 +726,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           }
         }]
       });
-    } catch (e) {
-      console.error('scatter load error', e);
-    }
+    } catch(e) { console.error('scatter', e); }
   }
-  loadScatter();
 
-  // ============ 銘柄詳細モーダル ============
-  const RANK_LABEL = {
-    strong_buy:'強い買い', buy:'買い', weak_buy:'やや買い',
-    watch:'様子見', neutral:'中立',
-    weak_sell:'やや売り', sell:'売り', strong_sell:'強い売り', avoid:'回避'
-  };
+  function ensureChart() {
+    return new Promise(resolve => {
+      if (window.Chart) return resolve();
+      const sc = document.createElement('script');
+      sc.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
+      sc.onload = resolve;
+      document.head.appendChild(sc);
+    });
+  }
 
+  // ========== 銘柄詳細モーダル ==========
   async function openTickerDetail(ticker) {
     const modal = document.getElementById('modal');
     modal.classList.add('open');
     document.getElementById('m-title').textContent = `📊 ${ticker} — 判断根拠`;
-    document.getElementById('m-sub').textContent   = 'データ読み込み中…';
+    document.getElementById('m-sub').textContent = 'データ読み込み中…';
 
     let d;
     try {
@@ -719,117 +757,99 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     const s = d.summary || {};
     document.getElementById('m-sub').textContent = `更新: ${d.generated_at} / 予測日: ${s.prediction_date || '—'}`;
-    document.getElementById('m-rank').textContent  = RANK_LABEL[s.rank] || s.rank || '—';
+    document.getElementById('m-rank').textContent = RANK_LABEL[s.rank] || s.rank || '—';
     document.getElementById('m-score').textContent = s.score != null ? s.score : '—';
-    document.getElementById('m-rr').textContent    = s.risk_reward != null ? s.risk_reward.toFixed(2) : '—';
-    document.getElementById('m-pup').textContent   = s.prob_up_5d != null ? (s.prob_up_5d*100).toFixed(0)+'%' : '—';
+    document.getElementById('m-rr').textContent = s.risk_reward != null ? s.risk_reward.toFixed(2) : '—';
+    document.getElementById('m-pup').textContent = s.prob_up_5d != null ? (s.prob_up_5d*100).toFixed(0)+'%' : '—';
     document.getElementById('m-pdown').textContent = s.prob_down_5pct != null ? (s.prob_down_5pct*100).toFixed(0)+'%' : '—';
-    document.getElementById('m-er').textContent    = s.expected_return != null ? (s.expected_return>0?'+':'')+s.expected_return.toFixed(2)+'%' : '—';
+    document.getElementById('m-er').textContent = s.expected_return != null ? (s.expected_return>0?'+':'')+s.expected_return.toFixed(2)+'%' : '—';
     document.getElementById('m-verdict').textContent = s.verdict || '—';
 
-    // カテゴリ別シグナル
     const catWrap = document.getElementById('m-cats');
     catWrap.innerHTML = '';
     const cats = (d.agent_summary && d.agent_summary.category_stats) || {};
     Object.entries(cats).forEach(([cat, v]) => {
       const tot = v.count;
-      const buyW  = (v.buy /tot*100).toFixed(0);
+      const buyW = (v.buy/tot*100).toFixed(0);
       const sellW = (v.sell/tot*100).toFixed(0);
       const holdW = 100 - buyW - sellW;
       catWrap.insertAdjacentHTML('beforeend', `
         <div class="cat-bar-wrap">
           <span style="min-width:120px">${cat}</span>
           <span class="cat-bar">
-            <span class="cat-bar-buy"  style="width:${buyW}%"></span>
+            <span class="cat-bar-buy" style="width:${buyW}%"></span>
             <span class="cat-bar-hold" style="width:${holdW}%"></span>
             <span class="cat-bar-sell" style="width:${sellW}%"></span>
           </span>
           <span style="min-width:120px;text-align:right">BUY ${v.buy} / HOLD ${v.hold} / SELL ${v.sell} (avg ${v.avg_score})</span>
-        </div>
-      `);
+        </div>`);
     });
 
-    // 過去DD分析
     const histWrap = document.getElementById('m-hist');
     const histSpan = document.getElementById('m-hist-span');
-    const h = d.historical || d.historical_50y; // 互換性
+    const h = d.historical || d.historical_50y;
     if (h) {
-      histSpan.textContent = h.data_span_label || `${h.first_data_date}〜 (${h.total_days}日 = 約${(h.total_days/252).toFixed(1)}年)`;
+      histSpan.textContent = h.data_span_label || `${h.first_data_date}〜 (${h.total_days}日)`;
       histWrap.innerHTML = `
         <div class="stat-cell"><div class="stat-label">最大DD</div><div class="stat-value" style="color:#c86e6e">${h.max_drawdown_pct}%</div></div>
-        <div class="stat-cell"><div class="stat-label">現在DD</div><div class="stat-value" style="color:${h.current_drawdown_pct < -20 ? '#c86e6e' : '#c8a96e'}">${h.current_drawdown_pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">現在DD</div><div class="stat-value" style="color:${h.current_drawdown_pct<-20?'#c86e6e':'#c8a96e'}">${h.current_drawdown_pct}%</div></div>
         <div class="stat-cell"><div class="stat-label">最高値からの位置</div><div class="stat-value">${h.current_pct_of_ath}%</div></div>
         <div class="stat-cell"><div class="stat-label">-30%以下日数</div><div class="stat-value">${h.days_below_30pct_dd} / ${h.total_days}</div></div>
         <div class="stat-cell"><div class="stat-label">-30%以下の比率</div><div class="stat-value">${h.pct_time_below_30pct}%</div></div>
-        <div class="stat-cell"><div class="stat-label">対象期間</div><div class="stat-value" style="font-size:0.85rem">約${h.approx_years || (h.total_days/252).toFixed(1)}年</div></div>
-      `;
+        <div class="stat-cell"><div class="stat-label">対象期間</div><div class="stat-value" style="font-size:0.8rem">約${h.approx_years}年</div></div>`;
     } else {
-      histSpan.textContent = '';
-      histWrap.innerHTML = '<div style="color:#666">過去価格データなし</div>';
+      histSpan.textContent = ''; histWrap.innerHTML = '<div style="color:#666">データなし</div>';
     }
 
-    // バックテスト
     const btWrap = document.getElementById('m-bt');
     const bt = d.backtest;
     if (bt) {
       btWrap.innerHTML = `
-        <div class="stat-cell"><div class="stat-label">勝率</div><div class="stat-value" style="color:${bt.win_rate_pct >= 55 ? '#6ec86e' : '#c8a96e'}">${bt.win_rate_pct}%</div></div>
+        <div class="stat-cell"><div class="stat-label">勝率</div><div class="stat-value" style="color:${bt.win_rate_pct>=55?'#6ec86e':'#c8a96e'}">${bt.win_rate_pct}%</div></div>
         <div class="stat-cell"><div class="stat-label">CAGR</div><div class="stat-value">${bt.cagr_pct}%</div></div>
         <div class="stat-cell"><div class="stat-label">Sharpe</div><div class="stat-value">${bt.sharpe_ratio}</div></div>
         <div class="stat-cell"><div class="stat-label">最大DD</div><div class="stat-value" style="color:#c86e6e">${bt.max_drawdown_pct}%</div></div>
         <div class="stat-cell"><div class="stat-label">PF</div><div class="stat-value">${bt.profit_factor}</div></div>
-        <div class="stat-cell"><div class="stat-label">取引数</div><div class="stat-value">${bt.total_trades}</div></div>
-      `;
+        <div class="stat-cell"><div class="stat-label">取引数</div><div class="stat-value">${bt.total_trades}</div></div>`;
       document.getElementById('m-bt-period').textContent = `${bt.strategy} / 期間: ${bt.period}`;
     } else {
-      btWrap.innerHTML = '<div style="color:#666">バックテスト結果なし</div>';
+      btWrap.innerHTML = '<div style="color:#666">バックテストなし</div>';
       document.getElementById('m-bt-period').textContent = '';
     }
 
-    // ファンダメンタル
     const fundWrap = document.getElementById('m-fund');
     const f = d.fundamentals;
     if (f) {
       fundWrap.innerHTML = `
         <div class="stat-cell"><div class="stat-label">PER</div><div class="stat-value">${f.PER ?? '—'}</div></div>
         <div class="stat-cell"><div class="stat-label">PBR</div><div class="stat-value">${f.PBR ?? '—'}</div></div>
-        <div class="stat-cell"><div class="stat-label">ROE</div><div class="stat-value">${f.ROE != null ? (f.ROE*100).toFixed(1)+'%' : '—'}</div></div>
-        <div class="stat-cell"><div class="stat-label">営業利益率</div><div class="stat-value">${f.operating_margin != null ? (f.operating_margin*100).toFixed(1)+'%' : '—'}</div></div>
-        <div class="stat-cell"><div class="stat-label">売上成長</div><div class="stat-value">${f.revenue_growth != null ? (f.revenue_growth*100).toFixed(1)+'%' : '—'}</div></div>
-        <div class="stat-cell"><div class="stat-label">EPS成長</div><div class="stat-value">${f.eps_growth != null ? (f.eps_growth*100).toFixed(1)+'%' : '—'}</div></div>
-      `;
+        <div class="stat-cell"><div class="stat-label">ROE</div><div class="stat-value">${f.ROE!=null?(f.ROE*100).toFixed(1)+'%':'—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">営業利益率</div><div class="stat-value">${f.operating_margin!=null?(f.operating_margin*100).toFixed(1)+'%':'—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">売上成長</div><div class="stat-value">${f.revenue_growth!=null?(f.revenue_growth*100).toFixed(1)+'%':'—'}</div></div>
+        <div class="stat-cell"><div class="stat-label">EPS成長</div><div class="stat-value">${f.eps_growth!=null?(f.eps_growth*100).toFixed(1)+'%':'—'}</div></div>`;
     } else {
-      fundWrap.innerHTML = '<div style="color:#666">ファンダデータなし</div>';
+      fundWrap.innerHTML = '<div style="color:#666">ETF/データなし</div>';
     }
 
-    // BUYシグナル
-    const buysWrap = document.getElementById('m-buys');
-    buysWrap.innerHTML = (d.top_buys || []).map(a => `
+    document.getElementById('m-buys').innerHTML = (d.top_buys || []).map(a => `
       <div class="agent-item">
         <span class="agent-score agent-buy">${a.score}</span>
         <span class="agent-name">${a.agent}</span>
         <span class="agent-reason">${a.reason || '—'}</span>
-      </div>
-    `).join('') || '<div style="color:#666;padding:0.5rem">買いシグナル該当なし</div>';
+      </div>`).join('') || '<div style="color:#666;padding:0.5rem">買いシグナルなし</div>';
 
-    // リスク
-    const risksWrap = document.getElementById('m-risks');
-    risksWrap.innerHTML = (d.top_risks || []).map(a => `
+    document.getElementById('m-risks').innerHTML = (d.top_risks || []).map(a => `
       <div class="agent-item">
-        <span class="agent-score ${a.judgment === 'SELL' || a.judgment === 'STRONG_SELL' ? 'agent-sell' : 'agent-hold'}">${a.score}</span>
+        <span class="agent-score ${a.judgment==='SELL'||a.judgment==='STRONG_SELL'?'agent-sell':'agent-hold'}">${a.score}</span>
         <span class="agent-name">${a.agent}</span>
         <span class="agent-reason">${a.reason || '—'}</span>
-      </div>
-    `).join('') || '<div style="color:#666;padding:0.5rem">リスク警告なし</div>';
+      </div>`).join('') || '<div style="color:#666;padding:0.5rem">リスク警告なし</div>';
 
-    // ニュース
-    const newsWrap = document.getElementById('m-news');
-    newsWrap.innerHTML = (d.news || []).map(n => `
+    document.getElementById('m-news').innerHTML = (d.news || []).map(n => `
       <div class="news-item">
         <div>${n.headline}</div>
         <div class="news-meta">${n.published_at?.slice(0,16) || ''} / ${n.source || ''} / 重要度${n.importance ?? '—'} / 感情${n.sentiment != null ? (n.sentiment > 0 ? '+' : '') + n.sentiment.toFixed(2) : '—'}</div>
-      </div>
-    `).join('') || '<div style="color:#666">関連ニュースなし</div>';
+      </div>`).join('') || '<div style="color:#666">関連ニュースなし</div>';
   }
 
   document.getElementById('modal-close').addEventListener('click', () => {
@@ -838,6 +858,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   document.getElementById('modal').addEventListener('click', (e) => {
     if (e.target.id === 'modal') document.getElementById('modal').classList.remove('open');
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.getElementById('modal').classList.remove('open');
+  });
+
+  loadAll();
 </script>
 
 </BaseLayout>
