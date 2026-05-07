@@ -1,6 +1,6 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-05-03 12:07",
+  "generated_at": "2026-05-07 22:05",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -9,31 +9,31 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-03 11:13",
-    "prediction_date": "2026-05-03"
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-07 22:04",
+    "prediction_date": "2026-05-07"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "BUY": 8,
-      "HOLD": 9,
+      "HOLD": 8,
       "WATCH": 51,
-      "REDUCE": 1
+      "REDUCE": 2
     },
     "category_stats": {
       "market_monitor": {
         "count": 7,
         "buy": 3,
-        "sell": 0,
-        "hold": 4,
-        "avg_score": 54.3
+        "sell": 1,
+        "hold": 3,
+        "avg_score": 52.9
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 54.9
+        "avg_score": 55.0
       },
       "personal": {
         "count": 10,
@@ -47,7 +47,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 50.0
+        "avg_score": 50.5
       },
       "trade_style": {
         "count": 7,
@@ -172,14 +172,6 @@
       "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
     },
     {
-      "agent": "investor_profile",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "alert",
       "category": "integration",
       "score": 55.0,
@@ -188,12 +180,12 @@
       "reason": "異常なし"
     },
     {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 54.0,
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "bayesian",
@@ -202,6 +194,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
     },
     {
       "agent": "downside_risk",

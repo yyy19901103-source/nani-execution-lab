@@ -1,39 +1,32 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-03 12:07",
+  "generated_at": "2026-05-07 22:05",
   "summary": {
     "rank": "watch",
-    "score": 56,
+    "score": 54,
     "prob_up_5d": 0.537,
     "prob_down_5pct": 0.184,
     "expected_return": 1.3,
     "risk_reward": 1.41,
     "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=49% / 3ヶ月=62% / 12ヶ月=72%\n下落確率: 3%=35% / 5%=18% / 10%=6%\n期待値: +1.30% / リスクリワード: 1.41\n判定時刻: 2026-05-03 11:13",
-    "prediction_date": "2026-05-03"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=50% / 3ヶ月=62% / 12ヶ月=72%\n下落確率: 3%=35% / 5%=18% / 10%=6%\n期待値: +1.30% / リスクリワード: 1.41\n判定時刻: 2026-05-07 22:04",
+    "prediction_date": "2026-05-07"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
-      "BUY": 15,
-      "HOLD": 7,
-      "WATCH": 42
+      "STRONG_BUY": 4,
+      "BUY": 13,
+      "HOLD": 9,
+      "WATCH": 43
     },
     "category_stats": {
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 57.0
-      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
-        "avg_score": 60.6
+        "avg_score": 60.3
       },
       "personal": {
         "count": 10,
@@ -49,38 +42,37 @@
         "hold": 17,
         "avg_score": 52.9
       },
-      "analysis": {
-        "count": 10,
-        "buy": 5,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 58.1
-      },
       "prediction": {
         "count": 10,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 56.1
+        "hold": 8,
+        "avg_score": 53.5
       },
       "market_monitor": {
         "count": 7,
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 52.9
+        "avg_score": 48.7
+      },
+      "analysis": {
+        "count": 10,
+        "buy": 3,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 54.9
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 52.7
       }
     }
   },
   "top_buys": [
-    {
-      "agent": "comparative",
-      "category": "integration",
-      "score": 84.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 2/10位"
-    },
     {
       "agent": "dividend_income",
       "category": "trade_style",
@@ -122,20 +114,12 @@
       "reason": "売上高成長(17%) / EPS急成長(60%)"
     },
     {
-      "agent": "supply_demand",
-      "category": "analysis",
-      "score": 71.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "MFI買い圧力(67) / OBV上昇（蓄積） / VWAP上方"
-    },
-    {
       "agent": "mid_term_prob",
       "category": "prediction",
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+2.2% / 売上成長=17%"
+      "reason": "20d/3m上昇確率=71% / MA20=+0.6% / 売上成長=17%"
     },
     {
       "agent": "liquidity_risk",
@@ -146,46 +130,46 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "technical_summary",
+      "agent": "fundamental",
       "category": "analysis",
-      "score": 69.0,
+      "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "テクニカル総合買いシグナル / 強弱比=3.3:1.5"
+      "reason": "高利益率(47%)"
+    },
+    {
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "portfolio_fit",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
     }
   ],
   "top_risks": [
     {
-      "agent": "swing_trade",
-      "category": "trade_style",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
-    },
-    {
-      "agent": "market_sentiment",
-      "category": "market_monitor",
+      "agent": "expected_value",
+      "category": "prediction",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "直近ニュース良好(0.52)"
+      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
+      "agent": "technical_summary",
+      "category": "analysis",
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率58% / P10=-0.6% P90=+0.9%"
-    },
-    {
-      "agent": "score_integration",
-      "category": "integration",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "全エージェント統合スコア=56"
+      "reason": "テクニカル中立 / 強弱比=2.3:3.0"
     },
     {
       "agent": "valuation",
@@ -194,14 +178,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "バリュエーション中立"
-    },
-    {
-      "agent": "ensemble",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=56% / LGBM=54% / ルール=57% / ファンダ=58%"
     },
     {
       "agent": "alert",
@@ -228,12 +204,36 @@
       "reason": "OBV上昇トレンド"
     },
     {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
       "agent": "momentum",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ADXトレンド強(=53)"
+      "reason": "ADXトレンド強(=47)"
+    },
+    {
+      "agent": "bayesian",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "score_integration",
+      "category": "integration",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=54"
     }
   ],
   "fundamentals": {
@@ -246,16 +246,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9150,
+    "total_days": 9153,
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 414.44,
-    "current_drawdown_pct": -23.2,
+    "current_close": 413.96,
+    "current_drawdown_pct": -23.3,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3311,
     "pct_time_below_30pct": 36.2,
-    "current_pct_of_ath": 76.8
+    "current_pct_of_ath": 76.7
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -271,45 +271,45 @@
   },
   "news": [
     {
-      "headline": "Major Hyperscalers Just Reported Earnings. Nvidia Was The Winner",
-      "sentiment": 0.82,
+      "headline": "Zacks Earnings Trends Highlights: GOOGL, AMZN, MSFT, META and NVDA",
+      "sentiment": 0.86,
       "importance": 5,
-      "published_at": "2026-05-03 05:50:00",
+      "published_at": "2026-05-07 17:07:00",
       "source": "yahoo"
     },
     {
-      "headline": "USA Today Q1 Earnings Call Highlights",
-      "sentiment": 0.78,
-      "importance": 5,
-      "published_at": "2026-05-02 23:27:03",
+      "headline": "Per Scholas Launches First-Ever Critical Infrastructure Training Cohort in Collaboration with Microsoft to Build the Next Generation of Data Center Talent",
+      "sentiment": 0.27,
+      "importance": 3,
+      "published_at": "2026-05-07 21:43:00",
       "source": "yahoo"
     },
     {
-      "headline": "US Equity Indexes Scale New Peaks This Week Amid Lift From Mega-Cap Earnings, Crude Oil",
-      "sentiment": -0.38,
-      "importance": 5,
-      "published_at": "2026-05-02 05:53:49",
+      "headline": "CrowdStrike Announces Speaker Lineup for Day Zero Threat Research Summit",
+      "sentiment": -0.78,
+      "importance": 2,
+      "published_at": "2026-05-07 22:00:00",
       "source": "yahoo"
     },
     {
-      "headline": "S&P 500 Marks Fifth Weekly Gain, Reaches New Records on Earnings Strength",
-      "sentiment": 0.78,
-      "importance": 5,
-      "published_at": "2026-05-02 05:49:44",
+      "headline": "Apple’s AI Restraint Looks Smart as Microsoft Spends $190B on AI Despite User Pushback",
+      "sentiment": 0.62,
+      "importance": 2,
+      "published_at": "2026-05-07 21:41:46",
       "source": "yahoo"
     },
     {
-      "headline": "Earnings: Google is biggest AI winner, OpenAI could be a 'surprise' loser",
-      "sentiment": 0.92,
-      "importance": 5,
-      "published_at": "2026-05-02 04:56:54",
+      "headline": "Microsoft Drops Copilot for Xbox",
+      "sentiment": null,
+      "importance": 2,
+      "published_at": "2026-05-07 21:13:55",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-07-30",
-      "estimated_eps": 4.23075,
+      "estimated_eps": 4.24777,
       "actual_eps": null,
       "surprise_pct": null
     },
