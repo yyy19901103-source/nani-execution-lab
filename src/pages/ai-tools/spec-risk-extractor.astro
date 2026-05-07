@@ -328,6 +328,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </div>
         </div>
 
+        <!-- ★ 辞書/ルール追加（実行前に設定） -->
+        <div style="margin-bottom:0.9rem;padding:0.75rem 0.9rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);">
+          <div style="color:rgba(255,255,255,0.4);font-size:0.62rem;letter-spacing:0.18em;margin-bottom:0.5rem;">
+            📖 辞書/ルール追加
+            <span id="quick-cdict-count" style="margin-left:0.5rem;color:#c8a96e;font-weight:600;"></span>
+          </div>
+          <div style="display:flex;gap:0.45rem;flex-wrap:wrap;align-items:center;">
+            <input id="quick-cdict-word" type="text" placeholder="検出したいキーワード（例: 電圧変動）"
+              class="field-input" style="flex:1;min-width:180px;font-size:0.78rem;">
+            <select id="quick-cdict-level" class="field-input" style="width:auto;font-size:0.74rem;padding:0.3rem 0.55rem;">
+              <option value="high">🔴 対象</option>
+              <option value="mid" selected>🟡 要確認</option>
+              <option value="low">⚪ 対象外</option>
+            </select>
+            <button id="quick-cdict-add" class="m-btn-ghost" style="font-size:0.74rem;padding:0.4rem 0.85rem;white-space:nowrap;border-color:rgba(200,169,110,0.35);color:#c8a96e;">
+              ＋ 追加
+            </button>
+          </div>
+          <div id="quick-cdict-status" style="font-size:0.67rem;margin-top:0.3rem;min-height:1em;color:rgba(255,255,255,0.35);"></div>
+          <div style="color:rgba(255,255,255,0.25);font-size:0.63rem;margin-top:0.15rem;">
+            詳細な設定（理由・E/C/LT）は下の「辞書」タブで管理できます
+          </div>
+        </div>
+
         <div style="display:flex;gap:0.85rem;align-items:center;flex-wrap:wrap;">
           <button id="btn-extract" style="background:#6ec897;color:#0c0c0e;font-weight:700;font-size:1.05rem;padding:0.9rem 2.25rem;cursor:pointer;font-family:inherit;border:none;letter-spacing:0.03em;transition:all 0.15s;">
             🔍 分析する ▶
@@ -2110,6 +2134,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         ...(ext.mid ||[]).filter(e => e._custom).map(e => ({...e, level:'mid'})),
         ...(ext.low ||[]).filter(e => e._custom).map(e => ({...e, level:'low'})),
       ];
+      // STEP3のクイックカウントも更新
+      const quickCnt = document.getElementById('quick-cdict-count');
+      if (quickCnt) quickCnt.textContent = words.length > 0 ? `(${words.length}件登録済み)` : '';
       const wrap  = document.getElementById('cdict-table-wrap');
       const tbody = document.getElementById('cdict-tbody');
       const cnt   = document.getElementById('cdict-count');
@@ -2158,6 +2185,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       st.textContent  = `✓ 「${word}」を登録しました（次の抽出から反映）`;
       st.style.color  = '#6ec897';
       log('custom_dict_add', `${currentPreset} ${level} "${word}"`);
+    });
+
+    // ===== STEP3クイック辞書追加 =====
+    document.getElementById('quick-cdict-add')?.addEventListener('click', async () => {
+      const wordInput = document.getElementById('quick-cdict-word');
+      const levelSel  = document.getElementById('quick-cdict-level');
+      const st        = document.getElementById('quick-cdict-status');
+      const word      = wordInput?.value.trim();
+      if (!word) { if(st){ st.textContent='⚠ キーワードを入力してください'; st.style.color='#ff8888'; } return; }
+      const level = levelSel?.value || 'mid';
+      if (!extendedDicts[currentPreset]) extendedDicts[currentPreset] = { high:[], mid:[], low:[], suppressed:[] };
+      const arr = extendedDicts[currentPreset][level] || [];
+      if (arr.some(e => e.word === word)) {
+        if(st){ st.textContent=`⚠ 「${word}」は既に登録されています`; st.style.color='#ff8888'; } return;
+      }
+      arr.push({ word, why:'', impact:[], _custom: true });
+      extendedDicts[currentPreset][level] = arr;
+      await saveExtendedDicts();
+      if(wordInput) wordInput.value = '';
+      renderCustomWords();
+      if(st){ st.textContent=`✓ 「${word}」を追加しました`; st.style.color='#6ec897'; }
+      log('quick_dict_add', `${currentPreset} ${level} "${word}"`);
+    });
+    // quick-cdict-word で Enter キー対応
+    document.getElementById('quick-cdict-word')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('quick-cdict-add')?.click();
     });
 
     document.addEventListener('click', async (e) => {
