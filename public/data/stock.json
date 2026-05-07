@@ -1,5 +1,16 @@
 {
-  "generated_at": "2026-05-07 22:05",
+  "generated_at": "2026-05-07 22:17",
+  "freshness": {
+    "last_analyzed_date": "2026-05-07",
+    "days_since_last": 0,
+    "gap_business_days": [
+      "2026-05-04",
+      "2026-05-05",
+      "2026-05-06"
+    ],
+    "gap_count": 3,
+    "warning": true
+  },
   "accuracy": {
     "total": 0,
     "hit": 0,

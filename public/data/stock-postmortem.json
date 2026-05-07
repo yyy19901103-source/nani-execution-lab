@@ -1,0 +1,104 @@
+{
+  "generated_at": "2026-05-07 22:17",
+  "summary": {
+    "evaluable_count": 1,
+    "hits": 1,
+    "misses": 0,
+    "hit_rate": 1.0,
+    "threshold": 0.55
+  },
+  "recent_results": [
+    {
+      "ticker": "NVDA",
+      "prediction_date": "2026-04-29",
+      "evaluated_date": "2026-05-07",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d_predicted": 0.54,
+      "actual_return_pct": -0.679,
+      "expected_return_pct": 1.32,
+      "magnitude_error_pct": 2.0,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "sector_semiconductor",
+          "category": "sector",
+          "score": 88.0,
+          "judgment": "STRONG_BUY",
+          "reason": "半導体専門: 売上成長=73% OPM=65%"
+        },
+        {
+          "agent": "growth_invest",
+          "category": "trade_style",
+          "score": 88.0,
+          "judgment": "STRONG_BUY",
+          "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
+        },
+        {
+          "agent": "rule_compliance",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "long_term_prob",
+          "category": "prediction",
+          "score": 79.0,
+          "judgment": "STRONG_BUY",
+          "reason": "12m上昇確率=79% / ROIC=51% / PER=44x"
+        },
+        {
+          "agent": "fundamental",
+          "category": "analysis",
+          "score": 78.0,
+          "judgment": "STRONG_BUY",
+          "reason": "ROIC優秀(51%) / 高利益率(65%) / 高成長(73%)"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "day_trade",
+          "category": "trade_style",
+          "score": 20.0,
+          "judgment": "SELL",
+          "reason": "ストキャスOver買(90) / ストキャスKD売り / RSI7買われ過ぎ"
+        },
+        {
+          "agent": "downside_risk",
+          "category": "prediction",
+          "score": 34.0,
+          "judgment": "REDUCE",
+          "reason": "3%下落確率=70% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
+        },
+        {
+          "agent": "contrarian",
+          "category": "trade_style",
+          "score": 38.0,
+          "judgment": "HOLD",
+          "reason": "RSI買われ過ぎ(82)"
+        },
+        {
+          "agent": "market_sentiment",
+          "category": "market_monitor",
+          "score": 38.0,
+          "judgment": "HOLD",
+          "reason": "RSI買われ過ぎ(82)"
+        },
+        {
+          "agent": "macro_environment",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.3%) / 金利上昇中"
+        }
+      ],
+      "suggestions": [
+        "day_trade が的確に判定 → 重み引き上げ候補"
+      ]
+    }
+  ],
+  "weight_history": [],
+  "note": "判定は 5営業日後の終値で行う。エージェント貢献度は score>=60をBUY寄り/<=40をSELL寄りで分類。改善提案は次回 evolve-apply で実反映される。"
+}
