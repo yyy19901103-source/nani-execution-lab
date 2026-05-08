@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-05-07 22:17",
+  "generated_at": "2026-05-08 23:56",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,15 +9,15 @@
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-07 22:04",
-    "prediction_date": "2026-05-07"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-08 23:56",
+    "prediction_date": "2026-05-08"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "BUY": 9,
-      "HOLD": 10,
-      "WATCH": 50
+      "HOLD": 9,
+      "WATCH": 51
     },
     "category_stats": {
       "prediction": {
@@ -25,21 +25,21 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 57.4
+        "avg_score": 57.5
       },
       "analysis": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 51.1
+        "avg_score": 51.9
       },
       "personal": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.2
+        "avg_score": 53.7
       },
       "market_monitor": {
         "count": 7,
@@ -81,20 +81,20 @@
       "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
     },
     {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 67.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
-    },
-    {
       "agent": "technical_summary",
       "category": "analysis",
       "score": 67.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 67.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
     },
     {
       "agent": "failure_pattern",
@@ -121,20 +121,20 @@
       "reason": "3%下落確率=23% / 5%下落確率=38% / 10%下落確率=70%"
     },
     {
-      "agent": "emotion_bias",
-      "category": "personal",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "感情バイアスなし"
-    },
-    {
       "agent": "trend_direction",
       "category": "market_monitor",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "中期・長期MA上向き / 200MA下 / MACD正"
+    },
+    {
+      "agent": "emotion_bias",
+      "category": "personal",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "感情バイアスなし"
     },
     {
       "agent": "day_trade",
@@ -155,20 +155,20 @@
       "reason": "1d/5d上昇確率=59% / RSI=65 / MACD正"
     },
     {
-      "agent": "ensemble",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
-    },
-    {
       "agent": "swing_trade",
       "category": "trade_style",
       "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
     },
     {
       "agent": "supply_demand",
@@ -184,7 +184,7 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+25.1%)"
+      "reason": "S&P500比 月次強い(+26.2%)"
     },
     {
       "agent": "risk_assessment",
@@ -244,6 +244,12 @@
   "backtest": null,
   "news": [],
   "earnings_recent": [
+    {
+      "date": "2026-08-07",
+      "estimated_eps": -0.035,
+      "actual_eps": null,
+      "surprise_pct": null
+    },
     {
       "date": "2026-05-08",
       "estimated_eps": -0.035,

@@ -1,6 +1,6 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-05-07 22:17",
+  "generated_at": "2026-05-08 23:56",
   "summary": {
     "rank": "watch",
     "score": 49,
@@ -9,15 +9,15 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-07 22:04",
-    "prediction_date": "2026-05-07"
+    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-08 23:56",
+    "prediction_date": "2026-05-08"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "BUY": 5,
-      "HOLD": 14,
-      "WATCH": 46,
+      "HOLD": 13,
+      "WATCH": 47,
       "SELL": 4
     },
     "category_stats": {
@@ -47,7 +47,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 47.7
+        "avg_score": 48.2
       },
       "trade_style": {
         "count": 7,
@@ -140,20 +140,20 @@
       "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
     },
     {
-      "agent": "investor_profile",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "ensemble",
       "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "long_term_prob",
@@ -177,7 +177,7 @@
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率54% / P10=-1.5% P90=+1.7%"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率55% / P10=-1.5% P90=+1.7%"
     },
     {
       "agent": "swing_trade",

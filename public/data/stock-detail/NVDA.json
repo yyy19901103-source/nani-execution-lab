@@ -1,24 +1,24 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-07 22:17",
+  "generated_at": "2026-05-08 23:56",
   "summary": {
     "rank": "watch",
-    "score": 56,
+    "score": 57,
     "prob_up_5d": 0.54,
     "prob_down_5pct": 0.22,
     "expected_return": 1.32,
     "risk_reward": 1.2,
     "max_loss_est": -1.1,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=23% / 5%=22% / 10%=16%\n期待値: +1.32% / リスクリワード: 1.20\n判定時刻: 2026-05-07 22:04",
-    "prediction_date": "2026-05-07"
+    "verdict": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=22% / 5%=22% / 10%=16%\n期待値: +1.32% / リスクリワード: 1.20\n判定時刻: 2026-05-08 23:56",
+    "prediction_date": "2026-05-08"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 7,
-      "BUY": 14,
-      "HOLD": 8,
-      "WATCH": 40
+      "BUY": 17,
+      "HOLD": 6,
+      "WATCH": 39
     },
     "category_stats": {
       "integration": {
@@ -26,7 +26,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 55.5
+        "avg_score": 58.2
       },
       "sector": {
         "count": 19,
@@ -54,21 +54,21 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 57.9
+        "avg_score": 56.8
       },
       "analysis": {
         "count": 10,
-        "buy": 4,
+        "buy": 5,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 55.8
+        "hold": 5,
+        "avg_score": 57.3
       },
       "market_monitor": {
         "count": 7,
-        "buy": 2,
+        "buy": 4,
         "sell": 0,
-        "hold": 5,
-        "avg_score": 54.9
+        "hold": 3,
+        "avg_score": 59.6
       }
     }
   },
@@ -127,7 +127,7 @@
       "score": 75.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "52週高値近傍(-4.1%) / ADXトレンド強(=52) / 200MA大幅上回り"
+      "reason": "52週高値近傍(-2.4%) / ADXトレンド強(=49) / 200MA大幅上回り"
     },
     {
       "agent": "sector_ai_datacenter",
@@ -143,7 +143,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+3.7% / 売上成長=73%"
+      "reason": "20d/3m上昇確率=71% / MA20=+4.8% / 売上成長=73%"
     },
     {
       "agent": "liquidity_risk",
@@ -156,14 +156,6 @@
   ],
   "top_risks": [
     {
-      "agent": "trend_direction",
-      "category": "market_monitor",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "短期・中期MA上向き / 200MA上抜け / MACD負"
-    },
-    {
       "agent": "expected_value",
       "category": "prediction",
       "score": 58.0,
@@ -172,20 +164,28 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "ensemble",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=58% / LGBM=54% / ルール=47% / ファンダ=80%"
-    },
-    {
       "agent": "score_integration",
       "category": "integration",
-      "score": 56.0,
+      "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=56"
+      "reason": "全エージェント統合スコア=57"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "institutional_flow",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "静かな蓄積パターン"
     },
     {
       "agent": "investor_profile",
@@ -196,20 +196,28 @@
       "reason": "プロファイル適合"
     },
     {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率56% / P10=-0.8% P90=+1.0%"
+    },
+    {
       "agent": "volume_anomaly",
       "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "bayesian",
@@ -226,14 +234,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "5d上昇確率=54% / 20d=59% / 3m=64% / 期待値=+1.32%"
-    },
-    {
-      "agent": "final_judgment",
-      "category": "integration",
-      "score": 52.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=23% / 5%=22% / 10%=16%\n期待値: +1.32% / リスクリワード: 1.20\n判定時刻: 2026-05-07 22:04"
     }
   ],
   "fundamentals": {
@@ -246,16 +246,16 @@
   },
   "historical": {
     "first_data_date": "1999-01-22",
-    "total_days": 6864,
+    "total_days": 6865,
     "approx_years": 27.2,
     "data_span_label": "IPO以降 約27.2年（1999-01-22〜）",
     "all_time_high": 216.61,
-    "current_close": 207.83,
-    "current_drawdown_pct": -4.1,
+    "current_close": 211.5,
+    "current_drawdown_pct": -2.4,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
     "pct_time_below_30pct": 53.9,
-    "current_pct_of_ath": 95.9
+    "current_pct_of_ath": 97.6
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_NVDA",
@@ -271,10 +271,24 @@
   },
   "news": [
     {
+      "headline": "What CoreWeave's Q1 earnings mean for Nvidia",
+      "sentiment": 0.1,
+      "importance": 5,
+      "published_at": "2026-05-08 23:11:36",
+      "source": "yahoo"
+    },
+    {
       "headline": "Dow Jones Futures Rise, Oil Prices Fall On Iran-Deal Hopes, Nvidia Leads New Buys; ARM Is Earnings Mover",
       "sentiment": 0.68,
       "importance": 5,
       "published_at": "2026-05-07 21:14:30",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Realty Income Keeps Delivering. Is the Monthly Dividend Juggernaut Still a Buy at Today's Price?",
+      "sentiment": 0.38,
+      "importance": 4,
+      "published_at": "2026-05-08 23:28:00",
       "source": "yahoo"
     },
     {
@@ -289,20 +303,6 @@
       "sentiment": 0.59,
       "importance": 4,
       "published_at": "2026-05-07 21:30:19",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Here Are Thursday’s Top Wall Street Analyst Research Calls: Alcoa, Chiron Real Estate, Clear Secure, Fortinet, Fresh Pet, Kennametal, Oracle, PayPal, United Therapeutics, and More",
-      "sentiment": 0.97,
-      "importance": 4,
-      "published_at": "2026-05-07 21:14:07",
-      "source": "yahoo"
-    },
-    {
-      "headline": "April Job Cuts Surge 38% On AI Downsizing",
-      "sentiment": -0.68,
-      "importance": 2,
-      "published_at": "2026-05-07 21:46:23",
       "source": "yahoo"
     }
   ],
