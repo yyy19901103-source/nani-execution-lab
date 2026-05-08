@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-08 23:56",
+  "generated_at": "2026-05-09 00:01",
   "freshness": {
     "last_analyzed_date": "2026-05-08",
-    "days_since_last": 0,
+    "days_since_last": 1,
     "gap_business_days": [
       "2026-05-04",
       "2026-05-05",
@@ -693,11 +693,6 @@
   ],
   "earnings": [
     {
-      "ticker": "SOUN",
-      "date": "2026-05-08",
-      "estimated_eps": -0.04
-    },
-    {
       "ticker": "NVDA",
       "date": "2026-05-21",
       "estimated_eps": 1.77
@@ -741,6 +736,11 @@
       "ticker": "AMZN",
       "date": "2026-07-31",
       "estimated_eps": 1.82
+    },
+    {
+      "ticker": "AAPL",
+      "date": "2026-07-31",
+      "estimated_eps": 1.89
     }
   ]
 }

@@ -178,6 +178,61 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .cat-bar-hold { background: #555; }
   .cat-bar-sell { background: #c86e6e; }
 
+  /* ========== 🆕 エージェントネットワーク（近未来UI） ========== */
+  .ag-stage { background: radial-gradient(ellipse at center, #0a0a0f 0%, #050508 100%); border: 1px solid rgba(108,200,224,0.15); padding: 1.2rem; border-radius: 4px; margin-bottom: 1.2rem; position: relative; overflow: hidden; }
+  .ag-stage::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0px, transparent 39px, rgba(108,200,224,0.04) 40px), repeating-linear-gradient(90deg, transparent 0px, transparent 39px, rgba(108,200,224,0.04) 40px); pointer-events: none; }
+  .ag-stage > * { position: relative; z-index: 1; }
+
+  /* 統計サマリ */
+  .ag-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem; }
+  .ag-stat { background: rgba(0,0,0,0.5); border: 1px solid rgba(108,200,224,0.25); padding: 0.8rem 1rem; border-radius: 3px; position: relative; overflow: hidden; transition: all 0.3s; }
+  .ag-stat::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(108,200,224,0.6), transparent); animation: scan 4s ease-in-out infinite; }
+  @keyframes scan { 0%, 100% { left: -100%; } 50% { left: 100%; } }
+  .ag-stat-label { font-size: 0.6rem; letter-spacing: 0.2em; color: #6c8a9a; text-transform: uppercase; }
+  .ag-stat-val { font-size: 1.7rem; font-weight: 200; color: #6ec8e0; margin-top: 0.2rem; font-family: 'Courier New', monospace; text-shadow: 0 0 12px rgba(108,200,224,0.4); }
+  .ag-stat-sub { font-size: 0.62rem; color: #5a7080; margin-top: 0.1rem; }
+
+  /* カテゴリフィルタ */
+  .ag-filter { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .ag-cat-btn { padding: 0.35rem 0.8rem; background: rgba(0,0,0,0.4); border: 1px solid #2a2a35; color: #888; cursor: pointer; font-size: 0.7rem; letter-spacing: 0.05em; border-radius: 3px; transition: all 0.2s; font-family: inherit; }
+  .ag-cat-btn:hover { color: #edede8; border-color: rgba(108,200,224,0.5); }
+  .ag-cat-btn.active { color: #0a0a0f; background: var(--cat-color, #6ec8e0); border-color: var(--cat-color, #6ec8e0); font-weight: 600; box-shadow: 0 0 10px var(--cat-glow, rgba(108,200,224,0.5)); }
+
+  /* エージェントカテゴリブロック */
+  .ag-category { margin-bottom: 1.5rem; }
+  .ag-cat-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--cat-color, #2a2a35); }
+  .ag-cat-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cat-color, #888); box-shadow: 0 0 8px var(--cat-color, #888); animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.3); } }
+  .ag-cat-name { font-size: 0.85rem; color: var(--cat-color, #ddd); letter-spacing: 0.05em; font-weight: 500; }
+  .ag-cat-count { font-size: 0.65rem; color: #555; margin-left: auto; font-family: 'Courier New', monospace; }
+
+  /* エージェントグリッド */
+  .ag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; }
+  .ag-card { background: linear-gradient(135deg, rgba(20,20,28,0.9) 0%, rgba(10,10,16,0.9) 100%); border: 1px solid var(--cat-color, #2a2a35); border-left: 3px solid var(--cat-color, #6ec8e0); padding: 0.7rem 0.85rem; border-radius: 2px; position: relative; overflow: hidden; transition: all 0.25s; cursor: help; }
+  .ag-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4), 0 0 0 1px var(--cat-color, #6ec8e0); }
+  .ag-card.has-math::before { content: '🔬'; position: absolute; top: 6px; right: 8px; font-size: 0.7rem; opacity: 0.7; }
+  .ag-card.evolved::after { content: ''; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: #c8a96e; box-shadow: 0 0 8px #c8a96e; animation: pulse-evolved 1.5s ease-in-out infinite; }
+  @keyframes pulse-evolved { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  .ag-name { font-size: 0.78rem; color: #edede8; font-weight: 600; font-family: 'Courier New', monospace; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+  .ag-desc { font-size: 0.66rem; color: #888; line-height: 1.4; min-height: 2.4em; margin-bottom: 0.5rem; }
+  .ag-metrics { display: flex; gap: 0.5rem; align-items: center; font-size: 0.62rem; color: #6c8a9a; font-family: 'Courier New', monospace; }
+  .ag-metric { display: flex; align-items: center; gap: 0.2rem; }
+  .ag-metric-label { color: #555; }
+  .ag-metric-val.weight-up { color: #88e088; }
+  .ag-metric-val.weight-down { color: #e08888; }
+  .ag-metric-val.weight-neutral { color: #888; }
+  .ag-metric-val.hit-good { color: #88e088; }
+  .ag-metric-val.hit-bad { color: #e08888; }
+  .ag-metric-val.hit-mid { color: #c8a96e; }
+  .ag-signal-bar { display: flex; height: 4px; background: rgba(0,0,0,0.5); border-radius: 2px; overflow: hidden; margin-top: 0.4rem; }
+  .ag-signal-buy { background: #6ec86e; }
+  .ag-signal-neu { background: #555; }
+  .ag-signal-sell { background: #c86e6e; }
+
+  /* 凡例 */
+  .ag-legend { display: flex; gap: 1rem; flex-wrap: wrap; padding: 0.6rem 0.8rem; background: rgba(0,0,0,0.3); border: 1px solid #1f1f1f; border-radius: 3px; font-size: 0.65rem; color: #888; margin-bottom: 1rem; }
+  .ag-legend-item { display: flex; align-items: center; gap: 0.3rem; }
+
   /* ========== 免責 ========== */
   .disclaimer { font-size: 0.7rem; color: #555; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 0.9rem 1.1rem; margin-top: 2.5rem; line-height: 1.7; border-radius: 4px; }
 </style>
@@ -217,6 +272,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <button class="tab-btn active" data-tab="today" role="tab">📊 今日</button>
     <button class="tab-btn" data-tab="review" role="tab">📋 振り返り</button>
     <button class="tab-btn" data-tab="market" role="tab">🌐 市場分析</button>
+    <button class="tab-btn" data-tab="agents" role="tab">🤖 エージェント</button>
   </div>
 
   <!-- ========== TAB 1: 今日 ========== -->
@@ -284,6 +340,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="sec-title">過去36年DBから類似日マッチング</div>
     <div id="similar-today" class="similar-today">読み込み中…</div>
     <div id="similar-list"></div>
+  </div>
+
+  <!-- ========== TAB 4: エージェント（近未来UI）========== -->
+  <div class="tab-content" id="tab-agents">
+    <div class="ag-stage">
+      <div class="sec-title" style="margin-top:0">🤖 AGENT NETWORK — 69体のAIエージェント稼働状況</div>
+
+      <!-- サマリ -->
+      <div class="ag-stats" id="ag-stats"></div>
+
+      <!-- 凡例 -->
+      <div class="ag-legend">
+        <span class="ag-legend-item">🔬 数理モデル参照</span>
+        <span class="ag-legend-item"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#c8a96e;box-shadow:0 0 6px #c8a96e"></span> 重み進化済み</span>
+        <span class="ag-legend-item"><span style="color:#88e088">●</span>BUY系</span>
+        <span class="ag-legend-item"><span style="color:#888">●</span>中立</span>
+        <span class="ag-legend-item"><span style="color:#e08888">●</span>SELL系</span>
+      </div>
+
+      <!-- カテゴリフィルタ -->
+      <div class="ag-filter" id="ag-filter"></div>
+
+      <!-- カテゴリブロック -->
+      <div id="ag-list"></div>
+    </div>
   </div>
 
   <!-- 銘柄詳細モーダル -->
@@ -394,6 +475,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     loadSimilarDays();
     loadPostmortem();
     loadScatter();
+    loadAgents();
   }
 
   function renderHeader(data) {
@@ -727,6 +809,103 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }]
       });
     } catch(e) { console.error('scatter', e); }
+  }
+
+  // ========== 🆕 エージェントネットワーク ==========
+  async function loadAgents() {
+    let data;
+    try {
+      const res = await fetch(`${BASE}/data/stock-agents.json`);
+      data = await res.json();
+    } catch(e) { console.error('agents', e); return; }
+
+    // サマリ
+    const s = data.summary || {};
+    document.getElementById('ag-stats').innerHTML = `
+      <div class="ag-stat"><div class="ag-stat-label">TOTAL AGENTS</div><div class="ag-stat-val">${s.total_agents}</div><div class="ag-stat-sub">稼働中エージェント</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">CATEGORIES</div><div class="ag-stat-val">${s.categories}</div><div class="ag-stat-sub">専門分野</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">MATH MODEL</div><div class="ag-stat-val">${s.agents_using_math_model}</div><div class="ag-stat-sub">数理予測参照</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">EVOLVED</div><div class="ag-stat-val">${s.agents_evolved}</div><div class="ag-stat-sub">重み進化済み</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">EVALUATED</div><div class="ag-stat-val">${s.agents_with_performance}</div><div class="ag-stat-sub">的中率データあり</div></div>
+    `;
+
+    // カテゴリフィルタ
+    const filterEl = document.getElementById('ag-filter');
+    const allBtn = `<button class="ag-cat-btn active" data-cat="ALL" style="--cat-color:#6ec8e0; --cat-glow:rgba(108,200,224,0.5)">ALL ${s.total_agents}</button>`;
+    const catBtns = data.categories.map(c => `
+      <button class="ag-cat-btn" data-cat="${c.category_id}" style="--cat-color:${c.color}; --cat-glow:${c.color}88">${c.category_jp} ${c.agents.length}</button>
+    `).join('');
+    filterEl.innerHTML = allBtn + catBtns;
+
+    // カテゴリブロック描画
+    const renderCategories = (filter='ALL') => {
+      const listEl = document.getElementById('ag-list');
+      listEl.innerHTML = '';
+      data.categories.filter(c => filter === 'ALL' || c.category_id === filter).forEach(cat => {
+        const block = document.createElement('div');
+        block.className = 'ag-category';
+        block.style.setProperty('--cat-color', cat.color);
+
+        const cardsHtml = cat.agents.map(a => {
+          // 重み表示
+          const wDiff = a.weight - 1.0;
+          const wCls = Math.abs(wDiff) < 0.001 ? 'weight-neutral' : (wDiff > 0 ? 'weight-up' : 'weight-down');
+          const wTxt = a.weight.toFixed(2);
+          // 的中率表示
+          let hitTxt = '—', hitCls = 'hit-mid';
+          if (a.hit_rate != null) {
+            hitTxt = (a.hit_rate*100).toFixed(0) + '%';
+            hitCls = a.hit_rate >= 0.55 ? 'hit-good' : a.hit_rate < 0.45 ? 'hit-bad' : 'hit-mid';
+          }
+          // 今日のシグナル分布バー
+          const tot = (a.buy_today + a.neutral_today + a.sell_today) || 1;
+          const buyPct = (a.buy_today/tot*100).toFixed(0);
+          const neuPct = (a.neutral_today/tot*100).toFixed(0);
+          const selPct = 100 - buyPct - neuPct;
+          // バッジクラス
+          const cls = ['ag-card'];
+          if (a.uses_math_model) cls.push('has-math');
+          if (Math.abs(wDiff) >= 0.001) cls.push('evolved');
+
+          return `
+            <div class="${cls.join(' ')}" style="--cat-color:${cat.color}" title="${a.description}">
+              <div class="ag-name">${a.name}</div>
+              <div class="ag-desc">${a.description || '—'}</div>
+              <div class="ag-metrics">
+                <span class="ag-metric"><span class="ag-metric-label">W:</span><span class="ag-metric-val ${wCls}">${wTxt}</span></span>
+                <span class="ag-metric"><span class="ag-metric-label">HIT:</span><span class="ag-metric-val ${hitCls}">${hitTxt}</span></span>
+                <span class="ag-metric"><span class="ag-metric-label">N:</span><span class="ag-metric-val">${a.samples}</span></span>
+              </div>
+              <div class="ag-signal-bar" title="今日のシグナル: BUY ${a.buy_today} / 中立 ${a.neutral_today} / SELL ${a.sell_today}">
+                <span class="ag-signal-buy" style="width:${buyPct}%"></span>
+                <span class="ag-signal-neu" style="width:${neuPct}%"></span>
+                <span class="ag-signal-sell" style="width:${selPct}%"></span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        block.innerHTML = `
+          <div class="ag-cat-head">
+            <span class="ag-cat-dot"></span>
+            <span class="ag-cat-name">${cat.category_jp}</span>
+            <span class="ag-cat-count">// ${cat.agents.length} agents</span>
+          </div>
+          <div class="ag-grid">${cardsHtml}</div>
+        `;
+        listEl.appendChild(block);
+      });
+    };
+    renderCategories();
+
+    // フィルタクリック
+    filterEl.querySelectorAll('.ag-cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterEl.querySelectorAll('.ag-cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCategories(btn.dataset.cat);
+      });
+    });
   }
 
   function ensureChart() {
