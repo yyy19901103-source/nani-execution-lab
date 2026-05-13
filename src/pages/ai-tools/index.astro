@@ -170,7 +170,7 @@ const faqs = [
       <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">AI Tools Hub</p>
       <h1 style="font-size:clamp(1.75rem,5vw,2.75rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:1rem;">AI Tools</h1>
       <p style="color:#edede8;font-size:1rem;font-weight:300;margin-bottom:0.4rem;">製造現場のAI活用、今日から始める</p>
-      <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;font-weight:300;">全6ツール・完全無料・データ社外送信ゼロ・登録不要</p>
+      <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;font-weight:300;">全12ツール・完全無料・データ社外送信ゼロ・登録不要</p>
     </div>
   </div>
 
@@ -315,6 +315,42 @@ const faqs = [
           </div>
         </a>
       ))}
+    </div>
+
+    <!-- 学習・資格 セクション -->
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+      <span style="color:#6ec897;font-size:0.65rem;letter-spacing:0.4em;white-space:nowrap;">▸ 学習・資格</span>
+      <span style="flex:1;height:1px;background:rgba(255,255,255,0.07);"></span>
+      <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">1 ツール</span>
+    </div>
+    <p style="color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.7;margin-bottom:1.5rem;max-width:780px;">
+      個人の学習を <strong style="color:#edede8;">公開ツール化</strong> したシリーズ。SRS（間隔反復）・個別カリキュラム自動推奨・進捗管理など、PoC レベルでなく実用レベルの学習サイクルを完全ブラウザ完結で提供します。
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:4rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} class="tool-card eto-card">
+        <div style="position:absolute;top:0.85rem;right:0.85rem;background:rgba(110,200,151,0.15);border:1px solid rgba(110,200,151,0.35);color:#6ec897;font-size:0.58rem;letter-spacing:0.2em;padding:0.18rem 0.55rem;border-radius:2px;">学習</div>
+        <div style="display:flex;align-items:flex-start;gap:0.9rem;margin-bottom:1rem;">
+          <div style="font-size:2rem;line-height:1;">🎓</div>
+          <div style="flex:1;">
+            <p style="color:#6ec897;font-size:0.6rem;letter-spacing:0.25em;margin-bottom:0.3rem;">SRS · 個別カリキュラム · ブラウザ完結</p>
+            <h3 style="color:#edede8;font-size:1rem;font-weight:400;letter-spacing:0.04em;">PMP学習アプリ — 90日プラン</h3>
+          </div>
+        </div>
+        <p style="color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.6;">
+          試験日から逆算した90日プラン。35章本文・120用語・8 Mindset 原則・10ケース・103問プールを横断検索可。SRS で誤答を体系復習、個別カリキュラム engine が『次やるべきこと』を自動推奨。データはブラウザに保存・サーバー送信ゼロ。
+        </p>
+        <p style="color:rgba(232,180,110,0.85);font-size:0.7rem;line-height:1.5;margin-top:0.6rem;">
+          ⚠ PMI 非公認の補助ツール。公式教材（Rita Mulcahy 本・PMBOK 第7版）併用必須。
+        </p>
+        <div style="margin-top:1rem;padding-top:0.85rem;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:0.5rem;">
+          <span style="color:rgba(110,200,151,0.85);font-size:0.6rem;letter-spacing:0.2em;">USE</span>
+          <span style="color:rgba(237,237,232,0.7);font-size:0.74rem;">PMP 受験準備・90日学習計画</span>
+        </div>
+        <div style="margin-top:0.75rem;color:#6ec897;font-size:0.72rem;letter-spacing:0.25em;">
+          使ってみる →
+        </div>
+      </a>
     </div>
 
     <!-- FAQ -->
