@@ -3,6 +3,7 @@ import '../../../styles/pmp-mobile.css';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import mindsetData from '../../../data/pmp/mindset.json';
 import pmbok7Data from '../../../data/pmp/pmbok7-principles.json';
+import domainsData from '../../../data/pmp/pmbok7-domains.json';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -20,14 +21,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div style="max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem;">
 
     {/* タブ */}
-    <div style="display:flex;gap:0.4rem;margin-bottom:1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);">
-      <button class="tab-btn active" data-tab="pmbok7" style="background:transparent;border:none;border-bottom:2px solid #c8a96e;color:#c8a96e;padding:0.6rem 1rem;font-size:0.82rem;font-family:inherit;cursor:pointer;letter-spacing:0.05em;">
-        ✅ PMBOK 7 公式12原則
+    <div style="display:flex;gap:0.4rem;margin-bottom:1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);flex-wrap:wrap;">
+      <button class="tab-btn active" data-tab="pmbok7" style="background:transparent;border:none;border-bottom:2px solid #c8a96e;color:#c8a96e;padding:0.6rem 0.9rem;font-size:0.78rem;font-family:inherit;cursor:pointer;letter-spacing:0.05em;">
+        ✅ 12原則
       </button>
-      <button class="tab-btn" data-tab="mindset" style="background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(237,237,232,0.5);padding:0.6rem 1rem;font-size:0.82rem;font-family:inherit;cursor:pointer;letter-spacing:0.05em;">
-        🧭 PMP Mindset 8原則（試験判断軸）
+      <button class="tab-btn" data-tab="domains" style="background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(237,237,232,0.5);padding:0.6rem 0.9rem;font-size:0.78rem;font-family:inherit;cursor:pointer;letter-spacing:0.05em;">
+        ✅ 8パフォーマンスドメイン
       </button>
-      <button class="tab-btn" data-tab="mapping" style="background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(237,237,232,0.5);padding:0.6rem 1rem;font-size:0.82rem;font-family:inherit;cursor:pointer;letter-spacing:0.05em;">
+      <button class="tab-btn" data-tab="mindset" style="background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(237,237,232,0.5);padding:0.6rem 0.9rem;font-size:0.78rem;font-family:inherit;cursor:pointer;letter-spacing:0.05em;">
+        🧭 Mindset 8（試験軸）
+      </button>
+      <button class="tab-btn" data-tab="mapping" style="background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(237,237,232,0.5);padding:0.6rem 0.9rem;font-size:0.78rem;font-family:inherit;cursor:pointer;letter-spacing:0.05em;">
         🔗 マッピング
       </button>
     </div>
@@ -51,6 +55,49 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </summary>
           <div style="margin-top:1rem;padding-left:1.5rem;border-left:2px solid rgba(200,169,110,0.2);">
             <p style="color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.85;">{p.expanded}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    {/* 8パフォーマンスドメイン タブ */}
+    <div id="tab-domains" class="tab-pane" style="display:none;">
+      <div style="background:rgba(110,200,151,0.06);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;margin-bottom:1.25rem;font-size:0.78rem;color:rgba(237,237,232,0.85);line-height:1.7;">
+        ✅ <strong style="color:#6ec897;">PMI 公開資料との照合済み</strong>（2026-05-13 2nd round）。PMBOK 6 (2017) の 10 Knowledge Areas を置き換えた新フレームワーク。<a href={`${base}/ai-tools/pmp-study/audit`} style="color:#6ec897;text-decoration:underline;">監査レポート</a> 参照。
+      </div>
+
+      <div style="background:#0f0f12;border:1px solid rgba(200,169,110,0.25);padding:1.25rem 1.5rem;margin-bottom:1.25rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">PARADIGM SHIFT</p>
+        <ul style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.85;">
+          {domainsData.comparisonWithLegacy.shift.map((s: string) => <li>{s}</li>)}
+        </ul>
+      </div>
+
+      {domainsData.domains.map((d: any, i: number) => (
+        <details open={i < 3} style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:0.75rem;">
+          <summary style="cursor:pointer;list-style:none;">
+            <div style="display:flex;gap:0.75rem;align-items:baseline;">
+              <span style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;">#{i + 1}</span>
+              <h2 style="color:#edede8;font-size:1.05rem;font-weight:300;letter-spacing:0.05em;margin:0;flex:1;">{d.labelJa} <span style="color:rgba(237,237,232,0.5);font-size:0.78rem;font-weight:300;">/ {d.labelEn}</span></h2>
+              <span style="color:rgba(237,237,232,0.4);font-size:0.7rem;">▼</span>
+            </div>
+            <p style="color:rgba(237,237,232,0.75);font-size:0.85rem;line-height:1.7;margin:0.6rem 0 0 1.5rem;">{d.summary}</p>
+          </summary>
+          <div style="margin-top:1rem;padding-left:1.5rem;border-left:2px solid rgba(110,200,151,0.2);">
+            <p style="color:#6ec897;font-size:0.65rem;letter-spacing:0.25em;margin-bottom:0.5rem;">期待される成果</p>
+            <ul style="margin:0 0 1rem 0;padding-left:1.25rem;color:rgba(237,237,232,0.8);font-size:0.8rem;line-height:1.75;">
+              {d.outcomes.map((o: string) => <li>{o}</li>)}
+            </ul>
+            {d.relatedChapters.length > 0 && (
+              <div>
+                <p style="color:rgba(237,237,232,0.5);font-size:0.7rem;letter-spacing:0.1em;margin-bottom:0.4rem;">本アプリの関連章:</p>
+                <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+                  {d.relatedChapters.map((ch: string) => (
+                    <a href={`${base}/ai-tools/pmp-study/study/${ch}`} style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.25);color:#c8a96e;padding:0.2rem 0.55rem;font-size:0.7rem;text-decoration:none;">章 {ch}</a>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </details>
       ))}

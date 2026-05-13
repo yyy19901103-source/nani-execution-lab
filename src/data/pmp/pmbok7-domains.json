@@ -1,0 +1,124 @@
+{
+  "version": "1.0.0",
+  "verifiedAgainst": "PMI 公開資料 + 二次資料 (qrpinternational.be / projectmanagementcompass.substack.com / projectengineer.net / becomeaprojectmanager.com)",
+  "verificationDate": "2026-05-13 (2nd audit)",
+  "note": "PMBOK 第7版の8パフォーマンスドメイン。旧版の『10 Knowledge Areas』に代わる新フレームワーク。プロセス中心から『成果志向・行動・実践』中心へのパラダイムシフトを反映。各ドメインは相互依存し、プロジェクト全ライフサイクルに渡って機能する。",
+  "paradigmShift": "PMBOK 6 (2017) 10 Knowledge Areas → PMBOK 7 (2021) 8 Performance Domains + 12 Principles + Models/Methods/Artifacts という3層構造へ変革。",
+  "domains": [
+    {
+      "id": "stakeholders",
+      "labelEn": "Stakeholders",
+      "labelJa": "ステークホルダー",
+      "summary": "プロジェクトの影響を受ける/与える人々の特定・エンゲージメント・影響行使。",
+      "outcomes": [
+        "プロジェクト全期間で生産的なステークホルダー関係",
+        "プロジェクト目的に対するステークホルダーの合意",
+        "支持者ステークホルダーが満足、非支持者が悪影響を与えない状態"
+      ],
+      "relatedChapters": ["1.9", "2.4"]
+    },
+    {
+      "id": "team",
+      "labelEn": "Team",
+      "labelJa": "チーム",
+      "summary": "成果を生み出す個人の支援・組織化・リーダーシップ・文化形成。",
+      "outcomes": [
+        "共通の責任感",
+        "高パフォーマンスチームの形成",
+        "全チームメンバーが発揮するリーダーシップ行動と対人スキル"
+      ],
+      "relatedChapters": ["1.2", "1.6", "1.14"]
+    },
+    {
+      "id": "development-approach",
+      "labelEn": "Development Approach and Life Cycle",
+      "labelJa": "開発アプローチとライフサイクル",
+      "summary": "プロジェクト特性に応じた方法論（予測型/適応型/ハイブリッド）とライフサイクルの選択。",
+      "outcomes": [
+        "成果物・プロジェクト目的・組織と整合した開発アプローチ",
+        "提供される価値を実現するためのプロジェクトライフサイクル",
+        "ステークホルダーがプロジェクト成果物の引き渡しを受けるためのライフサイクル"
+      ],
+      "relatedChapters": ["2.13"]
+    },
+    {
+      "id": "planning",
+      "labelEn": "Planning",
+      "labelJa": "プランニング",
+      "summary": "成果物を実現するために必要な作業を体系化・コーディネートするための活動。継続的・適応的に行う。",
+      "outcomes": [
+        "プロジェクトは整合性のあるアプローチで進む",
+        "成果物の早期統合により価値が実現",
+        "プロジェクト目的・ベネフィット達成に十分な情報",
+        "市場・他プロジェクトとの統合的アプローチ"
+      ],
+      "relatedChapters": ["2.5", "2.6", "2.8", "2.9"]
+    },
+    {
+      "id": "project-work",
+      "labelEn": "Project Work",
+      "labelJa": "プロジェクト作業",
+      "summary": "プロセス確立・物理的資源管理・学習環境育成。プロジェクトを完了させるための日常の作業実行。",
+      "outcomes": [
+        "効率的・効果的なプロジェクトパフォーマンス",
+        "プロジェクト環境に適したプロセス",
+        "ステークホルダーとの適切なコミュニケーション+エンゲージメント",
+        "物理的資源の効率的管理",
+        "調達の効果的管理",
+        "変更への効果的処理",
+        "学習能力の向上"
+      ],
+      "relatedChapters": ["2.1", "2.2", "2.10", "2.11", "2.12", "2.15", "2.16"]
+    },
+    {
+      "id": "delivery",
+      "labelEn": "Delivery",
+      "labelJa": "デリバリー",
+      "summary": "プロジェクト目的に整合した成果物を提供すること。価値の実現。",
+      "outcomes": [
+        "プロジェクトがビジネス目的に貢献",
+        "プロジェクト立ち上げ時の意図された便益の実現",
+        "プロジェクト要件のステークホルダー受け入れ",
+        "ステークホルダーが意図するベネフィットの提供"
+      ],
+      "relatedChapters": ["2.7", "2.8", "2.17", "3.2"]
+    },
+    {
+      "id": "measurement",
+      "labelEn": "Measurement",
+      "labelJa": "メジャーメント（測定）",
+      "summary": "プロジェクトパフォーマンスを評価し適切な対応を取るための活動。EVM・KPI・トレンド分析等。",
+      "outcomes": [
+        "プロジェクトの状態が信頼できる形で理解可能",
+        "意思決定を促進する実行可能データ",
+        "プロジェクトパフォーマンスを最適化するための適時行動",
+        "情報・予測に基づく適切な意思決定"
+      ],
+      "relatedChapters": ["2.5"]
+    },
+    {
+      "id": "uncertainty",
+      "labelEn": "Uncertainty",
+      "labelJa": "アンサーテンティ（不確実性）",
+      "summary": "リスク・不確実性・曖昧さ・複雑性をプロアクティブに管理する活動。",
+      "outcomes": [
+        "プロジェクト環境（曖昧・複雑・揮発的）への気づき",
+        "プロジェクトに影響する可能性のあるリスクを探究・対応",
+        "正の機会の検討と活用",
+        "脅威の影響軽減",
+        "プロジェクト目的に対する正味の悪影響の低減"
+      ],
+      "relatedChapters": ["2.3"]
+    }
+  ],
+  "comparisonWithLegacy": {
+    "title": "PMBOK 6 (10 Knowledge Areas) vs PMBOK 7 (8 Performance Domains)",
+    "shift": [
+      "プロセス中心 → 成果中心",
+      "10 KA × 49 プロセス → 8ドメイン × 結果指向",
+      "予測型偏重 → アジャイル・ハイブリッド対等",
+      "標準的アプローチ → テーラリング前提",
+      "Project Manager 中心 → Project Team 中心"
+    ]
+  }
+}

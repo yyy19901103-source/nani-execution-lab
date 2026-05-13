@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "auditDate": "2026-05-13",
+  "version": "2.0.0",
+  "auditDate": "2026-05-13 (1st + 2nd round)",
   "auditor": "Claude AI (Anthropic) — 公開Web資料ベース監査",
   "honestyStatement": "本監査は PMI 公式 PDF（PMBOK 第7版・ECO 2021 原本）への直接アクセスがない状況で実施しました。PMI 公開Web資料・複数の公開二次資料を参照しています。完全な公式照合ではありませんが、最も重大な誤り・欠落を特定する best-effort 監査です。",
   "scope": [
@@ -59,6 +59,59 @@
         "https://www.examspm.com/2023/04/28/new-pmp-exam/"
       ],
       "verdict": "🟡 → ✅ 以下を eco-structure.json に追加: ①60問×3ブロック構造、②休憩10分×2の超過ペナルティ、③質問形式（multiple-choice/multiple-response/matching/hotspot/fill-in-the-blank）、④公式合格点は非公開でドメイン別 Above/Target/Below 評価。"
+    },
+    {
+      "id": "F005",
+      "category": "PMBOK 7 8パフォーマンスドメイン",
+      "severity": "CRITICAL",
+      "status": "重大な欠落 → 修正済（2nd round）",
+      "myContent": "PMBOK 7 の 12原則は1st roundで追加したが、もう一つの主要要素『8パフォーマンスドメイン』を欠いていた",
+      "publicSources": [
+        "https://www.pmi.org/-/media/pmi/documents/public/pdf/pmbok-standards/pmbok-project-performance-domains.pdf",
+        "https://www.qrpinternational.be/blog/project-management/8-project-performance-domains-in-project-management/",
+        "https://www.projectengineer.net/the-8-project-performance-domains/"
+      ],
+      "verdict": "❌ → ✅ pmbok7-domains.json 新規追加。8ドメイン（Stakeholders / Team / Development Approach & Life Cycle / Planning / Project Work / Delivery / Measurement / Uncertainty）。旧版10 Knowledge Areas からのパラダイムシフトも明記。私の35章との関連マッピング付き。",
+      "action": "pmbok7-domains.json 新規作成"
+    },
+    {
+      "id": "F006",
+      "category": "リスク対応戦略",
+      "severity": "CRITICAL",
+      "status": "重大な欠落 → 修正済（2nd round）",
+      "myContent": "ネガティブ4戦略（Avoid/Transfer/Mitigate/Accept）・ポジティブ4戦略（Exploit/Enhance/Share/Accept）と記載していた",
+      "publicSources": [
+        "https://projectmanagementacademy.net/resources/blog/strategies-for-risk-response/",
+        "https://www.pmi.org/learning/library/effective-strategies-exploiting-opportunities-7947",
+        "https://www.pmillustrated.com/2-3-manage-risks/"
+      ],
+      "verdict": "❌ → ✅ 現代の PMBOK は **5戦略**: ネガティブ Avoid/Transfer/Mitigate/Accept/**Escalate**、ポジティブ Exploit/Enhance/Share/Accept/**Escalate**。chapter 2.3 を更新・glossary に Risk Escalate を追加。Q064-Q066 の選択肢正確性は要再確認だが、現状では Escalate を選ぶ正解問題は無く整合性に重大問題なし。",
+      "action": "chapter-content.json 2.3 更新 + glossary.json Escalate 追加"
+    },
+    {
+      "id": "F007",
+      "category": "Thomas-Kilmann 対立解決モードの命名",
+      "severity": "MINOR",
+      "status": "命名旧式 → 修正済（2nd round）",
+      "myContent": "Force / Withdraw / Smoothing 等の旧PMI用語を使用",
+      "publicSources": [
+        "https://kilmanndiagnostics.com/overview-thomas-kilmann-conflict-mode-instrument-tki/",
+        "https://en.wikipedia.org/wiki/Thomas%E2%80%93Kilmann_Conflict_Mode_Instrument"
+      ],
+      "verdict": "🟡 → ✅ Thomas-Kilmann 公式名称（Competing / Collaborating / Compromising / Avoiding / Accommodating）に統一。旧PMI用語との対応表を併載し、両方の名称で出題されても対応可能に。",
+      "action": "chapter-content.json 1.1 更新 + glossary.json 更新"
+    },
+    {
+      "id": "F008",
+      "category": "Tuckman モデル 5段階",
+      "severity": "VERIFIED",
+      "status": "整合",
+      "myContent": "Forming/Storming/Norming/Performing/Adjourning の5段階",
+      "publicSources": [
+        "https://en.wikipedia.org/wiki/Tuckman's_stages_of_group_development",
+        "https://www.mindtools.com/pages/article/newLDR_86.htm"
+      ],
+      "verdict": "✅ 正確。1965年の Tuckman 原論文では4段階、1977年に Mary Ann Jensen と共に Adjourning（解散・別名 Mourning）を追加した経緯も含めて正しい。"
     }
   ],
   "verifiedItems": [
