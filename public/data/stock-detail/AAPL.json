@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-12 22:28",
+  "generated_at": "2026-05-13 20:43",
   "summary": {
     "rank": "watch",
     "score": 55,
@@ -9,8 +9,8 @@
     "expected_return": 1.38,
     "risk_reward": 1.05,
     "max_loss_est": -1.31,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=64% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-12 22:28",
-    "prediction_date": "2026-05-12"
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=64% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-13 20:43",
+    "prediction_date": "2026-05-13"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -27,7 +27,7 @@
         "buy": 3,
         "sell": 1,
         "hold": 3,
-        "avg_score": 59.1
+        "avg_score": 60.6
       },
       "personal": {
         "count": 10,
@@ -48,7 +48,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 53.1
+        "avg_score": 53.4
       },
       "integration": {
         "count": 6,
@@ -62,7 +62,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 55.4
+        "avg_score": 54.9
       },
       "market_monitor": {
         "count": 7,
@@ -74,6 +74,14 @@
     }
   },
   "top_buys": [
+    {
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 85.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "52週高値近傍(0.0%) / 60日リターン強(15.3%) / ADXトレンド強(=34) / 200MA大幅上回り"
+    },
     {
       "agent": "dividend_income",
       "category": "trade_style",
@@ -113,14 +121,6 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "ウォッチリスト内 3/10位"
-    },
-    {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 75.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "52週高値近傍(-0.1%) / ADXトレンド強(=31) / 200MA大幅上回り"
     },
     {
       "agent": "growth_invest",
@@ -165,14 +165,6 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "sector_rotation",
-      "category": "market_monitor",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+5.3%)"
-    },
-    {
       "agent": "expected_value",
       "category": "prediction",
       "score": 58.0,
@@ -189,6 +181,14 @@
       "reason": "テクニカル中立 / 強弱比=4.8:5.5"
     },
     {
+      "agent": "sector_rotation",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "S&P500比 月次強い(+7.7%)"
+    },
+    {
       "agent": "institutional_flow",
       "category": "analysis",
       "score": 55.0,
@@ -197,12 +197,12 @@
       "reason": "静かな蓄積パターン"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
+      "agent": "alert",
+      "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "異常なし"
     },
     {
       "agent": "ensemble",
@@ -221,12 +221,12 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "alert",
-      "category": "integration",
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "異常なし"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "value_invest",
@@ -247,16 +247,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9156,
+    "total_days": 9157,
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
-    "all_time_high": 293.05,
-    "current_close": 292.68,
-    "current_drawdown_pct": -0.1,
+    "all_time_high": 294.8,
+    "current_close": 294.8,
+    "current_drawdown_pct": 0.0,
     "max_drawdown_pct": -81.8,
     "days_below_30pct_dd": 3292,
     "pct_time_below_30pct": 36.0,
-    "current_pct_of_ath": 99.9
+    "current_pct_of_ath": 100.0
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_AAPL",

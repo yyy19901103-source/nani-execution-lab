@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-12 22:28",
+  "generated_at": "2026-05-13 20:43",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,8 +9,8 @@
     "expected_return": 1.72,
     "risk_reward": 2.92,
     "max_loss_est": -0.59,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=72% / 12ヶ月=62%\n下落確率: 3%=17% / 5%=12% / 10%=1%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-12 22:28",
-    "prediction_date": "2026-05-12"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=72% / 12ヶ月=62%\n下落確率: 3%=17% / 5%=12% / 10%=1%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-13 20:43",
+    "prediction_date": "2026-05-13"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -19,7 +19,8 @@
       "BUY": 12,
       "HOLD": 9,
       "WATCH": 44,
-      "REDUCE": 3
+      "REDUCE": 2,
+      "SELL": 1
     },
     "category_stats": {
       "trade_style": {
@@ -27,14 +28,14 @@
         "buy": 2,
         "sell": 1,
         "hold": 4,
-        "avg_score": 53.1
+        "avg_score": 51.7
       },
       "analysis": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.2
+        "avg_score": 52.7
       },
       "market_monitor": {
         "count": 7,
@@ -62,7 +63,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 51.2
+        "avg_score": 50.7
       },
       "integration": {
         "count": 6,
@@ -80,7 +81,7 @@
       "score": 75.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "52週高値近傍(0.0%) / ADXトレンド強(=45) / 200MA大幅上回り"
+      "reason": "52週高値近傍(-0.1%) / ADXトレンド強(=43) / 200MA大幅上回り"
     },
     {
       "agent": "supply_demand",
@@ -88,15 +89,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MFI買い圧力(69) / OBV上昇（蓄積） / VWAP上方"
-    },
-    {
-      "agent": "liquidity_risk",
-      "category": "market_monitor",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "流動性良好"
+      "reason": "MFI買い圧力(62) / OBV上昇（蓄積） / VWAP上方"
     },
     {
       "agent": "dividend_income",
@@ -107,28 +100,20 @@
       "reason": "高配当(119.0%)"
     },
     {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
+    },
+    {
       "agent": "japan_dividend",
       "category": "sector",
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "高配当119.0%"
-    },
-    {
-      "agent": "risk_assessment",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
-    },
-    {
-      "agent": "market_regime",
-      "category": "market_monitor",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "強気レジーム"
     },
     {
       "agent": "portfolio_fit",
@@ -147,6 +132,22 @@
       "reason": "失敗パターンなし"
     },
     {
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "market_regime",
+      "category": "market_monitor",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "強気レジーム"
+    },
+    {
       "agent": "long_term_prob",
       "category": "prediction",
       "score": 64.0,
@@ -157,14 +158,6 @@
   ],
   "top_risks": [
     {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=59% / 20d=67% / 3m=72% / 期待値=+1.72%"
-    },
-    {
       "agent": "swing_trade",
       "category": "trade_style",
       "score": 59.0,
@@ -173,12 +166,12 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "expected_value",
+      "agent": "lgbm_prob",
       "category": "prediction",
-      "score": 58.0,
+      "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
+      "reason": "5d上昇確率=59% / 20d=67% / 3m=72% / 期待値=+1.72%"
     },
     {
       "agent": "technical_summary",
@@ -189,20 +182,20 @@
       "reason": "テクニカル中立 / 強弱比=4.8:5.5"
     },
     {
+      "agent": "expected_value",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
+    },
+    {
       "agent": "mid_term_prob",
       "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=55% / MA20=+3.3% / 売上成長=0%"
-    },
-    {
-      "agent": "volatility_env",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "低ボラ環境"
+      "reason": "20d/3m上昇確率=55% / MA20=+2.8% / 売上成長=0%"
     },
     {
       "agent": "investor_profile",
@@ -221,12 +214,12 @@
       "reason": "異常なし"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
+      "agent": "volatility_env",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "配当利回り119.0%"
+      "reason": "低ボラ環境"
     },
     {
       "agent": "volume_anomaly",
@@ -235,6 +228,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
     }
   ],
   "fundamentals": {
@@ -247,16 +248,16 @@
   },
   "historical": {
     "first_data_date": "2010-09-09",
-    "total_days": 3941,
+    "total_days": 3942,
     "approx_years": 15.6,
     "data_span_label": "IPO以降 約15.6年（2010-09-09〜）",
     "all_time_high": 679.52,
-    "current_close": 679.52,
-    "current_drawdown_pct": 0.0,
+    "current_close": 678.67,
+    "current_drawdown_pct": -0.1,
     "max_drawdown_pct": -34.0,
     "days_below_30pct_dd": 2,
     "pct_time_below_30pct": 0.1,
-    "current_pct_of_ath": 100.0
+    "current_pct_of_ath": 99.9
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_VOO",

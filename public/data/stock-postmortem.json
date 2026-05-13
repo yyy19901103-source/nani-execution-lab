@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12 22:28",
+  "generated_at": "2026-05-13 20:43",
   "summary": {
     "evaluable_count": 22,
     "hits": 7,
@@ -11,7 +11,7 @@
     {
       "ticker": "NVDA",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 57,
       "prob_up_5d_predicted": 0.54,
@@ -95,7 +95,7 @@
     {
       "ticker": "MSFT",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "weak_buy",
       "score": 55,
       "prob_up_5d_predicted": 0.569,
@@ -178,7 +178,7 @@
     {
       "ticker": "META",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.373,
@@ -269,7 +269,7 @@
     {
       "ticker": "GOOGL",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 56,
       "prob_up_5d_predicted": 0.529,
@@ -353,14 +353,14 @@
         }
       ],
       "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "integration カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "AAPL",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "weak_buy",
       "score": 56,
       "prob_up_5d_predicted": 0.569,
@@ -443,7 +443,7 @@
     {
       "ticker": "VOO",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.529,
@@ -527,14 +527,14 @@
         }
       ],
       "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "AMZN",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.529,
@@ -625,7 +625,7 @@
     {
       "ticker": "JPM",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.529,
@@ -694,7 +694,7 @@
     {
       "ticker": "TSLA",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.627,
@@ -777,7 +777,7 @@
     {
       "ticker": "TSLA",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.569,
@@ -867,7 +867,7 @@
     {
       "ticker": "JPM",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "weak_buy",
       "score": 56,
       "prob_up_5d_predicted": 0.569,
@@ -937,14 +937,14 @@
         }
       ],
       "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
       ]
     },
     {
       "ticker": "AMZN",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.529,
@@ -1028,14 +1028,14 @@
         }
       ],
       "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "VOO",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.529,
@@ -1126,7 +1126,7 @@
     {
       "ticker": "AAPL",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "weak_buy",
       "score": 56,
       "prob_up_5d_predicted": 0.627,
@@ -1216,7 +1216,7 @@
     {
       "ticker": "GOOGL",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.529,
@@ -1307,7 +1307,7 @@
     {
       "ticker": "META",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.529,
@@ -1391,7 +1391,7 @@
     {
       "ticker": "MSFT",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.529,
@@ -1482,7 +1482,7 @@
     {
       "ticker": "NVDA",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.54,
@@ -1573,7 +1573,7 @@
     {
       "ticker": "QQQ",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.529,
@@ -1657,14 +1657,14 @@
         }
       ],
       "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "LLY",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.471,
@@ -1748,14 +1748,14 @@
         }
       ],
       "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "AMD",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.529,
@@ -1846,7 +1846,7 @@
     {
       "ticker": "NVDA",
       "prediction_date": "2026-04-29",
-      "evaluated_date": "2026-05-12",
+      "evaluated_date": "2026-05-13",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.54,

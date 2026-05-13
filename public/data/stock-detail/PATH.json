@@ -1,6 +1,6 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-05-12 22:28",
+  "generated_at": "2026-05-13 20:43",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -9,8 +9,8 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-12 22:28",
-    "prediction_date": "2026-05-12"
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-13 20:43",
+    "prediction_date": "2026-05-13"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -47,7 +47,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 51.5
+        "avg_score": 51.0
       },
       "trade_style": {
         "count": 7,
@@ -164,14 +164,6 @@
       "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
     },
     {
-      "agent": "ensemble",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
@@ -188,12 +180,20 @@
       "reason": "異常なし"
     },
     {
-      "agent": "macro_environment",
-      "category": "analysis",
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "長期金利高(4.4%) / 金利低下中(株にプラス) / S&P500上昇中"
+      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
     },
     {
       "agent": "bayesian",
@@ -204,12 +204,12 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "long_term_prob",
+      "agent": "downside_risk",
       "category": "prediction",
-      "score": 54.0,
+      "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
+      "reason": "3%下落確率=32% / 5%下落確率=54% / 10%下落確率=70% / ⚠下落リスク高"
     },
     {
       "agent": "swing_trade",
