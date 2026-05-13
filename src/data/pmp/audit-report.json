@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "auditDate": "2026-05-13",
+  "auditor": "Claude AI (Anthropic) — 公開Web資料ベース監査",
+  "honestyStatement": "本監査は PMI 公式 PDF（PMBOK 第7版・ECO 2021 原本）への直接アクセスがない状況で実施しました。PMI 公開Web資料・複数の公開二次資料を参照しています。完全な公式照合ではありませんが、最も重大な誤り・欠落を特定する best-effort 監査です。",
+  "scope": [
+    "ECO 2021 ドメイン配分",
+    "PMBOK 第7版 12原則",
+    "EVM 公式",
+    "PMP試験構造"
+  ],
+  "findings": [
+    {
+      "id": "F001",
+      "category": "ECO 2021 ドメイン配分",
+      "severity": "VERIFIED",
+      "status": "整合",
+      "myContent": "People 42% / Process 50% / Business Environment 8%、Peopleタスク14個",
+      "publicSources": [
+        "https://www.pmillustrated.com/the-new-pmp-exam/",
+        "https://www.infosecinstitute.com/resources/pmp/pmp-domain-information-overview/"
+      ],
+      "verdict": "✅ 全て公開Web資料と一致。ドメイン配分・People14タスク・Process17・Business4 の数も合致。"
+    },
+    {
+      "id": "F002",
+      "category": "PMBOK 第7版 12原則",
+      "severity": "CRITICAL",
+      "status": "重大な欠落 → 修正済",
+      "myContent": "『PMP Mindset 8原則』のみ収録。PMBOK 7 の公式12原則を欠いていた。",
+      "publicSources": [
+        "https://www.pmi.org/-/media/pmi/documents/public/pdf/pmbok-standards/12-project-management-principles.pdf",
+        "https://www.spoclearn.com/blog/principles-project-management-pmbok-edition/",
+        "https://cloudkeypm.com/the-12-principles-of-project-management-pmbok-7th-edition-a-quick-overview/"
+      ],
+      "verdict": "❌ → ✅ 公式12原則（Stewardship/Team/Stakeholder/Value/Systems Thinking/Leadership/Tailoring/Quality/Complexity/Risk/Adaptability/Change）を pmbok7-principles.json に追加。私の8原則は試験対策の判断軸として別物と明示。マッピング表で関係性を可視化。",
+      "action": "pmbok7-principles.json 新規作成"
+    },
+    {
+      "id": "F003",
+      "category": "EVM 公式",
+      "severity": "VERIFIED",
+      "status": "整合",
+      "myContent": "CPI=EV/AC, SPI=EV/PV, CV=EV-AC, SV=EV-PV, EAC=BAC/CPI（典型）, EAC=AC+(BAC-EV)（非典型）, TCPI=(BAC-EV)/(BAC-AC)",
+      "publicSources": [
+        "https://www.profit.co/blog/earned-value-management/evm-formulas-and-metrics-explained/",
+        "https://www.pmi.org/learning/library/to-complete-performance-index-tcpi-6009"
+      ],
+      "verdict": "✅ 全公式が公開資料と一致。問題集の計算問題（Q017/Q026/Q070）も再確認済み。"
+    },
+    {
+      "id": "F004",
+      "category": "PMP試験構造",
+      "severity": "MINOR",
+      "status": "軽微な欠落 → 修正済",
+      "myContent": "180問・230分・休憩2回のみ記載",
+      "publicSources": [
+        "https://shrilearning.com/pmp-exam-time-management-pacing-strategy/",
+        "https://www.examspm.com/2023/04/28/new-pmp-exam/"
+      ],
+      "verdict": "🟡 → ✅ 以下を eco-structure.json に追加: ①60問×3ブロック構造、②休憩10分×2の超過ペナルティ、③質問形式（multiple-choice/multiple-response/matching/hotspot/fill-in-the-blank）、④公式合格点は非公開でドメイン別 Above/Target/Below 評価。"
+    }
+  ],
+  "verifiedItems": [
+    "ECO 2021 People 42% (14タスク)",
+    "ECO 2021 Process 50% (17タスク)",
+    "ECO 2021 Business Environment 8% (4タスク)",
+    "EVM 基本公式群（CPI/SPI/CV/SV/EAC/TCPI）",
+    "PMP試験: 180問・230分・3ブロック構造"
+  ],
+  "outstandingItems": [
+    "各章本文の細部（章タイトル英語表記の正式性、固有名詞の正確性）→ 個別Web照合は時間的制約で未実施",
+    "103問プールの各問題の正確性（個別問題の選択肢が PMP 試験文体に整合するか）→ 抜取監査のみ実施可能",
+    "10ケーススタディの細部（特定モデル・手法の正確性）",
+    "120用語の細かい定義（私の解釈と PMI 公式の微妙な差異の可能性）",
+    "Tuckman / Kotter / Cynefin 等の二次理論の引用精度"
+  ],
+  "userGuidance": {
+    "title": "本アプリ利用者への正直な指針",
+    "items": [
+      "本アプリの章本文・用語・ケースは AI 生成オリジナル素材で、PMI 公式資料との完全照合は未実施",
+      "上記4領域は公開Web資料との照合により『重大な誤り』は検出しなかったが、細部の正確性は保証できない",
+      "公式教材（Rita Mulcahy 本・PMBOK 第7版・PMI 公式 ECO PDF）を必ず併用する",
+      "本アプリの章本文中で疑問を感じた箇所は、個人ノート機能に訂正記録を残す",
+      "PMBOK 7 の12原則は新規追加した /mindset?tab=pmbok7 で確認可能"
+    ]
+  },
+  "nextAuditCycle": "問題プール拡大時・章本文修正時・PMI ECO 改訂時に再監査"
+}

@@ -1,0 +1,114 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import auditData from '../../../data/pmp/audit-report.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const sevColor: Record<string, { bg: string; fg: string }> = {
+  VERIFIED: { bg: 'rgba(110,200,151,0.08)', fg: '#6ec897' },
+  CRITICAL: { bg: 'rgba(232,110,110,0.08)', fg: '#e86e6e' },
+  MINOR: { bg: 'rgba(232,180,110,0.08)', fg: '#e8b46e' },
+};
+---
+
+<BaseLayout
+  title="監査レポート - PMP学習アプリ"
+  description="本アプリのコンテンツに対する公開Web資料ベース監査の結果。発見した誤り・欠落と修正記録。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">監査レポート</h1>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    {/* 正直な前提 */}
+    <div style="background:rgba(232,180,110,0.06);border-left:3px solid #e8b46e;padding:1rem 1.25rem;margin-bottom:1.25rem;">
+      <p style="color:#e8b46e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.5rem;">HONESTY STATEMENT · 正直な前提</p>
+      <p style="color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.8;">{auditData.honestyStatement}</p>
+    </div>
+
+    {/* メタ情報 */}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;margin-bottom:1.5rem;">
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1.1rem;">
+        <p style="color:rgba(255,255,255,0.5);font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">監査日</p>
+        <p style="color:#c8a96e;font-size:0.95rem;">{auditData.auditDate}</p>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1.1rem;">
+        <p style="color:rgba(255,255,255,0.5);font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">監査対象</p>
+        <p style="color:#edede8;font-size:0.78rem;">{auditData.scope.length} 領域</p>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1.1rem;">
+        <p style="color:rgba(255,255,255,0.5);font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">発見数</p>
+        <p style="color:#edede8;font-size:0.78rem;">
+          ✅ 整合 {auditData.findings.filter(f => f.severity === 'VERIFIED').length} ·
+          ❌ 重大 {auditData.findings.filter(f => f.severity === 'CRITICAL').length} ·
+          🟡 軽微 {auditData.findings.filter(f => f.severity === 'MINOR').length}
+        </p>
+      </div>
+    </div>
+
+    {/* 発見項目 */}
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.35em;margin-bottom:1rem;">FINDINGS · 発見項目</p>
+
+    {auditData.findings.map((f: any) => (
+      <div style={`background:#111114;border-left:3px solid ${sevColor[f.severity].fg};padding:1.25rem 1.5rem;margin-bottom:0.75rem;`}>
+        <div style="display:flex;gap:0.6rem;align-items:baseline;flex-wrap:wrap;margin-bottom:0.6rem;">
+          <span style={`background:${sevColor[f.severity].bg};color:${sevColor[f.severity].fg};padding:0.2rem 0.55rem;font-size:0.65rem;letter-spacing:0.05em;font-weight:600;`}>{f.severity}</span>
+          <span style="color:rgba(237,237,232,0.5);font-size:0.7rem;">{f.id}</span>
+          <h3 style={`color:#edede8;font-size:0.95rem;margin:0;flex:1;`}>{f.category}</h3>
+        </div>
+        <p style="color:#edede8;font-size:0.85rem;line-height:1.7;margin-bottom:0.75rem;">
+          <strong style={`color:${sevColor[f.severity].fg};`}>{f.status}</strong>
+        </p>
+        <div style="margin-bottom:0.6rem;">
+          <p style="color:rgba(237,237,232,0.55);font-size:0.7rem;letter-spacing:0.05em;margin-bottom:0.3rem;">📄 私の元コンテンツ:</p>
+          <p style="color:rgba(237,237,232,0.85);font-size:0.78rem;line-height:1.7;padding-left:1rem;border-left:2px solid rgba(255,255,255,0.1);">{f.myContent}</p>
+        </div>
+        <div style="margin-bottom:0.6rem;">
+          <p style="color:rgba(237,237,232,0.55);font-size:0.7rem;letter-spacing:0.05em;margin-bottom:0.3rem;">🔗 公開資料:</p>
+          <ul style="margin:0;padding-left:1.5rem;color:rgba(110,200,151,0.85);font-size:0.72rem;">
+            {f.publicSources.map((url: string) => (
+              <li style="margin-bottom:0.2rem;"><a href={url} target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">{url}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p style="color:rgba(237,237,232,0.55);font-size:0.7rem;letter-spacing:0.05em;margin-bottom:0.3rem;">⚖ 判定:</p>
+          <p style="color:rgba(237,237,232,0.85);font-size:0.8rem;line-height:1.7;">{f.verdict}</p>
+        </div>
+      </div>
+    ))}
+
+    {/* 検証済み項目 */}
+    <div style="background:#0f0f12;border:1px solid rgba(110,200,151,0.25);padding:1.25rem 1.5rem;margin-top:1.5rem;margin-bottom:1.25rem;">
+      <p style="color:#6ec897;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">✅ VERIFIED · 検証済み項目</p>
+      <ul style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.85;">
+        {auditData.verifiedItems.map((it: string) => <li>{it}</li>)}
+      </ul>
+    </div>
+
+    {/* 未検証項目 */}
+    <div style="background:#0f0f12;border:1px solid rgba(232,180,110,0.25);padding:1.25rem 1.5rem;margin-bottom:1.25rem;">
+      <p style="color:#e8b46e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">⚠ OUTSTANDING · 未検証項目（公開資料アクセス限界による）</p>
+      <ul style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.85;">
+        {auditData.outstandingItems.map((it: string) => <li>{it}</li>)}
+      </ul>
+    </div>
+
+    {/* 利用者への指針 */}
+    <div style="background:#111114;border:1px solid rgba(200,169,110,0.25);padding:1.5rem 1.75rem;margin-top:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">📋 {auditData.userGuidance.title}</p>
+      <ul style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.95;">
+        {auditData.userGuidance.items.map((it: string) => <li style="margin-bottom:0.3rem;">{it}</li>)}
+      </ul>
+    </div>
+
+    <p style="color:rgba(237,237,232,0.4);font-size:0.7rem;text-align:center;margin-top:2rem;">
+      次回監査サイクル: {auditData.nextAuditCycle}
+    </p>
+  </div>
+
+</BaseLayout>

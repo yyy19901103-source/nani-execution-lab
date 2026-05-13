@@ -3,13 +3,20 @@
   "examConfig": {
     "totalQuestions": 180,
     "durationMinutes": 230,
+    "blocks": 3,
+    "blocksDescription": "60問×3ブロック構造。ブロック間にオプション10分休憩2回",
     "breaks": 2,
+    "breakMinutes": 10,
+    "breakNote": "休憩は任意だが取ることが推奨。休憩超過時間は試験時間から差し引かれる",
     "passingScoreEstimate": 0.7,
+    "passingScoreNote": "PMI公式合格点は非公開。心理計量分析（psychometric analysis）に基づきドメインごとに『Above Target / Target / Below Target』で評価。0.7 はあくまで二次資料による推定",
+    "questionTypes": ["multiple-choice", "multiple-response", "matching", "hotspot", "limited fill-in-the-blank"],
     "domainWeights": {
       "People": 0.42,
       "Process": 0.50,
       "Business Environment": 0.08
-    }
+    },
+    "verifiedSource": "PMI公開資料・複数二次資料 (2026-05照合) — 詳細は audit-report.json 参照"
   },
   "domains": [
     {

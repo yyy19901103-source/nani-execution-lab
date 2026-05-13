@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "verifiedAgainst": "PMI 公開資料 (pmi.org/-/media/pmi/documents/public/pdf/pmbok-standards/12-project-management-principles.pdf) および公開二次資料 (spoclearn.com / cloudkeypm.com / projectmanagementcompass.substack.com)",
+  "verificationDate": "2026-05-13",
+  "verificationLevel": "公開二次資料ベース（PMI 公式 PDF 一部参照）",
+  "note": "PMBOK 第7版の12公式原則。PMP試験の根幹となるため、暗記でなく『なぜそうか』を理解する。私が別途記述した『PMP Mindset 8原則』は試験判断軸の整理であり、公式12原則とは別物。",
+  "principles": [
+    {
+      "id": "stewardship",
+      "labelEn": "Stewardship",
+      "labelJa": "スチュワードシップ",
+      "summary": "誠実さ・思いやり・信頼性をもって行動し、組織内外のガイドラインを遵守する。",
+      "expanded": "プロジェクトマネージャーは『スチュワード（管理者・受託者）』として、ステークホルダー・組織・社会・環境への責任を持つ。倫理的・透明・敬意ある振る舞いが求められる。PMI 行動規範（責任・尊重・公正・誠実）との整合性が中核。"
+    },
+    {
+      "id": "team",
+      "labelEn": "Team",
+      "labelJa": "チーム",
+      "summary": "協働的なプロジェクトチーム環境を作る。",
+      "expanded": "成果は個人でなくチームで生まれる。心理的安全性・多様性・共通目的・自律性・建設的対立への耐性を組み合わせて、高パフォーマンスチームを形成する。サーバントリーダーシップが鍵。"
+    },
+    {
+      "id": "stakeholder",
+      "labelEn": "Stakeholder",
+      "labelJa": "ステークホルダー",
+      "summary": "ステークホルダーをプロアクティブにエンゲージする。",
+      "expanded": "ステークホルダーは『情報を受け取る側』でなく『価値創造に参加する側』。早期・継続的・双方向の関与が成功要因。期待・関心・影響を継続把握し、エンゲージメント計画を適応的に運用する。"
+    },
+    {
+      "id": "value",
+      "labelEn": "Value",
+      "labelJa": "価値",
+      "summary": "価値に焦点を当てる。",
+      "expanded": "成功の最終測定は『価値（ベネフィット実現）』であり、納品やスコープ達成ではない。納期通り完了してもビジネス価値を生まなければ失敗。継続的に『なぜこのプロジェクトをやるのか』に立ち返り、戦略整合性を再確認する。"
+    },
+    {
+      "id": "systems",
+      "labelEn": "Systems Thinking",
+      "labelJa": "システム思考",
+      "summary": "システムの相互作用を認識し、評価し、対応する。",
+      "expanded": "プロジェクトは独立した存在でなく、組織・市場・規制・技術エコシステムの一部。要素の最適化でなく全体の最適化を目指す。フィードバックループ・遅延・連鎖反応・予期せぬ副作用を考慮する。"
+    },
+    {
+      "id": "leadership",
+      "labelEn": "Leadership",
+      "labelJa": "リーダーシップ",
+      "summary": "リーダーシップ行動を発揮する。",
+      "expanded": "肩書きでなく行動。状況・チーム・タスクに応じてリーダーシップスタイルを使い分ける（Situational Leadership）。サーバントリーダーシップ・コーチング・コラボレーション・ビジョン提示が中心。指示型・統制型は限定的。"
+    },
+    {
+      "id": "tailoring",
+      "labelEn": "Tailoring",
+      "labelJa": "テーラリング",
+      "summary": "コンテキストに基づいてテーラリングする。",
+      "expanded": "標準プロセスをそのまま適用するのでなく、プロジェクトの規模・複雑さ・重要度・チーム成熟度・業界・規制に応じて方法・成果物・ライフサイクルを調整する。アジャイル・ウォーターフォール・ハイブリッドの選択もテーラリングの一部。"
+    },
+    {
+      "id": "quality",
+      "labelEn": "Quality",
+      "labelJa": "品質",
+      "summary": "プロセスと成果物の両方に品質を組み込む。",
+      "expanded": "品質は最後の検査でなく、計画段階から組み込む。予防コストは失敗コストより安い（COQ）。品質はステークホルダーの期待充足度で測られ、要件適合性 + グレード + 顧客満足を含む。"
+    },
+    {
+      "id": "complexity",
+      "labelEn": "Complexity",
+      "labelJa": "複雑性",
+      "summary": "複雑性を航海する。",
+      "expanded": "複雑性は不確実性・曖昧性・人間行動・技術新規性・システム相互作用から生まれる。事前計画で全てを予測できない領域では、Probe-Sense-Respond（Cynefin Complex 領域）・適応的計画・継続的学習で対応する。"
+    },
+    {
+      "id": "risk",
+      "labelEn": "Risk",
+      "labelJa": "リスク",
+      "summary": "リスク対応を最適化する。",
+      "expanded": "リスクには『脅威』と『機会』がある。事後対応より予防が安い。組織リスク許容度・ステークホルダーリスク選好度に整合する対応戦略を選ぶ。リスク管理はプロジェクト開始から終了まで継続的に行う活動。"
+    },
+    {
+      "id": "adaptability",
+      "labelEn": "Adaptability and Resilience",
+      "labelJa": "適応性と回復力",
+      "summary": "適応性と回復力を受け入れる。",
+      "expanded": "計画変更・前提崩壊・予期せぬイベントは必ず起こる。チーム・プロセス・成果物に適応性（変化への柔軟対応）と回復力（衝撃からの回復）を組み込む。失敗を学習機会化し、フィードバックループで継続改善する。"
+    },
+    {
+      "id": "change",
+      "labelEn": "Change",
+      "labelJa": "変革",
+      "summary": "想定状態に到達するための変革を可能にする。",
+      "expanded": "プロジェクト成果は組織の変革を伴う。技術的に成功しても、組織が新しい働き方を採用できなければ価値は実現しない。Kotter 8ステップ・ADKAR等を活用し、抵抗管理・コミュニケーション・トレーニング・支援を計画する。"
+    }
+  ],
+  "relationToMindset": {
+    "description": "本アプリの『PMP Mindset 8原則』は試験での判断軸（Agile優先・サーバントリーダー・ステークホルダー第一・プロアクティブ・倫理・適応的計画・コラボ・根本原因対処）。PMBOK 7 の公式12原則とは別観点で、両者は補完関係。",
+    "mappingTable": [
+      { "mindset": "アジャイル/ハイブリッド優先", "pmbok7": ["tailoring", "adaptability", "complexity"] },
+      { "mindset": "サーバントリーダーシップ", "pmbok7": ["leadership", "team"] },
+      { "mindset": "ステークホルダー第一", "pmbok7": ["stakeholder", "value"] },
+      { "mindset": "プロアクティブ", "pmbok7": ["risk", "quality"] },
+      { "mindset": "倫理的・透明性", "pmbok7": ["stewardship"] },
+      { "mindset": "適応的計画", "pmbok7": ["adaptability", "complexity", "change"] },
+      { "mindset": "コラボレーション", "pmbok7": ["team", "stakeholder", "leadership"] },
+      { "mindset": "根本原因対処", "pmbok7": ["quality", "systems"] }
+    ]
+  }
+}
