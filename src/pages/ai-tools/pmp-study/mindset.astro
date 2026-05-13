@@ -1,0 +1,94 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import mindsetData from '../../../data/pmp/mindset.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="PMP Mindset 8原則 - PMP学習アプリ"
+  description="PMP試験の判断軸となる8原則を詳解。アジャイル優先・サーバントリーダーシップ・ステークホルダー第一・プロアクティブ・倫理・適応的計画・コラボ・根本原因対処。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">PMP Mindset · 8原則</h1>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <div style="background:#111114;border:1px solid rgba(200,169,110,0.2);padding:1.5rem 1.75rem;margin-bottom:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.5rem;">CORE CONCEPT</p>
+      <p style="color:'rgba(237,237,232,0.9)';font-size:0.9rem;line-height:1.8;">{mindsetData.description}</p>
+    </div>
+
+    {mindsetData.principles.map((p, i) => (
+      <details open={i === 0} style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:0.75rem;">
+        <summary style="cursor:pointer;list-style:none;">
+          <div style="display:flex;gap:0.75rem;align-items:baseline;">
+            <span style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;">#{i + 1}</span>
+            <h2 style="color:#edede8;font-size:1.1rem;font-weight:300;letter-spacing:0.1em;margin:0;flex:1;">{p.label}</h2>
+            <span style="color:rgba(237,237,232,0.4);font-size:0.7rem;">▼</span>
+          </div>
+          <p style="color:rgba(237,237,232,0.75)';font-size:0.85rem;line-height:1.7;margin:0.6rem 0 0 1.5rem;">{p.summary}</p>
+        </summary>
+
+        <div style="margin-top:1rem;padding-left:1.5rem;border-left:2px solid rgba(200,169,110,0.2);">
+          <p style="color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.85;margin-bottom:1rem;">{p.explanation}</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+            <div>
+              <p style="color:#6ec897;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.5rem;">✓ 試験で正解のパターン</p>
+              <ul style="margin:0;padding-left:1.25rem;color:rgba(237,237,232,0.75);font-size:0.78rem;line-height:1.7;">
+                {p.examPatterns.map(ep => <li>{ep}</li>)}
+              </ul>
+            </div>
+            <div>
+              <p style="color:#e86e6e;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.5rem;">✗ 誤答パターン</p>
+              <ul style="margin:0;padding-left:1.25rem;color:rgba(237,237,232,0.75);font-size:0.78rem;line-height:1.7;">
+                {p.antipatterns.map(ap => <li>{ap}</li>)}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+    ))}
+
+    <div style="background:#0f0f12;border:1px solid rgba(110,200,151,0.25);padding:1.5rem 1.75rem;margin-top:1.5rem;">
+      <p style="color:#6ec897;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">DECISION FLOWCHART · 判断フロー</p>
+      <p style="color:rgba(237,237,232,0.75);font-size:0.82rem;line-height:1.7;margin-bottom:1rem;">問題に迷ったら、以下の順で選択肢を絞り込みます:</p>
+      <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.9;">
+        {mindsetData.decisionFlowchart.map(s => <li>{s.replace(/^\d+\.\s/, '')}</li>)}
+      </ol>
+    </div>
+
+    <div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.07);padding:1.5rem 1.75rem;margin-top:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1rem;">TRAP WORDS · ワナの言葉</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+        <div>
+          <p style="color:#e86e6e;font-size:0.7rem;letter-spacing:0.1em;margin-bottom:0.5rem;">⚠ ほぼ誤答のキーワード</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.3rem;">
+            {mindsetData.trapWords["ほぼ誤答のキーワード"].map(w => (
+              <span style="background:rgba(232,110,110,0.06);border:1px solid rgba(232,110,110,0.25);color:#e86e6e;padding:0.2rem 0.5rem;font-size:0.7rem;">「{w}」</span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p style="color:#6ec897;font-size:0.7rem;letter-spacing:0.1em;margin-bottom:0.5rem;">✓ ほぼ正解のキーワード</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.3rem;">
+            {mindsetData.trapWords["ほぼ正解のキーワード"].map(w => (
+              <span style="background:rgba(110,200,151,0.06);border:1px solid rgba(110,200,151,0.25);color:#6ec897;padding:0.2rem 0.5rem;font-size:0.7rem;">「{w}」</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    localStorage.setItem('pmp-mindset-viewed', new Date().toISOString());
+  </script>
+
+</BaseLayout>

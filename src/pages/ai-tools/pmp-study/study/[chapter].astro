@@ -1,0 +1,28 @@
+---
+import '../../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ChapterDetail from '../../../../components/pmp/ChapterDetail.tsx';
+import chaptersData from '../../../../data/pmp/chapters.json';
+
+export function getStaticPaths() {
+  return chaptersData.chapters.map((c) => ({ params: { chapter: c.id } }));
+}
+
+const { chapter: chapterId } = Astro.params;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const chapter = chaptersData.chapters.find((c) => c.id === chapterId);
+const title = chapter ? `章 ${chapter.id} ${chapter.titleJa} - PMP学習` : 'PMP学習';
+---
+
+<BaseLayout
+  title={title}
+  description={chapter?.summary ?? 'PMP学習アプリの章詳細ページ'}
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/study`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← 章一覧</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">章詳細</h1>
+    </div>
+  </div>
+  <ChapterDetail chapterId={chapterId} base={base} client:only="react" />
+</BaseLayout>

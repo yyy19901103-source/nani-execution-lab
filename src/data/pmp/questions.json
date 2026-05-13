@@ -1,0 +1,1095 @@
+{
+  "version": "1.0.0",
+  "generatedBy": "owner-curated",
+  "lastUpdated": "2026-05-13",
+  "totalQuestions": 103,
+  "domainDistribution": {
+    "People": 42,
+    "Process": 53,
+    "Business Environment": 8
+  },
+  "qualityNotes": "全問題はオリジナルシナリオ。PMBOK逐語転記なし。PMP Mindset（Agile優先・サーバントリーダーシップ・ステークホルダー第一・根本原因対処）に基づく判断問題。",
+  "questions": [
+    {
+      "id": "Q001",
+      "domain": "People",
+      "chapter": "1.1",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "ハイブリッド方式の新製品開発プロジェクトで、シニア設計者2名がアーキテクチャ選定で対立している。両者ともチームに大きな影響力を持ち、議論が長引いて2週間が経過した。PMが取るべき最初の行動は何か。",
+      "choices": [
+        "スポンサーにエスカレーションし、どちらの案を採用すべきか裁定を依頼する",
+        "両者が同席する場をファシリテートし、それぞれの懸念の根本にある利害を引き出す",
+        "投票で決定し、多数決の結果に従ってもらう",
+        "PMが技術的判断を下し、両者に従うよう指示する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "コンフリクトは『立場』ではなく『利害』に焦点を当てて解決する。両者の表面的主張の裏にある真の懸念（性能・保守性・チームスキル等）を引き出すことで、統合的解決（Collaborate/Win-Win）が可能になる。即時エスカレーションはPMの責任放棄であり、多数決やトップダウン判断は対立を潜在化させる。",
+      "tags": ["Conflict", "Facilitation", "Win-Win", "Hybrid"],
+      "qualityScore": 0.92
+    },
+    {
+      "id": "Q002",
+      "domain": "People",
+      "chapter": "1.3",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "アジャイルチームのメンバー1名が、過去2スプリント連続でコミットしたストーリーポイントの半分しか完了させていない。他のメンバーはほぼ予定通り完了している。PMとしてまず何をすべきか。",
+      "choices": [
+        "次回スプリント計画でそのメンバーの担当ポイントを減らすよう PO に提案する",
+        "1対1の対話の場を設け、業務上または個人的な阻害要因がないかを確認する",
+        "チーム全体のスタンドアップで状況を共有し、皆で支援する方法を議論する",
+        "人事評価記録に低パフォーマンスとして記録する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "パフォーマンス低下の原因を判断する前に、まず本人と対話し事実を把握する（サーバントリーダーシップ）。技術的ブロッカー、業務外の事情、スキルギャップ、心理的問題など原因は多様。チーム全体での話題化（C）は本人の心理的安全性を損なう可能性、評価記録（D）は時期尚早、PO提案（A）は症状対処で原因不明のまま。",
+      "tags": ["Servant Leadership", "1-on-1", "Performance", "Psychological Safety"],
+      "qualityScore": 0.90
+    },
+    {
+      "id": "Q003",
+      "domain": "People",
+      "chapter": "1.11",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "5カ国（時差最大10時間）に分散したリモートチームを率いている。チームミーティングへの参加率が低下し、メンバー同士の連帯感も希薄になってきた。最も効果的なアプローチはどれか。",
+      "choices": [
+        "全員参加を義務化し、欠席者にはペナルティを設ける",
+        "全員にとって不便な時間にミーティングを集中させ、平等性を保つ",
+        "コアタイム以外は非同期コミュニケーション中心とし、時差を考慮した持ち回り会議+少人数の対面/オンライン交流の場を意図的に設ける",
+        "本社時間に統一し、海外メンバーには深夜参加を求める"
+      ],
+      "correctAnswer": "C",
+      "explanation": "バーチャルチームでは時差を踏まえた非同期/同期のハイブリッド設計が必要。会議時間を持ち回りにすることで負担を分散し、意図的な交流の場（バーチャルコーヒー等）で連帯感を醸成する。義務化・ペナルティ（A）は信頼を破壊し、不便時間統一（B/D）は持続性がない。",
+      "tags": ["Virtual Team", "Time Zone", "Async Communication", "Inclusion"],
+      "qualityScore": 0.91
+    },
+    {
+      "id": "Q004",
+      "domain": "People",
+      "chapter": "1.9",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "業務システム刷新プロジェクトで、現場部門の課長が新システム導入に強く抵抗している。チームメンバーは課長の協力なしでは要件定義が進まない状況。PMとして最善のアプローチは何か。",
+      "choices": [
+        "課長の上司（部長）に圧力をかけてもらい、協力させる",
+        "課長の抵抗の理由を直接対話で理解し、本人の懸念をプロジェクト計画に反映する",
+        "課長を無視し、課長代理など別の協力的な人物と要件を進める",
+        "経営層会議で課長の抵抗を報告し、対処を依頼する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "ステークホルダーの抵抗には必ず理由がある（既存業務への影響・スキル不安・過去のシステム失敗体験等）。まず傾聴し、懸念を計画に反映することで支持者に転換できる可能性が高い。圧力（A）や迂回（C）は短期的に進んでも後に手戻り発生、即エスカレーション（D）はPMの責任放棄。",
+      "tags": ["Stakeholder Engagement", "Resistance", "Active Listening"],
+      "qualityScore": 0.93
+    },
+    {
+      "id": "Q005",
+      "domain": "People",
+      "chapter": "1.2",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "新任のPMがアジャイルチームを担当することになった。前任PMは細かい指示と進捗管理を徹底するスタイルだった。新PMがサーバントリーダーとして実践すべき行動として最も適切なものは何か。",
+      "choices": [
+        "毎日全メンバーの作業を確認し、遅れがあれば即座に指示を出す",
+        "チームの障害を取り除き、チームが自己組織化して意思決定できる環境を整える",
+        "全ての技術判断をPMが行い、メンバーは実装に専念させる",
+        "WBSを細かく分解し、各タスクの担当者を厳密に割り当てる"
+      ],
+      "correctAnswer": "B",
+      "explanation": "サーバントリーダーシップの本質は『支援』『障害除去』『自律性の促進』。チームが自分で意思決定できる環境を作ることで、エンゲージメントと生産性が向上する。A・C・Dは指示型リーダーシップで、アジャイルの原則に反する。",
+      "tags": ["Servant Leadership", "Self-Organizing Team", "Agile Mindset"],
+      "qualityScore": 0.89
+    },
+    {
+      "id": "Q006",
+      "domain": "People",
+      "chapter": "1.8",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "重要な専門ベンダーとの契約交渉で、当初の希望価格より40%高い見積もりが提示された。納期が逼迫しており、他に代替ベンダーが見つかっていない。PMとしての交渉準備で最も重要なのは何か。",
+      "choices": [
+        "BATNA（最善代替案）を明確にし、価格以外の交渉余地（納期分割・段階契約・スコープ調整）を洗い出す",
+        "ベンダーに対して『他社見積もりも取っている』とブラフをかける",
+        "予算オーバーを承知でその場で契約し、後でスポンサーに承認を求める",
+        "ベンダーの利益率を計算し、適正価格を一方的に提示する"
+      ],
+      "correctAnswer": "A",
+      "explanation": "交渉成功の要件は事前準備。BATNA（合意できなかった場合の最善代替案）を明確化することで譲歩可能ラインが定まる。価格だけでなく多次元の交渉軸（納期・スコープ・支払条件）を持つことで Win-Win 解が見つかりやすい。ブラフ（B）は倫理違反かつ後に発覚するリスク、事後承認（C）はガバナンス違反、一方的提示（D）は協働的交渉に反する。",
+      "tags": ["Negotiation", "BATNA", "Procurement", "Ethics"],
+      "qualityScore": 0.92
+    },
+    {
+      "id": "Q007",
+      "domain": "People",
+      "chapter": "1.12",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "プロジェクト開始時にチームで合意したグランドルール（会議の時間厳守、Slack応答は4時間以内など）が、開始2ヶ月で守られなくなってきた。PMが取るべき行動は何か。",
+      "choices": [
+        "ルールを破ったメンバーに対して、その都度個別に注意する",
+        "ルールを撤廃し、全て個人裁量に任せる",
+        "次のレトロスペクティブで現状を取り上げ、チーム自身にルールの再確認と必要に応じた改訂を促す",
+        "上長に報告し、人事評価に反映する旨をチームに伝える"
+      ],
+      "correctAnswer": "C",
+      "explanation": "チーム憲章/グランドルールは『自分たちで作ったルール』だから機能する。形骸化したらチーム自身に振り返ってもらい、現状に合わなければ改訂する。これは自己組織化の原則そのもの。個別注意（A）は他律強制、撤廃（B）は秩序崩壊、評価連動（D）は心理的安全性を破壊する。",
+      "tags": ["Team Charter", "Ground Rules", "Retrospective", "Self-Organization"],
+      "qualityScore": 0.88
+    },
+    {
+      "id": "Q008",
+      "domain": "People",
+      "chapter": "1.13",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "新任PMから「ステークホルダー管理が上手くいかない」と相談された。経験あるPMとしてメンタリングする際の最も効果的なアプローチは何か。",
+      "choices": [
+        "自分の成功事例を詳しく語り、その通り真似するよう指示する",
+        "GROWモデル（Goal/Reality/Options/Will）で質問を重ね、新任PM自身が解決策に辿り着くよう支援する",
+        "新任PMの代わりにそのステークホルダーと面談し、問題を解決する",
+        "ステークホルダー管理の本を渡して読むよう指示する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "メンタリングは『教える』ではなく『内省を促す』。GROWモデルなどの質問フレームで本人が自分の答えに辿り着くと、定着率と応用力が劇的に向上する。指示や代行（A・C）は依存を生み成長を阻害、書籍指示のみ（D）は伴走の欠如。",
+      "tags": ["Mentoring", "GROW Model", "Coaching"],
+      "qualityScore": 0.87
+    },
+    {
+      "id": "Q009",
+      "domain": "People",
+      "chapter": "1.10",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "新システムの要件について、ビジネス部門、開発チーム、運用チームでそれぞれ理解が異なることが判明した。リリースまで3ヶ月。共通理解を構築する最善の方法は何か。",
+      "choices": [
+        "PMが各部門の意見を聞いて要件書を作成し、メールで全員に配布する",
+        "3部門合同のワークショップを実施し、ユーザーストーリーマッピングと簡易プロトタイプで具体イメージを共有する",
+        "ビジネス部門の意見を正とし、他部門にはそれに従うよう通達する",
+        "決定が必要な要件をリストアップし、各部門が個別に承認する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "共通理解の構築には『同じ場で・可視化しながら・対話する』ことが最も効果的。ストーリーマッピングやプロトタイプによって抽象的な要件が具体化し、暗黙の認識ギャップが顕在化する。書面回覧（A）は誤解検出が遅く、トップダウン（C）は他部門の納得を得られず、個別承認（D）は統合視点が欠落する。",
+      "tags": ["Shared Understanding", "Workshop", "User Story Mapping", "Prototyping"],
+      "qualityScore": 0.90
+    },
+    {
+      "id": "Q010",
+      "domain": "People",
+      "chapter": "1.4",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "アジャイルチームに、技術力はあるがミーティングで発言しない若手メンバーがいる。チームの集合知を活かすため、PMとしてどうすべきか。",
+      "choices": [
+        "ミーティングで強制的に発言を求め、慣れさせる",
+        "明確なオーナーシップを持てる小さな領域を任せ、レビュー会で成果を発表する機会を作る",
+        "本人が発言しないのは性格と諦め、他のメンバーから意見を集める",
+        "発言ノルマを設定し、毎ミーティングで未達なら指摘する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "エンパワーメントは『権限委譲』と『成功体験の付与』が両輪。小さな責任領域から始めることで自信と発言基盤が生まれる。強制（A・D）は逆効果、放置（C）は機会喪失。",
+      "tags": ["Empowerment", "Psychological Safety", "Ownership"],
+      "qualityScore": 0.85
+    },
+    {
+      "id": "Q011",
+      "domain": "People",
+      "chapter": "1.5",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "プロジェクト中盤で新しい技術スタックの採用が決まり、チームメンバーの半数がそのスキルを持っていないことが判明した。PMが取るべき最善のアクションは何か。",
+      "choices": [
+        "外部から経験者を採用し、既存メンバーは別作業に回す",
+        "経験者と未経験者をペアにし、短期集中研修+OJTで段階的にスキル移転する",
+        "オンライン講座を案内し、各自で学習するよう指示する",
+        "技術スタック変更を撤回し、既存スキルで対応する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "スキル移転はペアプログラミング/ペアワーク+OJTが最も効果的。短期間で実プロジェクトに活きる知識が伝わる。外部採用のみ（A）はチーム成長機会を失い、自学のみ（C）は実務適用率が低く、撤回（D）は既決定の覆しで信頼を失う。",
+      "tags": ["Training", "Pair Programming", "Skill Gap", "OJT"],
+      "qualityScore": 0.86
+    },
+    {
+      "id": "Q012",
+      "domain": "People",
+      "chapter": "1.14",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "question": "進捗報告会で、重要ステークホルダーが「このプロジェクトは失敗だ」と激しく怒り始めた。PMとしての最善の初動は何か。",
+      "choices": [
+        "事実と異なる主張に対し、その場で根拠を示して反論する",
+        "感情を受け止める発言（『ご不安なのは理解しました』）をし、相手が落ち着いてから具体的な懸念事項を一つずつ整理する",
+        "会議を即中断し、後日改めて場を設ける",
+        "他のステークホルダーに視線を移し、議題を進める"
+      ],
+      "correctAnswer": "B",
+      "explanation": "感情が高ぶった状態では論理的議論は機能しない。EQの『社会的認識』と『関係管理』を発揮し、まず感情を受容（共感）してから事実に戻る。即反論（A）は対立激化、即中断（C）は誠意欠如、無視（D）は信頼破綻。",
+      "tags": ["Emotional Intelligence", "Active Listening", "Stakeholder Management"],
+      "qualityScore": 0.94
+    },
+    {
+      "id": "Q013",
+      "domain": "People",
+      "chapter": "1.3",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "アジャイルチームのベロシティが3スプリント連続で低下している。チームの士気も下がっているように見える。PMが取るべき最初の行動は何か。",
+      "choices": [
+        "次スプリントの目標を下げ、達成感を回復させる",
+        "個別面談で各メンバーの状況を聞き、レトロスペクティブで根本原因を特定する",
+        "スプリント期間を2週間から3週間に延ばす",
+        "経営層に状況を報告し、メンバー追加を依頼する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "ベロシティ低下は症状であり、原因は技術負債・スキル不足・モチベ低下・外部依存・要件不安定など多様。まず原因究明（根本原因分析）が先。期間延長や目標下方修正は症状対処で根本未解決、人員追加は『遅れたプロジェクトに人を足すと更に遅れる』（Brooks の法則）。",
+      "tags": ["Velocity", "Root Cause Analysis", "Retrospective"],
+      "qualityScore": 0.89
+    },
+    {
+      "id": "Q014",
+      "domain": "Process",
+      "chapter": "2.8",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "スポンサーから「ついでにこの機能も入れて欲しい」と非公式に依頼された。スコープ拡大は明らかだが、断りにくい立場のスポンサーである。PMの最善の対応は何か。",
+      "choices": [
+        "スポンサーの依頼なので即座に受け入れ、チームに作業を追加する",
+        "正式な変更要求として提出してもらい、影響評価（スコープ・スケジュール・予算・リスク）を経て CCB で判断する",
+        "依頼を拒否し、現スコープに固執する",
+        "チームに極秘で追加作業を進める"
+      ],
+      "correctAnswer": "B",
+      "explanation": "全ての変更は正式プロセスを経る必要がある（インフォーマル変更の禁止）。スポンサーであっても影響評価なしの追加は計画破綻を招く。正式プロセスでも結果的に承認される可能性は高いが、影響を可視化することで二次被害を防げる。即受入（A）は変更管理崩壊、拒否（C）は協働姿勢欠如、極秘（D）は重大な統制違反。",
+      "tags": ["Scope Management", "Change Control", "CCB", "Sponsor"],
+      "qualityScore": 0.92
+    },
+    {
+      "id": "Q015",
+      "domain": "Process",
+      "chapter": "2.3",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "リスクレジスタに80件のリスクが登録されている。チームは全件に対応する余裕がない。PMの最も適切なアプローチは何か。",
+      "choices": [
+        "発生確率順に上位30件に絞って対応する",
+        "影響度と発生確率を掛け合わせた優先度マトリクスでハイリスク（高×高/高×中）を選別し、それらに対応戦略を策定する",
+        "全件に最低限の対応策を作成し均等に管理する",
+        "古いリスクから削除し、件数を減らす"
+      ],
+      "correctAnswer": "B",
+      "explanation": "確率影響マトリクス（PI Matrix）で優先度づけし、リソースを高リスクに集中させるのが基本原則。確率のみ（A）は影響度を無視、均等対応（C）はリソース希釈、削除（D）はリスク放置で危険。",
+      "tags": ["Risk Management", "PI Matrix", "Prioritization"],
+      "qualityScore": 0.88
+    },
+    {
+      "id": "Q016",
+      "domain": "Process",
+      "chapter": "2.6",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "question": "プロジェクトが2週間遅れていることが判明した。納期は固定で変更不可。PMがまず行うべき分析は何か。",
+      "choices": [
+        "残業を増やすようチームに指示する",
+        "クリティカルパスを分析し、ファストトラック（並行実行）またはクラッシング（リソース追加）の適用可否を評価する",
+        "スコープを削減し、納期に間に合う部分のみリリースする",
+        "納期延長をスポンサーに即依頼する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "スケジュール短縮の前にクリティカルパス特定が必須。CP外のタスク短縮は無意味。ファストトラック（並行実行、リスク増）かクラッシング（リソース追加、コスト増）かをトレードオフ評価する。残業（A）は短期しか効かずバーンアウト誘発、スコープ削減（C）も選択肢だが分析後の判断、即エスカレーション（D）はPM責任放棄。",
+      "tags": ["Schedule Compression", "Critical Path", "Fast Tracking", "Crashing"],
+      "qualityScore": 0.93
+    },
+    {
+      "id": "Q017",
+      "domain": "Process",
+      "chapter": "2.5",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "question": "EVM 分析で CPI=0.85、SPI=0.92 が出た。プロジェクトの状況として最も正確な解釈は何か。",
+      "choices": [
+        "順調に進んでおり、特に対応不要",
+        "予算は計画より15%超過しており、スケジュールも8%遅れている。コスト面の問題が深刻で、ETC/EACの再計算と是正措置が必要",
+        "スケジュールは順調だが、予算が15%余っている",
+        "プロジェクトを即中止すべきレベルの状況"
+      ],
+      "correctAnswer": "B",
+      "explanation": "CPI（コスト効率指数）<1 は予算超過、SPI（スケジュール効率指数）<1 は遅延。CPI=0.85 は完了作業に対し $1 計画で $1.18 かかっている状態（1/0.85）。両指数 1 未満なので両面で問題あり。コスト超過のほうが深刻。EAC（完了時総コスト見積）の再計算と原因対処が必要。即中止（D）は過剰反応。",
+      "tags": ["EVM", "CPI", "SPI", "EAC", "ETC"],
+      "qualityScore": 0.94
+    },
+    {
+      "id": "Q018",
+      "domain": "Process",
+      "chapter": "2.7",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "ユーザー受入テスト段階で重大な品質欠陥が10件発見された。リリース予定日まで2週間。PMが取るべき最も重要なアクションは何か。",
+      "choices": [
+        "全欠陥を修正し、テストやり直しでリリースを2ヶ月延期する",
+        "欠陥の根本原因分析を行い、現プロジェクトの修正方針決定と同時に、再発防止のため上流プロセス（設計レビュー、コードレビュー、単体テスト）の改善を計画する",
+        "重大欠陥は隠して予定通りリリースし、後でパッチ対応する",
+        "テストチームを叱責し、もっと厳しくテストするよう指示する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "受入段階での重大欠陥発見は『品質は計画されるもの・予防 > 検査』の原則違反のサイン。根本原因分析（フィッシュボーン図など）で上流欠陥を特定し、現プロジェクト対応と再発防止策を両輪で進める。隠蔽（C）は倫理違反、テストチーム叱責（D）は責任転嫁で根本未解決。",
+      "tags": ["Quality Management", "Root Cause Analysis", "Prevention"],
+      "qualityScore": 0.91
+    },
+    {
+      "id": "Q019",
+      "domain": "Process",
+      "chapter": "2.13",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "金融機関の規制対応プロジェクトで、要件は明確だが極めて厳格な品質と監査証跡が要求される。一方、ユーザー画面改善は要件が曖昧で頻繁な変更が予想される。最適な方法論アプローチは何か。",
+      "choices": [
+        "全工程でウォーターフォール（規制対応の確実性を優先）",
+        "全工程でアジャイル（変化対応の柔軟性を優先）",
+        "ハイブリッド: 規制対応部分はウォーターフォール（厳密な計画と監査証跡）、画面改善部分はアジャイル（短サイクル・適応的開発）",
+        "全工程をDevOpsで対応する"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Stacey マトリクスや Cynefin で評価すると、要件・技術の不確実性レベルに応じて手法を使い分けるのが合理的。規制対応は『シンプル/煩雑』領域（既知の手順）、UX改善は『複雑』領域（探索と適応）。ハイブリッドは PMP 2021 ECO で重視される現代的アプローチ。",
+      "tags": ["Methodology", "Hybrid", "Stacey Matrix", "Tailoring"],
+      "qualityScore": 0.92
+    },
+    {
+      "id": "Q020",
+      "domain": "Process",
+      "chapter": "2.2",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "プロジェクト中盤で組織変更があり、ステークホルダーの構成と意思決定権限が大きく変わった。コミュニケーション計画はどうすべきか。",
+      "choices": [
+        "現行計画を維持する（中盤からの変更は混乱を招く）",
+        "ステークホルダーレジスタを更新し、新ステークホルダーの情報ニーズ・頻度・チャネルを再評価してコミュニケーション計画を改訂する",
+        "全員に同じ情報を一律配信する形に簡素化する",
+        "コミュニケーション計画は不要と判断する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "ステークホルダー変更は計画の前提を変える重大イベント。新ステークホルダーは情報ニーズ・関心領域・意思決定権限が異なるため、エンゲージメントとコミュニケーションを再設計する必要がある。維持（A）は新メンバー疎外、一律配信（C）は効率悪化と関与低下、廃止（D）は論外。",
+      "tags": ["Communication Plan", "Stakeholder Register", "Change"],
+      "qualityScore": 0.87
+    },
+    {
+      "id": "Q021",
+      "domain": "Process",
+      "chapter": "2.10",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "顧客から変更要求書が提出された。要求内容自体は妥当だが、影響範囲がまだ不明である。PMが次に取るべきアクションは何か。",
+      "choices": [
+        "顧客との関係維持のため、即座に承認する",
+        "影響評価（スコープ・コスト・スケジュール・品質・リスクへの影響）を実施し、その結果と推奨判断をCCB（変更管理委員会）に提示する",
+        "とりあえず却下する",
+        "チームに変更を伝え、可能な範囲で取り込むよう指示する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "変更要求の処理は『受領→影響評価→意思決定（CCB）→承認/却下→反映→周知』の標準プロセス。影響評価なしの即決（A・C）はリスク、非公式な部分取込（D）は構成管理崩壊。",
+      "tags": ["Change Management", "Impact Analysis", "CCB"],
+      "qualityScore": 0.89
+    },
+    {
+      "id": "Q022",
+      "domain": "Process",
+      "chapter": "2.11",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "重要な部品ベンダーが納期に間に合わないと連絡してきた。代替ベンダーへの切替は契約上3ヶ月の通告期間が必要。PMが最初にすべきことは何か。",
+      "choices": [
+        "即座に契約解除し、代替ベンダーを探す",
+        "現契約条項（遅延ペナルティ・部分納品可否・代替供給義務）を確認し、ベンダーと協議して被害最小化策（部分先行納品・優先品目特定）を交渉する",
+        "ベンダーに罰金を請求すると通告し、圧力をかける",
+        "スポンサーに納期延長を依頼する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "契約は最初に確認すべき情報源。遅延時の権利義務（ペナルティ条項、優先供給条項、代替供給条項）を把握し、その範囲で最善策をベンダーと協議する。即契約解除（A）は契約違反リスク、圧力（C）は関係破綻、即エスカレーション（D）は契約確認が先。",
+      "tags": ["Procurement", "Contract Management", "Vendor"],
+      "qualityScore": 0.90
+    },
+    {
+      "id": "Q023",
+      "domain": "Process",
+      "chapter": "2.15",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "イシューログに50件のオープン課題が溜まっており、解決が遅れている。PMが取るべきアプローチは何か。",
+      "choices": [
+        "古い課題から順に解決する",
+        "全課題を一斉にチームに割り当てる",
+        "影響度と緊急度で分類し、高優先度に対応リソースを集中させ、停滞している課題はエスカレーション基準に従って上位判断を仰ぐ",
+        "1ヶ月以上停滞している課題は自動的にクローズする"
+      ],
+      "correctAnswer": "C",
+      "explanation": "課題管理はリスク管理と同様、優先度ベースでリソース配分する。長期停滞課題はエスカレーション基準を適用し、判断を停滞させない。年功序列（A）や均等配分（B）は非効率、自動クローズ（D）は未解決問題の隠蔽。",
+      "tags": ["Issue Management", "Prioritization", "Escalation"],
+      "qualityScore": 0.86
+    },
+    {
+      "id": "Q024",
+      "domain": "Process",
+      "chapter": "2.16",
+      "difficulty": 2,
+      "source": "self",
+      "reviewed": true,
+      "question": "プロジェクト終結フェーズに入った。来週には主要メンバーが他プロジェクトに異動する。知識移転のために最も効果的なアプローチは何か。",
+      "choices": [
+        "各メンバーが個別にドキュメントを残し、必要時に参照可能にしておく",
+        "ファイナル・レトロスペクティブと、後継チームを含むナレッジ移転セッション・ペアワーク期間・ドキュメント整備を組み合わせて実施する",
+        "口頭で全員に「困ったら連絡を」と伝える",
+        "プロジェクトの完了報告書のみ作成する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "暗黙知は形式知化が難しく、ドキュメントだけでは伝わらない。レトロ（教訓）・ペアワーク（直接移転）・ドキュメント（参照基盤）の3層で初めて効果的な知識移転が成立する。事後連絡（C）はメンバー離脱後に機能しない、報告書のみ（D）は組織記憶として弱い。",
+      "tags": ["Knowledge Transfer", "Lessons Learned", "Closure"],
+      "qualityScore": 0.88
+    },
+    {
+      "id": "Q025",
+      "domain": "Process",
+      "chapter": "2.11",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "question": "新規システム開発を外注する。要件は明確で完全に固まっているが、ベンダーは複数候補がある。最適な契約タイプは何か。",
+      "choices": [
+        "T&M（Time and Materials／実費精算）",
+        "FFP（Firm Fixed Price／確定金額契約）",
+        "CPFF（Cost Plus Fixed Fee／コスト+固定報酬）",
+        "FP-EPA（Fixed Price with Economic Price Adjustment）"
+      ],
+      "correctAnswer": "B",
+      "explanation": "要件が完全に固まっている場合、リスクをベンダーに移転できる FFP が最適。バイヤー（発注側）のコスト確実性が高い。T&M はスコープ未確定時、CPFF は研究開発のような不確実性高領域、FP-EPA は長期契約でインフレ等の経済変動を吸収する場合。",
+      "tags": ["Procurement", "Contract Type", "FFP", "Risk Transfer"],
+      "qualityScore": 0.91
+    },
+    {
+      "id": "Q026",
+      "domain": "Process",
+      "chapter": "2.5",
+      "difficulty": 5,
+      "source": "self",
+      "reviewed": true,
+      "question": "PV=1000万円、EV=900万円、AC=1200万円のプロジェクトがある。BAC（完了時総予算）=5000万円のとき、典型的（今後も同じ効率が続く）と仮定した EAC は概ねいくらか。",
+      "choices": [
+        "5000万円（計画通り完了する）",
+        "6667万円（コスト効率の劣化が継続する前提）",
+        "4500万円（節約できる）",
+        "5333万円（残作業のみ通常効率）"
+      ],
+      "correctAnswer": "B",
+      "explanation": "CPI = EV/AC = 900/1200 = 0.75。今後も同じ効率が続く前提（typical case）の EAC 公式は BAC/CPI = 5000/0.75 ≈ 6667万円。残作業のみ通常効率なら EAC = AC + (BAC-EV) = 1200 + 4100 = 5300万円（D に近いが想定が違う）。本問は『典型的に劣化継続』ケース。",
+      "tags": ["EVM", "EAC", "CPI", "Forecasting", "Calculation"],
+      "qualityScore": 0.95
+    },
+    {
+      "id": "Q027",
+      "domain": "Process",
+      "chapter": "2.17",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "フェーズゲートレビューが近づいている。次フェーズ移行の判断材料として最も重視すべきものは何か。",
+      "choices": [
+        "現フェーズの作業が予定通り完了したか",
+        "予算消化率が計画範囲内か",
+        "ビジネスケースの妥当性継続・現フェーズの成果物受入・既知リスクと教訓・次フェーズの実現可能性を総合評価する",
+        "次フェーズのスケジュール詳細が確定しているか"
+      ],
+      "correctAnswer": "C",
+      "explanation": "フェーズゲートはプロジェクト継続の妥当性判断ポイント。作業完了（A）・予算消化（B）・スケジュール詳細（D）はいずれも単一視点。本来は『現フェーズの成果が次フェーズへ進むに値するか』『そもそも続ける価値があるか（ビジネスケース継続性）』を統合判断する場。",
+      "tags": ["Phase Gate", "Business Case", "Closure", "Governance"],
+      "qualityScore": 0.89
+    },
+    {
+      "id": "Q028",
+      "domain": "Process",
+      "chapter": "2.1",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "スプリント計画会議で、プロダクトオーナー（PO）がチームのキャパシティを大きく超えるストーリーを次スプリントに入れたいと主張している。チームは難しいと感じている。PMとしての適切な行動は何か。",
+      "choices": [
+        "POの判断を尊重し、無理してでも全て取り込ませる",
+        "チームの判断を尊重し、PO の希望を全て却下する",
+        "POが優先度を示し、チームがキャパシティに基づいて『取り込めるストーリー』を最終決定する原則を再確認し、その上で対話を促進する",
+        "上長の意見を聞いて決める"
+      ],
+      "correctAnswer": "C",
+      "explanation": "スクラムの基本原則: 『何を作るか』はPOが決め、『どれだけ作れるか』はチームが決める。PMはこの境界を守る役割。POの一方的決定（A）はチームの自律性破壊、PMが全却下（B）はPOの権限軽視、上長判断（D）は不必要な階層介入。",
+      "tags": ["Sprint Planning", "Product Owner", "Self-Organizing Team", "Scrum"],
+      "qualityScore": 0.90
+    },
+    {
+      "id": "Q029",
+      "domain": "Business Environment",
+      "chapter": "3.1",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "question": "プロジェクト実施中に、業界に関連する新規制が公表され、6ヶ月以内の適合が義務化された。PMの最初の行動は何か。",
+      "choices": [
+        "規制対応は法務部の責任なので、プロジェクトには無関係と判断する",
+        "新規制の内容と適用範囲を確認し、現プロジェクトへの影響評価（スコープ・コスト・スケジュール・リスク）を実施してステークホルダーに報告する",
+        "規制対応をプロジェクトスコープに即追加し、変更管理を経ずに作業を開始する",
+        "プロジェクト完了後に規制対応すると決定する"
+      ],
+      "correctAnswer": "B",
+      "explanation": "外部環境変化は重要な統合変更管理の対象。まず影響評価し、変更要求として正式プロセスに乗せる。無関係判断（A）はコンプライアンス違反リスク、即着手（C）はスコープ管理崩壊、後回し（D）は規制違反リスク。",
+      "tags": ["Compliance", "External Change", "Regulation"],
+      "qualityScore": 0.91
+    },
+    {
+      "id": "Q030",
+      "domain": "Business Environment",
+      "chapter": "3.2",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "question": "プロジェクトは予算内・期限内・スコープ通りに完了したが、半年後の効果測定で、想定したビジネスベネフィット（売上増加・コスト削減）の30%しか実現していないことが判明した。最も適切な対応は何か。",
+      "choices": [
+        "プロジェクトは成功（計画通り完了）なのでベネフィット未達は事業部門の問題と判断する",
+        "ベネフィット未達の根本原因分析（市場変化・採用率不足・運用課題等）を行い、追加施策を提案するか、ベネフィット実現計画自体の見直しを行う",
+        "ベネフィット測定指標を緩和し、達成扱いにする",
+        "プロジェクト自体を失敗としてアーカイブし、何もしない"
+      ],
+      "correctAnswer": "B",
+      "explanation": "プロジェクト成功とベネフィット実現は別物。PMP は近年『価値の実現』を重視しており、納品で終わらず、ベネフィット実現まで責任範囲とする思考が求められる。原因分析と追加施策（リブースト・運用改善・採用支援）の検討が必要。責任転嫁（A）や指標緩和（C）は誠実性違反、アーカイブ（D）は学習機会喪失。",
+      "tags": ["Benefits Realization", "Value Delivery", "Post-Implementation"],
+      "qualityScore": 0.94
+    },
+    {
+      "id": "Q031", "domain": "People", "chapter": "1.1", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "アジャイルチームで2人の開発者が小さなライブラリ選定で対立し、議論が30分続いている。今日中にコーディング着手する必要がある。スクラムマスター（PM）が取るべき行動は何か。",
+      "choices": ["上司として一方の案を採用する", "両者にそれぞれ採用基準（性能・保守性・経験）の根拠データを15分で持ち寄ってもらい、技術リードと3者で短時間レビューする", "決められないので両方試す", "明日に持ち越す"],
+      "correctAnswer": "B", "explanation": "対立は情報不足が原因のことが多い。客観基準と短時間枠を設定すれば建設的に決着できる。一方的判断（A）は学習機会喪失、両方並走（C）はリソース無駄、先送り（D）はブロッカー放置。",
+      "tags": ["Conflict", "Time-Boxed Decision", "Facilitation"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q032", "domain": "People", "chapter": "1.1", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "重要メンバー2名が個人的感情を含む対立に発展している。チーム雰囲気が悪化し、他メンバーも巻き込まれ始めた。最適な対応は何か。",
+      "choices": ["放置すれば自然に収まる", "個別1on1で双方の立場と感情を傾聴し、必要に応じてHR・コーチを介在させたメディエーションの場を設ける", "片方を別チームへ異動させる", "全員集めて公開ディベートをさせる"],
+      "correctAnswer": "B", "explanation": "感情が絡む対立は『立場』を越えた個別ケア+構造化されたメディエーションが必要。放置（A）は悪化、即異動（C）は問題未解決で他所に波及、公開ディベート（D）は心理的安全性破壊。",
+      "tags": ["Conflict", "Mediation", "Emotional Intelligence"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q033", "domain": "People", "chapter": "1.2", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトキックオフ後3週間。チームメンバーから『何を期待されているか分からない』『意思決定がPM待ちで停滞する』という声が上がっている。サーバントリーダーとして取るべき優先行動は何か。",
+      "choices": ["より詳細な指示を毎日出す", "ビジョン・ゴール・成功基準を再共有し、意思決定権限の境界（どこまでチームが判断してよいか）をチームと合意する", "プロジェクト中止を検討する", "メンバーを入れ替える"],
+      "correctAnswer": "B", "explanation": "サーバントリーダーシップは『方向（Why/What）を示し、進め方（How）はチームに委ねる』。権限境界を明確にすれば自律性が機能する。詳細指示増（A）は自律性破壊、極端な行動（C/D）は本質未対処。",
+      "tags": ["Servant Leadership", "Vision", "Delegation Boundary"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q034", "domain": "People", "chapter": "1.2", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "シニアメンバーがチーム会議で『PMはもっと指示を出すべき、アジャイルは混乱を生む』と発言した。状況対応リーダーシップの観点で最も適切な対応は何か。",
+      "choices": ["即座に反論しアジャイル原則を講義する", "本人が指示型を求める背景（過去の失敗体験・成果プレッシャー等）を傾聴し、必要に応じて部分的にサポート型を強めつつ自律性を段階的に育てる", "全工程を指示型に切り替える", "本人をチームから外す"],
+      "correctAnswer": "B", "explanation": "状況対応型リーダーシップは『相手の成熟度に応じてスタイルを変える』。背景理解+段階的サポートが正解。即反論（A）は対立増、全面切替（C）はチーム後退、排除（D）は心理的安全性破壊。",
+      "tags": ["Situational Leadership", "Active Listening", "Coaching"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q035", "domain": "People", "chapter": "1.3", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "チームのコードレビューでメンバーAがメンバーBに対し、技術的に正しい指摘を厳しい口調で何度も行い、Bが萎縮している。両者とも重要メンバー。PMが優先すべき介入は何か。",
+      "choices": ["AにBへの指摘を中止させる", "技術的指摘の内容と伝え方を分離してフィードバックする方法（具体行動への指摘・建設的言い換え）をチーム全体の学習機会として導入する", "Bを別プロジェクトへ異動", "コードレビュー自体を廃止"],
+      "correctAnswer": "B", "explanation": "技術的内容と心理的影響は分けて扱う。フィードバック技法（NVC/SBI/Iメッセージ）をチーム全体の標準にすれば個人攻撃感が消える。指摘中止（A）は品質劣化、異動（C）/廃止（D）は症状対処で本質未解決。",
+      "tags": ["Feedback", "Psychological Safety", "Code Review"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q036", "domain": "People", "chapter": "1.4", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "新規参画したシニアエンジニアが、PMに『細かい確認を毎回取らないと作業が進められない』と感じさせる頻度で質問してくる。エンパワーメントの観点で最善の対応は何か。",
+      "choices": ["質問されたら全て即答する", "意思決定権限の範囲（独断OK領域・PMへの相談領域・必ずレビュー領域）をRACI形式で明示し、独断OK領域では自分で決めて結果報告で良いと合意する", "質問を禁止する", "シニア扱いをやめる"],
+      "correctAnswer": "B", "explanation": "新規参画者は心理的に判断境界が不明で過剰確認しがち。RACIで権限境界を可視化することで自律性が解放される。即答（A）は依存促進、質問禁止（C）は誤判断リスク、シニア扱いやめる（D）は本質と無関係。",
+      "tags": ["Empowerment", "RACI", "Onboarding"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q037", "domain": "People", "chapter": "1.4", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "チームメンバーから『PMがマイクロマネジメントしている』とアンケートで指摘された。PMは『品質確保のため確認が必要』と認識している。最も建設的な対応は何か。",
+      "choices": ["アンケートを無視する", "1on1で具体的にどの行動が過剰確認と感じられたかを聞き、品質確保の代替手段（DoD/自動テスト/レビュー基準）を共同設計してPMの直接確認頻度を下げる", "全権限を即座に委譲する", "メンバーを全員入れ替える"],
+      "correctAnswer": "B", "explanation": "マイクロマネジメントの背景は『品質への不安』。自動化・基準化で不安を解消すれば自然に権限委譲できる。無視（A）は信頼破綻、即全委譲（C）は品質リスク急増、入替（D）は責任転嫁。",
+      "tags": ["Micromanagement", "Delegation", "Quality"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q038", "domain": "People", "chapter": "1.5", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクトに新しいクラウドサービスを導入することになったが、チームの誰も実務経験がない。最適な学習戦略は何か。",
+      "choices": ["全員に資格取得を命じる", "ベンダー公式の短期ハンズオン研修+小規模PoCで実装感覚を獲得+その後ペアワークで本番適用する段階的アプローチ", "知識ゼロのまま本番投入する", "外注に丸投げする"],
+      "correctAnswer": "B", "explanation": "新技術習得は『学習→試行→適用』の段階が必要。資格は深度に応じて後追いで良い。命令型資格取得（A）は形骸化、ゼロ知識本番（C）は重大リスク、丸投げ（D）はチーム成長機会喪失。",
+      "tags": ["Skill Development", "PoC", "Pair Work"], "qualityScore": 0.85
+    },
+    {
+      "id": "Q039", "domain": "People", "chapter": "1.5", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトメンバーの技術スキル差が大きく、進捗が速いメンバーが遅いメンバーを待つ状況が頻発している。最善の対応は何か。",
+      "choices": ["遅いメンバーをチームから外す", "スキルマトリックスでギャップを可視化し、進捗速いメンバーがメンター役となるペアプログラミング+チーム内勉強会で底上げを図る", "速いメンバーに別作業を割り振る", "全員の作業速度を遅いメンバーに合わせる"],
+      "correctAnswer": "B", "explanation": "スキル差は『底上げの機会』として扱う。ペアワークは伝授効率最高で双方の成長になる。排除（A）は人材損失、別作業（C）はチーム力分散、低速統一（D）は全体生産性低下。",
+      "tags": ["Skill Matrix", "Pair Programming", "Knowledge Sharing"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q040", "domain": "People", "chapter": "1.6", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトキックオフから2週間。チームはまだ互いを探っており、決定が遅い。タックマンモデルのどの段階にあり、何をすべきか。",
+      "choices": ["Performing段階。介入不要", "Forming段階。ビジョン・役割・グランドルールを明確化し、安心して発言できる場を意図的に作る", "Adjourning段階。解散準備", "Storming段階。即座に対立解消する"],
+      "correctAnswer": "B", "explanation": "Forming（形成）期は探り合いと不安が支配的。PMは方向・役割・規範を提示し心理的安全性を確保する。Performing誤認（A）は不適切介入、Adjourning（C）は段階理解違い、Storming先読み（D）は段階を飛ばしている。",
+      "tags": ["Tuckman", "Forming", "Team Building"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q041", "domain": "People", "chapter": "1.6", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "チームがStorming（混乱）期に入り、メンバー間で役割と進め方を巡る議論が多発している。PMが取るべき行動は何か。",
+      "choices": ["対立を全て即座に鎮静化する", "対立は成長段階の自然現象と認識し、ファシリテートしながら役割・プロセス・ルールを明文化してNorming（規範化）へ移行を促す", "メンバーを総入れ替えする", "プロジェクトを一時停止する"],
+      "correctAnswer": "B", "explanation": "Stormingは健全な段階。建設的に議論を経てルールが定まればNormingに進む。鎮静化（A）は段階回避で根本未解決、入替（C）は再びFormingに逆戻り、停止（D）は逃避。",
+      "tags": ["Tuckman", "Storming", "Norming"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q042", "domain": "People", "chapter": "1.6", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクト後半。チームは自律的に動き、高パフォーマンスを発揮している（Performing段階）。PMの役割として最適なのは何か。",
+      "choices": ["指示頻度を増やす", "戦略的支援・外部ステークホルダーとの橋渡し・障害除去に集中し、日常業務はチームに任せる", "全メンバーの作業を毎日確認する", "別のプロジェクトに移る"],
+      "correctAnswer": "B", "explanation": "Performing期のPMは『戦略的サーバントリーダー』に徹する。日常運営はチーム自律、外部調整と障害除去がPM固有の付加価値。指示増（A・C）は逆効果、離脱（D）は組織記憶喪失。",
+      "tags": ["Performing", "Servant Leadership", "Team Maturity"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q043", "domain": "People", "chapter": "1.7", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "チームメンバーが『他部門の承認待ちで1週間作業が止まっている』と報告した。PMが取るべき最初の行動は何か。",
+      "choices": ["メンバーが自分で交渉するよう促す", "PMが直接他部門責任者にエスカレーションし、ブロッカー解消を優先タスクとして処理する。同時にインペディメントログに記録する", "プロジェクトを延期する", "別作業を指示する"],
+      "correctAnswer": "B", "explanation": "障害除去はサーバントリーダーシップの中核。他部門折衝はPMの責任。記録（インペディメントログ）も並行で行い、再発防止に繋げる。メンバー丸投げ（A）は権限的に困難、延期（C）/別作業（D）は迂回。",
+      "tags": ["Impediment", "Escalation", "Servant Leadership"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q044", "domain": "People", "chapter": "1.7", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "同一の組織的ブロッカー（インフラ部門の遅延）が3回繰り返し発生している。個別対応では限界がある。PMの最善の行動は何か。",
+      "choices": ["毎回同じ対応を繰り返す", "ブロッカーパターンを可視化し、根本原因（プロセス・キャパシティ・SLA）を特定して該当部門責任者と恒久対策（自動化・SLA合意・専任窓口）を協議する", "そのブロッカーを諦める", "プロジェクト範囲から外す"],
+      "correctAnswer": "B", "explanation": "繰り返すブロッカーは個別対処でなく仕組みの問題。根本原因分析+構造的解決が正解。繰り返し（A）は症状治療、諦め（C）は責任放棄、範囲外し（D）は本質的問題回避。",
+      "tags": ["Root Cause", "Structural Solution", "SLA"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q045", "domain": "People", "chapter": "1.7", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "デイリースタンドアップでメンバーが毎回『特に問題なし』と報告するが、実際にはスプリント終盤で多数の未完了が出ている。PMが疑うべき問題と対策は何か。",
+      "choices": ["メンバーの怠慢として叱責する", "心理的安全性の不足やインペディメント報告文化の弱さを疑い、『困っていることを話せる場』としてのスタンドアップ再設計+1on1で個別の阻害要因を聞き出す", "スタンドアップを廃止する", "毎日PMが全タスクを点検する"],
+      "correctAnswer": "B", "explanation": "『問題なし』報告の頻発はメンバーが障害を声に出せていないサイン。心理的安全性とインペディメント文化の問題。叱責（A）は逆効果、廃止（C）は機会喪失、点検（D）はマイクロマネジメント。",
+      "tags": ["Psychological Safety", "Daily Standup", "Impediment Reporting"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q046", "domain": "People", "chapter": "1.8", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "外注ベンダーとの契約交渉で、相手は当初の支払い条件（納品後60日）を一方的に変更（90日）したいと主張。納期は確定しているため代替ベンダー手配は難しい。PMの最善のアプローチは何か。",
+      "choices": ["即座に受け入れる", "BATNAを再確認し、利害（キャッシュフロー懸念）を把握した上で、価格・分割支払い・分納などの統合的解決案を提示する", "即拒否してベンダーを切り替える", "上司に丸投げする"],
+      "correctAnswer": "B", "explanation": "立場（支払い60日 vs 90日）でなく利害（CF確保）に焦点を当てると統合的解決が見える。即受入（A）は譲歩癖、即切替（C）は納期破綻、丸投げ（D）はPM責任放棄。",
+      "tags": ["Negotiation", "BATNA", "Interest-Based"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q047", "domain": "People", "chapter": "1.8", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "プロジェクト合意書（SOW）でスポンサーと『性能要件』の解釈が異なることが判明した。スポンサーは『従来比10倍』を主張、PMは『従来比3倍』と理解していた。最善の対応は何か。",
+      "choices": ["スポンサーの主張に従う", "曖昧な合意の原因（用語定義・前提条件の未文書化）を共有し、客観的測定基準で要件を再定義した上で、影響評価を経て変更要求として正式処理する", "PM側の理解を押し通す", "プロジェクトを中止する"],
+      "correctAnswer": "B", "explanation": "合意齟齬は『どちらが正しいか』でなく『どこに認識ギャップがあったか』を明文化して解消する。スポンサー追従（A）/PM押し通し（C）は再発する、中止（D）は過剰反応。",
+      "tags": ["SOW", "Requirements", "Change Request"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q048", "domain": "People", "chapter": "1.9", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトに15名のステークホルダーがいる。全員と同じ深度の関与を維持するのはリソース的に不可能。最初に行うべき分析は何か。",
+      "choices": ["全員に均等に時間配分する", "Power/Interest Grid または Salienceモデルでステークホルダーを分類し、影響度・関心・緊急度に応じたエンゲージメント計画を作成する", "影響力が強いステークホルダーだけと関わる", "ステークホルダー全員と毎週会議する"],
+      "correctAnswer": "B", "explanation": "ステークホルダー分析の基本ツール。分類で関与度を最適配分する。均等配分（A）/強者偏重（C）/全員週次（D）はいずれもリソース最適化失敗。",
+      "tags": ["Stakeholder Analysis", "Power Interest Grid", "Salience Model"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q049", "domain": "People", "chapter": "1.9", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト後半で新しい上層部ステークホルダーが介入してきた。既存の優先順位と異なる要求をしている。PMの最善の対応は何か。",
+      "choices": ["新ステークホルダーを無視する", "新ステークホルダーをステークホルダーレジスタに追加し、彼の関心・影響力・期待を把握した上で既存ステークホルダーとの利害調整プロセスを設計する", "既存計画を全て新ステークホルダーに合わせる", "プロジェクトを終了する"],
+      "correctAnswer": "B", "explanation": "新ステークホルダー出現は途中で必ず起こる。レジスタ更新+利害調整が標準対応。無視（A）は後の混乱、全面追従（B'/C）は既存破壊、終了（D）は過剰反応。",
+      "tags": ["Stakeholder Register", "Late-Stage Stakeholder", "Conflict Resolution"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q050", "domain": "People", "chapter": "1.10", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "要件定義会議で『使いやすいUI』という言葉が頻出するが、参加者の解釈がそれぞれ違うことが疑われる。共通理解構築の手法として最も効果的なのは何か。",
+      "choices": ["『使いやすい』の辞書定義を読み上げる", "ペーパープロトタイプまたはローファイモックアップを使い、具体的画面で『これは使いやすいか？』を議論することで暗黙の差異を顕在化させる", "PMが代表として一案を決める", "全員にアンケートで点数評価させる"],
+      "correctAnswer": "B", "explanation": "抽象語の解釈差は具体物（プロトタイプ）で顕在化する。辞書（A）は実務イメージ無し、PM代表（C）は他者の認識未確認、点数（D）は定性差を捉えられない。",
+      "tags": ["Shared Understanding", "Prototype", "Ambiguity"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q051", "domain": "People", "chapter": "1.10", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "ビジネス部門と開発チームの会話で、用語の意味が異なることが頻発している（例: 『顧客』が誰を指すか）。最も持続可能な対策は何か。",
+      "choices": ["毎回その場で確認する", "プロジェクト用語集（Ubiquitous Language/共通言語）を作成し、定期的に更新+チーム内で同じ用語を使うルールにする", "ビジネス部門の用語に強制統一する", "開発チームの用語に強制統一する"],
+      "correctAnswer": "B", "explanation": "Ubiquitous Language（DDDの基本概念）はチーム横断の認識統一に必須。毎回確認（A）は非効率、片方統一（C/D）は他方の理解力低下。",
+      "tags": ["Ubiquitous Language", "Glossary", "DDD"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q052", "domain": "People", "chapter": "1.11", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "完全リモートのチームで、Slackメッセージが大量で重要情報が埋もれてしまう。コミュニケーション設計として最善は何か.",
+      "choices": ["全てのチャンネルでメンション通知を有効にする", "情報の重要度・即時性に応じたチャネル設計（緊急=コール/重要=指定チャンネル+メンション/共有=スレッド/雑談=別チャンネル）と返信SLAをチームで合意する", "Slackを廃止しメールに統一する", "全員にSlackを24時間監視させる"],
+      "correctAnswer": "B", "explanation": "リモートでは情報の構造化が必須。重要度別チャネル+SLAで認知過負荷と機会損失の両立解消。全メンション（A）/24時間監視（D）はバーンアウト、メール統一（C）は速度低下。",
+      "tags": ["Async Communication", "Channel Design", "SLA"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q053", "domain": "People", "chapter": "1.11", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "新メンバーがリモートチームに加わったが、3週間経ってもチームに馴染めていない様子。バーチャル環境でのオンボーディング改善策は何か.",
+      "choices": ["対面出社を強制する", "1on1メンター割当+チャネル/Wikiツアー+小さな成功体験タスク+バーチャルランチなど、心理的+業務的に段階的に組み込む構造化オンボーディングを実施する", "本人の責任として放置する", "業務マニュアルを送って終わり"],
+      "correctAnswer": "B", "explanation": "リモートでは『偶然の出会い』が無いため、意図的な関係構築設計が必須。出社強制（A）は本質解決でない、放置（C）/マニュアル送付（D）は典型的失敗パターン。",
+      "tags": ["Virtual Onboarding", "Mentor", "Psychological Safety"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q054", "domain": "People", "chapter": "1.12", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクトキックオフでチーム憲章（Team Charter）を作成する。最も効果的な作り方は何か.",
+      "choices": ["PMが事前に作成して配布する", "チーム全員参加のワークショップで、価値観・コミュニケーション規約・意思決定プロセス・対立解決方法等を共同策定する", "テンプレートをコピーする", "口頭で軽く合意する"],
+      "correctAnswer": "B", "explanation": "チーム憲章は『自分達で作った』という所有感が遵守率を決める。共同策定が必須。配布（A）/コピー（C）は他人事、口頭（D）は曖昧化。",
+      "tags": ["Team Charter", "Ownership", "Workshop"], "qualityScore": 0.85
+    },
+    {
+      "id": "Q055", "domain": "People", "chapter": "1.12", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "Definition of Done（DoD）がチーム内で守られず、未完了状態でストーリーが『完了』扱いされている。最も建設的な対応は何か.",
+      "choices": ["違反者を叱責する", "レトロスペクティブでDoDの現状達成度を可視化し、達成困難な理由（複雑さ・スキル・時間）を分析してDoD自体の調整 or 達成のための支援策を合意する", "DoDを撤廃する", "PMが毎タスクをチェックする"],
+      "correctAnswer": "B", "explanation": "DoD非遵守は『ルールが現実と合わない or 達成困難』のサイン。チームで原因分析+調整が正解。叱責（A）は対立増、撤廃（C）は品質崩壊、PMチェック（D）はマイクロマネジメント。",
+      "tags": ["Definition of Done", "Retrospective", "Continuous Improvement"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q056", "domain": "People", "chapter": "1.13", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "メンタリングしている新任PMが『自分にはPMの素養がない』と落ち込んでいる（インポスター症候群の兆候）。最も効果的なメンタリング介入は何か.",
+      "choices": ["『素養はある』と褒め続ける", "事実ベースで本人の小さな成功体験を振り返らせ、課題を学習可能な具体スキルに分解して短期目標を設定し、進捗を一緒に確認する", "別の仕事に異動を勧める", "気合と根性で乗り切らせる"],
+      "correctAnswer": "B", "explanation": "インポスター症候群は『漠然とした不安』が本質。具体成功事実+小さな目標で自己効力感を再構築する。褒め続け（A）は根拠なき励まし、異動（C）は逃避促進、根性論（D）は時代錯誤。",
+      "tags": ["Mentoring", "Imposter Syndrome", "Self-Efficacy"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q057", "domain": "People", "chapter": "1.13", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "メンティに対して建設的フィードバックを与える際の最も効果的な構造は何か.",
+      "choices": ["改善点だけ伝える", "SBI（Situation-Behavior-Impact）モデルで状況・具体行動・影響を順に伝え、本人の振り返りと改善案を引き出す", "他のメンバーと比較する", "曖昧に『もっと頑張って』と伝える"],
+      "correctAnswer": "B", "explanation": "SBIは批判でなく観察+影響の事実ベース。本人の自己内省を促す。改善点のみ（A）は良い行動の強化欠如、比較（C）は心理的安全性破壊、曖昧化（D）は行動変容不可。",
+      "tags": ["Feedback", "SBI Model", "Mentoring"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q058", "domain": "People", "chapter": "1.14", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "経営層との報告会で、自分のプロジェクトが厳しく批判された。会議後、強い怒りと挫折感を感じている。EQの観点で取るべき行動は何か.",
+      "choices": ["即座に経営層に反論メールを送る", "セルフレギュレーションを発揮し、感情を一旦書き出して認識した上で、24時間置いてから冷静に事実と論点を整理して建設的対応する", "感情を抑え込み無かったことにする", "チームメンバーに不満をぶつける"],
+      "correctAnswer": "B", "explanation": "EQの中核『セルフレギュレーション』。感情を認識+受容+一時的距離で建設的対応が可能になる。即反論（A）は関係破壊、抑圧（C）はバーンアウト、八つ当たり（D）は組織毒。",
+      "tags": ["Self-Regulation", "EQ", "Cooling Off"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q059", "domain": "People", "chapter": "1.14", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "チームメンバーが個人的事情で明らかに集中力を欠いている。直接的理由は語らない。EQ高きPMとして最善の対応は何か.",
+      "choices": ["事情を問いただす", "プライバシーを尊重しつつ、業務量の一時調整・休暇取得支援・必要に応じてHR/EAP案内などの選択肢を提示し、本人が選べる形で支援する", "通常通り業務を要求する", "他メンバーに事情を聞き回る"],
+      "correctAnswer": "B", "explanation": "EQの『社会的認識』+『関係管理』。共感を持ちつつプライバシー保護+選択肢提示で支援する。問い詰め（A）/詮索（D）はプライバシー侵害、無視（C）は冷淡。",
+      "tags": ["Empathy", "Privacy", "Support"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q060", "domain": "Process", "chapter": "2.1", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "顧客から『最低限の機能で良いので2週間以内にリリースして欲しい』と急な要請があった。スコープは全体の30%程度。最善のアプローチは何か.",
+      "choices": ["全機能完成まで待ってもらう", "MVP（Minimum Viable Product）として最重要価値を絞り込み、タイムボックスで2週間リリース+残機能は後続イテレーションで段階リリースする計画を顧客と合意する", "夜間休日で全機能完成を目指す", "顧客要請を断る"],
+      "correctAnswer": "B", "explanation": "緊急価値提供は『MVP+段階リリース』が現代的解。全完成待ち（A）は機会損失、過剰労働（C）はバーンアウト+品質低下、拒否（D）は関係破壊。",
+      "tags": ["MVP", "Time-Boxed", "Iterative Delivery"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q061", "domain": "Process", "chapter": "2.1", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "アジャイルチームでWIP（Work In Progress）が常に上限を超えており、結果として完了タスクが減っている。最も効果的な改善策は何か.",
+      "choices": ["メンバーをさらに追加する", "WIP制限を厳格化し、新規タスク着手前に既存仕掛りの完了を優先するプル型フローを徹底する（リトルの法則による）", "WIP制限を廃止する", "全員に毎日残業させる"],
+      "correctAnswer": "B", "explanation": "WIP超過はリトルの法則によりリードタイム悪化を生む。プル型徹底で流れを回復する。人員増（A）は調整コスト増、廃止（C）は混沌、残業（D）は不可逆な品質低下。",
+      "tags": ["WIP Limit", "Pull System", "Little's Law"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q062", "domain": "Process", "chapter": "2.2", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトに30名のステークホルダーがいる。コミュニケーションチャネルの数として正しいのはどれか.",
+      "choices": ["30個", "n(n-1)/2 = 30×29/2 = 435個", "60個", "数えられない"],
+      "correctAnswer": "B", "explanation": "コミュニケーションチャネル数の公式 n(n-1)/2。30名なら435チャネル。これがコミュニケーション複雑性を示す根拠で、計画的に管理しないと崩壊する。",
+      "tags": ["Communication Channels", "n(n-1)/2", "Formula"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q063", "domain": "Process", "chapter": "2.2", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "緊急の品質欠陥情報をステークホルダーに伝える必要がある。最も適切なコミュニケーション形式は何か.",
+      "choices": ["プッシュ（メール一斉送信）のみ", "インタラクティブ（電話・ビデオ会議）で即座に伝え、続いてプッシュ（メール）で記録を残し、必要情報はプル（共有ドキュメント）で参照可能にする", "プル（イントラ掲示）のみ", "口頭のみで記録なし"],
+      "correctAnswer": "B", "explanation": "緊急かつ重要な情報は『理解確認可能なインタラクティブ』+『記録のためのプッシュ』+『継続参照のプル』の3層が原則。プッシュ単独（A）は理解確認できず、プル単独（C）は気づかれない、口頭のみ（D）は記録欠如。",
+      "tags": ["Push Pull Interactive", "Crisis Communication"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q064", "domain": "Process", "chapter": "2.3", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "リスク登録簿に『新技術採用による未知のトラブル』というリスクがある。発生確率は中・影響は大。リスク対応戦略として最適なのは何か.",
+      "choices": ["受容（何もしない）", "軽減（PoC実施・技術スパイク・専門家招聘等で発生確率と影響を下げる）", "回避（新技術採用を完全中止）", "転嫁（保険加入）"],
+      "correctAnswer": "B", "explanation": "確率中×影響大のリスクには軽減（Mitigate）が標準。PoCで未知を既知化する。受容（A）は受動的、回避（C）は機会損失、転嫁（D）は技術リスクには非適用。",
+      "tags": ["Risk Response", "Mitigate", "Technical Spike"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q065", "domain": "Process", "chapter": "2.3", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "リスク登録簿に『主要技術者の離職可能性』がある。発生確率は低・影響は致命的。最適な対応戦略は何か.",
+      "choices": ["受容（低確率なので無視）", "二次的軽減（後継者育成・ペアプログラミング・ドキュメント整備で属人性を低減）+残存リスクへの転嫁（リテイナー契約）も併用", "回避（その技術者の業務を縮小）", "保険のみで対応"],
+      "correctAnswer": "B", "explanation": "低確率×致命的影響は最も誤判断しやすい領域。確率低くても影響が致命的なら『多層防御』。属人性軽減が王道+リテイナー契約等の補完。受容（A）は致命影響に不適、回避（C）は本末転倒、保険のみ（D）は技術損失は補えない。",
+      "tags": ["Risk Response", "Multi-Layer Defense", "Key Person Risk"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q066", "domain": "Process", "chapter": "2.3", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "リスク登録簿に『規制緩和により新市場が開ける可能性』というプラスリスク（機会）がある。対応戦略として適切なものはどれか.",
+      "choices": ["回避", "活用（Exploit）—機会を確実に実現させるための積極的アクション（早期準備・専任チーム）", "受容のみ", "転嫁"],
+      "correctAnswer": "B", "explanation": "プラスリスク（機会）の対応戦略は Exploit/Enhance/Share/Accept。機会の最大化が目的。回避（A）/転嫁（D）はマイナスリスク用語の誤適用、受容のみ（C）は受動的で機会逃失。",
+      "tags": ["Positive Risk", "Opportunity", "Exploit"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q067", "domain": "Process", "chapter": "2.4", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "ステークホルダーエンゲージメント評価マトリックスで、ある重要ステークホルダーの『現在=抵抗』『望ましい=支持』という結果が出た。PMの取るべきアクションは何か.",
+      "choices": ["放置する", "抵抗の根本原因を1on1で把握し、彼の懸念をプロジェクト設計に反映+成功事例を共有+段階的に巻き込むエンゲージメント計画を策定する", "他ステークホルダーで補う", "強制的に賛成させる"],
+      "correctAnswer": "B", "explanation": "エンゲージメント評価マトリックスはギャップ可視化ツール。ギャップ解消には根本原因対処+段階的巻き込みが必須。放置（A）/補完（C）は重要影響を見逃す、強制（D）は逆効果。",
+      "tags": ["Engagement Matrix", "Stakeholder", "Resistance"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q068", "domain": "Process", "chapter": "2.4", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクト中盤に新しい上位ステークホルダー（執行役員）が関わることになった。最初にすべきことは何か.",
+      "choices": ["既存計画通りに進める", "ステークホルダーレジスタに追加+1on1で彼の期待・関心・成功基準を把握+既存ステークホルダーとの優先順位整合性を確認する", "全計画を彼の好みに合わせて書き直す", "プロジェクト終了する"],
+      "correctAnswer": "B", "explanation": "新規ステークホルダー出現は標準対応プロセスあり。レジスタ更新+期待把握+既存との整合性確認の3点が定石。既存通り（A）は新ステークホルダー軽視、全面書直し（C）は既存破壊、終了（D）は過剰反応。",
+      "tags": ["New Stakeholder", "Stakeholder Register", "Mid-Project"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q069", "domain": "Process", "chapter": "2.4", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "ステークホルダー間で『どちらの機能を優先するか』を巡って対立が発生した。両者とも影響力が強い。PMの最善の対応は何か.",
+      "choices": ["強い方を採用する", "両者を同席させ、ビジネス価値（ROI・戦略整合・リスク・依存関係）を客観基準で評価して優先順位を共同決定するファシリテーションを行う", "抽選で決める", "両方を同時並行で進める"],
+      "correctAnswer": "B", "explanation": "ステークホルダー対立は『力関係』でなく『客観基準』で解く。共同意思決定でコミットメントも得る。強者偏重（A）は弱者離反、抽選（C）は無責任、並行（D）はリソース希釈。",
+      "tags": ["Stakeholder Conflict", "ROI", "Joint Decision"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q070", "domain": "Process", "chapter": "2.5", "difficulty": 5, "source": "self", "reviewed": true,
+      "question": "BAC=2000万円、EV=600万円、AC=700万円のプロジェクト。完了予算を維持するために必要な残作業の効率（TCPI）はいくらか.",
+      "choices": ["TCPI = (BAC-EV) / (BAC-AC) = 1400/1300 ≈ 1.077", "1.0", "0.857", "1.5"],
+      "correctAnswer": "A", "explanation": "TCPI（To-Complete Performance Index）= 残作業（BAC-EV）/残予算（BAC-AC）= 1400/1300 ≈ 1.077。1超なら残作業を今までより効率良くやる必要があり、達成困難の警告サイン。",
+      "tags": ["EVM", "TCPI", "Forecasting"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q071", "domain": "Process", "chapter": "2.5", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト予算には『コンティンジェンシー予備（Contingency Reserve）』と『マネジメント予備（Management Reserve）』がある。両者の正しい違いは何か.",
+      "choices": ["両者は同じもの", "コンティンジェンシーは識別済リスク用でPMが管理、マネジメント予備は未知の未知用でスポンサーが管理する", "両方ともPMが管理する", "両方ともスポンサーが管理する"],
+      "correctAnswer": "B", "explanation": "コスト基線=BAC=PV合計+コンティンジェンシー。BAC+マネジメント予備=プロジェクト予算（Project Budget）。コンティンジェンシーは『既知の未知』、マネジメントは『未知の未知』用。",
+      "tags": ["Contingency Reserve", "Management Reserve", "Cost Baseline"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q072", "domain": "Process", "chapter": "2.6", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "PDM（Precedence Diagramming Method）で『設計レビュー終了後に実装着手』というロジックを表現する関係性タイプは何か.",
+      "choices": ["FS（Finish-to-Start）— 最も一般的", "SS（Start-to-Start）", "FF（Finish-to-Finish）", "SF（Start-to-Finish）— 極めて稀"],
+      "correctAnswer": "A", "explanation": "FSは前タスク終了後に次タスク開始。最も一般的な関係性。SS=同時開始、FF=同時終了、SF=前タスク開始後に次タスク終了（極めて稀、本問とは無関係）。",
+      "tags": ["PDM", "FS", "Dependency"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q073", "domain": "Process", "chapter": "2.6", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "クリティカルパスが3週間延びた。納期固定で予算追加可能。最も適切な短縮手法はどれか.",
+      "choices": ["ファストトラック（クリティカルタスクの並行実行）", "クラッシング（リソース追加でクリティカルタスクの期間短縮）", "スコープ削減", "品質基準を下げる"],
+      "correctAnswer": "B", "explanation": "予算可・納期固定ならクラッシングが第一選択（リスクが比較的低い）。ファストトラック（A）はリスク増、スコープ削減（C）/品質低下（D）はビジネス価値低下。",
+      "tags": ["Schedule Compression", "Crashing", "Critical Path"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q074", "domain": "Process", "chapter": "2.7", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "QC（Quality Control）とQA（Quality Assurance）の最も正確な違いは何か.",
+      "choices": ["両者は同じもの", "QCは成果物の検査（プロダクト指向）、QAはプロセスの監査・改善（プロセス指向）", "QCがプロセス、QAが成果物", "QCもQAも検査である"],
+      "correctAnswer": "B", "explanation": "QC=Quality Control=検査でプロダクト品質を確認。QA=Quality Assurance=プロセス監査で『正しいプロセスで作られたか』を保証。両者は補完関係。",
+      "tags": ["QC", "QA", "Quality"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q075", "domain": "Process", "chapter": "2.7", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "品質問題の頻発に対応するため、7つの基本品質ツールから選びたい。原因と影響の関係を可視化するのに最も適したツールはどれか.",
+      "choices": ["パレート図", "特性要因図（フィッシュボーン/石川ダイアグラム）", "管理図", "ヒストグラム"],
+      "correctAnswer": "B", "explanation": "特性要因図は原因（人・機械・材料・方法・測定・環境）と結果（問題）の関係を可視化。RCAの定番。パレート図（A）は頻度の優先度付け、管理図（C）は変動監視、ヒストグラム（D）は分布。",
+      "tags": ["Fishbone", "Root Cause Analysis", "Quality Tools"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q076", "domain": "Process", "chapter": "2.8", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "WBS（Work Breakdown Structure）の作成原則『100%ルール』とは何か.",
+      "choices": ["各メンバーが100%稼働", "WBSの各レベルで、子要素の合計が親要素の100%スコープをカバーすること（過不足なし）", "100個のタスクに分解する", "100時間以内に完了する"],
+      "correctAnswer": "B", "explanation": "100%ルール: 親=子の合計（過剰・抜けなし）。WBS整合性の最重要原則。スコープ抜けはこのルール違反から始まることが多い。",
+      "tags": ["WBS", "100% Rule", "Decomposition"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q077", "domain": "Process", "chapter": "2.8", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "『スコープ検証（Validate Scope）』と『スコープコントロール（Control Scope）』の違いは何か.",
+      "choices": ["両者は同じ", "Validate Scopeは顧客による成果物の正式受入、Control Scopeは計画と実績の乖離監視と変更対応", "Validateが内部、Controlが外部", "両方とも変更管理"],
+      "correctAnswer": "B", "explanation": "Validate Scope=顧客受入の場面、Control Scope=ベースラインからの乖離管理。前者は受入、後者は監視。両者は別プロセス。",
+      "tags": ["Validate Scope", "Control Scope", "Acceptance"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q078", "domain": "Process", "chapter": "2.9", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトキックオフミーティングの最も重要な目的は何か.",
+      "choices": ["スコープを詳細決定する", "チーム+主要ステークホルダーがプロジェクトの目的・成功基準・役割・コミュニケーション規約を共有し、共通基盤を確立する", "予算を確定する", "契約を締結する"],
+      "correctAnswer": "B", "explanation": "キックオフは『共通基盤確立』が本質。詳細決定（A）/予算確定（C）/契約（D）は別フェーズで完了済または別場面。",
+      "tags": ["Kick-off", "Common Ground", "Project Charter"], "qualityScore": 0.85
+    },
+    {
+      "id": "Q079", "domain": "Process", "chapter": "2.9", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクトマネジメント計画書（PM Plan）の本質的な役割は何か.",
+      "choices": ["承認のための形式書類", "全てのサブ計画（スコープ・スケジュール・コスト・品質・リスク等）を統合し、プロジェクト実行の指針として機能する文書", "プロジェクト終了時の成果物", "顧客への提案書"],
+      "correctAnswer": "B", "explanation": "PM Planはサブ計画統合+実行指針。Living Documentで段階的に詳細化・更新される。形式書類（A）/成果物（C）/提案書（D）は誤認。",
+      "tags": ["PM Plan", "Integration", "Living Document"], "qualityScore": 0.84
+    },
+    {
+      "id": "Q080", "domain": "Process", "chapter": "2.9", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトベースライン（Scope/Schedule/Cost）の役割は何か.",
+      "choices": ["参考情報", "承認済みの計画値で、実績との比較を通じてプロジェクトパフォーマンスを測定し、変更は正式プロセスを経て更新される", "実行時に都度変更可能", "PMの個人メモ"],
+      "correctAnswer": "B", "explanation": "ベースラインは承認済の比較基準。変更は変更管理プロセス必須。実績との差異分析（Variance Analysis）の基準。参考（A）/都度変更（C）/個人メモ（D）は本質誤認。",
+      "tags": ["Baseline", "Variance Analysis", "Change Control"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q081", "domain": "Process", "chapter": "2.10", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "緊急の変更要求（重大欠陥対応）が出された。CCB招集には3日かかる。PMの取るべき行動は何か.",
+      "choices": ["CCB招集まで作業停止", "事前定義された緊急変更手順（Expedited Change）に従い、PMまたは指名された権限者が暫定承認し、後追いでCCBレビューを行う", "PMの独断で永続的に承認する", "緊急性を無視して通常手順を取る"],
+      "correctAnswer": "B", "explanation": "緊急変更は事前に手順定義済が前提。暫定承認+後追いレビューが標準。停止（A）は被害拡大、独断永続（C）はガバナンス違反、通常手順（D）は緊急性無視。",
+      "tags": ["Emergency Change", "CCB", "Expedited"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q082", "domain": "Process", "chapter": "2.10", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "変更要求が CCB で却下された場合のPMの対応として最も適切なのは何か.",
+      "choices": ["要求者の意向を尊重して実装する", "却下理由を要求者に丁寧に説明し、変更管理ログに却下記録を保存。必要なら代替案を共同検討する", "要求者を無視する", "再度同じ要求を即提出する"],
+      "correctAnswer": "B", "explanation": "却下も正式アウトプット。理由説明+記録保存+代替案検討が標準。独断実装（A）はガバナンス違反、無視（C）は関係破壊、即再提出（D）は手続き軽視。",
+      "tags": ["Change Rejection", "Change Log", "Communication"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q083", "domain": "Process", "chapter": "2.11", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "スコープが流動的で、要件が実行中に明確化されていく案件を外注する。最適な契約タイプは何か.",
+      "choices": ["FFP（Firm Fixed Price）", "T&M（Time and Materials）またはCR（Cost Plus）", "FP-EPA", "全て同じ"],
+      "correctAnswer": "B", "explanation": "スコープ流動的=T&M or Cost-Reimbursable。FFP（A）は固定スコープ前提でスコープ不明案件には不適、FP-EPA（C）は長期物価変動向け、全て同じ（D）は誤り。",
+      "tags": ["Contract Type", "T&M", "Flexible Scope"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q084", "domain": "Process", "chapter": "2.11", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "Make-or-Buy（自社製造 vs 外部調達）判断の主要評価軸として最も適切なのは何か.",
+      "choices": ["価格のみ", "コスト・コア能力との関係・キャパシティ・知財・リスク・スケジュールなど多次元の戦略的評価", "スピードのみ", "経営者の好み"],
+      "correctAnswer": "B", "explanation": "Make-or-Buyは戦略決定。価格だけでなく『コア能力か否か』『知財』『キャパシティ』を含む多次元評価が必須。単一軸評価（A/C）は近視眼的、属人判断（D）は非合理。",
+      "tags": ["Make or Buy", "Strategic Sourcing"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q085", "domain": "Process", "chapter": "2.12", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト成果物のバージョン管理が混乱し、『どれが最新か分からない』状況が頻発している。最善の対策は何か.",
+      "choices": ["メンバーが個人管理する", "構成管理計画を策定し、命名規則・バージョン管理ツール（Git等）・公式リポジトリ・変更履歴をチームで運用ルール化する", "全成果物をメールで送り合う", "PM一人が全て管理する"],
+      "correctAnswer": "B", "explanation": "構成管理はプロジェクト品質と再現性の基盤。ツール+ルール+リポジトリで標準化。個人管理（A）はカオス、メール送付（C）はバージョン乱立、PM単独管理（D）はスケールしない。",
+      "tags": ["Configuration Management", "Version Control", "Artifact"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q086", "domain": "Process", "chapter": "2.12", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクト成果物のうち、PMが必ず保管・トレース可能にしておくべきものは何か.",
+      "choices": ["最終納品物のみ", "ベースライン（スコープ/スケジュール/コスト）・変更要求・承認記録・課題ログ・教訓・主要意思決定の根拠など、後の監査・改善・組織学習に必要な情報", "メールの一部のみ", "個人メモのみ"],
+      "correctAnswer": "B", "explanation": "成果物管理の本質は『後から検証可能性』。監査・改善・組織学習の基礎。最終納品物のみ（A）/メール（C）/個人メモ（D）は重要記録の喪失。",
+      "tags": ["Traceability", "Audit", "Organizational Learning"], "qualityScore": 0.85
+    },
+    {
+      "id": "Q087", "domain": "Process", "chapter": "2.12", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト中、機密情報を含む成果物のアクセス管理として最も適切なのは何か.",
+      "choices": ["全員アクセス可", "Least Privilege（最小権限）原則でロールベース（RBAC）にアクセス権を設定し、機密度に応じて閲覧/編集権限を分離する", "PMのみアクセス可", "アクセス制限なし"],
+      "correctAnswer": "B", "explanation": "情報セキュリティの基本Least Privilege+RBAC。機密度分類との連動が標準。全員可（A）/制限なし（D）は重大リスク、PM単独（C）は業務阻害。",
+      "tags": ["Least Privilege", "RBAC", "Information Security"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q088", "domain": "Process", "chapter": "2.13", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "Cynefin フレームワークでプロジェクトが『複雑（Complex）』領域に分類された。最適な進め方は何か.",
+      "choices": ["詳細WBSで全工程を事前計画", "Probe-Sense-Respond（試行→観察→対応）の探索的アプローチで、短サイクルの実験と適応を繰り返す（=アジャイル的）", "ベストプラクティスをそのまま適用", "専門家の指示に従う"],
+      "correctAnswer": "B", "explanation": "Cynefinの『複雑』領域は因果関係が事後的にしか分からない。Probe-Sense-Respondでアジャイル的に進める。詳細計画（A）は『煩雑』向け、ベストプラクティス（C）は『シンプル』向け、専門家依存（D）は『煩雑』向け。",
+      "tags": ["Cynefin", "Complex Domain", "Adaptive"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q089", "domain": "Process", "chapter": "2.13", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "ハイブリッドアプローチ（Waterfall+Agile）を採用する典型例は何か.",
+      "choices": ["全工程を完全に統一", "厳格な規制対応や物理設計はWaterfall、ユーザー向け機能はAgileで進め、両者を統合計画で接続する構成", "規模が大きい時のみAgile", "好みで選ぶ"],
+      "correctAnswer": "B", "explanation": "ハイブリッドは『領域特性に応じた手法選択』。規制・物理設計の予測可能性とユーザー要求の不確実性に最適化。統一（A）は柔軟性欠如、規模依存（C）/好み（D）は誤った選択基準。",
+      "tags": ["Hybrid", "Regulatory", "Tailoring"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q090", "domain": "Process", "chapter": "2.14", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトに『PMO（Project Management Office）』が存在するが、PMはPMOから何を期待すべきか.",
+      "choices": ["PMOがPMの代わりに意思決定する", "標準化・テンプレート提供・コーチング・組織横断的調整・ガバナンス支援等の支援機能", "PMOの監視は不要", "PMOは形式的存在"],
+      "correctAnswer": "B", "explanation": "PMOの主目的は支援。PMOタイプ（Supportive/Controlling/Directive）により権限度は異なるが、基本は標準化+支援+調整。代行（A）はPMの責任放棄、不要・形式（C/D）はPMO軽視。",
+      "tags": ["PMO", "Governance", "Standardization"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q091", "domain": "Process", "chapter": "2.14", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクトのエスカレーション基準として最も適切な設計原則は何か.",
+      "choices": ["全ての課題をエスカレーション", "事前定義された基準（影響度・解決所要時間・関連権限）に基づき、適切な階層へエスカレーションする透明性ある仕組み", "PMの判断で都度決める", "決して上司に相談しない"],
+      "correctAnswer": "B", "explanation": "エスカレーション基準は事前定義+透明性が必須。基準なき判断（A/C）は混乱、絶対回避（D）は事態悪化。",
+      "tags": ["Escalation", "Governance", "Decision Rights"], "qualityScore": 0.85
+    },
+    {
+      "id": "Q092", "domain": "Process", "chapter": "2.14", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "ステアリングコミッティ（Steering Committee）の役割として最も適切なのは何か.",
+      "choices": ["プロジェクトの日常運営", "戦略的方向性・主要意思決定・重要リスク承認・組織横断的調整など、PMが単独で扱えない判断を統括する", "技術詳細の決定", "メンバー評価"],
+      "correctAnswer": "B", "explanation": "ステアリングコミッティは戦略層。日常運営（A）/技術詳細（C）/メンバー評価（D）はPMまたは現場の範囲。",
+      "tags": ["Steering Committee", "Governance", "Strategic"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q093", "domain": "Process", "chapter": "2.15", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "『リスク（Risk）』と『課題（Issue）』の最も正確な違いは何か.",
+      "choices": ["両者は同じ", "リスクは将来発生し得る不確実な事象、課題は既に発生済みまたは確定している事象", "リスクが軽微、課題が重大", "リスクが内部、課題が外部"],
+      "correctAnswer": "B", "explanation": "リスクは『未来の不確実性』、課題は『現在の確定事実』。リスクが顕在化したら課題になる。両者は別管理（Risk Register vs Issue Log）。",
+      "tags": ["Risk vs Issue", "Definition"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q094", "domain": "Process", "chapter": "2.15", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "繰り返し発生する同種の課題に対し、PMが取るべき本質的な対応は何か.",
+      "choices": ["毎回個別対応", "5なぜ等のRCA（Root Cause Analysis）で根本原因を特定し、プロセス改善・自動化・基準化等の恒久対策を実施する", "課題を諦める", "他人のせいにする"],
+      "correctAnswer": "B", "explanation": "再発はシステム問題のサイン。RCAで根本対処が必須。個別対応（A）は症状治療、諦め（C）/責任転嫁（D）は組織的損失。",
+      "tags": ["RCA", "5 Whys", "Recurring Issue"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q095", "domain": "Process", "chapter": "2.16", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "暗黙知（Tacit Knowledge）を形式知（Explicit Knowledge）に変換する最も効果的な方法は何か.",
+      "choices": ["ドキュメント化を強制する", "ペアプログラミング・実演・面談記録・ナラティブインタビュー等で経験を引き出し、構造化されたドキュメントに統合する", "暗黙知は変換不可と諦める", "知識保有者を入れ替える"],
+      "correctAnswer": "B", "explanation": "暗黙知は本人も自覚していないことが多い。直接的引き出し+構造化が必須。ドキュメント強制（A）は表面のみ、諦め（C）/入替（D）は知識喪失。",
+      "tags": ["Tacit Knowledge", "Knowledge Transfer", "SECI"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q096", "domain": "Process", "chapter": "2.16", "difficulty": 2, "source": "self", "reviewed": true,
+      "question": "プロジェクト終了時の教訓（Lessons Learned）を組織資産として最大化する方法は何か.",
+      "choices": ["プロジェクト終了時にだけ記録", "プロジェクト中の定期レトロスペクティブで継続収集+終了時に統合+組織レポジトリへ登録+次プロジェクトキックオフで参照する循環を作る", "個人メモに留める", "口頭でのみ共有"],
+      "correctAnswer": "B", "explanation": "教訓は『プロジェクト中継続収集→組織共有→次プロジェクト活用』の循環が組織学習の鍵。終了時のみ（A）は記憶曖昧化、個人/口頭（C/D）は組織資産化失敗。",
+      "tags": ["Lessons Learned", "Organizational Learning", "Repository"], "qualityScore": 0.88
+    },
+    {
+      "id": "Q097", "domain": "Process", "chapter": "2.17", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトクロージング時のPMの中核責任として最も重要なものは何か.",
+      "choices": ["パーティの企画", "成果物の正式受入・契約終結・最終文書化・教訓統合・チーム解散プロセス・ベネフィット引継ぎを完遂すること", "次プロジェクトの準備", "PMが個人的に祝う"],
+      "correctAnswer": "B", "explanation": "クロージングは6要素の完遂が必須。形式的に終わらせると組織損失。パーティ（A）/個人祝賀（D）は本質と無関係、次準備（C）はクロージング後の話。",
+      "tags": ["Closure", "Acceptance", "Handoff"], "qualityScore": 0.87
+    },
+    {
+      "id": "Q098", "domain": "Business Environment", "chapter": "3.1", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト実施中、欧州市場向け機能でGDPR（一般データ保護規則）違反の可能性が判明した。最初に取るべき行動は何か.",
+      "choices": ["違反のまま継続", "影響範囲（データ・処理・関係者）を即特定し、法務・コンプライアンス部門と協議の上、修正計画を変更管理プロセスに乗せる。必要に応じて該当機能を一時停止する", "違反を隠す", "プロジェクト完了後に対応"],
+      "correctAnswer": "B", "explanation": "規制違反は事業継続リスク。即時影響評価+正規プロセスで対応が標準。継続（A）/隠蔽（C）は法的・倫理的に重大リスク、後回し（D）は被害拡大。",
+      "tags": ["GDPR", "Compliance", "Regulatory"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q099", "domain": "Business Environment", "chapter": "3.2", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "プロジェクトのベネフィット実現は通常クロージング後に発現する。PMがクロージング前に必ず行うべきことは何か.",
+      "choices": ["ベネフィット測定は経営層任せ", "ベネフィット実現計画（指標・測定タイミング・責任者・トラッキング方法）を明確化し、ベネフィットオーナーへ正式に引き継ぐ", "プロジェクトと無関係", "クロージング時に放置"],
+      "correctAnswer": "B", "explanation": "ベネフィット引継ぎはクロージングの必須要素。指標・タイミング・オーナーが揃わなければベネフィット実現は不確実化。経営層任せ（A）/無関係（C）/放置（D）はビジネス価値視点欠如。",
+      "tags": ["Benefits Realization", "Handoff", "Value Delivery"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q100", "domain": "Business Environment", "chapter": "3.3", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト実施中に主要競合が画期的な新製品を発表し、市場前提が大きく変わった。最も適切な対応は何か.",
+      "choices": ["既存計画を貫徹する", "PESTLE等で外部環境変化を分析し、プロジェクトのビジネスケース妥当性を再評価。必要なら方向転換（Pivot）の変更要求を出す", "プロジェクトを即中止", "競合を無視"],
+      "correctAnswer": "B", "explanation": "外部環境激変はビジネスケース再評価のトリガー。事実分析+影響評価+変更管理の正規プロセスで対応。貫徹（A）は機会損失、即中止（C）は過剰反応、無視（D）は致命的怠慢。",
+      "tags": ["External Change", "PESTLE", "Pivot"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q101", "domain": "Business Environment", "chapter": "3.3", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "市場・技術・規制の変化を継続的に監視する仕組みとして最も実用的なのは何か.",
+      "choices": ["PMが個人的に気にかける", "PESTLE/Five Forces等のフレーム+定期外部環境レビュー（月次or四半期）+リスク登録簿への反映+ステークホルダー報告の仕組み化", "経営層任せ", "監視は不要"],
+      "correctAnswer": "B", "explanation": "外部環境監視は『仕組み化』が必須。個人依存（A）/経営層任せ（C）/不要（D）は監視失敗パターン。",
+      "tags": ["PESTLE", "Environmental Scanning", "Risk Update"], "qualityScore": 0.86
+    },
+    {
+      "id": "Q102", "domain": "Business Environment", "chapter": "3.4", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "新システム導入による業務プロセス変革が現場の強い抵抗に遭っている。組織変革管理の観点で最善のアプローチは何か.",
+      "choices": ["強制的に切替える", "Kotter 8ステップやADKAR等のフレームワークに従い、危機感共有・ビジョン構築・コーチング・短期成功・抵抗対処を段階的に進める", "抵抗を無視する", "システム導入を中止する"],
+      "correctAnswer": "B", "explanation": "組織変革は『プロセスとして設計』する必要がある。フレーム活用が成功率を大きく上げる。強制（A）は深い抵抗を生む、無視（C）は失敗確定、中止（D）は投資損失。",
+      "tags": ["Change Management", "Kotter", "ADKAR"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q103", "domain": "Business Environment", "chapter": "3.4", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "システム導入後、現場の利用率が想定の30%しかなかった。PMのベネフィット実現観点での対応として最も適切なのは何か.",
+      "choices": ["導入完了として終了", "利用率低迷の根本原因（UI・学習コスト・業務適合・インセンティブ）を分析し、追加トレーニング・UX改善・チェンジエージェント配置等の介入を計画する", "利用率を改竄して報告", "現場の責任として放置"],
+      "correctAnswer": "B", "explanation": "成果＝デプロイ＝完了ではない。実際の利用＋ベネフィット実現まで責任を持つ。終了（A）/改竄（C）/放置（D）はビジネス価値視点欠如・倫理違反含む。",
+      "tags": ["Adoption", "Change Management", "Benefits Realization"], "qualityScore": 0.91
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import chaptersData from '../../../data/pmp/chapters.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const chapters = chaptersData.chapters;
+
+const domainGroups = [
+  { id: 'People', label: 'People · 人', weight: '42%', accent: '#c8a96e', items: chapters.filter(c => c.domain === 'People') },
+  { id: 'Process', label: 'Process · プロセス', weight: '50%', accent: '#6ec897', items: chapters.filter(c => c.domain === 'Process') },
+  { id: 'Business Environment', label: 'Business Environment · ビジネス環境', weight: '8%', accent: '#9ecbe8', items: chapters.filter(c => c.domain === 'Business Environment') },
+];
+---
+
+<BaseLayout
+  title="体系学習 - PMP学習アプリ"
+  description="PMP試験範囲を35章で体系的に学習。ECO 3ドメイン (People 42% / Process 50% / Business Environment 8%) の全タスクをカバー。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;flex:1;">体系学習 · 35章</h1>
+      <span id="completion-summary" style="color:#c8a96e;font-size:0.75rem;letter-spacing:0.05em;">0 / 35 章 完了</span>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    {domainGroups.map(group => (
+      <div style="margin-bottom:2rem;">
+        <div style={`background:${group.accent}14;border-left:3px solid ${group.accent};padding:0.85rem 1.1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.5rem;`}>
+          <p style={`color:${group.accent};font-size:0.65rem;letter-spacing:0.3em;margin:0;`}>{group.label.toUpperCase()}</p>
+          <span style="color:rgba(237,237,232,0.5);font-size:0.72rem;">{group.weight} · {group.items.length}章</span>
+        </div>
+        <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);">
+          {group.items.map(ch => (
+            <details style="border-bottom:1px solid rgba(255,255,255,0.04);">
+              <summary style="padding:0.8rem 1rem;cursor:pointer;list-style:none;display:flex;gap:0.85rem;align-items:flex-start;">
+                <input
+                  type="checkbox"
+                  data-chapter={ch.id}
+                  onclick="event.stopPropagation()"
+                  style="margin-top:4px;cursor:pointer;accent-color:#c8a96e;"
+                />
+                <span style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.1em;min-width:38px;font-weight:600;padding-top:2px;">{ch.id}</span>
+                <span style="flex:1;">
+                  <span style="color:#edede8;font-size:0.85rem;font-weight:500;">{ch.titleJa}</span>
+                  <span style="color:rgba(237,237,232,0.4);font-size:0.7rem;margin-left:0.5rem;">{ch.title}</span>
+                </span>
+                <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;white-space:nowrap;padding-top:2px;">{ch.estimatedMinutes}分</span>
+              </summary>
+              <div style="padding:0 1rem 1rem 4rem;">
+                <p style="color:rgba(237,237,232,0.7);font-size:0.78rem;line-height:1.7;margin-bottom:0.6rem;">{ch.summary}</p>
+                <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+                  {ch.keyConcepts.map(c => (
+                    <span style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.15);color:rgba(200,169,110,0.85);padding:0.15rem 0.5rem;font-size:0.65rem;">{c}</span>
+                  ))}
+                </div>
+                <div style="margin-top:0.85rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                  <a
+                    href={`${base}/ai-tools/pmp-study/study/${ch.id}`}
+                    style="color:#6ec897;font-size:0.72rem;text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid rgba(110,200,151,0.3);"
+                  >📖 本文・関連用語・ミニチェック ▶</a>
+                  <a
+                    href={`${base}/ai-tools/pmp-study/quiz?chapter=${ch.id}`}
+                    style="color:#c8a96e;font-size:0.72rem;text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid rgba(200,169,110,0.3);"
+                  >📝 この章の問題を演習 ▶</a>
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    ))}
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const checks = document.querySelectorAll<HTMLInputElement>('input[data-chapter]');
+      const stored: string[] = JSON.parse(localStorage.getItem('pmp-completed-chapters') || '[]');
+      const summaryEl = document.getElementById('completion-summary');
+
+      const update = () => {
+        const cur: string[] = JSON.parse(localStorage.getItem('pmp-completed-chapters') || '[]');
+        if (summaryEl) summaryEl.textContent = `${cur.length} / 35 章 完了`;
+      };
+
+      checks.forEach(cb => {
+        const id = cb.dataset.chapter!;
+        cb.checked = stored.includes(id);
+        cb.addEventListener('change', () => {
+          const cur: string[] = JSON.parse(localStorage.getItem('pmp-completed-chapters') || '[]');
+          if (cb.checked && !cur.includes(id)) cur.push(id);
+          if (!cb.checked) {
+            const i = cur.indexOf(id);
+            if (i >= 0) cur.splice(i, 1);
+          }
+          localStorage.setItem('pmp-completed-chapters', JSON.stringify(cur));
+          update();
+        });
+      });
+      update();
+    });
+  </script>
+
+</BaseLayout>

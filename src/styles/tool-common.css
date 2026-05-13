@@ -1,0 +1,159 @@
+/**
+ * tool-common.css — AIツール10本の共通スタイル
+ * 元々各ツールにインライン重複していたCSSを集約
+ *
+ * 使用例: <link rel="stylesheet" href={`${base}/styles/tool-common.css`}>
+ * またはToolLayoutが自動で取り込む
+ */
+
+/* ============================================================
+ * ボタン（黄金アクセント / ghost / success / danger）
+ * ============================================================ */
+.m-btn,
+.m-btn-ghost {
+  background: #0a0a0c;
+  color: #edede8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.55rem 1.1rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+}
+.m-btn-ghost:hover {
+  border-color: #c8a96e;
+  color: #c8a96e;
+}
+.m-btn {
+  background: #c8a96e;
+  color: #0c0c0e;
+  border-color: #c8a96e;
+  font-weight: 700;
+}
+.m-btn:hover {
+  background: #d4b87b;
+}
+.m-btn:disabled,
+.m-btn-ghost:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+ * フォーム入力（field-label / field-input）
+ * ============================================================ */
+.field-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.35rem;
+}
+.field-input {
+  background: #0a0a0c;
+  color: #edede8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.45rem 0.6rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  width: 100%;
+  outline: none;
+}
+.field-input:focus {
+  border-color: #c8a96e;
+}
+.field-hint {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.66rem;
+  margin-top: 0.25rem;
+}
+
+/* ============================================================
+ * テーブル（th / td）
+ * ============================================================ */
+.th {
+  text-align: left;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-weight: 400;
+}
+.td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: rgba(237, 237, 232, 0.85);
+}
+
+/* ============================================================
+ * 予測結果カード（pred-card）
+ * ============================================================ */
+.pred-card {
+  background: #0f0f12;
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  padding: 1.1rem 1.3rem;
+}
+.pred-card .lab {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.4rem;
+}
+.pred-card .val {
+  color: #c8a96e;
+  font-size: 1.55rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+.pred-card .sd {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+}
+
+/* ============================================================
+ * プリセットボタン（preset-btn）
+ * ============================================================ */
+.preset-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(237, 237, 232, 0.7);
+  padding: 0.3rem 0.85rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.preset-btn:hover {
+  border-color: #c8a96e;
+  color: #c8a96e;
+}
+.preset-btn.active {
+  border-color: #c8a96e;
+  color: #c8a96e;
+  background: rgba(200, 169, 110, 0.08);
+}
+
+/* ============================================================
+ * セクションタイトル（共通形式）
+ * ============================================================ */
+.section-label {
+  color: #c8a96e;
+  font-size: 0.62rem;
+  letter-spacing: 0.35em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+ * フォーカスリング — WCAG AA 準拠（global.css と整合）
+ * ============================================================ */
+.m-btn:focus-visible,
+.m-btn-ghost:focus-visible,
+.preset-btn:focus-visible,
+.field-input:focus-visible {
+  outline: 2px solid #c8a96e;
+  outline-offset: 2px;
+}

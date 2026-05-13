@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Dashboard from '../../../components/pmp/Dashboard.tsx';
+import '../../../styles/pmp-mobile.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="PMP学習アプリ - 90日合格プラン"
+  description="PMP（プロジェクトマネジメント・プロフェッショナル）試験対策の完全無料ブラウザ完結アプリ。試験日から逆算した90日プラン・体系学習35章・問題演習・SRS復習・模試・達成条件チェッカー。誰でも使える。"
+>
+
+  <!-- 公開バナー -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;letter-spacing:0.03em;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>全データはあなたのブラウザに保存</strong> — サーバー送信なし・PMI 非公認の個人学習ツール</div>
+    <a href={`${base}/ai-tools/pmp-study/settings/`} style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;font-family:inherit;letter-spacing:0.05em;text-decoration:none;">⚙ データ管理 ▶</a>
+  </div>
+
+  <!-- 重要な注意書き -->
+  <div style="background:rgba(232,110,110,0.06);border-left:3px solid #e86e6e;padding:0.85rem 1.25rem;font-size:0.78rem;color:rgba(237,237,232,0.85);line-height:1.7;">
+    ⚠️ <strong style="color:#e86e6e;">本アプリは『公式教材の補助ツール』です</strong>。<br/>
+    収録コンテンツ（章本文・用語・問題・ケース）は AI 生成オリジナル素材で、PMI 公式資料との照合は未実施です。
+    必ず Rita Mulcahy 本・PMBOK 第7版・PMI ECO 2021 等の公式・準公式教材と併用してください。
+    本アプリの主価値は『演習場・進捗管理・SRS・個別カリキュラム』にあります。
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:11rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#1a1208 60%,#0c0c0e 100%);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:0.85rem;text-transform:uppercase;">PMP Study · 90 Days Plan · Browser-Only</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:0.15em;color:#edede8;">PMP学習アプリ</h1>
+      <p style="color:rgba(237,237,232,0.55);font-size:0.78rem;margin-top:0.5rem;">試験日から逆算した90日プラン・ECO 3ドメイン・体系学習35章</p>
+    </div>
+  </div>
+
+  <!-- ダッシュボード本体（React・client:only） -->
+  <Dashboard base={base} client:only="react" />
+
+  <!-- このツールについて -->
+  <div style="max-width:1100px;margin:0 auto;padding:0 1rem 4rem;">
+    <div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.05);padding:1.75rem 2rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:1.25rem;">ABOUT</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;">
+        <div>
+          <h3 style="color:#edede8;font-size:0.9rem;font-weight:500;margin-bottom:0.5rem;letter-spacing:0.05em;">完全無料・ブラウザ完結</h3>
+          <p style="color:rgba(237,237,232,0.55);font-size:0.78rem;line-height:1.7;">サーバー送信なし。全データIndexedDBに保存。アカウント登録不要・広告なし・課金なし。</p>
+        </div>
+        <div>
+          <h3 style="color:#edede8;font-size:0.9rem;font-weight:500;margin-bottom:0.5rem;letter-spacing:0.05em;">90日学習プラン（補助）</h3>
+          <p style="color:rgba(237,237,232,0.55);font-size:0.78rem;line-height:1.7;">1日130分 × 90日 = 195時間の目安。試験日から逆算した日次タスクを自動算出。SRS で誤答を体系的に復習。<strong style="color:rgba(232,110,110,0.85);">合格は保証しません</strong>。公式教材との併用が必須です。</p>
+        </div>
+        <div>
+          <h3 style="color:#edede8;font-size:0.9rem;font-weight:500;margin-bottom:0.5rem;letter-spacing:0.05em;">PMI 非公認・要検証</h3>
+          <p style="color:rgba(237,237,232,0.55);font-size:0.78rem;line-height:1.7;">PMI 公認ではない補助ツール。収録コンテンツは AI 生成オリジナル素材で、PMI 公式資料との照合は未実施。誤りに気付いたら自分でメモ機能に正誤を記録してください。PMP・PMI・PMBOK は PMI の登録商標。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</BaseLayout>

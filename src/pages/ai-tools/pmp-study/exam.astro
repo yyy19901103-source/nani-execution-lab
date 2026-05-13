@@ -1,0 +1,19 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Exam from '../../../components/pmp/Exam.tsx';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="模試 - PMP学習アプリ"
+  description="本試験形式の模試。短縮版60問・フル模試180問。ドメイン別スコア表示。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:800px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">模試モード</h1>
+    </div>
+  </div>
+  <Exam client:only="react" />
+</BaseLayout>

@@ -1,0 +1,85 @@
+{
+  "version": "PMP ECO 2021 (current as of 2026)",
+  "examConfig": {
+    "totalQuestions": 180,
+    "durationMinutes": 230,
+    "breaks": 2,
+    "passingScoreEstimate": 0.7,
+    "domainWeights": {
+      "People": 0.42,
+      "Process": 0.50,
+      "Business Environment": 0.08
+    }
+  },
+  "domains": [
+    {
+      "id": "People",
+      "labelJa": "人 (People)",
+      "weight": 0.42,
+      "questionShare": 76,
+      "tasks": [
+        { "id": "1.1", "title": "Manage Conflict", "titleJa": "コンフリクト対処" },
+        { "id": "1.2", "title": "Lead a Team", "titleJa": "チームをリードする" },
+        { "id": "1.3", "title": "Support Team Performance", "titleJa": "チームパフォーマンス支援" },
+        { "id": "1.4", "title": "Empower Team Members and Stakeholders", "titleJa": "メンバー・ステークホルダーのエンパワーメント" },
+        { "id": "1.5", "title": "Ensure Adequate Training", "titleJa": "適切なトレーニング保証" },
+        { "id": "1.6", "title": "Build a Team", "titleJa": "チームビルディング" },
+        { "id": "1.7", "title": "Address Impediments and Blockers", "titleJa": "障害・阻害要因の除去" },
+        { "id": "1.8", "title": "Negotiate Project Agreements", "titleJa": "プロジェクト合意の交渉" },
+        { "id": "1.9", "title": "Collaborate with Stakeholders", "titleJa": "ステークホルダーとの協働" },
+        { "id": "1.10", "title": "Build Shared Understanding", "titleJa": "共通理解の構築" },
+        { "id": "1.11", "title": "Engage Virtual Teams", "titleJa": "バーチャルチームのエンゲージメント" },
+        { "id": "1.12", "title": "Define Team Ground Rules", "titleJa": "チームグランドルール策定" },
+        { "id": "1.13", "title": "Mentor Stakeholders", "titleJa": "ステークホルダーのメンタリング" },
+        { "id": "1.14", "title": "Apply Emotional Intelligence", "titleJa": "EQの活用" }
+      ]
+    },
+    {
+      "id": "Process",
+      "labelJa": "プロセス (Process)",
+      "weight": 0.50,
+      "questionShare": 90,
+      "tasks": [
+        { "id": "2.1", "title": "Execute Project with Urgency", "titleJa": "緊急性をもった実行" },
+        { "id": "2.2", "title": "Manage Communications", "titleJa": "コミュニケーション管理" },
+        { "id": "2.3", "title": "Assess and Manage Risks", "titleJa": "リスク評価・管理" },
+        { "id": "2.4", "title": "Engage Stakeholders", "titleJa": "ステークホルダーエンゲージメント" },
+        { "id": "2.5", "title": "Plan and Manage Budget and Resources", "titleJa": "予算・資源計画・管理" },
+        { "id": "2.6", "title": "Plan and Manage Schedule", "titleJa": "スケジュール計画・管理" },
+        { "id": "2.7", "title": "Plan and Manage Quality", "titleJa": "品質計画・管理" },
+        { "id": "2.8", "title": "Plan and Manage Scope", "titleJa": "スコープ計画・管理" },
+        { "id": "2.9", "title": "Integrate Planning Activities", "titleJa": "計画活動の統合" },
+        { "id": "2.10", "title": "Manage Project Changes", "titleJa": "変更管理" },
+        { "id": "2.11", "title": "Plan and Manage Procurement", "titleJa": "調達計画・管理" },
+        { "id": "2.12", "title": "Manage Project Artifacts", "titleJa": "成果物管理" },
+        { "id": "2.13", "title": "Determine Appropriate Methodology", "titleJa": "適切な方法論の選定" },
+        { "id": "2.14", "title": "Establish Project Governance", "titleJa": "ガバナンス構造確立" },
+        { "id": "2.15", "title": "Manage Project Issues", "titleJa": "課題管理" },
+        { "id": "2.16", "title": "Ensure Knowledge Transfer", "titleJa": "知識移転" },
+        { "id": "2.17", "title": "Plan and Manage Closure", "titleJa": "終結計画・管理" }
+      ]
+    },
+    {
+      "id": "Business Environment",
+      "labelJa": "ビジネス環境 (Business Environment)",
+      "weight": 0.08,
+      "questionShare": 14,
+      "tasks": [
+        { "id": "3.1", "title": "Plan and Manage Compliance", "titleJa": "コンプライアンス計画・管理" },
+        { "id": "3.2", "title": "Evaluate and Deliver Benefits", "titleJa": "ベネフィット評価・実現" },
+        { "id": "3.3", "title": "Evaluate External Changes", "titleJa": "外部環境変化評価" },
+        { "id": "3.4", "title": "Support Organizational Change", "titleJa": "組織変革支援" }
+      ]
+    }
+  ],
+  "mindsetPrinciples": [
+    "アジャイル/ハイブリッド優先の思考",
+    "サーバントリーダーシップ（指示より支援）",
+    "ステークホルダー第一・価値提供志向",
+    "プロアクティブ（事後対応より予防）",
+    "倫理的・透明性重視（PMI 行動規範）",
+    "適応的計画（変更を歓迎）",
+    "コラボレーション（孤立判断回避）",
+    "根本原因分析（症状でなく原因に対処）"
+  ]
+}

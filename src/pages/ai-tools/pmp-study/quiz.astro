@@ -1,0 +1,19 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Quiz from '../../../components/pmp/Quiz.tsx';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="問題演習 - PMP学習アプリ"
+  description="PMP試験対策の問題演習。ドメイン・難易度・SRS対象でフィルタ。根拠メモ必須で90%合格条件を満たす。ブラウザ完結。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:800px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">問題演習</h1>
+    </div>
+  </div>
+  <Quiz client:only="react" />
+</BaseLayout>

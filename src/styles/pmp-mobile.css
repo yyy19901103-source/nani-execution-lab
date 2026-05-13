@@ -1,0 +1,90 @@
+/* PMP学習アプリ モバイル対応 */
+
+@media (max-width: 640px) {
+  /* グリッド: モバイルでは1列に */
+  .pmp-chapter-detail [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* テーブル: 横スクロール可能に */
+  .pmp-chapter-detail .md-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* h2/h3 のフォントサイズを下げる */
+  .pmp-chapter-detail .md-content h2 {
+    font-size: 1.1rem !important;
+  }
+  .pmp-chapter-detail .md-content h3 {
+    font-size: 1rem !important;
+  }
+  .pmp-chapter-detail .md-content h4 {
+    font-size: 0.88rem !important;
+  }
+
+  /* リスト・段落のフォントサイズ */
+  .pmp-chapter-detail .md-content p,
+  .pmp-chapter-detail .md-content li {
+    font-size: 0.82rem !important;
+    line-height: 1.75 !important;
+  }
+
+  /* パディング縮小 */
+  .pmp-chapter-detail [style*="padding: 1.5rem 1.75rem"] {
+    padding: 1rem 1.1rem !important;
+  }
+
+  /* 横にはみ出る要素を抑える */
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* タッチターゲット: モバイル最適化 */
+@media (max-width: 640px) {
+  button,
+  a[href] {
+    min-height: 36px;
+  }
+
+  /* ボタン間隔を広めに */
+  button + button,
+  a + button,
+  button + a {
+    margin-top: 0.25rem;
+  }
+}
+
+/* 印刷時の最適化（章本文を印刷しやすく） */
+@media print {
+  /* 印刷時は背景白・文字黒 */
+  body, html {
+    background: white !important;
+    color: black !important;
+  }
+  .pmp-chapter-detail * {
+    background: white !important;
+    color: black !important;
+    border-color: #ddd !important;
+  }
+  /* 印刷不要要素を非表示 */
+  nav, header, footer,
+  [class*="ToastContainer"],
+  button {
+    display: none !important;
+  }
+  /* リンクは下線で */
+  a {
+    color: black !important;
+    text-decoration: underline !important;
+  }
+}
+
+/* ChapterDetail 内の用語自動リンクのホバー */
+.pmp-chapter-detail .md-content a[href*="/glossary#"]:hover {
+  background: rgba(200, 169, 110, 0.1);
+  border-bottom-style: solid !important;
+}

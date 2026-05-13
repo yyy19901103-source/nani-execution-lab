@@ -1,0 +1,87 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import casesData from '../../../data/pmp/case-studies.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+  title="PMP ケーススタディ - PMP学習アプリ"
+  description="実プロジェクト風シナリオで PMP の判断軸を学ぶ。10件の現実的ケース・判断ポイント・模範対応・典型的失敗パターンを収録。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">ケーススタディ · {casesData.cases.length}件</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1000px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    <div style="background:#111114;border:1px solid rgba(200,169,110,0.2);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.5rem;">HOW TO USE · 使い方</p>
+      <p style="color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.8;">
+        各ケースは『シナリオ』→『判断ポイント』を読み、まず自分で考えてから『模範対応』を見ましょう。
+        単なる暗記でなく、PMP Mindset 8原則がどう適用されているかを意識すると、知らない問題にも応用できます。
+      </p>
+    </div>
+
+    {casesData.cases.map((c, i) => (
+      <details style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0;margin-bottom:0.75rem;">
+        <summary style="cursor:pointer;list-style:none;padding:1rem 1.25rem;">
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;">
+            <span style="background:rgba(200,169,110,0.1);color:#c8a96e;padding:0.2rem 0.55rem;font-size:0.65rem;letter-spacing:0.05em;">{c.id}</span>
+            <span style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);color:rgba(200,169,110,0.85);padding:0.15rem 0.5rem;font-size:0.65rem;">{c.domain}</span>
+            <span style="color:rgba(237,237,232,0.5);font-size:0.7rem;">★{c.difficulty}</span>
+            <h2 style="color:#edede8;font-size:0.95rem;font-weight:400;margin:0;flex:1;">{c.title}</h2>
+            <span style="color:rgba(237,237,232,0.4);font-size:0.7rem;">▼</span>
+          </div>
+        </summary>
+
+        <div style="padding:0 1.25rem 1.25rem 1.25rem;">
+
+          {/* シナリオ */}
+          <div style="background:#0a0a0c;border-left:3px solid #c8a96e;padding:1rem 1.25rem;margin-bottom:1rem;">
+            <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.5rem;">SCENARIO · シナリオ</p>
+            <p style="color:rgba(237,237,232,0.9);font-size:0.85rem;line-height:1.8;">{c.scenario}</p>
+          </div>
+
+          {/* 判断ポイント */}
+          <div style="margin-bottom:1rem;">
+            <p style="color:'rgba(200,169,110,0.85)';font-size:0.65rem;letter-spacing:0.25em;margin-bottom:0.5rem;">🤔 判断ポイント — まず自分で考える</p>
+            <ul style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.8);font-size:0.82rem;line-height:1.8;">
+              {c.decisionPoints.map(d => <li>{d}</li>)}
+            </ul>
+          </div>
+
+          {/* 模範対応（折りたたみ） */}
+          <details style="background:'rgba(110,200,151,0.05)';border:1px solid 'rgba(110,200,151,0.25)';padding:1rem 1.25rem;margin-bottom:0.75rem;">
+            <summary style="cursor:pointer;color:#6ec897;font-size:0.78rem;letter-spacing:0.05em;font-weight:600;">✓ 模範対応を見る ▼</summary>
+            <p style="color:rgba(237,237,232,0.85);font-size:0.83rem;line-height:1.85;margin-top:0.85rem;white-space:pre-wrap;">{c.modelAnswer}</p>
+          </details>
+
+          {/* 典型的失敗 */}
+          <details style="background:rgba(232,110,110,0.04);border:1px solid rgba(232,110,110,0.2);padding:1rem 1.25rem;margin-bottom:0.75rem;">
+            <summary style="cursor:pointer;color:#e86e6e;font-size:0.78rem;letter-spacing:0.05em;font-weight:600;">✗ 典型的失敗パターン ▼</summary>
+            <ul style="margin:0.6rem 0 0 1.5rem;padding:0;color:rgba(237,237,232,0.8);font-size:0.8rem;line-height:1.8;">
+              {c.mistakes.map(m => <li>{m}</li>)}
+            </ul>
+          </details>
+
+          {/* 関連章+原則 */}
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.85rem;">
+            <span style="color:rgba(237,237,232,0.5);font-size:0.7rem;margin-right:0.3rem;">関連:</span>
+            {c.relatedChapters.map(ch => (
+              <a href={`${base}/ai-tools/pmp-study/study/${ch}`} style="background:rgba(110,200,151,0.06);border:1px solid rgba(110,200,151,0.2);color:rgba(110,200,151,0.85);padding:0.2rem 0.5rem;font-size:0.65rem;text-decoration:none;">章{ch}</a>
+            ))}
+            {c.principles.map(p => (
+              <span style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);color:rgba(200,169,110,0.85);padding:0.2rem 0.5rem;font-size:0.65rem;">{p}</span>
+            ))}
+          </div>
+        </div>
+      </details>
+    ))}
+
+  </div>
+
+</BaseLayout>
