@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-13 20:43",
+  "generated_at": "2026-05-14 22:35",
   "summary": {
     "rank": "watch",
     "score": 57,
@@ -9,16 +9,16 @@
     "expected_return": 1.32,
     "risk_reward": 1.35,
     "max_loss_est": -0.98,
-    "verdict": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=27% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.35\n判定時刻: 2026-05-13 20:43",
-    "prediction_date": "2026-05-13"
+    "verdict": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=25% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.35\n判定時刻: 2026-05-14 22:35",
+    "prediction_date": "2026-05-14"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 7,
       "BUY": 18,
-      "HOLD": 6,
-      "WATCH": 37,
+      "HOLD": 7,
+      "WATCH": 36,
       "REDUCE": 1
     },
     "category_stats": {
@@ -55,14 +55,14 @@
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 57.7
+        "avg_score": 58.3
       },
       "analysis": {
         "count": 10,
         "buy": 5,
         "sell": 0,
         "hold": 5,
-        "avg_score": 57.7
+        "avg_score": 56.9
       },
       "market_monitor": {
         "count": 7,
@@ -104,7 +104,7 @@
       "score": 85.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "52週高値近傍(0.0%) / 60日リターン強(20.8%) / ADXトレンド強(=44) / 200MA大幅上回り"
+      "reason": "52週高値近傍(0.0%) / 60日リターン強(22.1%) / ADXトレンド強(=43) / 200MA大幅上回り"
     },
     {
       "agent": "rule_compliance",
@@ -139,12 +139,12 @@
       "reason": "semiconductor: 売上成長=73%"
     },
     {
-      "agent": "mid_term_prob",
-      "category": "prediction",
+      "agent": "supply_demand",
+      "category": "analysis",
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+7.2% / 売上成長=73%"
+      "reason": "MFI買い圧力(62) / OBV上昇（蓄積） / VWAP上方"
     },
     {
       "agent": "liquidity_risk",
@@ -170,7 +170,15 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "直近ニュース良好(0.50)"
+      "reason": "直近ニュース良好(0.35)"
+    },
+    {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.2% / 上昇確率61% / P10=-0.6% P90=+1.0%"
     },
     {
       "agent": "score_integration",
@@ -227,14 +235,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "5d上昇確率=54% / 20d=57% / 3m=64% / 期待値=+1.32%"
-    },
-    {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 53.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率54% / P10=-0.8% P90=+0.9%"
     }
   ],
   "fundamentals": {
@@ -247,11 +247,11 @@
   },
   "historical": {
     "first_data_date": "1999-01-22",
-    "total_days": 6868,
+    "total_days": 6869,
     "approx_years": 27.3,
     "data_span_label": "IPO以降 約27.3年（1999-01-22〜）",
-    "all_time_high": 220.78,
-    "current_close": 220.78,
+    "all_time_high": 225.83,
+    "current_close": 225.83,
     "current_drawdown_pct": 0.0,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
@@ -272,6 +272,13 @@
   },
   "news": [
     {
+      "headline": "After AMD's Blowout Earnings Report, Is This AI Stock About to Enter the $1 Trillion Club?",
+      "sentiment": 0.8,
+      "importance": 5,
+      "published_at": "2026-05-14 22:05:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "This Dividend ETF May Be the Ultimate Income Investment to Put in Your Portfolio Right Now",
       "sentiment": 0.27,
       "importance": 4,
@@ -279,38 +286,31 @@
       "source": "yahoo"
     },
     {
-      "headline": "Nvidia stock rises as Jensen Huang joins Trump China trip",
-      "sentiment": 0.34,
+      "headline": "Cisco Is Up 17% Today: Is It Outperforming Other Networking Stocks Like Hewlett Packard Enterprise and Arista Networks?",
+      "sentiment": 0.87,
       "importance": 2,
-      "published_at": "2026-05-13 20:34:43",
+      "published_at": "2026-05-14 22:24:19",
       "source": "yahoo"
     },
     {
-      "headline": "Truly Unique AI Powerhouse Etches Buy Zone. Now Comes This Test.",
-      "sentiment": 0.73,
+      "headline": "Big Pharma’s 5 Hottest Biotech Hunting Grounds: Meet the Category Leaders",
+      "sentiment": 0.27,
       "importance": 2,
-      "published_at": "2026-05-13 20:25:34",
+      "published_at": "2026-05-14 22:20:55",
       "source": "yahoo"
     },
     {
-      "headline": "Nebius Revenue Booms On AI Computer Infrastructure Spending",
-      "sentiment": -0.32,
+      "headline": "Ideal Power Reports First Quarter 2026 Financial Results",
+      "sentiment": 0.92,
       "importance": 2,
-      "published_at": "2026-05-13 20:23:55",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Boxes, Subscriptions, and Beyond: The Evolution of Software Pricing",
-      "sentiment": null,
-      "importance": 2,
-      "published_at": "2026-05-13 20:21:00",
+      "published_at": "2026-05-14 22:20:00",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-05-21",
-      "estimated_eps": 1.77461,
+      "estimated_eps": 1.77593,
       "actual_eps": null,
       "surprise_pct": null
     }

@@ -1,25 +1,26 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-13 20:43",
+  "generated_at": "2026-05-14 22:35",
   "summary": {
     "rank": "watch",
-    "score": 55,
+    "score": 54,
     "prob_up_5d": 0.547,
     "prob_down_5pct": 0.261,
     "expected_return": 1.38,
     "risk_reward": 1.05,
     "max_loss_est": -1.31,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=64% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-13 20:43",
-    "prediction_date": "2026-05-13"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=64% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-14 22:35",
+    "prediction_date": "2026-05-14"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 6,
       "BUY": 13,
-      "HOLD": 8,
-      "WATCH": 39,
-      "REDUCE": 3
+      "HOLD": 9,
+      "WATCH": 38,
+      "REDUCE": 2,
+      "SELL": 1
     },
     "category_stats": {
       "trade_style": {
@@ -27,7 +28,7 @@
         "buy": 3,
         "sell": 1,
         "hold": 3,
-        "avg_score": 60.6
+        "avg_score": 57.7
       },
       "personal": {
         "count": 10,
@@ -48,21 +49,21 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 53.4
+        "avg_score": 53.8
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 55.5
+        "avg_score": 55.3
       },
       "analysis": {
         "count": 10,
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 54.9
+        "avg_score": 53.9
       },
       "market_monitor": {
         "count": 7,
@@ -74,14 +75,6 @@
     }
   },
   "top_buys": [
-    {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 85.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "52週高値近傍(0.0%) / 60日リターン強(15.3%) / ADXトレンド強(=34) / 200MA大幅上回り"
-    },
     {
       "agent": "dividend_income",
       "category": "trade_style",
@@ -123,6 +116,14 @@
       "reason": "ウォッチリスト内 3/10位"
     },
     {
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 75.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "52週高値近傍(0.0%) / ADXトレンド強(=36) / 200MA大幅上回り"
+    },
+    {
       "agent": "growth_invest",
       "category": "trade_style",
       "score": 74.0,
@@ -144,7 +145,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MFI買い圧力(71) / OBV上昇（蓄積） / VWAP上方"
+      "reason": "MFI買い圧力(72) / OBV上昇（蓄積） / VWAP上方"
     },
     {
       "agent": "liquidity_risk",
@@ -186,7 +187,15 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+7.7%)"
+      "reason": "S&P500比 月次強い(+6.2%)"
+    },
+    {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率58% / P10=-0.5% P90=+0.7%"
     },
     {
       "agent": "institutional_flow",
@@ -197,12 +206,12 @@
       "reason": "静かな蓄積パターン"
     },
     {
-      "agent": "alert",
-      "category": "integration",
+      "agent": "value_invest",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "異常なし"
+      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
     },
     {
       "agent": "ensemble",
@@ -213,14 +222,6 @@
       "reason": "アンサンブル=56% / LGBM=55% / ルール=53% / ファンダ=60%"
     },
     {
-      "agent": "investor_profile",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "volume_anomaly",
       "category": "market_monitor",
       "score": 55.0,
@@ -229,12 +230,12 @@
       "reason": "OBV上昇トレンド"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
+      "reason": "プロファイル適合"
     }
   ],
   "fundamentals": {
@@ -247,15 +248,15 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9157,
+    "total_days": 9158,
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
-    "all_time_high": 294.8,
-    "current_close": 294.8,
+    "all_time_high": 298.87,
+    "current_close": 298.87,
     "current_drawdown_pct": 0.0,
     "max_drawdown_pct": -81.8,
     "days_below_30pct_dd": 3292,
-    "pct_time_below_30pct": 36.0,
+    "pct_time_below_30pct": 35.9,
     "current_pct_of_ath": 100.0
   },
   "backtest": {
