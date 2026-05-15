@@ -1,16 +1,16 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-05-14 22:35",
+  "generated_at": "2026-05-16 02:40",
   "summary": {
     "rank": "watch",
-    "score": 49,
+    "score": 48,
     "prob_up_5d": 0.569,
     "prob_down_5pct": 0.05,
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-14 22:35",
-    "prediction_date": "2026-05-14"
+    "verdict": "【様子見】★★\n総合スコア: 48.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-16 02:40",
+    "prediction_date": "2026-05-16"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -33,7 +33,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 55.5
+        "avg_score": 55.2
       },
       "personal": {
         "count": 10,
@@ -61,7 +61,7 @@
         "buy": 0,
         "sell": 2,
         "hold": 4,
-        "avg_score": 40.2
+        "avg_score": 40.0
       },
       "sector": {
         "count": 19,
@@ -156,20 +156,20 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
-    },
-    {
       "agent": "bayesian",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率54% / P10=-1.4% P90=+1.7%"
     },
     {
       "agent": "swing_trade",
@@ -180,20 +180,20 @@
       "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 52.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率54% / P10=-1.6% P90=+1.8%"
-    },
-    {
       "agent": "trend_direction",
       "category": "market_monitor",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "200MA下 / MACD正"
+    },
+    {
+      "agent": "final_judgment",
+      "category": "integration",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "【様子見】★★\n総合スコア: 48.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-16 02:40"
     }
   ],
   "fundamentals": null,
@@ -215,7 +215,7 @@
   "earnings_recent": [
     {
       "date": "2026-05-28",
-      "estimated_eps": -0.3756,
+      "estimated_eps": -0.37274,
       "actual_eps": null,
       "surprise_pct": null
     }

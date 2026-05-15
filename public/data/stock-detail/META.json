@@ -1,33 +1,33 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-14 22:35",
+  "generated_at": "2026-05-16 02:40",
   "summary": {
     "rank": "watch",
     "score": 53,
     "prob_up_5d": 0.567,
-    "prob_down_5pct": 0.345,
+    "prob_down_5pct": 0.322,
     "expected_return": 1.54,
-    "risk_reward": 0.89,
-    "max_loss_est": -1.73,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=29% / 3ヶ月=73% / 12ヶ月=50%\n下落確率: 3%=58% / 5%=35% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.89\n判定時刻: 2026-05-14 22:35",
-    "prediction_date": "2026-05-14"
+    "risk_reward": 0.96,
+    "max_loss_est": -1.61,
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=31% / 3ヶ月=72% / 12ヶ月=22%\n下落確率: 3%=59% / 5%=32% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.96\n判定時刻: 2026-05-16 02:40",
+    "prediction_date": "2026-05-16"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
       "BUY": 12,
-      "HOLD": 9,
-      "WATCH": 41,
+      "HOLD": 8,
+      "WATCH": 42,
       "REDUCE": 3
     },
     "category_stats": {
       "trade_style": {
         "count": 7,
-        "buy": 3,
+        "buy": 4,
         "sell": 1,
-        "hold": 3,
-        "avg_score": 56.9
+        "hold": 2,
+        "avg_score": 58.3
       },
       "sector": {
         "count": 19,
@@ -43,26 +43,26 @@
         "hold": 5,
         "avg_score": 59.5
       },
+      "analysis": {
+        "count": 10,
+        "buy": 2,
+        "sell": 1,
+        "hold": 7,
+        "avg_score": 51.6
+      },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 54.0
-      },
-      "analysis": {
-        "count": 10,
-        "buy": 3,
-        "sell": 1,
-        "hold": 6,
-        "avg_score": 51.3
+        "avg_score": 54.9
       },
       "market_monitor": {
         "count": 7,
         "buy": 1,
         "sell": 1,
         "hold": 5,
-        "avg_score": 48.6
+        "avg_score": 45.9
       },
       "integration": {
         "count": 6,
@@ -107,14 +107,6 @@
       "reason": "全ルール遵守"
     },
     {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 74.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=74% / ROIC=16% / PER=22x"
-    },
-    {
       "agent": "fundamental",
       "category": "analysis",
       "score": 73.0,
@@ -123,20 +115,12 @@
       "reason": "高利益率(41%) / 高成長(24%)"
     },
     {
-      "agent": "liquidity_risk",
-      "category": "market_monitor",
+      "agent": "long_term_prob",
+      "category": "prediction",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "流動性良好"
-    },
-    {
-      "agent": "news_impact",
-      "category": "analysis",
-      "score": 67.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "直近ニュース強ポジ(0.51) / 高関心・ポジティブ"
+      "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
     },
     {
       "agent": "risk_assessment",
@@ -153,32 +137,32 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "PER適正(22.3x) / ROE高(30%) / 配当利回り31.0%"
     }
   ],
   "top_risks": [
     {
-      "agent": "monte_carlo",
+      "agent": "bayesian",
       "category": "prediction",
       "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率62% / P10=-0.7% P90=+1.0%"
-    },
-    {
-      "agent": "market_sentiment",
-      "category": "market_monitor",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "直近ニュース良好(0.51)"
-    },
-    {
-      "agent": "expected_value",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
+      "reason": "過去勝率=50% / 事後確率=60%"
     },
     {
       "agent": "mid_term_prob",
@@ -186,7 +170,15 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=58% / MA20=-3.9% / 売上成長=24%"
+      "reason": "20d/3m上昇確率=58% / MA20=-2.5% / 売上成長=24%"
+    },
+    {
+      "agent": "expected_value",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "期待値=+1.40% / RR比=2.04 / 上昇確率=55%"
     },
     {
       "agent": "valuation",
@@ -197,12 +189,36 @@
       "reason": "売上高成長24%"
     },
     {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=56% / LGBM=57% / ルール=53% / ファンダ=60%"
+    },
+    {
       "agent": "lgbm_prob",
       "category": "prediction",
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=29% / 3m=73% / 期待値=+1.54%"
+      "reason": "5d上昇確率=57% / 20d=31% / 3m=72% / 期待値=+1.54%"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -218,23 +234,7 @@
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ADXトレンド強(=48)"
-    },
-    {
-      "agent": "investor_profile",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "ADXトレンド強(=47)"
     }
   ],
   "fundamentals": {
@@ -247,16 +247,16 @@
   },
   "historical": {
     "first_data_date": "2012-05-18",
-    "total_days": 3516,
+    "total_days": 3518,
     "approx_years": 14.0,
     "data_span_label": "IPO以降 約14.0年（2012-05-18〜）",
     "all_time_high": 788.15,
-    "current_close": 616.63,
-    "current_drawdown_pct": -21.8,
+    "current_close": 619.22,
+    "current_drawdown_pct": -21.4,
     "max_drawdown_pct": -76.7,
     "days_below_30pct_dd": 585,
     "pct_time_below_30pct": 16.6,
-    "current_pct_of_ath": 78.2
+    "current_pct_of_ath": 78.6
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_META",
@@ -271,6 +271,13 @@
     "tested_at": "2026-04-29 09:55:10"
   },
   "news": [
+    {
+      "headline": "Nebius Stock Up Post Q1 Earnings: Should You Buy, Hold or Sell?",
+      "sentiment": 0.4,
+      "importance": 5,
+      "published_at": "2026-05-15 23:42:00",
+      "source": "yahoo"
+    },
     {
       "headline": "Cisco Stock Surges as Earnings Show It’s Now an AI Winner",
       "sentiment": 0.88,
@@ -293,24 +300,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "New coalition launches to advance and scale optical connections for AI data centers",
-      "sentiment": 0.82,
-      "importance": 3,
-      "published_at": "2026-05-12 21:03:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Phunware names new CEO, taps Disney+ veteran for AI platform push",
-      "sentiment": 0.48,
+      "headline": "Trump’s More Than 3,700 Trades Included Nvidia, Boeing, Intel",
+      "sentiment": -0.62,
       "importance": 2,
-      "published_at": "2026-05-14 22:17:00",
+      "published_at": "2026-05-16 01:25:16",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-07-30",
-      "estimated_eps": 7.48333,
+      "estimated_eps": 7.50889,
       "actual_eps": null,
       "surprise_pct": null
     },
