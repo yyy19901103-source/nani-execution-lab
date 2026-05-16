@@ -1,15 +1,15 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-16 02:40",
+  "generated_at": "2026-05-16 22:21",
   "summary": {
     "rank": "watch",
     "score": 55,
-    "prob_up_5d": 0.537,
+    "prob_up_5d": 0.546,
     "prob_down_5pct": 0.184,
-    "expected_return": 1.3,
-    "risk_reward": 1.41,
+    "expected_return": 1.37,
+    "risk_reward": 1.49,
     "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=49% / 3ヶ月=63% / 12ヶ月=72%\n下落確率: 3%=32% / 5%=18% / 10%=6%\n期待値: +1.30% / リスクリワード: 1.41\n判定時刻: 2026-05-16 02:40",
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=55% / 20日=50% / 3ヶ月=63% / 12ヶ月=72%\n下落確率: 3%=31% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-16 22:20",
     "prediction_date": "2026-05-16"
   },
   "agent_summary": {
@@ -17,8 +17,8 @@
     "signal_distribution": {
       "STRONG_BUY": 5,
       "BUY": 14,
-      "HOLD": 7,
-      "WATCH": 43
+      "HOLD": 6,
+      "WATCH": 44
     },
     "category_stats": {
       "integration": {
@@ -54,7 +54,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 54.7
+        "avg_score": 54.8
       },
       "market_monitor": {
         "count": 7,
@@ -68,7 +68,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 53.1
+        "avg_score": 53.8
       }
     }
   },
@@ -127,7 +127,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+2.2% / 売上成長=17%"
+      "reason": "20d/3m上昇確率=71% / MA20=+1.1% / 売上成長=17%"
     },
     {
       "agent": "liquidity_risk",
@@ -146,12 +146,12 @@
       "reason": "高利益率(47%)"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 67.0,
+      "agent": "risk_assessment",
+      "category": "analysis",
+      "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.3% / 上昇確率71% / P10=-0.4% P90=+1.1%"
+      "reason": "リスク許容範囲内"
     }
   ],
   "top_risks": [
@@ -164,20 +164,20 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "day_trade",
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "テクニカル中立 / 強弱比=2.3:3.0"
+    },
+    {
+      "agent": "momentum",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
-    },
-    {
-      "agent": "valuation",
-      "category": "analysis",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "バリュエーション中立"
+      "reason": "ADXトレンド強(=27)"
     },
     {
       "agent": "investor_profile",
@@ -196,12 +196,20 @@
       "reason": "異常なし"
     },
     {
-      "agent": "momentum",
+      "agent": "valuation",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "バリュエーション中立"
+    },
+    {
+      "agent": "day_trade",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ADXトレンド強(=27)"
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "score_integration",
@@ -225,15 +233,7 @@
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=54% / LGBM=54% / ルール=53% / ファンダ=58%"
-    },
-    {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 53.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=54% / 20d=49% / 3m=63% / 期待値=+1.30%"
+      "reason": "アンサンブル=55% / LGBM=55% / ルール=53% / ファンダ=58%"
     }
   ],
   "fundamentals": {
@@ -250,12 +250,12 @@
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 426.83,
-    "current_drawdown_pct": -20.9,
+    "current_close": 421.92,
+    "current_drawdown_pct": -21.8,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3311,
     "pct_time_below_30pct": 36.1,
-    "current_pct_of_ath": 79.1
+    "current_pct_of_ath": 78.2
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -271,6 +271,20 @@
   },
   "news": [
     {
+      "headline": "Evaluating Workday (WDAY) Valuation After New AI Integrations And Solopreneur Accelerator Launch",
+      "sentiment": 0.75,
+      "importance": 3,
+      "published_at": "2026-05-16 21:12:05",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Microsoft (MSFT) Expands Discord Partnership With Xbox",
+      "sentiment": 0.64,
+      "importance": 3,
+      "published_at": "2026-05-16 19:45:08",
+      "source": "yahoo"
+    },
+    {
       "headline": "GoFormz Launches Microsoft Power Automate Integration, Connecting Field Execution Workflows to the Microsoft Ecosystem",
       "sentiment": -0.42,
       "importance": 3,
@@ -285,24 +299,10 @@
       "source": "yahoo"
     },
     {
-      "headline": "Proofpoint Launches Dedicated MSP Business Unit and Introduces 365 Total Protection for North America",
-      "sentiment": 0.92,
-      "importance": 3,
-      "published_at": "2026-05-13 18:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Microsoft Rises 4%, Resists NASDAQ Downtrend",
-      "sentiment": -0.3,
-      "importance": 2,
-      "published_at": "2026-05-16 02:22:07",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Microsoft Stock Jumps After Bill Ackman Reveals New Position",
+      "headline": "Microsoft Hit by $3.2 Billion Sell-Off From Bill Gates Foundation",
       "sentiment": null,
       "importance": 2,
-      "published_at": "2026-05-16 02:03:24",
+      "published_at": "2026-05-16 20:31:28",
       "source": "yahoo"
     }
   ],

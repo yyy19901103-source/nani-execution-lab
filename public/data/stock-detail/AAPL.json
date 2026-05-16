@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-16 02:40",
+  "generated_at": "2026-05-16 22:21",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,7 +9,7 @@
     "expected_return": 1.38,
     "risk_reward": 1.05,
     "max_loss_est": -1.31,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-16 02:40",
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-16 22:20",
     "prediction_date": "2026-05-16"
   },
   "agent_summary": {
@@ -19,7 +19,8 @@
       "BUY": 13,
       "HOLD": 9,
       "WATCH": 39,
-      "REDUCE": 3
+      "REDUCE": 2,
+      "SELL": 1
     },
     "category_stats": {
       "trade_style": {
@@ -27,7 +28,7 @@
         "buy": 3,
         "sell": 1,
         "hold": 3,
-        "avg_score": 60.6
+        "avg_score": 59.1
       },
       "personal": {
         "count": 10,
@@ -48,7 +49,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 53.6
+        "avg_score": 53.1
       },
       "analysis": {
         "count": 10,
@@ -62,7 +63,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 4,
-        "avg_score": 54.0
+        "avg_score": 53.3
       },
       "integration": {
         "count": 6,
@@ -80,7 +81,7 @@
       "score": 85.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "52週高値近傍(0.0%) / 60日リターン強(16.1%) / ADXトレンド強(=44) / 200MA大幅上回り"
+      "reason": "52週高値近傍(0.0%) / 60日リターン強(15.2%) / ADXトレンド強(=44) / 200MA大幅上回り"
     },
     {
       "agent": "dividend_income",
@@ -136,7 +137,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MFI買い圧力(83) / OBV上昇（蓄積） / VWAP上方"
+      "reason": "MFI買い圧力(84) / OBV上昇（蓄積） / VWAP上方"
     },
     {
       "agent": "liquidity_risk",
@@ -173,20 +174,12 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率60% / P10=-0.4% P90=+0.6%"
-    },
-    {
       "agent": "sector_rotation",
       "category": "market_monitor",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+7.5%)"
+      "reason": "S&P500比 月次強い(+7.1%)"
     },
     {
       "agent": "technical_summary",
@@ -205,6 +198,14 @@
       "reason": "アンサンブル=56% / LGBM=55% / ルール=53% / ファンダ=60%"
     },
     {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "RSI極値: 88"
+    },
+    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
@@ -213,12 +214,12 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "alert",
-      "category": "integration",
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "RSI極値: 89"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "value_invest",
@@ -229,12 +230,12 @@
       "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "5d上昇確率=55% / 20d=58% / 3m=62% / 期待値=+1.38%"
     }
   ],
   "fundamentals": {
@@ -250,8 +251,8 @@
     "total_days": 9160,
     "approx_years": 36.3,
     "data_span_label": "IPO以降 約36.3年（1990-01-02〜）",
-    "all_time_high": 302.6,
-    "current_close": 302.6,
+    "all_time_high": 300.23,
+    "current_close": 300.23,
     "current_drawdown_pct": 0.0,
     "max_drawdown_pct": -81.8,
     "days_below_30pct_dd": 3292,

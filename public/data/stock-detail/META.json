@@ -1,6 +1,6 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-16 02:40",
+  "generated_at": "2026-05-16 22:21",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,7 +9,7 @@
     "expected_return": 1.54,
     "risk_reward": 0.96,
     "max_loss_est": -1.61,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=31% / 3ヶ月=72% / 12ヶ月=22%\n下落確率: 3%=59% / 5%=32% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.96\n判定時刻: 2026-05-16 02:40",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=31% / 3ヶ月=73% / 12ヶ月=41%\n下落確率: 3%=58% / 5%=32% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.96\n判定時刻: 2026-05-16 22:20",
     "prediction_date": "2026-05-16"
   },
   "agent_summary": {
@@ -17,8 +17,8 @@
     "signal_distribution": {
       "STRONG_BUY": 4,
       "BUY": 12,
-      "HOLD": 8,
-      "WATCH": 42,
+      "HOLD": 9,
+      "WATCH": 41,
       "REDUCE": 3
     },
     "category_stats": {
@@ -27,14 +27,7 @@
         "buy": 4,
         "sell": 1,
         "hold": 2,
-        "avg_score": 58.3
-      },
-      "sector": {
-        "count": 19,
-        "buy": 2,
-        "sell": 0,
-        "hold": 17,
-        "avg_score": 53.2
+        "avg_score": 56.9
       },
       "personal": {
         "count": 10,
@@ -43,26 +36,33 @@
         "hold": 5,
         "avg_score": 59.5
       },
+      "sector": {
+        "count": 19,
+        "buy": 2,
+        "sell": 0,
+        "hold": 17,
+        "avg_score": 52.9
+      },
       "analysis": {
         "count": 10,
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 51.6
+        "avg_score": 50.0
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 54.9
+        "avg_score": 54.2
       },
       "market_monitor": {
         "count": 7,
         "buy": 1,
         "sell": 1,
         "hold": 5,
-        "avg_score": 45.9
+        "avg_score": 47.7
       },
       "integration": {
         "count": 6,
@@ -83,12 +83,12 @@
       "reason": "高配当(31.0%) / 高利益率(41%) / ROE高(30%)"
     },
     {
-      "agent": "sector_social_media",
-      "category": "sector",
+      "agent": "rule_compliance",
+      "category": "personal",
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "広告収益高成長(24%)"
+      "reason": "全ルール遵守"
     },
     {
       "agent": "japan_dividend",
@@ -99,12 +99,12 @@
       "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
-      "score": 80.0,
+      "agent": "sector_social_media",
+      "category": "sector",
+      "score": 75.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "全ルール遵守"
+      "reason": "広告収益高成長(24%)"
     },
     {
       "agent": "fundamental",
@@ -121,6 +121,14 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
+    },
+    {
+      "agent": "liquidity_risk",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
     },
     {
       "agent": "risk_assessment",
@@ -145,14 +153,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "失敗パターンなし"
-    },
-    {
-      "agent": "value_invest",
-      "category": "trade_style",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "PER適正(22.3x) / ROE高(30%) / 配当利回り31.0%"
     }
   ],
   "top_risks": [
@@ -170,7 +170,7 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=58% / MA20=-2.5% / 売上成長=24%"
+      "reason": "20d/3m上昇確率=58% / MA20=-3.2% / 売上成長=24%"
     },
     {
       "agent": "expected_value",
@@ -189,28 +189,20 @@
       "reason": "売上高成長24%"
     },
     {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=57% / 20d=31% / 3m=73% / 期待値=+1.54%"
+    },
+    {
       "agent": "ensemble",
       "category": "prediction",
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "アンサンブル=56% / LGBM=57% / ルール=53% / ファンダ=60%"
-    },
-    {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=31% / 3m=72% / 期待値=+1.54%"
-    },
-    {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "investor_profile",
@@ -235,6 +227,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ADXトレンド強(=47)"
+    },
+    {
+      "agent": "score_integration",
+      "category": "integration",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=53"
     }
   ],
   "fundamentals": {
@@ -251,12 +251,12 @@
     "approx_years": 14.0,
     "data_span_label": "IPO以降 約14.0年（2012-05-18〜）",
     "all_time_high": 788.15,
-    "current_close": 619.22,
-    "current_drawdown_pct": -21.4,
+    "current_close": 614.23,
+    "current_drawdown_pct": -22.1,
     "max_drawdown_pct": -76.7,
     "days_below_30pct_dd": 585,
     "pct_time_below_30pct": 16.6,
-    "current_pct_of_ath": 78.6
+    "current_pct_of_ath": 77.9
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_META",
@@ -293,17 +293,17 @@
       "source": "yahoo"
     },
     {
+      "headline": "Bank of America resets AMD stock price target",
+      "sentiment": 0.71,
+      "importance": 4,
+      "published_at": "2026-05-16 03:03:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "The Zacks Analyst Blog Meta, Pfizer, Salesforce and Smith-Midland",
       "sentiment": 0.8,
       "importance": 4,
       "published_at": "2026-05-14 18:18:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Trump’s More Than 3,700 Trades Included Nvidia, Boeing, Intel",
-      "sentiment": -0.62,
-      "importance": 2,
-      "published_at": "2026-05-16 01:25:16",
       "source": "yahoo"
     }
   ],

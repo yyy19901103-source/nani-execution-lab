@@ -1,20 +1,29 @@
 {
-  "generated_at": "2026-05-16 02:40",
+  "generated_at": "2026-05-16 22:21",
   "today": {
-    "date": "2026-05-13",
-    "vix": 17.87,
-    "us10y": 4.46,
-    "sp500_ret_20d_pct": 6.0
+    "date": "2026-05-14",
+    "vix": 17.26,
+    "us10y": 4.47,
+    "sp500_ret_20d_pct": 6.53
   },
   "similar_days": [
     {
-      "date": "2025-06-03",
-      "distance": 0.08,
-      "vix": 17.69,
-      "us10y": 4.46,
-      "sp500_ret_20d_pct": 5.66,
+      "date": "2025-06-04",
+      "distance": 0.07,
+      "vix": 17.61,
+      "us10y": 4.37,
+      "sp500_ret_20d_pct": 6.49,
       "context": "平静",
-      "next_30d_return_pct": 5.48
+      "next_30d_return_pct": 5.46
+    },
+    {
+      "date": "2007-09-26",
+      "distance": 0.096,
+      "vix": 17.63,
+      "us10y": 4.63,
+      "sp500_ret_20d_pct": 6.5,
+      "context": "平静",
+      "next_30d_return_pct": -3.26
     },
     {
       "date": "2025-06-09",
@@ -24,15 +33,6 @@
       "sp500_ret_20d_pct": 6.11,
       "context": "平静",
       "next_30d_return_pct": 5.88
-    },
-    {
-      "date": "2003-09-08",
-      "distance": 0.121,
-      "vix": 18.26,
-      "us10y": 4.41,
-      "sp500_ret_20d_pct": 5.53,
-      "context": "やや警戒",
-      "next_30d_return_pct": 1.26
     }
   ]
 }

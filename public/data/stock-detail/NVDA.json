@@ -1,25 +1,25 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-16 02:40",
+  "generated_at": "2026-05-16 22:21",
   "summary": {
     "rank": "watch",
-    "score": 56,
-    "prob_up_5d": 0.525,
-    "prob_down_5pct": 0.208,
-    "expected_return": 1.2,
-    "risk_reward": 1.15,
-    "max_loss_est": -1.04,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=57% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=21% / 10%=14%\n期待値: +1.20% / リスクリワード: 1.15\n判定時刻: 2026-05-16 02:40",
+    "score": 57,
+    "prob_up_5d": 0.54,
+    "prob_down_5pct": 0.2,
+    "expected_return": 1.32,
+    "risk_reward": 1.32,
+    "max_loss_est": -1.0,
+    "verdict": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=62% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.32\n判定時刻: 2026-05-16 22:20",
     "prediction_date": "2026-05-16"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 7,
-      "BUY": 16,
-      "HOLD": 10,
+      "STRONG_BUY": 8,
+      "BUY": 17,
+      "HOLD": 8,
       "WATCH": 35,
-      "SELL": 1
+      "REDUCE": 1
     },
     "category_stats": {
       "integration": {
@@ -27,14 +27,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 58.0
-      },
-      "trade_style": {
-        "count": 7,
-        "buy": 3,
-        "sell": 1,
-        "hold": 3,
-        "avg_score": 59.3
+        "avg_score": 58.2
       },
       "sector": {
         "count": 19,
@@ -42,6 +35,13 @@
         "sell": 0,
         "hold": 16,
         "avg_score": 53.8
+      },
+      "trade_style": {
+        "count": 7,
+        "buy": 3,
+        "sell": 0,
+        "hold": 4,
+        "avg_score": 61.4
       },
       "personal": {
         "count": 10,
@@ -52,24 +52,24 @@
       },
       "analysis": {
         "count": 10,
-        "buy": 4,
+        "buy": 5,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 53.2
+        "hold": 5,
+        "avg_score": 57.2
       },
       "prediction": {
         "count": 10,
         "buy": 4,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 56.5
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 56.4
       },
       "market_monitor": {
         "count": 7,
-        "buy": 3,
+        "buy": 4,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 56.4
+        "hold": 3,
+        "avg_score": 59.4
       }
     }
   },
@@ -83,14 +83,6 @@
       "reason": "ウォッチリスト内 1/10位"
     },
     {
-      "agent": "growth_invest",
-      "category": "trade_style",
-      "score": 88.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
-    },
-    {
       "agent": "sector_semiconductor",
       "category": "sector",
       "score": 88.0,
@@ -99,12 +91,20 @@
       "reason": "半導体専門: 売上成長=73% OPM=65%"
     },
     {
+      "agent": "growth_invest",
+      "category": "trade_style",
+      "score": 88.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
+    },
+    {
       "agent": "momentum",
       "category": "trade_style",
       "score": 85.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "52週高値近傍(-2.4%) / 60日リターン強(22.5%) / ADXトレンド強(=38) / 200MA大幅上回り"
+      "reason": "52週高値近傍(-4.4%) / 60日リターン強(19.9%) / ADXトレンド強(=38) / 200MA大幅上回り"
     },
     {
       "agent": "rule_compliance",
@@ -121,6 +121,14 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "ROIC優秀(51%) / 高利益率(65%) / 高成長(73%)"
+    },
+    {
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 77.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル総合買いシグナル / 強弱比=5.3:1.0"
     },
     {
       "agent": "long_term_prob",
@@ -144,15 +152,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+9.3% / 売上成長=73%"
-    },
-    {
-      "agent": "liquidity_risk",
-      "category": "market_monitor",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "流動性良好"
+      "reason": "20d/3m上昇確率=71% / MA20=+7.1% / 売上成長=73%"
     }
   ],
   "top_risks": [
@@ -167,10 +167,18 @@
     {
       "agent": "score_integration",
       "category": "integration",
-      "score": 56.0,
+      "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=56"
+      "reason": "全エージェント統合スコア=57"
+    },
+    {
+      "agent": "institutional_flow",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "静かな蓄積パターン"
     },
     {
       "agent": "investor_profile",
@@ -197,6 +205,14 @@
       "reason": "OBV上昇トレンド"
     },
     {
+      "agent": "short_term_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "1d/5d上昇確率=54% / RSI=56 / MACD正"
+    },
+    {
       "agent": "bayesian",
       "category": "prediction",
       "score": 54.0,
@@ -207,10 +223,10 @@
     {
       "agent": "lgbm_prob",
       "category": "prediction",
-      "score": 52.0,
+      "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=53% / 20d=57% / 3m=64% / 期待値=+1.20%"
+      "reason": "5d上昇確率=54% / 20d=57% / 3m=62% / 期待値=+1.32%"
     },
     {
       "agent": "final_judgment",
@@ -218,23 +234,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=57% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=21% / 10%=14%\n期待値: +1.20% / リスクリワード: 1.15\n判定時刻: 2026-05-16 02:40"
-    },
-    {
-      "agent": "institutional_flow",
-      "category": "analysis",
-      "score": 50.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "機関動向不明瞭"
-    },
-    {
-      "agent": "market_regime",
-      "category": "market_monitor",
-      "score": 50.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "通常レジーム"
+      "reason": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=62% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.32\n判定時刻: 2026-05-16 22:20"
     }
   ],
   "fundamentals": {
@@ -251,12 +251,12 @@
     "approx_years": 27.3,
     "data_span_label": "IPO以降 約27.3年（1999-01-22〜）",
     "all_time_high": 235.74,
-    "current_close": 230.12,
-    "current_drawdown_pct": -2.4,
+    "current_close": 225.32,
+    "current_drawdown_pct": -4.4,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
     "pct_time_below_30pct": 53.8,
-    "current_pct_of_ath": 97.6
+    "current_pct_of_ath": 95.6
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_NVDA",
@@ -271,6 +271,13 @@
     "tested_at": "2026-04-29 09:55:10"
   },
   "news": [
+    {
+      "headline": "Dow Jones Futures: S&P 500, Nasdaq Still Near Highs As Nvidia, Walmart Earnings Loom",
+      "sentiment": -0.42,
+      "importance": 5,
+      "published_at": "2026-05-16 21:16:03",
+      "source": "yahoo"
+    },
     {
       "headline": "Super League Enterprise, Inc. Q1 2026 Earnings Call Summary",
       "sentiment": 0.83,
@@ -293,17 +300,10 @@
       "source": "yahoo"
     },
     {
-      "headline": "Is Intuit Stock Oversold Now, Finally Making It a Buy?",
-      "sentiment": -0.05,
-      "importance": 2,
-      "published_at": "2026-05-16 02:27:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Microsoft Rises 4%, Resists NASDAQ Downtrend",
-      "sentiment": -0.3,
-      "importance": 2,
-      "published_at": "2026-05-16 02:22:07",
+      "headline": "Forget Utility Dividends. Kevin Warsh Just Made the 30-Year Treasury a Better Income Play",
+      "sentiment": 0.95,
+      "importance": 4,
+      "published_at": "2026-05-16 20:53:46",
       "source": "yahoo"
     }
   ],
