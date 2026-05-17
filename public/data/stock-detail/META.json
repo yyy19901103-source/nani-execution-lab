@@ -1,23 +1,23 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
-    "score": 53,
+    "score": 54,
     "prob_up_5d": 0.567,
     "prob_down_5pct": 0.322,
     "expected_return": 1.54,
     "risk_reward": 0.96,
     "max_loss_est": -1.61,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=31% / 3ヶ月=73% / 12ヶ月=41%\n下落確率: 3%=58% / 5%=32% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.96\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=31% / 3ヶ月=73% / 12ヶ月=41%\n下落確率: 3%=58% / 5%=32% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.96\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 12,
-      "HOLD": 9,
+      "BUY": 14,
+      "HOLD": 7,
       "WATCH": 41,
       "REDUCE": 3
     },
@@ -29,6 +29,13 @@
         "hold": 2,
         "avg_score": 56.9
       },
+      "sector": {
+        "count": 19,
+        "buy": 2,
+        "sell": 0,
+        "hold": 17,
+        "avg_score": 53.2
+      },
       "personal": {
         "count": 10,
         "buy": 5,
@@ -36,40 +43,33 @@
         "hold": 5,
         "avg_score": 59.5
       },
-      "sector": {
-        "count": 19,
-        "buy": 2,
-        "sell": 0,
-        "hold": 17,
-        "avg_score": 52.9
-      },
       "analysis": {
         "count": 10,
+        "buy": 3,
+        "sell": 1,
+        "hold": 6,
+        "avg_score": 52.7
+      },
+      "market_monitor": {
+        "count": 7,
         "buy": 2,
         "sell": 1,
-        "hold": 7,
-        "avg_score": 50.0
+        "hold": 4,
+        "avg_score": 50.3
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 54.2
-      },
-      "market_monitor": {
-        "count": 7,
-        "buy": 1,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 47.7
+        "avg_score": 54.3
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.5
+        "avg_score": 52.7
       }
     }
   },
@@ -83,12 +83,12 @@
       "reason": "高配当(31.0%) / 高利益率(41%) / ROE高(30%)"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
+      "agent": "sector_social_media",
+      "category": "sector",
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "全ルール遵守"
+      "reason": "広告収益高成長(24%)"
     },
     {
       "agent": "japan_dividend",
@@ -99,12 +99,12 @@
       "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
     },
     {
-      "agent": "sector_social_media",
-      "category": "sector",
-      "score": 75.0,
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "広告収益高成長(24%)"
+      "reason": "全ルール遵守"
     },
     {
       "agent": "fundamental",
@@ -115,14 +115,6 @@
       "reason": "高利益率(41%) / 高成長(24%)"
     },
     {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
-    },
-    {
       "agent": "liquidity_risk",
       "category": "market_monitor",
       "score": 70.0,
@@ -131,28 +123,36 @@
       "reason": "流動性良好"
     },
     {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
+    },
+    {
+      "agent": "market_sentiment",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "RSI売られ過ぎ(25) / 直近ニュース良好(0.56)"
+    },
+    {
+      "agent": "news_impact",
+      "category": "analysis",
+      "score": 67.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "直近ニュース強ポジ(0.56) / 高関心・ポジティブ"
+    },
+    {
       "agent": "risk_assessment",
       "category": "analysis",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "リスク許容範囲内"
-    },
-    {
-      "agent": "portfolio_fit",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "未保有・新規可能"
-    },
-    {
-      "agent": "failure_pattern",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
@@ -231,10 +231,10 @@
     {
       "agent": "score_integration",
       "category": "integration",
-      "score": 53.0,
+      "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=53"
+      "reason": "全エージェント統合スコア=54"
     }
   ],
   "fundamentals": {
@@ -279,17 +279,10 @@
       "source": "yahoo"
     },
     {
-      "headline": "Cisco Stock Surges as Earnings Show It’s Now an AI Winner",
-      "sentiment": 0.88,
-      "importance": 5,
-      "published_at": "2026-05-14 20:25:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Zacks Earnings Trends Highlights: Alphabet, Amazon, Microsoft, Meta and Nvidia",
-      "sentiment": 0.34,
-      "importance": 5,
-      "published_at": "2026-05-14 19:27:00",
+      "headline": "5-star analysts reset Broadcom stock price target",
+      "sentiment": 0.38,
+      "importance": 4,
+      "published_at": "2026-05-17 02:33:00",
       "source": "yahoo"
     },
     {
@@ -300,10 +293,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "The Zacks Analyst Blog Meta, Pfizer, Salesforce and Smith-Midland",
-      "sentiment": 0.8,
-      "importance": 4,
-      "published_at": "2026-05-14 18:18:00",
+      "headline": "AI Stock Valuations Just Hit a Dangerous Level. A Top CIO Warns: Companies Can’t Grow 100% Annually for 10 Years Straight.",
+      "sentiment": 0.89,
+      "importance": 2,
+      "published_at": "2026-05-17 20:49:29",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Why Wayfair (W) Stock Is Down Today",
+      "sentiment": 0.68,
+      "importance": 2,
+      "published_at": "2026-05-17 19:28:55",
       "source": "yahoo"
     }
   ],

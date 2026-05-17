@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,17 +9,17 @@
     "expected_return": 1.72,
     "risk_reward": 2.92,
     "max_loss_est": -0.59,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=71% / 12ヶ月=56%\n下落確率: 3%=17% / 5%=12% / 10%=1%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=71% / 12ヶ月=56%\n下落確率: 3%=17% / 5%=12% / 10%=1%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 2,
       "BUY": 12,
-      "HOLD": 8,
+      "HOLD": 7,
       "WATCH": 46,
-      "REDUCE": 1
+      "REDUCE": 2
     },
     "category_stats": {
       "analysis": {
@@ -46,9 +46,9 @@
       "prediction": {
         "count": 10,
         "buy": 2,
-        "sell": 1,
-        "hold": 7,
-        "avg_score": 52.7
+        "sell": 2,
+        "hold": 6,
+        "avg_score": 52.6
       },
       "sector": {
         "count": 19,
@@ -189,14 +189,6 @@
       "reason": "低ボラ環境"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "配当利回り119.0%"
-    },
-    {
       "agent": "mid_term_prob",
       "category": "prediction",
       "score": 55.0,
@@ -227,6 +219,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
     },
     {
       "agent": "short_term_prob",

@@ -1,6 +1,6 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,8 +9,8 @@
     "expected_return": 0.51,
     "risk_reward": 0.26,
     "max_loss_est": -1.96,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=44% / 20日=36% / 3ヶ月=31% / 12ヶ月=35%\n下落確率: 3%=45% / 5%=39% / 10%=26%\n期待値: +0.51% / リスクリワード: 0.26\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=44% / 20日=36% / 3ヶ月=31% / 12ヶ月=35%\n下落確率: 3%=45% / 5%=39% / 10%=26%\n期待値: +0.51% / リスクリワード: 0.26\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -49,7 +49,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 51.1
+        "avg_score": 51.2
       },
       "trade_style": {
         "count": 7,
@@ -148,12 +148,12 @@
       "reason": "200MA上抜け / MACD正"
     },
     {
-      "agent": "momentum",
-      "category": "trade_style",
+      "agent": "mid_term_prob",
+      "category": "prediction",
       "score": 62.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "高値圏 / ADXトレンド強(=37)"
+      "reason": "20d/3m上昇確率=62% / MA20=+5.2% / 売上成長=16%"
     }
   ],
   "top_risks": [
@@ -174,14 +174,6 @@
       "reason": "12m上昇確率=57% / ROIC=2% / PER=353x"
     },
     {
-      "agent": "growth_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "売上高成長(16%) / ROIC低(2%)"
-    },
-    {
       "agent": "sector_ev",
       "category": "sector",
       "score": 55.0,
@@ -190,12 +182,12 @@
       "reason": "EVマージン改善中"
     },
     {
-      "agent": "alert",
-      "category": "integration",
+      "agent": "growth_invest",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "異常なし"
+      "reason": "売上高成長(16%) / ROIC低(2%)"
     },
     {
       "agent": "investor_profile",
@@ -204,6 +196,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
     },
     {
       "agent": "volume_anomaly",

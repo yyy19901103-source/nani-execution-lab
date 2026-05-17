@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,8 +9,8 @@
     "expected_return": 1.39,
     "risk_reward": 1.34,
     "max_loss_est": -1.04,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=34% / 5%=21% / 10%=14%\n期待値: +1.39% / リスクリワード: 1.34\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=34% / 5%=21% / 10%=14%\n期待値: +1.39% / リスクリワード: 1.34\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -55,7 +55,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 49.5
+        "avg_score": 49.4
       },
       "sector": {
         "count": 19,
@@ -147,12 +147,12 @@
       "reason": "12m上昇確率=60% / ROIC=7% / PER=32x"
     },
     {
-      "agent": "emotion_bias",
+      "agent": "money_management",
       "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "感情バイアスなし"
+      "reason": "ケリー推奨=10.0%"
     }
   ],
   "top_risks": [
@@ -173,20 +173,12 @@
       "reason": "EC成長14%"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "day_trade",
+      "agent": "value_invest",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
+      "reason": "ROE高(22%)"
     },
     {
       "agent": "investor_profile",
@@ -205,20 +197,28 @@
       "reason": "異常なし"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ROE高(22%)"
-    },
-    {
       "agent": "fundamental",
       "category": "analysis",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ファンダメンタル中立"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
     },
     {
       "agent": "lgbm_prob",
@@ -229,12 +229,12 @@
       "reason": "5d上昇確率=55% / 20d=61% / 3m=65% / 期待値=+1.39%"
     },
     {
-      "agent": "market_sentiment",
-      "category": "market_monitor",
+      "agent": "mid_term_prob",
+      "category": "prediction",
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "RSI中立ゾーン"
+      "reason": "20d/3m上昇確率=53% / MA20=-0.1% / 売上成長=14%"
     }
   ],
   "fundamentals": {

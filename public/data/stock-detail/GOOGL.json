@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,8 +9,8 @@
     "expected_return": 1.5,
     "risk_reward": 2.0,
     "max_loss_est": -0.75,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=56% / 20日=58% / 3ヶ月=61% / 12ヶ月=71%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.50% / リスクリワード: 2.00\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=56% / 20日=58% / 3ヶ月=61% / 12ヶ月=71%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.50% / リスクリワード: 2.00\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -29,19 +29,19 @@
         "hold": 3,
         "avg_score": 60.3
       },
-      "personal": {
-        "count": 10,
-        "buy": 5,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 59.5
-      },
       "sector": {
         "count": 19,
         "buy": 2,
         "sell": 0,
         "hold": 17,
         "avg_score": 52.2
+      },
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.5
       },
       "integration": {
         "count": 6,
@@ -55,7 +55,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 52.6
+        "avg_score": 52.7
       },
       "analysis": {
         "count": 10,
@@ -91,20 +91,20 @@
       "reason": "高配当(24.0%) / 高利益率(32%) / ROE高(36%)"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "全ルール遵守"
-    },
-    {
       "agent": "japan_dividend",
       "category": "sector",
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "高配当24.0% / ROE良好35.7% / 利益率安定31.6%"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
     },
     {
       "agent": "comparative",
@@ -165,20 +165,20 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "sector_rotation",
-      "category": "market_monitor",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+12.2%)"
-    },
-    {
       "agent": "expected_value",
       "category": "prediction",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
+    },
+    {
+      "agent": "sector_rotation",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "S&P500比 月次強い(+12.2%)"
     },
     {
       "agent": "news_impact",
@@ -197,20 +197,20 @@
       "reason": "5d上昇確率=56% / 20d=58% / 3m=61% / 期待値=+1.50%"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
     },
     {
       "agent": "alert",

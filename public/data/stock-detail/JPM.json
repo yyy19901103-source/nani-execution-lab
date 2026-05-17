@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,16 +9,16 @@
     "expected_return": 1.42,
     "risk_reward": 1.58,
     "max_loss_est": -0.9,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=60% / 3ヶ月=62% / 12ヶ月=76%\n下落確率: 3%=25% / 5%=18% / 10%=8%\n期待値: +1.42% / リスクリワード: 1.58\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=60% / 3ヶ月=62% / 12ヶ月=76%\n下落確率: 3%=25% / 5%=18% / 10%=8%\n期待値: +1.42% / リスクリワード: 1.58\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 13,
+      "BUY": 12,
       "HOLD": 6,
-      "WATCH": 42,
+      "WATCH": 43,
       "REDUCE": 4
     },
     "category_stats": {
@@ -29,19 +29,19 @@
         "hold": 2,
         "avg_score": 62.7
       },
-      "personal": {
-        "count": 10,
-        "buy": 5,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 59.5
-      },
       "sector": {
         "count": 19,
         "buy": 2,
         "sell": 0,
         "hold": 17,
         "avg_score": 52.2
+      },
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.5
       },
       "analysis": {
         "count": 10,
@@ -57,19 +57,19 @@
         "hold": 5,
         "avg_score": 48.9
       },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 53.0
-      },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 1,
         "hold": 8,
         "avg_score": 50.0
+      },
+      "integration": {
+        "count": 6,
+        "buy": 0,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 51.8
       }
     }
   },
@@ -83,20 +83,20 @@
       "reason": "高配当(194.0%) / 高利益率(43%) / ROE高(16%) / PER適正圏"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "全ルール遵守"
-    },
-    {
       "agent": "japan_dividend",
       "category": "sector",
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "高配当194.0% / ROE良好16.5% / 利益率安定43.1%"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
     },
     {
       "agent": "value_invest",
@@ -181,6 +181,14 @@
       "reason": "テクニカル中立 / 強弱比=3.5:4.8"
     },
     {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 6/11位"
+    },
+    {
       "agent": "lgbm_prob",
       "category": "prediction",
       "score": 55.0,
@@ -227,14 +235,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "全エージェント統合スコア=53"
-    },
-    {
-      "agent": "final_judgment",
-      "category": "integration",
-      "score": 52.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=60% / 3ヶ月=62% / 12ヶ月=76%\n下落確率: 3%=25% / 5%=18% / 10%=8%\n期待値: +1.42% / リスクリワード: 1.58\n判定時刻: 2026-05-16 22:20"
     }
   ],
   "fundamentals": {

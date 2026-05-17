@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,8 +9,8 @@
     "expected_return": 1.38,
     "risk_reward": 1.05,
     "max_loss_est": -1.31,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -49,7 +49,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 53.1
+        "avg_score": 53.2
       },
       "analysis": {
         "count": 10,
@@ -166,20 +166,20 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "expected_value",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
-    },
-    {
       "agent": "sector_rotation",
       "category": "market_monitor",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "S&P500比 月次強い(+7.1%)"
+    },
+    {
+      "agent": "expected_value",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
       "agent": "technical_summary",
@@ -198,14 +198,6 @@
       "reason": "アンサンブル=56% / LGBM=55% / ルール=53% / ファンダ=60%"
     },
     {
-      "agent": "alert",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "RSI極値: 88"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
@@ -214,12 +206,12 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
+      "agent": "alert",
+      "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "RSI極値: 88"
     },
     {
       "agent": "value_invest",
@@ -228,6 +220,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "lgbm_prob",

@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-16 22:21",
+  "generated_at": "2026-05-17 21:45",
   "summary": {
     "rank": "watch",
     "score": 57,
@@ -9,17 +9,16 @@
     "expected_return": 1.32,
     "risk_reward": 1.32,
     "max_loss_est": -1.0,
-    "verdict": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=62% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.32\n判定時刻: 2026-05-16 22:20",
-    "prediction_date": "2026-05-16"
+    "verdict": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=62% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.32\n判定時刻: 2026-05-17 21:45",
+    "prediction_date": "2026-05-17"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 8,
       "BUY": 17,
-      "HOLD": 8,
-      "WATCH": 35,
-      "REDUCE": 1
+      "HOLD": 9,
+      "WATCH": 35
     },
     "category_stats": {
       "integration": {
@@ -60,9 +59,9 @@
       "prediction": {
         "count": 10,
         "buy": 4,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 56.4
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 56.7
       },
       "market_monitor": {
         "count": 7,
@@ -181,20 +180,20 @@
       "reason": "静かな蓄積パターン"
     },
     {
-      "agent": "investor_profile",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "alert",
       "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "volume_anomaly",
@@ -234,7 +233,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=62% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.32\n判定時刻: 2026-05-16 22:20"
+      "reason": "【様子見】★★\n総合スコア: 57.0/100\n上昇確率: 5日=54% / 20日=57% / 3ヶ月=62% / 12ヶ月=70%\n下落確率: 3%=25% / 5%=20% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.32\n判定時刻: 2026-05-17 21:45"
     }
   ],
   "fundamentals": {
@@ -272,6 +271,20 @@
   },
   "news": [
     {
+      "headline": "Forget the Senior Deduction. The Other OBBBA Tax Breaks Most Workers Are Missing.",
+      "sentiment": -0.03,
+      "importance": 5,
+      "published_at": "2026-05-17 20:54:30",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Is a SpaceX-Tesla Merger Elon Musk's Endgame? Here Are 4 Factors Investors Need to Consider.",
+      "sentiment": null,
+      "importance": 5,
+      "published_at": "2026-05-17 20:50:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "Dow Jones Futures: S&P 500, Nasdaq Still Near Highs As Nvidia, Walmart Earnings Loom",
       "sentiment": -0.42,
       "importance": 5,
@@ -290,20 +303,6 @@
       "sentiment": 0.78,
       "importance": 5,
       "published_at": "2026-05-16 01:51:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "After AMD's Blowout Earnings Report, Is This AI Stock About to Enter the $1 Trillion Club?",
-      "sentiment": 0.8,
-      "importance": 5,
-      "published_at": "2026-05-14 22:05:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Forget Utility Dividends. Kevin Warsh Just Made the 30-Year Treasury a Better Income Play",
-      "sentiment": 0.95,
-      "importance": 4,
-      "published_at": "2026-05-16 20:53:46",
       "source": "yahoo"
     }
   ],
