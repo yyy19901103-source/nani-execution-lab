@@ -1,16 +1,16 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-17 21:45",
+  "generated_at": "2026-05-19 07:50",
   "summary": {
     "rank": "watch",
     "score": 54,
     "prob_up_5d": 0.567,
-    "prob_down_5pct": 0.322,
+    "prob_down_5pct": 0.338,
     "expected_return": 1.54,
-    "risk_reward": 0.96,
-    "max_loss_est": -1.61,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=31% / 3ヶ月=73% / 12ヶ月=41%\n下落確率: 3%=58% / 5%=32% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.96\n判定時刻: 2026-05-17 21:45",
-    "prediction_date": "2026-05-17"
+    "risk_reward": 0.91,
+    "max_loss_est": -1.69,
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=32% / 3ヶ月=73% / 12ヶ月=36%\n下落確率: 3%=58% / 5%=34% / 10%=11%\n期待値: +1.54% / リスクリワード: 0.91\n判定時刻: 2026-05-19 07:50",
+    "prediction_date": "2026-05-19"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -48,7 +48,7 @@
         "buy": 3,
         "sell": 1,
         "hold": 6,
-        "avg_score": 52.7
+        "avg_score": 52.1
       },
       "market_monitor": {
         "count": 7,
@@ -69,7 +69,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.7
+        "avg_score": 54.0
       }
     }
   },
@@ -91,20 +91,20 @@
       "reason": "広告収益高成長(24%)"
     },
     {
-      "agent": "japan_dividend",
-      "category": "sector",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
-    },
-    {
       "agent": "rule_compliance",
       "category": "personal",
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "全ルール遵守"
+    },
+    {
+      "agent": "japan_dividend",
+      "category": "sector",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
     },
     {
       "agent": "fundamental",
@@ -115,12 +115,12 @@
       "reason": "高利益率(41%) / 高成長(24%)"
     },
     {
-      "agent": "liquidity_risk",
+      "agent": "market_sentiment",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "流動性良好"
+      "reason": "RSI売られ過ぎ(26) / 直近ニュース良好(0.38)"
     },
     {
       "agent": "long_term_prob",
@@ -131,28 +131,28 @@
       "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
     },
     {
-      "agent": "market_sentiment",
+      "agent": "liquidity_risk",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "RSI売られ過ぎ(25) / 直近ニュース良好(0.56)"
+      "reason": "流動性良好"
     },
     {
-      "agent": "news_impact",
-      "category": "analysis",
-      "score": 67.0,
+      "agent": "comparative",
+      "category": "integration",
+      "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "直近ニュース強ポジ(0.56) / 高関心・ポジティブ"
+      "reason": "ウォッチリスト内 4/10位"
     },
     {
-      "agent": "risk_assessment",
-      "category": "analysis",
+      "agent": "value_invest",
+      "category": "trade_style",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "リスク許容範囲内"
+      "reason": "PER適正(22.3x) / ROE高(30%) / 配当利回り31.0%"
     }
   ],
   "top_risks": [
@@ -194,7 +194,7 @@
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=31% / 3m=73% / 期待値=+1.54%"
+      "reason": "5d上昇確率=57% / 20d=32% / 3m=73% / 期待値=+1.54%"
     },
     {
       "agent": "ensemble",
@@ -247,16 +247,16 @@
   },
   "historical": {
     "first_data_date": "2012-05-18",
-    "total_days": 3518,
+    "total_days": 3519,
     "approx_years": 14.0,
     "data_span_label": "IPO以降 約14.0年（2012-05-18〜）",
     "all_time_high": 788.15,
-    "current_close": 614.23,
-    "current_drawdown_pct": -22.1,
+    "current_close": 611.21,
+    "current_drawdown_pct": -22.4,
     "max_drawdown_pct": -76.7,
     "days_below_30pct_dd": 585,
     "pct_time_below_30pct": 16.6,
-    "current_pct_of_ath": 77.9
+    "current_pct_of_ath": 77.6
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_META",
@@ -272,10 +272,24 @@
   },
   "news": [
     {
-      "headline": "Nebius Stock Up Post Q1 Earnings: Should You Buy, Hold or Sell?",
-      "sentiment": 0.4,
+      "headline": "Buy the Dip in Nvidia Stock off of Record Highs as Q1 Earnings Approach?",
+      "sentiment": 0.3,
       "importance": 5,
-      "published_at": "2026-05-15 23:42:00",
+      "published_at": "2026-05-19 05:01:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "NextEra-Dominion Energy Merger To Create World’s Largest Electric Utility",
+      "sentiment": 0.9,
+      "importance": 5,
+      "published_at": "2026-05-19 02:30:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Nvidia Earnings Face High Expectations",
+      "sentiment": -0.13,
+      "importance": 5,
+      "published_at": "2026-05-19 02:05:35",
       "source": "yahoo"
     },
     {
@@ -286,24 +300,10 @@
       "source": "yahoo"
     },
     {
-      "headline": "Bank of America resets AMD stock price target",
-      "sentiment": 0.71,
-      "importance": 4,
-      "published_at": "2026-05-16 03:03:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "AI Stock Valuations Just Hit a Dangerous Level. A Top CIO Warns: Companies Can’t Grow 100% Annually for 10 Years Straight.",
-      "sentiment": 0.89,
+      "headline": "Is Now the Time to Buy Forgotten FAANG Stock Netflix?",
+      "sentiment": -0.04,
       "importance": 2,
-      "published_at": "2026-05-17 20:49:29",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Why Wayfair (W) Stock Is Down Today",
-      "sentiment": 0.68,
-      "importance": 2,
-      "published_at": "2026-05-17 19:28:55",
+      "published_at": "2026-05-19 05:51:00",
       "source": "yahoo"
     }
   ],

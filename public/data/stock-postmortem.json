@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-17 21:45",
+  "generated_at": "2026-05-19 07:50",
   "summary": {
     "evaluable_count": 30,
     "hits": 16,
@@ -11,7 +11,7 @@
     {
       "ticker": "VOO",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.59,
@@ -101,7 +101,7 @@
     {
       "ticker": "AMZN",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.538,
@@ -191,7 +191,7 @@
     {
       "ticker": "JPM",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.543,
@@ -274,7 +274,7 @@
     {
       "ticker": "TSLA",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.488,
@@ -357,7 +357,7 @@
     {
       "ticker": "NVDA",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 57,
       "prob_up_5d_predicted": 0.54,
@@ -427,7 +427,7 @@
     {
       "ticker": "MSFT",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.537,
@@ -497,7 +497,7 @@
     {
       "ticker": "META",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.567,
@@ -580,7 +580,7 @@
     {
       "ticker": "GOOGL",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "weak_buy",
       "score": 55,
       "prob_up_5d_predicted": 0.563,
@@ -664,7 +664,7 @@
     {
       "ticker": "AAPL",
       "prediction_date": "2026-05-08",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.547,
@@ -748,14 +748,14 @@
         }
       ],
       "suggestions": [
-        "market_monitor カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "integration カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "NVDA",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 56,
       "prob_up_5d_predicted": 0.54,
@@ -832,7 +832,7 @@
     {
       "ticker": "AAPL",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.547,
@@ -916,14 +916,14 @@
         }
       ],
       "suggestions": [
-        "market_monitor カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "integration カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "VOO",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.59,
@@ -1013,7 +1013,7 @@
     {
       "ticker": "AMZN",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.527,
@@ -1103,7 +1103,7 @@
     {
       "ticker": "JPM",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.543,
@@ -1172,7 +1172,7 @@
     {
       "ticker": "TSLA",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.506,
@@ -1256,7 +1256,7 @@
     {
       "ticker": "MSFT",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.537,
@@ -1339,7 +1339,7 @@
     {
       "ticker": "META",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "weak_buy",
       "score": 55,
       "prob_up_5d_predicted": 0.567,
@@ -1429,7 +1429,7 @@
     {
       "ticker": "GOOGL",
       "prediction_date": "2026-05-07",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "weak_buy",
       "score": 55,
       "prob_up_5d_predicted": 0.563,
@@ -1512,7 +1512,7 @@
     {
       "ticker": "NVDA",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 57,
       "prob_up_5d_predicted": 0.54,
@@ -1596,7 +1596,7 @@
     {
       "ticker": "MSFT",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "weak_buy",
       "score": 55,
       "prob_up_5d_predicted": 0.569,
@@ -1679,7 +1679,7 @@
     {
       "ticker": "META",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.373,
@@ -1770,7 +1770,7 @@
     {
       "ticker": "GOOGL",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 56,
       "prob_up_5d_predicted": 0.529,
@@ -1861,7 +1861,7 @@
     {
       "ticker": "AAPL",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "weak_buy",
       "score": 56,
       "prob_up_5d_predicted": 0.569,
@@ -1944,7 +1944,7 @@
     {
       "ticker": "VOO",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.529,
@@ -2035,7 +2035,7 @@
     {
       "ticker": "AMZN",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.529,
@@ -2126,7 +2126,7 @@
     {
       "ticker": "JPM",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 55,
       "prob_up_5d_predicted": 0.529,
@@ -2195,7 +2195,7 @@
     {
       "ticker": "TSLA",
       "prediction_date": "2026-05-01",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.627,
@@ -2278,7 +2278,7 @@
     {
       "ticker": "TSLA",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.569,
@@ -2368,7 +2368,7 @@
     {
       "ticker": "JPM",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "weak_buy",
       "score": 56,
       "prob_up_5d_predicted": 0.569,
@@ -2445,7 +2445,7 @@
     {
       "ticker": "AMZN",
       "prediction_date": "2026-04-30",
-      "evaluated_date": "2026-05-17",
+      "evaluated_date": "2026-05-19",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.529,
@@ -2529,7 +2529,7 @@
         }
       ],
       "suggestions": [
-        "market_monitor カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "integration カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     }
