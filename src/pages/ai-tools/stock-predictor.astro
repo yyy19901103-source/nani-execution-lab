@@ -248,7 +248,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="hero">
     <div class="hero-grid">
       <div>
-        <div class="hero-eyebrow">TODAY'S BRIEFING</div>
+        <div class="hero-eyebrow">今日のサマリー</div>
         <div class="hero-headline" id="hero-headline">本日のAI判定を読み込み中…</div>
         <div class="hero-cta-list" id="hero-cta-list"></div>
       </div>
@@ -279,10 +279,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="tab-content active" id="tab-today">
     <!-- KPI -->
     <div class="kpi-row" id="kpi-row">
-      <div class="kpi"><div class="kpi-label">MONITORED</div><div class="kpi-val" id="kpi-stocks">—</div><div class="kpi-sub">監視銘柄</div></div>
-      <div class="kpi"><div class="kpi-label">ACCURACY</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">5日後的中率</div></div>
-      <div class="kpi"><div class="kpi-label">JUDGED</div><div class="kpi-val" id="kpi-judged">—</div><div class="kpi-sub">判定済み</div></div>
-      <div class="kpi"><div class="kpi-label">PENDING</div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-sub">判定待ち</div></div>
+      <div class="kpi"><div class="kpi-label">監視中</div><div class="kpi-val" id="kpi-stocks">—</div><div class="kpi-sub">監視銘柄</div></div>
+      <div class="kpi"><div class="kpi-label">的中率</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">5日後的中率</div></div>
+      <div class="kpi"><div class="kpi-label">判定済</div><div class="kpi-val" id="kpi-judged">—</div><div class="kpi-sub">判定済み</div></div>
+      <div class="kpi"><div class="kpi-label">判定待</div><div class="kpi-val" id="kpi-pending">—</div><div class="kpi-sub">判定待ち</div></div>
     </div>
 
     <!-- AIランキング -->
@@ -345,7 +345,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- ========== TAB 4: エージェント（近未来UI）========== -->
   <div class="tab-content" id="tab-agents">
     <div class="ag-stage">
-      <div class="sec-title" style="margin-top:0">🤖 AGENT NETWORK — 69体のAIエージェント稼働状況</div>
+      <div class="sec-title" style="margin-top:0">🤖 エージェントネットワーク — 69体のAIエージェント稼働状況</div>
 
       <!-- サマリ -->
       <div class="ag-stats" id="ag-stats"></div>
@@ -354,9 +354,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="ag-legend">
         <span class="ag-legend-item">🔬 数理モデル参照</span>
         <span class="ag-legend-item"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#c8a96e;box-shadow:0 0 6px #c8a96e"></span> 重み進化済み</span>
-        <span class="ag-legend-item"><span style="color:#88e088">●</span>BUY系</span>
+        <span class="ag-legend-item"><span style="color:#88e088">●</span>買い系</span>
         <span class="ag-legend-item"><span style="color:#888">●</span>中立</span>
-        <span class="ag-legend-item"><span style="color:#e08888">●</span>SELL系</span>
+        <span class="ag-legend-item"><span style="color:#e08888">●</span>売り系</span>
       </div>
 
       <!-- カテゴリフィルタ -->
@@ -376,9 +376,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="detail-section">
         <h3>判定サマリー</h3>
         <div class="grid3">
-          <div class="stat-cell"><div class="stat-label">RANK</div><div class="stat-value" id="m-rank">—</div></div>
-          <div class="stat-cell"><div class="stat-label">SCORE</div><div class="stat-value" id="m-score">—</div></div>
-          <div class="stat-cell"><div class="stat-label">RR</div><div class="stat-value" id="m-rr">—</div></div>
+          <div class="stat-cell"><div class="stat-label">ランク</div><div class="stat-value" id="m-rank">—</div></div>
+          <div class="stat-cell"><div class="stat-label">スコア</div><div class="stat-value" id="m-score">—</div></div>
+          <div class="stat-cell"><div class="stat-label">RR比</div><div class="stat-value" id="m-rr">—</div></div>
           <div class="stat-cell"><div class="stat-label">5日上昇確率</div><div class="stat-value" id="m-pup">—</div></div>
           <div class="stat-cell"><div class="stat-label">5%下落確率</div><div class="stat-value" id="m-pdown">—</div></div>
           <div class="stat-cell"><div class="stat-label">期待値</div><div class="stat-value" id="m-er">—</div></div>
@@ -404,7 +404,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="grid3" id="m-fund"></div>
       </div>
       <div class="detail-section">
-        <h3>BUYシグナル根拠</h3>
+        <h3>買いシグナル根拠</h3>
         <div class="agent-list" id="m-buys"></div>
       </div>
       <div class="detail-section">
@@ -822,16 +822,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // サマリ
     const s = data.summary || {};
     document.getElementById('ag-stats').innerHTML = `
-      <div class="ag-stat"><div class="ag-stat-label">TOTAL AGENTS</div><div class="ag-stat-val">${s.total_agents}</div><div class="ag-stat-sub">稼働中エージェント</div></div>
-      <div class="ag-stat"><div class="ag-stat-label">CATEGORIES</div><div class="ag-stat-val">${s.categories}</div><div class="ag-stat-sub">専門分野</div></div>
-      <div class="ag-stat"><div class="ag-stat-label">MATH MODEL</div><div class="ag-stat-val">${s.agents_using_math_model}</div><div class="ag-stat-sub">数理予測参照</div></div>
-      <div class="ag-stat"><div class="ag-stat-label">EVOLVED</div><div class="ag-stat-val">${s.agents_evolved}</div><div class="ag-stat-sub">重み進化済み</div></div>
-      <div class="ag-stat"><div class="ag-stat-label">EVALUATED</div><div class="ag-stat-val">${s.agents_with_performance}</div><div class="ag-stat-sub">的中率データあり</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">総エージェント</div><div class="ag-stat-val">${s.total_agents}</div><div class="ag-stat-sub">稼働中エージェント</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">カテゴリ</div><div class="ag-stat-val">${s.categories}</div><div class="ag-stat-sub">専門分野</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">数理モデル</div><div class="ag-stat-val">${s.agents_using_math_model}</div><div class="ag-stat-sub">数理予測参照</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">進化済</div><div class="ag-stat-val">${s.agents_evolved}</div><div class="ag-stat-sub">重み進化済み</div></div>
+      <div class="ag-stat"><div class="ag-stat-label">評価済</div><div class="ag-stat-val">${s.agents_with_performance}</div><div class="ag-stat-sub">的中率データあり</div></div>
     `;
 
     // カテゴリフィルタ
     const filterEl = document.getElementById('ag-filter');
-    const allBtn = `<button class="ag-cat-btn active" data-cat="ALL" style="--cat-color:#6ec8e0; --cat-glow:rgba(108,200,224,0.5)">ALL ${s.total_agents}</button>`;
+    const allBtn = `<button class="ag-cat-btn active" data-cat="ALL" style="--cat-color:#6ec8e0; --cat-glow:rgba(108,200,224,0.5)">すべて ${s.total_agents}</button>`;
     const catBtns = data.categories.map(c => `
       <button class="ag-cat-btn" data-cat="${c.category_id}" style="--cat-color:${c.color}; --cat-glow:${c.color}88">${c.category_jp} ${c.agents.length}</button>
     `).join('');
@@ -872,11 +872,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <div class="ag-name">${a.name}</div>
               <div class="ag-desc">${a.description || '—'}</div>
               <div class="ag-metrics">
-                <span class="ag-metric"><span class="ag-metric-label">W:</span><span class="ag-metric-val ${wCls}">${wTxt}</span></span>
-                <span class="ag-metric"><span class="ag-metric-label">HIT:</span><span class="ag-metric-val ${hitCls}">${hitTxt}</span></span>
-                <span class="ag-metric"><span class="ag-metric-label">N:</span><span class="ag-metric-val">${a.samples}</span></span>
+                <span class="ag-metric"><span class="ag-metric-label">重み:</span><span class="ag-metric-val ${wCls}">${wTxt}</span></span>
+                <span class="ag-metric"><span class="ag-metric-label">的中:</span><span class="ag-metric-val ${hitCls}">${hitTxt}</span></span>
+                <span class="ag-metric"><span class="ag-metric-label">件数:</span><span class="ag-metric-val">${a.samples}</span></span>
               </div>
-              <div class="ag-signal-bar" title="今日のシグナル: BUY ${a.buy_today} / 中立 ${a.neutral_today} / SELL ${a.sell_today}">
+              <div class="ag-signal-bar" title="今日のシグナル: 買い ${a.buy_today} / 中立 ${a.neutral_today} / 売り ${a.sell_today}">
                 <span class="ag-signal-buy" style="width:${buyPct}%"></span>
                 <span class="ag-signal-neu" style="width:${neuPct}%"></span>
                 <span class="ag-signal-sell" style="width:${selPct}%"></span>
@@ -889,7 +889,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="ag-cat-head">
             <span class="ag-cat-dot"></span>
             <span class="ag-cat-name">${cat.category_jp}</span>
-            <span class="ag-cat-count">// ${cat.agents.length} agents</span>
+            <span class="ag-cat-count">// ${cat.agents.length}体</span>
           </div>
           <div class="ag-grid">${cardsHtml}</div>
         `;
@@ -960,7 +960,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <span class="cat-bar-hold" style="width:${holdW}%"></span>
             <span class="cat-bar-sell" style="width:${sellW}%"></span>
           </span>
-          <span style="min-width:120px;text-align:right">BUY ${v.buy} / HOLD ${v.hold} / SELL ${v.sell} (avg ${v.avg_score})</span>
+          <span style="min-width:120px;text-align:right">買い ${v.buy} / 保有 ${v.hold} / 売り ${v.sell} (平均 ${v.avg_score})</span>
         </div>`);
     });
 
