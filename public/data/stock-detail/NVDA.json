@@ -1,23 +1,23 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-19 21:01",
+  "generated_at": "2026-05-20 08:15",
   "summary": {
     "rank": "watch",
     "score": 56,
-    "prob_up_5d": 0.54,
-    "prob_down_5pct": 0.189,
-    "expected_return": 1.32,
-    "risk_reward": 1.39,
-    "max_loss_est": -0.95,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.39\n判定時刻: 2026-05-19 21:01",
-    "prediction_date": "2026-05-19"
+    "prob_up_5d": 0.525,
+    "prob_down_5pct": 0.185,
+    "expected_return": 1.2,
+    "risk_reward": 1.29,
+    "max_loss_est": -0.93,
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=59% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=14%\n期待値: +1.20% / リスクリワード: 1.29\n判定時刻: 2026-05-20 08:15",
+    "prediction_date": "2026-05-20"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 7,
-      "BUY": 14,
-      "HOLD": 8,
+      "BUY": 15,
+      "HOLD": 7,
       "WATCH": 40
     },
     "category_stats": {
@@ -44,24 +44,24 @@
       },
       "analysis": {
         "count": 10,
-        "buy": 4,
+        "buy": 5,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 55.4
+        "hold": 5,
+        "avg_score": 57.5
       },
       "prediction": {
         "count": 10,
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 57.8
+        "avg_score": 57.4
       },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 54.7
+        "avg_score": 56.1
       },
       "personal": {
         "count": 10,
@@ -119,7 +119,7 @@
       "score": 77.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "高値圏 / 60日リターン強(17.1%) / ADXトレンド強(=33) / 200MA大幅上回り"
+      "reason": "高値圏 / 60日リターン強(15.2%) / ADXトレンド強(=29) / 200MA大幅上回り"
     },
     {
       "agent": "long_term_prob",
@@ -143,7 +143,7 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+5.2% / 売上成長=73%"
+      "reason": "20d/3m上昇確率=71% / MA20=+3.9% / 売上成長=73%"
     },
     {
       "agent": "liquidity_risk",
@@ -169,7 +169,7 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+5.9%)"
+      "reason": "S&P500比 月次強い(+6.3%)"
     },
     {
       "agent": "score_integration",
@@ -178,14 +178,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "全エージェント統合スコア=56"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "investor_profile",
@@ -204,12 +196,20 @@
       "reason": "異常なし"
     },
     {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "short_term_prob",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "1d/5d上昇確率=54% / RSI=57 / MACD正"
+      "reason": "1d/5d上昇確率=54% / RSI=58 / MACD正"
     },
     {
       "agent": "bayesian",
@@ -220,20 +220,20 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "lgbm_prob",
-      "category": "prediction",
+      "agent": "market_sentiment",
+      "category": "market_monitor",
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=54% / 20d=59% / 3m=64% / 期待値=+1.32%"
+      "reason": "RSI中立ゾーン"
     },
     {
-      "agent": "final_judgment",
-      "category": "integration",
+      "agent": "lgbm_prob",
+      "category": "prediction",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.39\n判定時刻: 2026-05-19 21:01"
+      "reason": "5d上昇確率=53% / 20d=59% / 3m=64% / 期待値=+1.20%"
     }
   ],
   "fundamentals": {
@@ -246,16 +246,16 @@
   },
   "historical": {
     "first_data_date": "1999-01-22",
-    "total_days": 6872,
+    "total_days": 6873,
     "approx_years": 27.3,
     "data_span_label": "IPO以降 約27.3年（1999-01-22〜）",
     "all_time_high": 235.74,
-    "current_close": 222.32,
-    "current_drawdown_pct": -5.7,
+    "current_close": 220.61,
+    "current_drawdown_pct": -6.4,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
     "pct_time_below_30pct": 53.8,
-    "current_pct_of_ath": 94.3
+    "current_pct_of_ath": 93.6
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_NVDA",
@@ -271,6 +271,20 @@
   },
   "news": [
     {
+      "headline": "Dow Jones Futures: Stocks Fall As Yields Jump; Micron, Sandisk, Astera Rise With Nvidia Earnings Due",
+      "sentiment": 0.23,
+      "importance": 5,
+      "published_at": "2026-05-20 08:05:36",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Stock market today: Dow, S&P 500, Nasdaq futures waver in countdown to Nvidia earnings",
+      "sentiment": 0.84,
+      "importance": 5,
+      "published_at": "2026-05-20 07:27:57",
+      "source": "yahoo"
+    },
+    {
       "headline": "Forget the Senior Deduction. The Other OBBBA Tax Breaks Most Workers Are Missing.",
       "sentiment": -0.03,
       "importance": 5,
@@ -285,31 +299,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "Dow Jones Futures: S&P 500, Nasdaq Still Near Highs As Nvidia, Walmart Earnings Loom",
-      "sentiment": -0.42,
-      "importance": 5,
-      "published_at": "2026-05-16 21:16:03",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Nvidia Doubled Down on Its Second-Largest AI Holding. Should Investors Follow Suit?",
-      "sentiment": 0.68,
+      "headline": "Upstart Just Applied for a National Bank Charter After a Tough Quarter. Could That Change the AI Lending Story?",
+      "sentiment": 0.32,
       "importance": 2,
-      "published_at": "2026-05-19 07:37:48",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Tesla Just Hiked Model Y Prices for the First Time Since 2024. Time to Buy the Stock?",
-      "sentiment": -0.48,
-      "importance": 2,
-      "published_at": "2026-05-19 07:33:00",
+      "published_at": "2026-05-20 07:20:00",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-05-21",
-      "estimated_eps": 1.78058,
+      "estimated_eps": 1.77375,
       "actual_eps": null,
       "surprise_pct": null
     }

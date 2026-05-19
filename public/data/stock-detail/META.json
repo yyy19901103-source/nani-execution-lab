@@ -1,24 +1,24 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-19 21:01",
+  "generated_at": "2026-05-20 08:15",
   "summary": {
     "rank": "watch",
-    "score": 54,
+    "score": 53,
     "prob_up_5d": 0.567,
     "prob_down_5pct": 0.338,
     "expected_return": 1.54,
     "risk_reward": 0.91,
     "max_loss_est": -1.69,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=32% / 3ヶ月=73% / 12ヶ月=36%\n下落確率: 3%=58% / 5%=34% / 10%=11%\n期待値: +1.54% / リスクリワード: 0.91\n判定時刻: 2026-05-19 21:01",
-    "prediction_date": "2026-05-19"
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=36% / 3ヶ月=73% / 12ヶ月=42%\n下落確率: 3%=59% / 5%=34% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.91\n判定時刻: 2026-05-20 08:15",
+    "prediction_date": "2026-05-20"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
       "BUY": 14,
-      "HOLD": 7,
-      "WATCH": 41,
+      "HOLD": 8,
+      "WATCH": 40,
       "REDUCE": 3
     },
     "category_stats": {
@@ -27,7 +27,7 @@
         "buy": 4,
         "sell": 1,
         "hold": 2,
-        "avg_score": 56.9
+        "avg_score": 59.4
       },
       "sector": {
         "count": 19,
@@ -50,26 +50,26 @@
         "hold": 6,
         "avg_score": 52.1
       },
-      "prediction": {
-        "count": 10,
-        "buy": 1,
-        "sell": 0,
-        "hold": 9,
-        "avg_score": 54.7
-      },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 1,
         "hold": 4,
-        "avg_score": 50.3
+        "avg_score": 49.1
+      },
+      "prediction": {
+        "count": 10,
+        "buy": 1,
+        "sell": 0,
+        "hold": 9,
+        "avg_score": 53.1
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 54.0
+        "avg_score": 52.5
       }
     }
   },
@@ -115,22 +115,6 @@
       "reason": "高利益率(41%) / 高成長(24%)"
     },
     {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
-    },
-    {
-      "agent": "market_sentiment",
-      "category": "market_monitor",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "RSI売られ過ぎ(26) / 直近ニュース良好(0.38)"
-    },
-    {
       "agent": "liquidity_risk",
       "category": "market_monitor",
       "score": 70.0,
@@ -139,12 +123,12 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "comparative",
-      "category": "integration",
+      "agent": "contrarian",
+      "category": "trade_style",
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 4/10位"
+      "reason": "RSI超売られ(25)"
     },
     {
       "agent": "risk_assessment",
@@ -153,6 +137,22 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "portfolio_fit",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
+    },
+    {
+      "agent": "failure_pattern",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
@@ -165,20 +165,20 @@
       "reason": "過去勝率=50% / 事後確率=60%"
     },
     {
+      "agent": "mid_term_prob",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=58% / MA20=-4.1% / 売上成長=24%"
+    },
+    {
       "agent": "expected_value",
       "category": "prediction",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "期待値=+1.40% / RR比=2.04 / 上昇確率=55%"
-    },
-    {
-      "agent": "mid_term_prob",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "20d/3m上昇確率=58% / MA20=-3.2% / 売上成長=24%"
     },
     {
       "agent": "valuation",
@@ -189,28 +189,12 @@
       "reason": "売上高成長24%"
     },
     {
-      "agent": "ensemble",
-      "category": "prediction",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=56% / LGBM=57% / ルール=53% / ファンダ=60%"
-    },
-    {
       "agent": "lgbm_prob",
       "category": "prediction",
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=32% / 3m=73% / 期待値=+1.54%"
-    },
-    {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=47)"
+      "reason": "5d上昇確率=57% / 20d=36% / 3m=73% / 期待値=+1.54%"
     },
     {
       "agent": "investor_profile",
@@ -221,6 +205,14 @@
       "reason": "プロファイル適合"
     },
     {
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ADXトレンド強(=48)"
+    },
+    {
       "agent": "alert",
       "category": "integration",
       "score": 55.0,
@@ -229,12 +221,20 @@
       "reason": "異常なし"
     },
     {
-      "agent": "score_integration",
-      "category": "integration",
+      "agent": "day_trade",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "ensemble",
+      "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=54"
+      "reason": "アンサンブル=54% / LGBM=57% / ルール=47% / ファンダ=60%"
     }
   ],
   "fundamentals": {
@@ -247,16 +247,16 @@
   },
   "historical": {
     "first_data_date": "2012-05-18",
-    "total_days": 3519,
+    "total_days": 3520,
     "approx_years": 14.0,
     "data_span_label": "IPO以降 約14.0年（2012-05-18〜）",
     "all_time_high": 788.15,
-    "current_close": 611.21,
-    "current_drawdown_pct": -22.4,
+    "current_close": 602.61,
+    "current_drawdown_pct": -23.5,
     "max_drawdown_pct": -76.7,
     "days_below_30pct_dd": 585,
     "pct_time_below_30pct": 16.6,
-    "current_pct_of_ath": 77.6
+    "current_pct_of_ath": 76.5
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_META",
@@ -293,17 +293,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "5-star analysts reset Broadcom stock price target",
-      "sentiment": 0.38,
-      "importance": 4,
-      "published_at": "2026-05-17 02:33:00",
+      "headline": "How NextEra Can Fix Dominion’s Strange AI Problem",
+      "sentiment": -0.48,
+      "importance": 2,
+      "published_at": "2026-05-20 06:31:00",
       "source": "yahoo"
     },
     {
-      "headline": "Is Now the Time to Buy Forgotten FAANG Stock Netflix?",
-      "sentiment": -0.04,
+      "headline": "The Spill: Meta’s (META) $145 Billion Bet on Superintelligence",
+      "sentiment": 0.62,
       "importance": 2,
-      "published_at": "2026-05-19 05:51:00",
+      "published_at": "2026-05-20 06:28:07",
       "source": "yahoo"
     }
   ],

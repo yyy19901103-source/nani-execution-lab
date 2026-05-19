@@ -1,6 +1,6 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-19 21:01",
+  "generated_at": "2026-05-20 08:15",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,31 +9,24 @@
     "expected_return": 1.37,
     "risk_reward": 1.49,
     "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=50% / 3ヶ月=63% / 12ヶ月=72%\n下落確率: 3%=31% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-19 21:01",
-    "prediction_date": "2026-05-19"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=53% / 3ヶ月=60% / 12ヶ月=72%\n下落確率: 3%=34% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-20 08:15",
+    "prediction_date": "2026-05-20"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
+      "STRONG_BUY": 4,
       "BUY": 12,
       "HOLD": 7,
-      "WATCH": 45
+      "WATCH": 46
     },
     "category_stats": {
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 56.7
-      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
-        "avg_score": 59.6
+        "avg_score": 58.1
       },
       "sector": {
         "count": 19,
@@ -54,33 +47,32 @@
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 53.7
+        "avg_score": 52.3
       },
       "prediction": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 52.9
+        "avg_score": 52.5
       },
       "analysis": {
         "count": 10,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 53.6
+        "hold": 8,
+        "avg_score": 52.8
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 54.0
       }
     }
   },
   "top_buys": [
-    {
-      "agent": "comparative",
-      "category": "integration",
-      "score": 84.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 2/10位"
-    },
     {
       "agent": "dividend_income",
       "category": "trade_style",
@@ -135,7 +127,7 @@
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=68% / MA20=+1.4% / 売上成長=17%"
+      "reason": "20d/3m上昇確率=68% / MA20=+0.0% / 売上成長=17%"
     },
     {
       "agent": "fundamental",
@@ -144,6 +136,14 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "高利益率(47%)"
+    },
+    {
+      "agent": "comparative",
+      "category": "integration",
+      "score": 68.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 4/10位"
     },
     {
       "agent": "risk_assessment",
@@ -164,20 +164,12 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "day_trade",
-      "category": "trade_style",
-      "score": 55.0,
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "テクニカル中立 / 強弱比=2.3:3.0"
     },
     {
       "agent": "investor_profile",
@@ -217,7 +209,7 @@
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=50% / 3m=63% / 期待値=+1.37%"
+      "reason": "5d上昇確率=55% / 20d=53% / 3m=60% / 期待値=+1.37%"
     },
     {
       "agent": "ensemble",
@@ -234,6 +226,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "全エージェント統合スコア=54"
+    },
+    {
+      "agent": "sector_rotation",
+      "category": "market_monitor",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "S&P500比 直近強い(+3.0%) / S&P500比 月次弱い(-5.7%)"
     }
   ],
   "fundamentals": {
@@ -246,16 +246,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9161,
+    "total_days": 9162,
     "approx_years": 36.4,
     "data_span_label": "IPO以降 約36.4年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 423.54,
-    "current_drawdown_pct": -21.5,
+    "current_close": 417.42,
+    "current_drawdown_pct": -22.7,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3311,
     "pct_time_below_30pct": 36.1,
-    "current_pct_of_ath": 78.5
+    "current_pct_of_ath": 77.3
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -278,6 +278,13 @@
       "source": "yahoo"
     },
     {
+      "headline": "Grid Dynamics Launches AI-Native Modernization on Azure, Targeting Larger Enterprise Deals",
+      "sentiment": 0.79,
+      "importance": 3,
+      "published_at": "2026-05-20 05:05:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "OneStream (OS) Valuation Check After Expanded Microsoft AI Partnership News",
       "sentiment": 0.86,
       "importance": 3,
@@ -285,24 +292,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "Evaluating Workday (WDAY) Valuation After New AI Integrations And Solopreneur Accelerator Launch",
-      "sentiment": 0.75,
-      "importance": 3,
-      "published_at": "2026-05-16 21:12:05",
+      "headline": "Why Would Anyone Buy SCHB Instead of MAGS?",
+      "sentiment": 0.89,
+      "importance": 2,
+      "published_at": "2026-05-20 06:20:00",
       "source": "yahoo"
     },
     {
-      "headline": "Anthropic to let partners share Mythos cybersecurity findings with others",
-      "sentiment": 0.32,
+      "headline": "Elon Musk said Sam Altman “stole” a non-profit — but the trial showed he had similar aims",
+      "sentiment": -0.8,
       "importance": 2,
-      "published_at": "2026-05-19 07:28:02",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Microsoft Corporation (MSFT): Mark Cuban Sees Opportunity in AI Implementation for Small Businesses",
-      "sentiment": 0.19,
-      "importance": 2,
-      "published_at": "2026-05-19 07:07:41",
+      "published_at": "2026-05-20 05:11:00",
       "source": "yahoo"
     }
   ],
