@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20 08:15",
+  "generated_at": "2026-05-20 08:48",
   "summary": {
     "total_agents": 69,
     "categories": 7,
@@ -15,6 +15,7 @@
       "agents": [
         {
           "name": "trend_direction",
+          "name_jp": "トレンド方向",
           "description": "移動平均・MACDからトレンド方向を判定",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -29,6 +30,7 @@
         },
         {
           "name": "volatility_env",
+          "name_jp": "ボラティリティ環境",
           "description": "ボラティリティ環境・VIXから市場リスクを評価",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -43,6 +45,7 @@
         },
         {
           "name": "volume_anomaly",
+          "name_jp": "出来高異常",
           "description": "出来高異常（急増・急減）を検知",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -57,6 +60,7 @@
         },
         {
           "name": "market_sentiment",
+          "name_jp": "市場センチメント",
           "description": "ニュースセンチメント・RSI過熱感から市場心理を判定",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -71,6 +75,7 @@
         },
         {
           "name": "sector_rotation",
+          "name_jp": "セクターローテーション",
           "description": "セクターローテーション・相対強度を分析",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -85,6 +90,7 @@
         },
         {
           "name": "liquidity_risk",
+          "name_jp": "流動性リスク",
           "description": "流動性リスク（スプレッド・ATR対価格比）を評価",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -99,6 +105,7 @@
         },
         {
           "name": "market_regime",
+          "name_jp": "市場レジーム",
           "description": "市場レジーム（上昇/下落/レンジ/暴落）を判定",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -120,6 +127,7 @@
       "agents": [
         {
           "name": "day_trade",
+          "name_jp": "デイトレード",
           "description": "当日売買向け短期シグナル（ストキャスティクス・ATR・出来高）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -134,6 +142,7 @@
         },
         {
           "name": "swing_trade",
+          "name_jp": "スイングトレード",
           "description": "3〜10日スイング向け（MACD・BB・トレンド追随）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -148,6 +157,7 @@
         },
         {
           "name": "momentum",
+          "name_jp": "モメンタム",
           "description": "モメンタム追随（52週高値・トレンド強度・相対強度）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -162,6 +172,7 @@
         },
         {
           "name": "contrarian",
+          "name_jp": "逆張り",
           "description": "逆張り（売られ過ぎ・恐怖指数高・RSI低）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -176,6 +187,7 @@
         },
         {
           "name": "growth_invest",
+          "name_jp": "グロース投資",
           "description": "長期成長投資（売上成長・EPS成長・ROIC）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -190,6 +202,7 @@
         },
         {
           "name": "value_invest",
+          "name_jp": "バリュー投資",
           "description": "バリュー投資（PER・PBR・EV/EBITDA割安度）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -204,6 +217,7 @@
         },
         {
           "name": "dividend_income",
+          "name_jp": "配当インカム",
           "description": "配当・インカム投資評価",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -225,6 +239,7 @@
       "agents": [
         {
           "name": "technical_summary",
+          "name_jp": "テクニカル総合",
           "description": "全テクニカル指標を統合して総合スコアを算出",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -239,6 +254,7 @@
         },
         {
           "name": "fundamental",
+          "name_jp": "ファンダメンタル",
           "description": "財務指標の総合評価（成長性・収益性・割安度）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -253,6 +269,7 @@
         },
         {
           "name": "earnings_momentum",
+          "name_jp": "決算モメンタム",
           "description": "決算モメンタム（EPS サプライズ・連続ビート・ガイダンス）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -267,6 +284,7 @@
         },
         {
           "name": "news_impact",
+          "name_jp": "ニュース影響",
           "description": "ニュースインパクト（重要度・感情・カテゴリ別）評価",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -281,6 +299,7 @@
         },
         {
           "name": "macro_environment",
+          "name_jp": "マクロ環境",
           "description": "マクロ環境評価（金利・VIX・ドル・GDP）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -295,6 +314,7 @@
         },
         {
           "name": "risk_assessment",
+          "name_jp": "リスク評価",
           "description": "リスク評価（最大損失・ドローダウン・ルール違反検知）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -309,6 +329,7 @@
         },
         {
           "name": "supply_demand",
+          "name_jp": "需給分析",
           "description": "需給分析（出来高・MFI・OBV・買い圧力）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -323,6 +344,7 @@
         },
         {
           "name": "institutional_flow",
+          "name_jp": "機関投資家動向",
           "description": "機関投資家動向の推定（出来高パターン・プライスアクション）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -337,6 +359,7 @@
         },
         {
           "name": "seasonality",
+          "name_jp": "季節性",
           "description": "季節性・カレンダーアノマリー（1月効果・決算シーズン等）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -351,6 +374,7 @@
         },
         {
           "name": "valuation",
+          "name_jp": "バリュエーション",
           "description": "バリュエーション分析（PER・PBR・EV/EBITDA・DCF簡易）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -372,6 +396,7 @@
       "agents": [
         {
           "name": "lgbm_prob",
+          "name_jp": "LightGBM確率",
           "description": "LightGBMモデルから上昇確率を取得して評価",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -386,6 +411,7 @@
         },
         {
           "name": "short_term_prob",
+          "name_jp": "短期確率",
           "description": "短期確率特化（1d/5d）— ルールベースのみで高速評価",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -400,6 +426,7 @@
         },
         {
           "name": "mid_term_prob",
+          "name_jp": "中期確率",
           "description": "中期確率（20d/3m）— ファンダ・テクニカル混合",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -414,6 +441,7 @@
         },
         {
           "name": "long_term_prob",
+          "name_jp": "長期確率",
           "description": "長期確率（12m）— ファンダメンタル主体",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -428,6 +456,7 @@
         },
         {
           "name": "downside_risk",
+          "name_jp": "下落リスク",
           "description": "下落リスク評価（下落確率・最大損失推定）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -442,6 +471,7 @@
         },
         {
           "name": "expected_value",
+          "name_jp": "期待値",
           "description": "期待値・リスクリワード比の計算",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -456,6 +486,7 @@
         },
         {
           "name": "bayesian",
+          "name_jp": "ベイズ更新",
           "description": "ベイズ更新（過去の取引成績で事前確率を更新）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -470,6 +501,7 @@
         },
         {
           "name": "ensemble",
+          "name_jp": "アンサンブル",
           "description": "アンサンブル統合（LGBM + ルールベース + ファンダ）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -484,6 +516,7 @@
         },
         {
           "name": "calibration",
+          "name_jp": "キャリブレーション",
           "description": "確率キャリブレーション（ブライアスコア監視・過信補正）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -498,6 +531,7 @@
         },
         {
           "name": "monte_carlo",
+          "name_jp": "モンテカルロ",
           "description": "モンテカルロシミュレーション（1000試行・20日後分布）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -519,6 +553,7 @@
       "agents": [
         {
           "name": "sector_semiconductor",
+          "name_jp": "半導体",
           "description": "半導体セクター（GPU需要・在庫サイクル・キャペックス）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -533,6 +568,7 @@
         },
         {
           "name": "sector_cloud_saas",
+          "name_jp": "クラウド/SaaS",
           "description": "クラウド/SaaS（ARR成長・NRR・Rule of 40）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -547,6 +583,7 @@
         },
         {
           "name": "sector_social_media",
+          "name_jp": "ソーシャルメディア",
           "description": "ソーシャルメディア（DAU成長・ARPU・広告収益）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -561,6 +598,7 @@
         },
         {
           "name": "sector_ec_retail",
+          "name_jp": "EC/小売",
           "description": "EC/小売（GMV成長・粗利率・在庫回転）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -575,6 +613,7 @@
         },
         {
           "name": "sector_ev",
+          "name_jp": "EV",
           "description": "EV（デリバリー数・マージン改善・充電インフラ）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -589,6 +628,7 @@
         },
         {
           "name": "sector_pharma_bio",
+          "name_jp": "製薬/バイオ",
           "description": "製薬/バイオ（パイプライン・特許崖・承認確率）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -603,6 +643,7 @@
         },
         {
           "name": "sector_banking",
+          "name_jp": "金融/銀行",
           "description": "金融/銀行（NIM・利上げ恩恵・貸し倒れリスク）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -617,6 +658,7 @@
         },
         {
           "name": "sector_energy",
+          "name_jp": "エネルギー",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -631,6 +673,7 @@
         },
         {
           "name": "sector_healthcare",
+          "name_jp": "ヘルスケア",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -645,6 +688,7 @@
         },
         {
           "name": "sector_reit",
+          "name_jp": "REIT",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -659,6 +703,7 @@
         },
         {
           "name": "sector_telecom",
+          "name_jp": "通信",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -673,6 +718,7 @@
         },
         {
           "name": "sector_food_bev",
+          "name_jp": "食品/飲料",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -687,6 +733,7 @@
         },
         {
           "name": "sector_airline",
+          "name_jp": "航空",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -701,6 +748,7 @@
         },
         {
           "name": "sector_materials",
+          "name_jp": "素材",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -715,6 +763,7 @@
         },
         {
           "name": "sector_defense",
+          "name_jp": "防衛",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -729,6 +778,7 @@
         },
         {
           "name": "sector_utilities",
+          "name_jp": "公益",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -743,6 +793,7 @@
         },
         {
           "name": "sector_ai_datacenter",
+          "name_jp": "AIデータセンター",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -757,6 +808,7 @@
         },
         {
           "name": "sector_fintech",
+          "name_jp": "フィンテック",
           "description": "",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -771,6 +823,7 @@
         },
         {
           "name": "japan_dividend",
+          "name_jp": "日本高配当",
           "description": "日本高配当株専門エージェント（配当利回り・連続増配・安定性）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -792,6 +845,7 @@
       "agents": [
         {
           "name": "portfolio_fit",
+          "name_jp": "ポートフォリオ適合",
           "description": "現在のポートフォリオ構成に対する適合性評価",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -806,6 +860,7 @@
         },
         {
           "name": "rule_compliance",
+          "name_jp": "ルール遵守",
           "description": "投資ルール遵守チェック（損切り・集中度・禁止銘柄等）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -820,6 +875,7 @@
         },
         {
           "name": "emotion_bias",
+          "name_jp": "感情バイアス",
           "description": "感情バイアス補正（損失回避・過信・後悔回避）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -834,6 +890,7 @@
         },
         {
           "name": "failure_pattern",
+          "name_jp": "失敗パターン",
           "description": "過去失敗パターンの検知（同じミスの繰り返し防止）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -848,6 +905,7 @@
         },
         {
           "name": "money_management",
+          "name_jp": "資金管理",
           "description": "資金管理（ポジションサイズ最適化・ケリー基準）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -862,6 +920,7 @@
         },
         {
           "name": "exit_timing",
+          "name_jp": "売り時判定",
           "description": "売り時判定（利確・損切り・保有期間）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -876,6 +935,7 @@
         },
         {
           "name": "reflection_learning",
+          "name_jp": "振り返り学習",
           "description": "振り返り学習エージェント（過去取引から学習・ルール進化）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -890,6 +950,7 @@
         },
         {
           "name": "investor_profile",
+          "name_jp": "投資家プロファイル",
           "description": "投資家プロファイル適合（リスク許容度・投資スタイル）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -904,6 +965,7 @@
         },
         {
           "name": "stoploss_habit",
+          "name_jp": "損切り癖",
           "description": "損切り癖分析 — 過去の損切り失敗パターンを検知して警告",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -918,6 +980,7 @@
         },
         {
           "name": "takeprofit_habit",
+          "name_jp": "利確癖",
           "description": "利確癖分析 — 早すぎる利確・遅すぎる利確パターンを検知",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -939,6 +1002,7 @@
       "agents": [
         {
           "name": "alert",
+          "name_jp": "アラート",
           "description": "急騰・急落・異常値・ルール違反をリアルタイム検知",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -953,6 +1017,7 @@
         },
         {
           "name": "monthly_report",
+          "name_jp": "月次レポート",
           "description": "月次パフォーマンスレポート生成",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -967,6 +1032,7 @@
         },
         {
           "name": "rule_evolution",
+          "name_jp": "ルール進化",
           "description": "ルール進化（失敗3回以上・勝率70%以上から自動提案）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -981,6 +1047,7 @@
         },
         {
           "name": "comparative",
+          "name_jp": "比較評価",
           "description": "比較・相対評価（同セクター内でのランキング）",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -995,6 +1062,7 @@
         },
         {
           "name": "score_integration",
+          "name_jp": "スコア統合",
           "description": "全エージェントのスコアを加重平均して総合スコアを算出",
           "weight": 1.0,
           "weight_updated_at": null,
@@ -1009,6 +1077,7 @@
         },
         {
           "name": "final_judgment",
+          "name_jp": "最終判定",
           "description": "9ランク最終判定（strong_buy〜strong_sell + 確率・期待値）",
           "weight": 1.0,
           "weight_updated_at": null,

@@ -213,7 +213,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .ag-card.has-math::before { content: '🔬'; position: absolute; top: 6px; right: 8px; font-size: 0.7rem; opacity: 0.7; }
   .ag-card.evolved::after { content: ''; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: #c8a96e; box-shadow: 0 0 8px #c8a96e; animation: pulse-evolved 1.5s ease-in-out infinite; }
   @keyframes pulse-evolved { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-  .ag-name { font-size: 0.78rem; color: #edede8; font-weight: 600; font-family: 'Courier New', monospace; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+  .ag-name { font-size: 0.85rem; color: #edede8; font-weight: 600; letter-spacing: 0; margin-bottom: 0.1rem; }
+  .ag-name-id { font-size: 0.6rem; color: #555; font-family: 'Courier New', monospace; margin-bottom: 0.35rem; }
   .ag-desc { font-size: 0.66rem; color: #888; line-height: 1.4; min-height: 2.4em; margin-bottom: 0.5rem; }
   .ag-metrics { display: flex; gap: 0.5rem; align-items: center; font-size: 0.62rem; color: #6c8a9a; font-family: 'Courier New', monospace; }
   .ag-metric { display: flex; align-items: center; gap: 0.2rem; }
@@ -869,7 +870,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
           return `
             <div class="${cls.join(' ')}" style="--cat-color:${cat.color}" title="${a.description}">
-              <div class="ag-name">${a.name}</div>
+              <div class="ag-name">${a.name_jp || a.name}</div>
+              <div class="ag-name-id">${a.name}</div>
               <div class="ag-desc">${a.description || '—'}</div>
               <div class="ag-metrics">
                 <span class="ag-metric"><span class="ag-metric-label">重み:</span><span class="ag-metric-val ${wCls}">${wTxt}</span></span>
