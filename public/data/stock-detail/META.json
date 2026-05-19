@@ -1,6 +1,6 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,7 +9,7 @@
     "expected_return": 1.54,
     "risk_reward": 0.91,
     "max_loss_est": -1.69,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=32% / 3ヶ月=73% / 12ヶ月=36%\n下落確率: 3%=58% / 5%=34% / 10%=11%\n期待値: +1.54% / リスクリワード: 0.91\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=32% / 3ヶ月=73% / 12ヶ月=36%\n下落確率: 3%=58% / 5%=34% / 10%=11%\n期待値: +1.54% / リスクリワード: 0.91\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -50,19 +50,19 @@
         "hold": 6,
         "avg_score": 52.1
       },
+      "prediction": {
+        "count": 10,
+        "buy": 1,
+        "sell": 0,
+        "hold": 9,
+        "avg_score": 54.7
+      },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 1,
         "hold": 4,
         "avg_score": 50.3
-      },
-      "prediction": {
-        "count": 10,
-        "buy": 1,
-        "sell": 0,
-        "hold": 9,
-        "avg_score": 54.3
       },
       "integration": {
         "count": 6,
@@ -115,20 +115,20 @@
       "reason": "高利益率(41%) / 高成長(24%)"
     },
     {
-      "agent": "market_sentiment",
-      "category": "market_monitor",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "RSI売られ過ぎ(26) / 直近ニュース良好(0.38)"
-    },
-    {
       "agent": "long_term_prob",
       "category": "prediction",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
+    },
+    {
+      "agent": "market_sentiment",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "RSI売られ過ぎ(26) / 直近ニュース良好(0.38)"
     },
     {
       "agent": "liquidity_risk",
@@ -147,12 +147,12 @@
       "reason": "ウォッチリスト内 4/10位"
     },
     {
-      "agent": "value_invest",
-      "category": "trade_style",
+      "agent": "risk_assessment",
+      "category": "analysis",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "PER適正(22.3x) / ROE高(30%) / 配当利回り31.0%"
+      "reason": "リスク許容範囲内"
     }
   ],
   "top_risks": [
@@ -165,20 +165,20 @@
       "reason": "過去勝率=50% / 事後確率=60%"
     },
     {
-      "agent": "mid_term_prob",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "20d/3m上昇確率=58% / MA20=-3.2% / 売上成長=24%"
-    },
-    {
       "agent": "expected_value",
       "category": "prediction",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "期待値=+1.40% / RR比=2.04 / 上昇確率=55%"
+    },
+    {
+      "agent": "mid_term_prob",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=58% / MA20=-3.2% / 売上成長=24%"
     },
     {
       "agent": "valuation",
@@ -189,6 +189,14 @@
       "reason": "売上高成長24%"
     },
     {
+      "agent": "ensemble",
+      "category": "prediction",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=56% / LGBM=57% / ルール=53% / ファンダ=60%"
+    },
+    {
       "agent": "lgbm_prob",
       "category": "prediction",
       "score": 56.0,
@@ -197,12 +205,12 @@
       "reason": "5d上昇確率=57% / 20d=32% / 3m=73% / 期待値=+1.54%"
     },
     {
-      "agent": "ensemble",
-      "category": "prediction",
-      "score": 56.0,
+      "agent": "momentum",
+      "category": "trade_style",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=56% / LGBM=57% / ルール=53% / ファンダ=60%"
+      "reason": "ADXトレンド強(=47)"
     },
     {
       "agent": "investor_profile",
@@ -219,14 +227,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "momentum",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=47)"
     },
     {
       "agent": "score_integration",

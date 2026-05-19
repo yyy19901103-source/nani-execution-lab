@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,7 +9,7 @@
     "expected_return": 1.5,
     "risk_reward": 2.0,
     "max_loss_est": -0.75,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=56% / 20日=58% / 3ヶ月=62% / 12ヶ月=74%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.50% / リスクリワード: 2.00\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=56% / 20日=58% / 3ヶ月=62% / 12ヶ月=74%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.50% / リスクリワード: 2.00\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -55,7 +55,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 52.0
+        "avg_score": 52.1
       },
       "analysis": {
         "count": 10,
@@ -189,14 +189,6 @@
       "reason": "5d上昇確率=56% / 20d=58% / 3m=62% / 期待値=+1.50%"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
@@ -211,6 +203,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "value_invest",

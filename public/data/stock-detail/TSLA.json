@@ -1,6 +1,6 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 0.45,
     "risk_reward": 0.23,
     "max_loss_est": -1.92,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=43% / 20日=45% / 3ヶ月=31% / 12ヶ月=36%\n下落確率: 3%=39% / 5%=38% / 10%=26%\n期待値: +0.45% / リスクリワード: 0.23\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=43% / 20日=45% / 3ヶ月=31% / 12ヶ月=36%\n下落確率: 3%=39% / 5%=38% / 10%=26%\n期待値: +0.45% / リスクリワード: 0.23\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -57,19 +57,19 @@
         "hold": 7,
         "avg_score": 48.4
       },
-      "sector": {
-        "count": 19,
-        "buy": 0,
-        "sell": 0,
-        "hold": 19,
-        "avg_score": 50.3
-      },
       "integration": {
         "count": 6,
         "buy": 0,
         "sell": 0,
         "hold": 6,
         "avg_score": 50.5
+      },
+      "sector": {
+        "count": 19,
+        "buy": 0,
+        "sell": 0,
+        "hold": 19,
+        "avg_score": 50.3
       }
     }
   },
@@ -189,22 +189,6 @@
       "reason": "OBV上昇トレンド"
     },
     {
-      "agent": "growth_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "売上高成長(16%) / ROIC低(2%)"
-    },
-    {
-      "agent": "sector_ev",
-      "category": "sector",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "EVマージン改善中"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
@@ -221,12 +205,28 @@
       "reason": "異常なし"
     },
     {
+      "agent": "sector_ev",
+      "category": "sector",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "EVマージン改善中"
+    },
+    {
       "agent": "momentum",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ADXトレンド強(=37)"
+    },
+    {
+      "agent": "growth_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "売上高成長(16%) / ROIC低(2%)"
     },
     {
       "agent": "short_term_prob",

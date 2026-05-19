@@ -1,15 +1,15 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
-    "score": 51,
+    "score": 52,
     "prob_up_5d": 0.627,
     "prob_down_5pct": 0.05,
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -25,7 +25,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 57.0
+        "avg_score": 57.2
       },
       "analysis": {
         "count": 10,
@@ -60,7 +60,7 @@
         "buy": 0,
         "sell": 0,
         "hold": 6,
-        "avg_score": 48.2
+        "avg_score": 48.3
       },
       "sector": {
         "count": 19,
@@ -81,20 +81,20 @@
       "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
     },
     {
-      "agent": "technical_summary",
-      "category": "analysis",
-      "score": 67.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
-    },
-    {
       "agent": "lgbm_prob",
       "category": "prediction",
       "score": 67.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
+    },
+    {
+      "agent": "technical_summary",
+      "category": "analysis",
+      "score": 67.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
     },
     {
       "agent": "failure_pattern",
@@ -121,12 +121,12 @@
       "reason": "3%下落確率=23% / 5%下落確率=38% / 10%下落確率=70%"
     },
     {
-      "agent": "emotion_bias",
-      "category": "personal",
+      "agent": "day_trade",
+      "category": "trade_style",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "感情バイアスなし"
+      "reason": "ストキャスOver売(0) / ストキャスKD売り"
     },
     {
       "agent": "trend_direction",
@@ -137,12 +137,12 @@
       "reason": "中期・長期MA上向き / 200MA下 / MACD正"
     },
     {
-      "agent": "day_trade",
-      "category": "trade_style",
+      "agent": "emotion_bias",
+      "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ストキャスOver売(0) / ストキャスKD売り"
+      "reason": "感情バイアスなし"
     }
   ],
   "top_risks": [
@@ -155,14 +155,6 @@
       "reason": "1d/5d上昇確率=59% / RSI=65 / MACD正"
     },
     {
-      "agent": "swing_trade",
-      "category": "trade_style",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
-    },
-    {
       "agent": "ensemble",
       "category": "prediction",
       "score": 59.0,
@@ -171,12 +163,12 @@
       "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
     },
     {
-      "agent": "supply_demand",
-      "category": "analysis",
-      "score": 58.0,
+      "agent": "swing_trade",
+      "category": "trade_style",
+      "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MFI買い圧力(70)"
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
       "agent": "sector_rotation",
@@ -185,6 +177,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "S&P500比 月次強い(+29.5%)"
+    },
+    {
+      "agent": "supply_demand",
+      "category": "analysis",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MFI買い圧力(70)"
     },
     {
       "agent": "risk_assessment",
@@ -203,14 +203,6 @@
       "reason": "20d/3m上昇確率=56% / MA20=+9.2% / 売上成長=0%"
     },
     {
-      "agent": "money_management",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
-    },
-    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
@@ -225,6 +217,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "money_management",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
     }
   ],
   "fundamentals": null,

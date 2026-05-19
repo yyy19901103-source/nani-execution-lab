@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,7 +9,7 @@
     "expected_return": 1.38,
     "risk_reward": 1.05,
     "max_loss_est": -1.31,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -49,7 +49,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 52.4
+        "avg_score": 52.3
       },
       "analysis": {
         "count": 10,
@@ -100,20 +100,20 @@
       "reason": "高配当38.0% / ROE良好152.0% / 利益率安定35.4%"
     },
     {
-      "agent": "long_term_prob",
-      "category": "prediction",
-      "score": 75.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=75% / ROIC=24% / PER=34x"
-    },
-    {
       "agent": "momentum",
       "category": "trade_style",
       "score": 75.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "52週高値近傍(-0.8%) / ADXトレンド強(=47) / 200MA大幅上回り"
+    },
+    {
+      "agent": "long_term_prob",
+      "category": "prediction",
+      "score": 75.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=75% / ROIC=24% / PER=34x"
     },
     {
       "agent": "growth_invest",
@@ -174,22 +174,6 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "value_invest",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
-    },
-    {
       "agent": "ensemble",
       "category": "prediction",
       "score": 55.0,
@@ -214,6 +198,22 @@
       "reason": "異常なし"
     },
     {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "value_invest",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
+    },
+    {
       "agent": "lgbm_prob",
       "category": "prediction",
       "score": 54.0,
@@ -235,7 +235,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-19 07:50"
+      "reason": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=58% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-19 21:01"
     }
   ],
   "fundamentals": {

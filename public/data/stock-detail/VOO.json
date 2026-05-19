@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -9,7 +9,7 @@
     "expected_return": 1.72,
     "risk_reward": 2.69,
     "max_loss_est": -0.64,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=73% / 12ヶ月=55%\n下落確率: 3%=17% / 5%=13% / 10%=0%\n期待値: +1.72% / リスクリワード: 2.69\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=73% / 12ヶ月=55%\n下落確率: 3%=17% / 5%=13% / 10%=0%\n期待値: +1.72% / リスクリワード: 2.69\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -91,20 +91,20 @@
       "reason": "MFI買い圧力(61) / OBV上昇（蓄積） / VWAP上方"
     },
     {
-      "agent": "dividend_income",
-      "category": "trade_style",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高配当(119.0%)"
-    },
-    {
       "agent": "liquidity_risk",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
+    },
+    {
+      "agent": "dividend_income",
+      "category": "trade_style",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "高配当(119.0%)"
     },
     {
       "agent": "japan_dividend",
@@ -189,12 +189,12 @@
       "reason": "配当利回り119.0%"
     },
     {
-      "agent": "volatility_env",
-      "category": "market_monitor",
+      "agent": "mid_term_prob",
+      "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "低ボラ環境"
+      "reason": "20d/3m上昇確率=55% / MA20=+1.8% / 売上成長=0%"
     },
     {
       "agent": "investor_profile",
@@ -213,14 +213,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "mid_term_prob",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "20d/3m上昇確率=55% / MA20=+1.8% / 売上成長=0%"
-    },
-    {
       "agent": "volume_anomaly",
       "category": "market_monitor",
       "score": 55.0,
@@ -229,12 +221,20 @@
       "reason": "OBV上昇トレンド"
     },
     {
+      "agent": "volatility_env",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "低ボラ環境"
+    },
+    {
       "agent": "final_judgment",
       "category": "integration",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=73% / 12ヶ月=55%\n下落確率: 3%=17% / 5%=13% / 10%=0%\n期待値: +1.72% / リスクリワード: 2.69\n判定時刻: 2026-05-19 07:50"
+      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=73% / 12ヶ月=55%\n下落確率: 3%=17% / 5%=13% / 10%=0%\n期待値: +1.72% / リスクリワード: 2.69\n判定時刻: 2026-05-19 21:01"
     }
   ],
   "fundamentals": {

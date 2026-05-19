@@ -1,6 +1,6 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -9,7 +9,7 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -33,7 +33,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 54.8
+        "avg_score": 54.9
       },
       "personal": {
         "count": 10,
@@ -196,12 +196,12 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "swing_trade",
-      "category": "trade_style",
-      "score": 53.0,
+      "agent": "monte_carlo",
+      "category": "prediction",
+      "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率55% / P10=-1.2% P90=+1.5%"
     },
     {
       "agent": "downside_risk",
@@ -212,12 +212,12 @@
       "reason": "3%下落確率=32% / 5%下落確率=54% / 10%下落確率=70% / ⚠下落リスク高"
     },
     {
-      "agent": "monte_carlo",
-      "category": "prediction",
+      "agent": "swing_trade",
+      "category": "trade_style",
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率54% / P10=-1.2% P90=+1.4%"
+      "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
     }
   ],
   "fundamentals": null,

@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 1.39,
     "risk_reward": 1.21,
     "max_loss_est": -1.15,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=23% / 10%=14%\n期待値: +1.39% / リスクリワード: 1.21\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=23% / 10%=14%\n期待値: +1.39% / リスクリワード: 1.21\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -173,12 +173,12 @@
       "reason": "EC成長14%"
     },
     {
-      "agent": "fundamental",
-      "category": "analysis",
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ファンダメンタル中立"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "investor_profile",
@@ -197,20 +197,20 @@
       "reason": "異常なし"
     },
     {
+      "agent": "fundamental",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ファンダメンタル中立"
+    },
+    {
       "agent": "value_invest",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ROE高(22%)"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "lgbm_prob",

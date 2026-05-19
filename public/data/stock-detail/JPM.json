@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,7 +9,7 @@
     "expected_return": 1.42,
     "risk_reward": 1.63,
     "max_loss_est": -0.87,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=60% / 3ヶ月=62% / 12ヶ月=76%\n下落確率: 3%=25% / 5%=17% / 10%=8%\n期待値: +1.42% / リスクリワード: 1.63\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=60% / 3ヶ月=62% / 12ヶ月=76%\n下落確率: 3%=25% / 5%=17% / 10%=8%\n期待値: +1.42% / リスクリワード: 1.63\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -62,7 +62,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 51.4
+        "avg_score": 51.5
       },
       "integration": {
         "count": 6,
@@ -131,20 +131,20 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "portfolio_fit",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "未保有・新規可能"
-    },
-    {
       "agent": "failure_pattern",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "portfolio_fit",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
     },
     {
       "agent": "sector_banking",
@@ -191,10 +191,10 @@
     {
       "agent": "monte_carlo",
       "category": "prediction",
-      "score": 56.0,
+      "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率58% / P10=-0.4% P90=+0.5%"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率60% / P10=-0.4% P90=+0.5%"
     },
     {
       "agent": "comparative",
@@ -205,20 +205,12 @@
       "reason": "ウォッチリスト内 6/11位"
     },
     {
-      "agent": "volatility_env",
-      "category": "market_monitor",
+      "agent": "day_trade",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "低ボラ環境"
-    },
-    {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=60% / 3m=62% / 期待値=+1.42%"
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "investor_profile",
@@ -235,6 +227,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=55% / 20d=60% / 3m=62% / 期待値=+1.42%"
     }
   ],
   "fundamentals": {

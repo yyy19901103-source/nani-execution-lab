@@ -1,6 +1,6 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,7 +9,7 @@
     "expected_return": 1.37,
     "risk_reward": 1.49,
     "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=50% / 3ヶ月=63% / 12ヶ月=72%\n下落確率: 3%=31% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=50% / 3ヶ月=63% / 12ヶ月=72%\n下落確率: 3%=31% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -35,19 +35,19 @@
         "hold": 4,
         "avg_score": 59.6
       },
-      "personal": {
-        "count": 10,
-        "buy": 5,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 59.5
-      },
       "sector": {
         "count": 19,
         "buy": 2,
         "sell": 0,
         "hold": 17,
         "avg_score": 52.9
+      },
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.5
       },
       "market_monitor": {
         "count": 7,
@@ -90,20 +90,20 @@
       "reason": "高配当(86.0%) / 高利益率(47%) / ROE高(34%)"
     },
     {
-      "agent": "rule_compliance",
-      "category": "personal",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "全ルール遵守"
-    },
-    {
       "agent": "japan_dividend",
       "category": "sector",
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
+    },
+    {
+      "agent": "rule_compliance",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
     },
     {
       "agent": "sector_cloud_saas",
@@ -164,30 +164,6 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "investor_profile",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
-      "agent": "valuation",
-      "category": "analysis",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "バリュエーション中立"
-    },
-    {
-      "agent": "alert",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
-    },
-    {
       "agent": "day_trade",
       "category": "trade_style",
       "score": 55.0,
@@ -204,12 +180,28 @@
       "reason": "OBV上昇トレンド"
     },
     {
-      "agent": "lgbm_prob",
-      "category": "prediction",
-      "score": 54.0,
+      "agent": "investor_profile",
+      "category": "personal",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=50% / 3m=63% / 期待値=+1.37%"
+      "reason": "プロファイル適合"
+    },
+    {
+      "agent": "alert",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
+      "agent": "valuation",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "バリュエーション中立"
     },
     {
       "agent": "bayesian",
@@ -218,6 +210,14 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "lgbm_prob",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=55% / 20d=50% / 3m=63% / 期待値=+1.37%"
     },
     {
       "agent": "ensemble",
@@ -292,17 +292,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "Microsoft (MSFT) Expands Discord Partnership With Xbox",
-      "sentiment": 0.64,
-      "importance": 3,
-      "published_at": "2026-05-16 19:45:08",
-      "source": "yahoo"
-    },
-    {
       "headline": "Anthropic to let partners share Mythos cybersecurity findings with others",
       "sentiment": 0.32,
       "importance": 2,
       "published_at": "2026-05-19 07:28:02",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Microsoft Corporation (MSFT): Mark Cuban Sees Opportunity in AI Implementation for Small Businesses",
+      "sentiment": 0.19,
+      "importance": 2,
+      "published_at": "2026-05-19 07:07:41",
       "source": "yahoo"
     }
   ],

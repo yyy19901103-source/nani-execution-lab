@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-19 07:50",
+  "generated_at": "2026-05-19 21:01",
   "summary": {
     "rank": "watch",
     "score": 56,
@@ -9,7 +9,7 @@
     "expected_return": 1.32,
     "risk_reward": 1.39,
     "max_loss_est": -0.95,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.39\n判定時刻: 2026-05-19 07:50",
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.39\n判定時刻: 2026-05-19 21:01",
     "prediction_date": "2026-05-19"
   },
   "agent_summary": {
@@ -54,7 +54,7 @@
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 58.0
+        "avg_score": 57.8
       },
       "market_monitor": {
         "count": 7,
@@ -180,6 +180,14 @@
       "reason": "全エージェント統合スコア=56"
     },
     {
+      "agent": "volume_anomaly",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "investor_profile",
       "category": "personal",
       "score": 55.0,
@@ -194,14 +202,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "volume_anomaly",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "short_term_prob",
@@ -233,7 +233,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.39\n判定時刻: 2026-05-19 07:50"
+      "reason": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=59% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=26% / 5%=19% / 10%=14%\n期待値: +1.32% / リスクリワード: 1.39\n判定時刻: 2026-05-19 21:01"
     }
   ],
   "fundamentals": {
@@ -292,17 +292,17 @@
       "source": "yahoo"
     },
     {
-      "headline": "Forget Utility Dividends. Kevin Warsh Just Made the 30-Year Treasury a Better Income Play",
-      "sentiment": 0.95,
-      "importance": 4,
-      "published_at": "2026-05-16 20:53:46",
-      "source": "yahoo"
-    },
-    {
       "headline": "Nvidia Doubled Down on Its Second-Largest AI Holding. Should Investors Follow Suit?",
       "sentiment": 0.68,
       "importance": 2,
       "published_at": "2026-05-19 07:37:48",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Tesla Just Hiked Model Y Prices for the First Time Since 2024. Time to Buy the Stock?",
+      "sentiment": -0.48,
+      "importance": 2,
+      "published_at": "2026-05-19 07:33:00",
       "source": "yahoo"
     }
   ],
