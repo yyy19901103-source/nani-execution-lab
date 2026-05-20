@@ -1,8 +1,8 @@
 {
-  "version": "5.0.0",
-  "auditDate": "2026-05-13/20 (1st-5th round)",
-  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd-5th: PMI 公式PDF 直接照合",
-  "honestyStatement": "5回目監査で公式 Glossary 全70ページ完全読込・Lesson 02/03/10 主要ページ読込・新版 ECO 番号体系の発見を実施。累積発見: 19件 (重大6・軽微5・整合6・情報3 + 5回目新規 F019-F022)。なお Lesson 04-09・11・12・PMI 公式問題集 206p・Shawpe ケース後半は次イテレーション継続。",
+  "version": "6.0.0",
+  "auditDate": "2026-05-13/20 (1st-6th round)",
+  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd-6th: PMI 公式PDF 直接照合",
+  "honestyStatement": "6回目監査で Lesson 04/06/08/11/12 + PMI 公式問題集 (©2026) 部分読込を実施。最重大発見: 試験仕様の大幅変更 (時間 230→240分・配分 42/50/8 → 33/41/26%・10プレテスト追加) と完全な新 ECO 24タスク体系 (8+8+8) の判明。本アプリの問題プール・模試は旧版前提のため、新版試験対策には Business Environment 比率を 8% → 26% に増やす必要あり。",
   "scope": [
     "ECO 2021 ドメイン配分",
     "PMBOK 第7版 12原則",
@@ -266,6 +266,61 @@
       "myContent": "chapter 1.9/1.10/2.4/2.14 は共通ビジョン・ステークホルダー関与・ガバナンスを扱う",
       "publicSources": ["C:\\Users\\81804\\Downloads\\PMP_-_Lesson_02_-_Laying_the_Foundation-en_us-ja_jp-PE-C.pdf P.1-15"],
       "verdict": "✅ Lesson 02 の主要トピック（プロジェクト・ビジョン記述書・プロジェクト憲章・プロダクト・ボックス演習・XPメタファー・ビジネス・ケースとビジネス・ニーズ文書）は私の章本文と整合。追加発見: プロジェクト憲章に含まれる主要項目（氏名・説明・ビジネス・ニーズ・スケジュール・前提条件・ビジネス・ケース）の公式リスト。"
+    },
+    {
+      "id": "F023",
+      "category": "🚨 試験仕様の大幅変更（6th round・最重大）",
+      "severity": "CRITICAL",
+      "status": "重大変更発覚 → eco-version-mapping に記録",
+      "myContent": "本アプリの模試・問題プールは 230分・180問・配分 42/50/8% を前提",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_12_-_Next_Steps-en_us-ja_jp-PE-C_.pdf P.3-5 (© 2025 PMI)"
+      ],
+      "verdict": "🚨 2025/2026 試験仕様: 240分 (10分追加)・180問+10プレテスト・配分 33/41/26%。Business Environment が 8% → 26% に **18%pt 増加**。これは試験対策上の根本的変更。本アプリは旧版前提のまま運用するか、新版に切替えるか、両対応するかをユーザーが選択する必要あり。eco-version-mapping.json に完全反映済。",
+      "action": "eco-version-mapping.json 全面更新 + UI 警告表示が必要"
+    },
+    {
+      "id": "F024",
+      "category": "新 ECO 24タスク体系の判明（6th round・最重大）",
+      "severity": "CRITICAL",
+      "status": "完全番号体系判明",
+      "myContent": "本アプリは 2021 版 35 タスク (14+17+4) ベース",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf (©2026 PMI) P.1-10"
+      ],
+      "verdict": "🚨 2026 公式問題集が示す完全な新タスク体系: 各ドメイン 8 タスクの均等構成 (8+8+8=24)。旧版から大幅再構成: People (14→8) Process (17→8) Business Env (4→8)。Business Env が 4 倍に拡大。新タスク全件のタイトル・番号を eco-version-mapping.json の completeTaskList2026FromOfficialQuestionBank に記録。",
+      "action": "次イテレーションで新版 ECO 完全データの eco-official-2026.json 作成必要"
+    },
+    {
+      "id": "F025",
+      "category": "Lesson 04 (計画書策定) 主要内容（6th round）",
+      "severity": "INFO",
+      "status": "整合・追加発見",
+      "myContent": "chapter 2.5/2.9/2.11 は予算・統合・調達を扱う",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\PMP_-_Lesson_04_-_Building_the_Plan-en_us-ja_jp-PE-C.pdf P.1-15 (124p中)"],
+      "verdict": "✅ Stacey 複雑性モデル・テーラリング開発アプローチ・予測型/適応型/ハイブリッド特性表 を確認。新ECO番号 2.1/2.4/2.6 確認。"
+    },
+    {
+      "id": "F026",
+      "category": "Lesson 06/08/11 主要内容（6th round）",
+      "severity": "INFO",
+      "status": "追加発見",
+      "myContent": "chapter 2.2/2.3/2.15/2.16 etc.",
+      "publicSources": [
+        "Lesson 06 (51p中8p)",
+        "Lesson 08 (106p中10p)",
+        "Lesson 11 (25p中8p)"
+      ],
+      "verdict": "✅ 新ECO番号: 1.7=知識転嫁/1.8=コミュ/3.3=変更/3.4=障害除去/3.5=リスク/3.6=CI/3.7=変革支援/3.8=外部環境変化。形式知/暗黙知・リスク特定10手法・教訓収集手法・OPA更新 確認。"
+    },
+    {
+      "id": "F027",
+      "category": "公式問題集 (©2026) 問題形式確認（6th round）",
+      "severity": "VERIFIED",
+      "status": "形式整合",
+      "myContent": "本アプリの103問はシナリオ+質問+ABCD選択肢形式",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf"],
+      "verdict": "✅ 公式問題集の形式 (シナリオ+質問+ABCD) は本アプリの103問と整合。新形式 (グラフ・複数選択・マッチング・ホットスポット・プルダウン) は本アプリ未対応 → 次イテレーション課題。"
     }
   ],
   "verifiedItems": [

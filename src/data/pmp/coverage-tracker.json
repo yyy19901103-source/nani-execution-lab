@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "lastUpdated": "2026-05-20 (5th iteration)",
+  "version": "3.0.0",
+  "lastUpdated": "2026-05-20 (6th iteration)",
   "purpose": "C:\\Users\\81804\\Downloads\\ にある PMI 公式 PMP 資料群の処理状況を追跡。ユーザーが第三者検証できる状態を保つため、各 PDF の処理状態・反映先・出典ページを明示する。",
   "honestyStatement": "全 28 PDF・合計約 400MB・推定 2,000+ ページの完全処理は本セッション 1回では物理的に不可能。本ファイルは『何が処理済み・何が未処理』を透明化することで、ユーザーが網羅状況を直接検証できるようにするための追跡ファイル。",
   "summary": {
@@ -70,9 +70,12 @@
       "sizeKB": 1515,
       "pages": 206,
       "priority": "P1-CRITICAL",
-      "status": "in_queue",
-      "task": "#4",
-      "reflectionTarget": "src/data/pmp/questions.json (既存103問) のフォーマット・配分検証"
+      "status": "partially_processed",
+      "processedDate": "2026-05-20 (6th audit)",
+      "extractedPages": "1-10 (206p中)",
+      "reflectedIn": ["src/data/pmp/eco-version-mapping.json (新ECO 24タスク体系完全反映)"],
+      "sourceGrade": "A",
+      "note": "©2026 PMI 最新版。新 ECO 8+8+8=24 タスク完全番号体系判明 → F024"
     },
     {
       "file": "PMP_180問模試_完全版_V25R05.pdf",

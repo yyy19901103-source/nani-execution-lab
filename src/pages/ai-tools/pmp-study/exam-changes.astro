@@ -1,0 +1,143 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import mappingData from '../../../data/pmp/eco-version-mapping.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const dc = mappingData.domainConfiguration;
+const old2021 = dc["2021"];
+const new2025 = dc["2025_PE_C"];
+const tasks2026 = dc.completeTaskList2026FromOfficialQuestionBank;
+---
+
+<BaseLayout
+  title="🚨 PMP 試験仕様変更（2025/2026版） - PMP学習アプリ"
+  description="2025/2026 PMP 試験の仕様変更を公式PDF直接照合で記録。240分・配分 33/41/26% への移行。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">🚨 試験仕様変更</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1000px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    {/* 重大警告 */}
+    <div style="background:rgba(232,110,110,0.08);border-left:3px solid #e86e6e;padding:1.25rem 1.5rem;margin-bottom:1.25rem;">
+      <p style="color:#e86e6e;font-size:0.7rem;letter-spacing:0.3em;margin-bottom:0.5rem;">🚨 CRITICAL · 試験仕様の根本的変更</p>
+      <p style="color:rgba(237,237,232,0.9);font-size:0.9rem;line-height:1.85;">{mappingData.domainConfiguration.criticalNoteForUsers}</p>
+    </div>
+
+    {/* 比較表 */}
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">SPEC COMPARISON · 仕様比較</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;">
+        <p style="color:rgba(237,237,232,0.6);font-size:0.7rem;letter-spacing:0.25em;margin-bottom:1rem;">旧版 (2021)</p>
+        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">試験時間</td><td style="text-align:right;color:#edede8;">{old2021.examMinutes}分</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">総問題数</td><td style="text-align:right;color:#edede8;">{old2021.totalQuestions}問</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">プレテスト</td><td style="text-align:right;color:#edede8;">{old2021.pretest}</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">人 (People)</td><td style="text-align:right;color:#c8a96e;">{(old2021.domains[0].weight*100).toFixed(0)}%</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">プロセス (Process)</td><td style="text-align:right;color:#c8a96e;">{(old2021.domains[1].weight*100).toFixed(0)}%</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">ビジネス環境</td><td style="text-align:right;color:#c8a96e;">{(old2021.domains[2].weight*100).toFixed(0)}%</td></tr>
+        </table>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(232,110,110,0.3);padding:1.25rem 1.5rem;">
+        <p style="color:#e86e6e;font-size:0.7rem;letter-spacing:0.25em;margin-bottom:1rem;">新版 (2025/2026)</p>
+        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">試験時間</td><td style="text-align:right;color:#e86e6e;">{new2025.examMinutes}分 (+10)</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">総問題数</td><td style="text-align:right;color:#edede8;">{new2025.totalQuestions}+{new2025.pretest}</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">プレテスト</td><td style="text-align:right;color:#e86e6e;">{new2025.pretest}問</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">人 (People)</td><td style="text-align:right;color:#e86e6e;">{(new2025.domains[0].weight*100).toFixed(0)}% ↓9</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">プロセス (Process)</td><td style="text-align:right;color:#e86e6e;">{(new2025.domains[1].weight*100).toFixed(0)}% ↓9</td></tr>
+          <tr><td style="padding:0.35rem 0;color:rgba(255,255,255,0.55);">ビジネス環境</td><td style="text-align:right;color:#e86e6e;font-weight:600;">{(new2025.domains[2].weight*100).toFixed(0)}% ↑18 🚨</td></tr>
+        </table>
+      </div>
+    </div>
+
+    {/* 新ECO 24タスク完全リスト */}
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">2026 COMPLETE TASK LIST · 完全タスク体系</p>
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <p style="color:rgba(237,237,232,0.7);font-size:0.8rem;line-height:1.7;margin-bottom:1rem;">出典: <code style="color:#9ecbe8;">{tasks2026.verifiedSource}</code></p>
+      <p style="color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.85;margin-bottom:1rem;">{tasks2026.structuralChange}</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;">
+        <div>
+          <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.5rem;">DOMAIN I · 人 (33%)</p>
+          {Object.entries(tasks2026.domainI_People).map(([id, title]) => (
+            <div style="padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78rem;">
+              <span style="color:#c8a96e;font-weight:600;margin-right:0.5rem;">{id}</span>
+              <span style="color:rgba(237,237,232,0.85);">{title}</span>
+            </div>
+          ))}
+        </div>
+        <div>
+          <p style="color:#6ec897;font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.5rem;">DOMAIN II · プロセス (41%)</p>
+          {Object.entries(tasks2026.domainII_Process).map(([id, title]) => (
+            <div style="padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78rem;">
+              <span style="color:#6ec897;font-weight:600;margin-right:0.5rem;">{id}</span>
+              <span style="color:rgba(237,237,232,0.85);">{title}</span>
+            </div>
+          ))}
+        </div>
+        <div>
+          <p style="color:#9ecbe8;font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.5rem;">DOMAIN III · ビジネス環境 (26%) 🚨</p>
+          {Object.entries(tasks2026.domainIII_BusinessEnvironment).map(([id, title]) => (
+            <div style="padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78rem;">
+              <span style="color:#9ecbe8;font-weight:600;margin-right:0.5rem;">{id}</span>
+              <span style="color:rgba(237,237,232,0.85);">{title}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* 質問形式 */}
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">QUESTION FORMATS · 新試験の質問形式</p>
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <ul style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.95;">
+        {mappingData.domainConfiguration.questionFormatsNew.map(f => <li>{f}</li>)}
+      </ul>
+      <p style="color:rgba(232,180,110,0.85);font-size:0.78rem;line-height:1.7;margin-top:0.85rem;">
+        ⚠ 本アプリは「選択式問題（正解は1つ）」のみ対応。新形式（複数選択・マッチング・ホットスポット・プルダウン等）には未対応。次イテレーション課題。
+      </p>
+    </div>
+
+    {/* 確認済みマッピング */}
+    <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.4em;margin-bottom:1rem;">CONFIRMED MAPPINGS · 新旧マッピング ({mappingData.confirmedMappings.length}件)</p>
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.5rem 0;margin-bottom:1.5rem;">
+      {mappingData.confirmedMappings.map(m => (
+        <div style="padding:0.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div style="display:flex;gap:0.6rem;align-items:baseline;flex-wrap:wrap;margin-bottom:0.3rem;">
+            <span style="background:rgba(232,110,110,0.08);color:#e86e6e;padding:0.15rem 0.45rem;font-size:0.65rem;">2025: {m.newEco2025}</span>
+            <span style="color:rgba(255,255,255,0.4);">→</span>
+            <span style="background:rgba(200,169,110,0.08);color:#c8a96e;padding:0.15rem 0.45rem;font-size:0.65rem;">2021: {m.oldEco2021}</span>
+            <span style="margin-left:auto;background:rgba(110,200,151,0.08);color:#6ec897;padding:0.15rem 0.4rem;font-size:0.62rem;">{m.confidence}</span>
+          </div>
+          {m.note && <p style="color:rgba(237,237,232,0.65);font-size:0.75rem;line-height:1.6;margin:0;">{m.note}</p>}
+          <p style="color:rgba(110,200,151,0.6);font-size:0.7rem;margin-top:0.3rem;">本アプリの章 {m.myChapter} / {m.lesson}</p>
+        </div>
+      ))}
+    </div>
+
+    {/* アクション項目 */}
+    <div style="background:#0f0f12;border:1px solid rgba(232,180,110,0.25);padding:1.25rem 1.5rem;">
+      <p style="color:#e8b46e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">ACTION ITEMS · 次のステップ</p>
+      <ol style="margin:0;padding-left:1.5rem;color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.95;">
+        {mappingData.actionItems.map(a => (
+          <li style="margin-bottom:0.4rem;">
+            <span style={`background:${a.priority.startsWith('P1') ? 'rgba(232,110,110,0.1)' : a.priority.startsWith('P2') ? 'rgba(232,180,110,0.1)' : 'rgba(255,255,255,0.05)'};color:${a.priority.startsWith('P1') ? '#e86e6e' : a.priority.startsWith('P2') ? '#e8b46e' : 'rgba(255,255,255,0.6)'};padding:0.1rem 0.4rem;font-size:0.7rem;margin-right:0.5rem;letter-spacing:0.05em;`}>{a.priority}</span>
+            {a.item}
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <p style="color:rgba(237,237,232,0.4);font-size:0.7rem;text-align:center;margin-top:2rem;line-height:1.7;">
+      検証実施: yes · 出典グレード: A · 確認日: 2026-05-20<br/>
+      確認元: PMI 公式 PDF 直接読込 (PE-C 2025 / Exam Prep ©2026)
+    </p>
+  </div>
+
+</BaseLayout>

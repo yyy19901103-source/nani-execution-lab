@@ -1,0 +1,197 @@
+{
+  "version": "1.0.0",
+  "title": "PMP ECO バージョン対応表（2021版 vs 2025版 PE-C）",
+  "discoveryDate": "2026-05-20",
+  "discoveryAudit": "F020 (5th round)",
+  "verifiedAgainst": [
+    "C:\\Users\\81804\\Downloads\\pmp-examination-content-outline.pdf (2021年1月版)",
+    "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_02_-_Laying_the_Foundation-en_us-ja_jp-PE-C.pdf (© 2025)",
+    "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_03_-_Defining_Scope_Value_and_Success_Criteria-en_us-ja_jp-PE-C.pdf",
+    "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_10_-_Closing_the_Project_Successfully-en_us-ja_jp-PE-C.pdf"
+  ],
+  "verificationLevel": "PMI 公式 PDF 直接読込",
+  "sourceGrade": "A",
+  "criticalNote": "PE-C コース (2025年版) は 2021年版 ECO とは異なる番号体系を使用しています。2025年7月以降の PMP 試験は新版に基づくと推定されますが、PMI 公式発表の確認が必要です。本マッピング表は読み取れた範囲での対応関係を記録するもので、完全網羅は次イテレーションで検証継続します。",
+  "domainConfiguration": {
+    "2021": {
+      "examMinutes": 230,
+      "totalQuestions": 180,
+      "pretest": 0,
+      "domains": [
+        { "id": "I", "name": "人 (People)", "weight": 0.42, "taskCount": 14 },
+        { "id": "II", "name": "プロセス (Process)", "weight": 0.50, "taskCount": 17 },
+        { "id": "III", "name": "ビジネス環境 (Business Environment)", "weight": 0.08, "taskCount": 4 }
+      ],
+      "breaks": "10分×2"
+    },
+    "2025_PE_C": {
+      "verifiedSource": "PMP_-_Lesson_12_-_Next_Steps-en_us-ja_jp-PE-C_.pdf P.3-5 (© 2025 PMI)",
+      "examMinutes": 240,
+      "totalQuestions": 180,
+      "pretest": 10,
+      "pretestNote": "10問のプレテスト問題（採点対象外）",
+      "domains": [
+        { "id": "I", "name": "人 (People)", "weight": 0.33, "note": "8%pt 減 (42%→33%)" },
+        { "id": "II", "name": "プロセス (Process)", "weight": 0.41, "note": "9%pt 減 (50%→41%)" },
+        { "id": "III", "name": "ビジネス環境 (Business Environment)", "weight": 0.26, "note": "🚨 18%pt 増 (8%→26%)" }
+      ],
+      "breaks": "10分×2",
+      "scoring": "誤答による減点なし。各セクションを提出すると前の問題には戻れない。"
+    },
+    "criticalNoteForUsers": "🚨 重大: 2025/2026 試験はビジネス環境が 8% → 26% に大幅増加。本アプリの問題プール・模試は旧 (2021) 配分に基づくため、新試験対策には Business Environment 問題の比率増加が必要。",
+    "completeTaskList2026FromOfficialQuestionBank": {
+      "verifiedSource": "PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf (©2026 PMI)",
+      "domainI_People": {
+        "1.1": "共通のビジョンを策定する",
+        "1.2": "コンフリクトの管理",
+        "1.3": "プロジェクトチームを率いる",
+        "1.4": "ステークホルダーの関与",
+        "1.5": "ステークホルダーの期待を調整する",
+        "1.6": "ステークホルダーの期待を管理する",
+        "1.7": "知識移転の確実な実施を支援する",
+        "1.8": "コミュニケーションの計画と管理"
+      },
+      "domainII_Process": {
+        "2.1": "統合されたプロジェクト管理計画の策定および計画の実行",
+        "2.2": "プロジェクトのスコープを策定および管理する",
+        "2.3": "価値に基づくデリバリーの確保を支援する",
+        "2.4": "リソースの計画と管理",
+        "2.5": "調達の計画と管理",
+        "2.6": "財務の計画と管理",
+        "2.7": "製品や成果物の品質を計画し、最適化する",
+        "2.8": "スケジュールの計画と管理"
+      },
+      "domainIII_BusinessEnvironment": {
+        "3.1": "ガバナンスを定義し、確立する",
+        "3.2": "プロジェクト・コンプライアンスの計画と管理",
+        "3.3": "変更の管理とコントロール",
+        "3.4": "障害の除去と課題の管理",
+        "3.5": "リスクの計画と管理",
+        "3.6": "継続的な改善",
+        "3.7": "組織の変革を支援する",
+        "3.8": "外部ビジネス環境の変化を評価する"
+      },
+      "totalTasks": 24,
+      "structuralChange": "2021版の 14+17+4=35 タスクから 2026版の 8+8+8=24 タスクに大幅再構成。Process が大幅減 (17→8)、Business Environment が大幅増 (4→8)。"
+    },
+    "knownNumbersLessonReferences": {
+      "1.1": "共通のビジョンを策定する (Lesson 02)",
+      "1.4": "ステークホルダーを関与させる (Lesson 02)",
+      "1.5": "ステークホルダーの期待を整合させる (Lesson 02)",
+      "1.7": "知識の転嫁を確実にするための支援 (Lesson 06)",
+      "1.8": "コミュニケーションの計画と管理 (Lesson 06)",
+      "2.1": "統合プロジェクト計画書の作成とデリバリーの計画 (Lesson 04)",
+      "2.2": "プロジェクト・スコープの作成と管理 (Lesson 03)",
+      "2.3": "価値ベースのデリバリーの支援 (Lesson 03)",
+      "2.4": "資源の計画とマネジメント (Lesson 04)",
+      "2.6": "財務の計画とマネジメント (Lesson 04)",
+      "2.10": "終結作業の管理 (Lesson 10)",
+      "3.1": "ガバナンスを定義し、確立する (Lesson 02)",
+      "3.2": "プロジェクト・コンプライアンスの計画と管理 (Lesson 03)",
+      "3.3": "変更の管理とコントロール (Lesson 08)",
+      "3.4": "障害の除去と課題の管理 (Lesson 08)",
+      "3.5": "リスクの計画と管理 (Lesson 08)",
+      "3.6": "継続的改善 (Lesson 11)",
+      "3.7": "組織変革の支援 (Lesson 11)",
+      "3.8": "外部ビジネス環境の変化の評価 (Lesson 11)"
+    },
+    "questionFormatsNew": [
+      "選択式問題 (正解は1つ)",
+      "グラフで強化された選択肢 (正解は1つ)",
+      "複数選択 (複数正解)",
+      "ケーススタディまたはシナリオ",
+      "マッチングの強化",
+      "ポイント・アンド・クリック",
+      "プルダウン・リスト"
+    ]
+  },
+  "confirmedMappings": [
+    {
+      "newEco2025": "1.1 共通のビジョンを策定する",
+      "oldEco2021": "I.2 チームをリードする (1.2.1 明確なビジョンとミッションを設定する)",
+      "myChapter": "1.2",
+      "lesson": "Lesson 02",
+      "confidence": "HIGH",
+      "note": "ビジョン策定は 2021版では『リードする』の中に含まれていたが、2025版では独立タスクに昇格"
+    },
+    {
+      "newEco2025": "1.4 ステークホルダーを関与させる",
+      "oldEco2021": "II.4 ステークホルダーを関与させる",
+      "myChapter": "2.4",
+      "lesson": "Lesson 02",
+      "confidence": "HIGH",
+      "note": "2021版では Process ドメインだったが、2025版では People ドメインに移動"
+    },
+    {
+      "newEco2025": "1.5 ステークホルダーの期待を整合させる",
+      "oldEco2021": "I.9 ステークホルダーと協力する (1.9.2 ニーズ・期待の整合性を最適化する)",
+      "myChapter": "1.9",
+      "lesson": "Lesson 02",
+      "confidence": "HIGH",
+      "note": "2021版では『協力する』の中のサブタスクだったが、2025版では独立タスクに昇格"
+    },
+    {
+      "newEco2025": "2.2 プロジェクト・スコープの作成と管理",
+      "oldEco2021": "II.8 スコープを計画し、管理する",
+      "myChapter": "2.8",
+      "lesson": "Lesson 03",
+      "confidence": "HIGH",
+      "note": "番号変更 (8→2) のみで内容は同等"
+    },
+    {
+      "newEco2025": "2.3 価値ベースのデリバリーの支援",
+      "oldEco2021": "II.1 事業価値の提供に必要な緊急度でプロジェクトを実行する + III.2 ベネフィット評価",
+      "myChapter": "2.1 + 3.2",
+      "lesson": "Lesson 03",
+      "confidence": "MEDIUM",
+      "note": "2025版で価値関連タスクが Process ドメインに統合された可能性"
+    },
+    {
+      "newEco2025": "2.10 終結作業の管理",
+      "oldEco2021": "II.17 プロジェクト/フェーズの終結または移管を計画し、管理する",
+      "myChapter": "2.17",
+      "lesson": "Lesson 10",
+      "confidence": "HIGH",
+      "note": "番号変更 (17→10) のみで内容は完全同等"
+    },
+    {
+      "newEco2025": "3.1 ガバナンスを定義し、確立する",
+      "oldEco2021": "II.14 プロジェクト・ガバナンス構造を確立する",
+      "myChapter": "2.14",
+      "lesson": "Lesson 02",
+      "confidence": "HIGH",
+      "note": "2021版では Process ドメインだったが、2025版では Business Environment ドメインに移動"
+    },
+    {
+      "newEco2025": "3.2 プロジェクト・コンプライアンスの計画と管理",
+      "oldEco2021": "III.1 プロジェクトのコンプライアンスを計画し、管理する",
+      "myChapter": "3.1",
+      "lesson": "Lesson 03",
+      "confidence": "HIGH",
+      "note": "番号変更 (1→2) のみで内容は完全同等"
+    }
+  ],
+  "structuralChanges": {
+    "domainRebalancing": [
+      "II.4 ステークホルダー関与 → I.4 (Process → People)",
+      "II.14 ガバナンス → 3.1 (Process → Business Environment)",
+      "I.2 ビジョン → 1.1 (サブタスクが独立タスクへ)",
+      "I.9 期待整合 → 1.5 (サブタスクが独立タスクへ)"
+    ],
+    "implication": "2025版 ECO は『価値志向』『ステークホルダー第一』『ガバナンス独立』を強調する再構成。アジャイル・ビジネス感覚をより前面に。"
+  },
+  "actionItems": [
+    {
+      "priority": "P1-NEXT-ITERATION",
+      "item": "PMI 公式の 2025年版 ECO PDF を入手・全タスク・全イネーブラを完全マッピング"
+    },
+    {
+      "priority": "P2",
+      "item": "eco-official.json と並行して eco-official-2025.json を作成"
+    },
+    {
+      "priority": "P3",
+      "item": "本アプリの問題プール (103問) の各問題にどちらのバージョンのタスクに該当するかを再タグ付け"
+    }
+  ]
+}
