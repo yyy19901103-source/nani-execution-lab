@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-20 08:48",
+  "generated_at": "2026-05-20 10:22",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -76,6 +76,7 @@
   "top_buys": [
     {
       "agent": "dividend_income",
+      "agent_jp": "配当インカム",
       "category": "trade_style",
       "score": 88.0,
       "judgment": "STRONG_BUY",
@@ -84,6 +85,7 @@
     },
     {
       "agent": "rule_compliance",
+      "agent_jp": "ルール遵守",
       "category": "personal",
       "score": 80.0,
       "judgment": "STRONG_BUY",
@@ -92,6 +94,7 @@
     },
     {
       "agent": "japan_dividend",
+      "agent_jp": "日本高配当",
       "category": "sector",
       "score": 80.0,
       "judgment": "STRONG_BUY",
@@ -100,6 +103,7 @@
     },
     {
       "agent": "value_invest",
+      "agent_jp": "バリュー投資",
       "category": "trade_style",
       "score": 75.0,
       "judgment": "STRONG_BUY",
@@ -108,6 +112,7 @@
     },
     {
       "agent": "fundamental",
+      "agent_jp": "ファンダメンタル",
       "category": "analysis",
       "score": 71.0,
       "judgment": "BUY",
@@ -116,6 +121,7 @@
     },
     {
       "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
@@ -124,6 +130,7 @@
     },
     {
       "agent": "portfolio_fit",
+      "agent_jp": "ポートフォリオ適合",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
@@ -132,6 +139,7 @@
     },
     {
       "agent": "failure_pattern",
+      "agent_jp": "失敗パターン",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
@@ -140,6 +148,7 @@
     },
     {
       "agent": "risk_assessment",
+      "agent_jp": "リスク評価",
       "category": "analysis",
       "score": 65.0,
       "judgment": "BUY",
@@ -148,6 +157,7 @@
     },
     {
       "agent": "momentum",
+      "agent_jp": "モメンタム",
       "category": "trade_style",
       "score": 62.0,
       "judgment": "BUY",
@@ -158,6 +168,7 @@
   "top_risks": [
     {
       "agent": "contrarian",
+      "agent_jp": "逆張り",
       "category": "trade_style",
       "score": 58.0,
       "judgment": "WATCH",
@@ -166,6 +177,7 @@
     },
     {
       "agent": "expected_value",
+      "agent_jp": "期待値",
       "category": "prediction",
       "score": 58.0,
       "judgment": "WATCH",
@@ -174,6 +186,7 @@
     },
     {
       "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
       "category": "prediction",
       "score": 56.0,
       "judgment": "WATCH",
@@ -182,6 +195,7 @@
     },
     {
       "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
       "category": "analysis",
       "score": 56.0,
       "judgment": "WATCH",
@@ -190,6 +204,7 @@
     },
     {
       "agent": "comparative",
+      "agent_jp": "比較評価",
       "category": "integration",
       "score": 56.0,
       "judgment": "WATCH",
@@ -198,6 +213,7 @@
     },
     {
       "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
       "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
@@ -206,6 +222,7 @@
     },
     {
       "agent": "alert",
+      "agent_jp": "アラート",
       "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
@@ -214,6 +231,7 @@
     },
     {
       "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
       "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
@@ -222,6 +240,7 @@
     },
     {
       "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
@@ -230,6 +249,7 @@
     },
     {
       "agent": "score_integration",
+      "agent_jp": "スコア統合",
       "category": "integration",
       "score": 52.0,
       "judgment": "WATCH",

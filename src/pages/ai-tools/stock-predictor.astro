@@ -722,10 +722,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const cls = r.hit ? 'hit' : 'miss';
         const verdictCls = r.hit ? 'pm-verdict hit' : 'pm-verdict miss';
         const culprits = (r.culprits||[]).map(c =>
-          `<div class="pm-agent"><span class="pm-agent-score agent-sell">${c.score}</span><span class="pm-agent-name">${c.agent}</span> <span style="color:#666">${c.reason}</span></div>`
+          `<div class="pm-agent"><span class="pm-agent-score agent-sell">${c.score}</span><span class="pm-agent-name">${c.agent_jp || c.agent}</span> <span style="color:#666">${c.reason}</span></div>`
         ).join('') || '<div class="pm-agent" style="color:#555">該当なし</div>';
         const heroes = (r.heroes||[]).map(h =>
-          `<div class="pm-agent"><span class="pm-agent-score agent-buy">${h.score}</span><span class="pm-agent-name">${h.agent}</span> <span style="color:#666">${h.reason}</span></div>`
+          `<div class="pm-agent"><span class="pm-agent-score agent-buy">${h.score}</span><span class="pm-agent-name">${h.agent_jp || h.agent}</span> <span style="color:#666">${h.reason}</span></div>`
         ).join('') || '<div class="pm-agent" style="color:#555">該当なし</div>';
         const sugg = (r.suggestions||[]).map(s => `<div>💡 ${s}</div>`).join('');
         list.insertAdjacentHTML('beforeend', `
@@ -754,7 +754,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (wh.length > 0) {
         whEl.innerHTML = `
           <div class="sec-title" style="margin-top:1.5rem">エージェント重み調整履歴（自動進化）</div>
-          <div>${wh.map(w => `<div style="display:flex;justify-content:space-between;padding:0.4rem 0.6rem;border-bottom:1px solid #181818;font-size:0.75rem;color:#aaa"><span>${w.agent}</span><span>weight=${w.current_weight}</span><span style="color:#555">${w.updated_at}</span></div>`).join('')}</div>`;
+          <div>${wh.map(w => `<div style="display:flex;justify-content:space-between;padding:0.4rem 0.6rem;border-bottom:1px solid #181818;font-size:0.75rem;color:#aaa"><span>${w.agent_jp || w.agent}</span><span>重み=${w.current_weight}</span><span style="color:#555">${w.updated_at}</span></div>`).join('')}</div>`;
       } else {
         whEl.innerHTML = `<div style="color:#666;font-size:0.75rem;margin-top:0.5rem">⏳ 重み調整未実施（n>=20件 蓄積後に自動発動）</div>`;
       }
@@ -1015,14 +1015,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     document.getElementById('m-buys').innerHTML = (d.top_buys || []).map(a => `
       <div class="agent-item">
         <span class="agent-score agent-buy">${a.score}</span>
-        <span class="agent-name">${a.agent}</span>
+        <span class="agent-name">${a.agent_jp || a.agent}</span>
         <span class="agent-reason">${a.reason || '—'}</span>
       </div>`).join('') || '<div style="color:#666;padding:0.5rem">買いシグナルなし</div>';
 
     document.getElementById('m-risks').innerHTML = (d.top_risks || []).map(a => `
       <div class="agent-item">
         <span class="agent-score ${a.judgment==='SELL'||a.judgment==='STRONG_SELL'?'agent-sell':'agent-hold'}">${a.score}</span>
-        <span class="agent-name">${a.agent}</span>
+        <span class="agent-name">${a.agent_jp || a.agent}</span>
         <span class="agent-reason">${a.reason || '—'}</span>
       </div>`).join('') || '<div style="color:#666;padding:0.5rem">リスク警告なし</div>';
 

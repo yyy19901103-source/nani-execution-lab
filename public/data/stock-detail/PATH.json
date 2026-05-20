@@ -1,6 +1,6 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-05-20 08:48",
+  "generated_at": "2026-05-20 10:22",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -75,6 +75,7 @@
   "top_buys": [
     {
       "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
@@ -83,6 +84,7 @@
     },
     {
       "agent": "expected_value",
+      "agent_jp": "期待値",
       "category": "prediction",
       "score": 68.0,
       "judgment": "BUY",
@@ -91,6 +93,7 @@
     },
     {
       "agent": "failure_pattern",
+      "agent_jp": "失敗パターン",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
@@ -99,6 +102,7 @@
     },
     {
       "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
       "category": "analysis",
       "score": 63.0,
       "judgment": "BUY",
@@ -107,6 +111,7 @@
     },
     {
       "agent": "trend_direction",
+      "agent_jp": "トレンド方向",
       "category": "market_monitor",
       "score": 62.0,
       "judgment": "BUY",
@@ -115,6 +120,7 @@
     },
     {
       "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
       "category": "market_monitor",
       "score": 61.0,
       "judgment": "BUY",
@@ -123,6 +129,7 @@
     },
     {
       "agent": "emotion_bias",
+      "agent_jp": "感情バイアス",
       "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
@@ -131,6 +138,7 @@
     },
     {
       "agent": "day_trade",
+      "agent_jp": "デイトレード",
       "category": "trade_style",
       "score": 60.0,
       "judgment": "BUY",
@@ -141,6 +149,7 @@
   "top_risks": [
     {
       "agent": "short_term_prob",
+      "agent_jp": "短期確率",
       "category": "prediction",
       "score": 59.0,
       "judgment": "WATCH",
@@ -149,6 +158,7 @@
     },
     {
       "agent": "news_impact",
+      "agent_jp": "ニュース影響",
       "category": "analysis",
       "score": 56.0,
       "judgment": "WATCH",
@@ -157,6 +167,7 @@
     },
     {
       "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
       "category": "prediction",
       "score": 56.0,
       "judgment": "WATCH",
@@ -165,6 +176,7 @@
     },
     {
       "agent": "ensemble",
+      "agent_jp": "アンサンブル",
       "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
@@ -173,6 +185,7 @@
     },
     {
       "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
@@ -181,6 +194,7 @@
     },
     {
       "agent": "alert",
+      "agent_jp": "アラート",
       "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
@@ -189,6 +203,7 @@
     },
     {
       "agent": "bayesian",
+      "agent_jp": "ベイズ更新",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
@@ -197,6 +212,7 @@
     },
     {
       "agent": "downside_risk",
+      "agent_jp": "下落リスク",
       "category": "prediction",
       "score": 53.0,
       "judgment": "WATCH",
@@ -205,6 +221,7 @@
     },
     {
       "agent": "swing_trade",
+      "agent_jp": "スイングトレード",
       "category": "trade_style",
       "score": 53.0,
       "judgment": "WATCH",
@@ -213,6 +230,7 @@
     },
     {
       "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
       "category": "prediction",
       "score": 52.0,
       "judgment": "WATCH",

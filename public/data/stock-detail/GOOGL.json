@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-20 08:48",
+  "generated_at": "2026-05-20 10:22",
   "summary": {
     "rank": "weak_buy",
     "score": 55,
@@ -76,6 +76,7 @@
   "top_buys": [
     {
       "agent": "momentum",
+      "agent_jp": "モメンタム",
       "category": "trade_style",
       "score": 85.0,
       "judgment": "STRONG_BUY",
@@ -84,6 +85,7 @@
     },
     {
       "agent": "comparative",
+      "agent_jp": "比較評価",
       "category": "integration",
       "score": 84.0,
       "judgment": "STRONG_BUY",
@@ -92,6 +94,7 @@
     },
     {
       "agent": "dividend_income",
+      "agent_jp": "配当インカム",
       "category": "trade_style",
       "score": 83.0,
       "judgment": "STRONG_BUY",
@@ -100,6 +103,7 @@
     },
     {
       "agent": "rule_compliance",
+      "agent_jp": "ルール遵守",
       "category": "personal",
       "score": 80.0,
       "judgment": "STRONG_BUY",
@@ -108,6 +112,7 @@
     },
     {
       "agent": "japan_dividend",
+      "agent_jp": "日本高配当",
       "category": "sector",
       "score": 80.0,
       "judgment": "STRONG_BUY",
@@ -116,6 +121,7 @@
     },
     {
       "agent": "long_term_prob",
+      "agent_jp": "長期確率",
       "category": "prediction",
       "score": 75.0,
       "judgment": "STRONG_BUY",
@@ -124,6 +130,7 @@
     },
     {
       "agent": "growth_invest",
+      "agent_jp": "グロース投資",
       "category": "trade_style",
       "score": 72.0,
       "judgment": "BUY",
@@ -132,6 +139,7 @@
     },
     {
       "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
@@ -140,6 +148,7 @@
     },
     {
       "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
       "category": "analysis",
       "score": 69.0,
       "judgment": "BUY",
@@ -148,6 +157,7 @@
     },
     {
       "agent": "fundamental",
+      "agent_jp": "ファンダメンタル",
       "category": "analysis",
       "score": 68.0,
       "judgment": "BUY",
@@ -158,6 +168,7 @@
   "top_risks": [
     {
       "agent": "sector_rotation",
+      "agent_jp": "セクターローテーション",
       "category": "market_monitor",
       "score": 58.0,
       "judgment": "WATCH",
@@ -166,6 +177,7 @@
     },
     {
       "agent": "expected_value",
+      "agent_jp": "期待値",
       "category": "prediction",
       "score": 58.0,
       "judgment": "WATCH",
@@ -174,6 +186,7 @@
     },
     {
       "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
       "category": "market_monitor",
       "score": 58.0,
       "judgment": "WATCH",
@@ -182,6 +195,7 @@
     },
     {
       "agent": "news_impact",
+      "agent_jp": "ニュース影響",
       "category": "analysis",
       "score": 56.0,
       "judgment": "WATCH",
@@ -190,6 +204,7 @@
     },
     {
       "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
       "category": "prediction",
       "score": 56.0,
       "judgment": "WATCH",
@@ -198,6 +213,7 @@
     },
     {
       "agent": "supply_demand",
+      "agent_jp": "需給分析",
       "category": "analysis",
       "score": 55.0,
       "judgment": "WATCH",
@@ -206,6 +222,7 @@
     },
     {
       "agent": "ensemble",
+      "agent_jp": "アンサンブル",
       "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
@@ -214,6 +231,7 @@
     },
     {
       "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
@@ -222,6 +240,7 @@
     },
     {
       "agent": "alert",
+      "agent_jp": "アラート",
       "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
@@ -230,6 +249,7 @@
     },
     {
       "agent": "value_invest",
+      "agent_jp": "バリュー投資",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",

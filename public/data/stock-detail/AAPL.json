@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-20 08:48",
+  "generated_at": "2026-05-20 10:22",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -77,6 +77,7 @@
   "top_buys": [
     {
       "agent": "dividend_income",
+      "agent_jp": "配当インカム",
       "category": "trade_style",
       "score": 83.0,
       "judgment": "STRONG_BUY",
@@ -85,6 +86,7 @@
     },
     {
       "agent": "rule_compliance",
+      "agent_jp": "ルール遵守",
       "category": "personal",
       "score": 80.0,
       "judgment": "STRONG_BUY",
@@ -93,6 +95,7 @@
     },
     {
       "agent": "japan_dividend",
+      "agent_jp": "日本高配当",
       "category": "sector",
       "score": 80.0,
       "judgment": "STRONG_BUY",
@@ -101,6 +104,7 @@
     },
     {
       "agent": "long_term_prob",
+      "agent_jp": "長期確率",
       "category": "prediction",
       "score": 75.0,
       "judgment": "STRONG_BUY",
@@ -109,6 +113,7 @@
     },
     {
       "agent": "momentum",
+      "agent_jp": "モメンタム",
       "category": "trade_style",
       "score": 75.0,
       "judgment": "STRONG_BUY",
@@ -117,6 +122,7 @@
     },
     {
       "agent": "growth_invest",
+      "agent_jp": "グロース投資",
       "category": "trade_style",
       "score": 74.0,
       "judgment": "BUY",
@@ -125,6 +131,7 @@
     },
     {
       "agent": "fundamental",
+      "agent_jp": "ファンダメンタル",
       "category": "analysis",
       "score": 73.0,
       "judgment": "BUY",
@@ -133,6 +140,7 @@
     },
     {
       "agent": "supply_demand",
+      "agent_jp": "需給分析",
       "category": "analysis",
       "score": 71.0,
       "judgment": "BUY",
@@ -141,6 +149,7 @@
     },
     {
       "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
@@ -149,6 +158,7 @@
     },
     {
       "agent": "comparative",
+      "agent_jp": "比較評価",
       "category": "integration",
       "score": 68.0,
       "judgment": "BUY",
@@ -159,6 +169,7 @@
   "top_risks": [
     {
       "agent": "swing_trade",
+      "agent_jp": "スイングトレード",
       "category": "trade_style",
       "score": 59.0,
       "judgment": "WATCH",
@@ -167,6 +178,7 @@
     },
     {
       "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
       "category": "analysis",
       "score": 58.0,
       "judgment": "WATCH",
@@ -175,6 +187,7 @@
     },
     {
       "agent": "expected_value",
+      "agent_jp": "期待値",
       "category": "prediction",
       "score": 58.0,
       "judgment": "WATCH",
@@ -183,6 +196,7 @@
     },
     {
       "agent": "sector_rotation",
+      "agent_jp": "セクターローテーション",
       "category": "market_monitor",
       "score": 58.0,
       "judgment": "WATCH",
@@ -191,6 +205,7 @@
     },
     {
       "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
       "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
@@ -199,6 +214,7 @@
     },
     {
       "agent": "ensemble",
+      "agent_jp": "アンサンブル",
       "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
@@ -207,6 +223,7 @@
     },
     {
       "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
@@ -215,6 +232,7 @@
     },
     {
       "agent": "alert",
+      "agent_jp": "アラート",
       "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
@@ -223,6 +241,7 @@
     },
     {
       "agent": "value_invest",
+      "agent_jp": "バリュー投資",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
@@ -231,6 +250,7 @@
     },
     {
       "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",

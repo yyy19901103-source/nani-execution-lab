@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-20 08:48",
+  "generated_at": "2026-05-20 10:22",
   "summary": {
     "rank": "watch",
     "score": 56,
@@ -75,6 +75,7 @@
   "top_buys": [
     {
       "agent": "comparative",
+      "agent_jp": "比較評価",
       "category": "integration",
       "score": 90.0,
       "judgment": "STRONG_BUY",
@@ -83,6 +84,7 @@
     },
     {
       "agent": "sector_semiconductor",
+      "agent_jp": "半導体",
       "category": "sector",
       "score": 88.0,
       "judgment": "STRONG_BUY",
@@ -91,6 +93,7 @@
     },
     {
       "agent": "growth_invest",
+      "agent_jp": "グロース投資",
       "category": "trade_style",
       "score": 88.0,
       "judgment": "STRONG_BUY",
@@ -99,6 +102,7 @@
     },
     {
       "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
       "category": "analysis",
       "score": 85.0,
       "judgment": "STRONG_BUY",
@@ -107,6 +111,7 @@
     },
     {
       "agent": "fundamental",
+      "agent_jp": "ファンダメンタル",
       "category": "analysis",
       "score": 78.0,
       "judgment": "STRONG_BUY",
@@ -115,6 +120,7 @@
     },
     {
       "agent": "momentum",
+      "agent_jp": "モメンタム",
       "category": "trade_style",
       "score": 77.0,
       "judgment": "STRONG_BUY",
@@ -123,6 +129,7 @@
     },
     {
       "agent": "long_term_prob",
+      "agent_jp": "長期確率",
       "category": "prediction",
       "score": 75.0,
       "judgment": "STRONG_BUY",
@@ -131,6 +138,7 @@
     },
     {
       "agent": "sector_ai_datacenter",
+      "agent_jp": "AIデータセンター",
       "category": "sector",
       "score": 73.0,
       "judgment": "BUY",
@@ -139,6 +147,7 @@
     },
     {
       "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
       "category": "prediction",
       "score": 71.0,
       "judgment": "BUY",
@@ -147,6 +156,7 @@
     },
     {
       "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
       "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
@@ -157,6 +167,7 @@
   "top_risks": [
     {
       "agent": "swing_trade",
+      "agent_jp": "スイングトレード",
       "category": "trade_style",
       "score": 59.0,
       "judgment": "WATCH",
@@ -165,6 +176,7 @@
     },
     {
       "agent": "sector_rotation",
+      "agent_jp": "セクターローテーション",
       "category": "market_monitor",
       "score": 58.0,
       "judgment": "WATCH",
@@ -173,6 +185,7 @@
     },
     {
       "agent": "score_integration",
+      "agent_jp": "スコア統合",
       "category": "integration",
       "score": 56.0,
       "judgment": "WATCH",
@@ -181,6 +194,7 @@
     },
     {
       "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
@@ -189,6 +203,7 @@
     },
     {
       "agent": "alert",
+      "agent_jp": "アラート",
       "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
@@ -197,6 +212,7 @@
     },
     {
       "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
       "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
@@ -205,6 +221,7 @@
     },
     {
       "agent": "short_term_prob",
+      "agent_jp": "短期確率",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
@@ -213,6 +230,7 @@
     },
     {
       "agent": "bayesian",
+      "agent_jp": "ベイズ更新",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
@@ -221,6 +239,7 @@
     },
     {
       "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
       "category": "market_monitor",
       "score": 53.0,
       "judgment": "WATCH",
@@ -229,6 +248,7 @@
     },
     {
       "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
       "category": "prediction",
       "score": 52.0,
       "judgment": "WATCH",

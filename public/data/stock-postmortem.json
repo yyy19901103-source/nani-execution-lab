@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20 08:48",
+  "generated_at": "2026-05-20 10:22",
   "summary": {
     "evaluable_count": 30,
     "hits": 16,
@@ -23,6 +23,7 @@
       "culprits": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -30,6 +31,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -37,6 +39,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -44,6 +47,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 70.0,
           "judgment": "BUY",
@@ -51,6 +55,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 68.0,
           "judgment": "BUY",
@@ -60,6 +65,7 @@
       "heroes": [
         {
           "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
           "category": "market_monitor",
           "score": 28.0,
           "judgment": "REDUCE",
@@ -67,6 +73,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -74,6 +81,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -81,6 +89,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -88,6 +97,7 @@
         },
         {
           "agent": "news_impact",
+          "agent_jp": "ニュース影響",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -114,6 +124,7 @@
       "culprits": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -121,6 +132,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -128,6 +140,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -135,6 +148,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -142,6 +156,7 @@
         },
         {
           "agent": "risk_assessment",
+          "agent_jp": "リスク評価",
           "category": "analysis",
           "score": 65.0,
           "judgment": "BUY",
@@ -151,6 +166,7 @@
       "heroes": [
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -158,6 +174,7 @@
         },
         {
           "agent": "short_term_prob",
+          "agent_jp": "短期確率",
           "category": "prediction",
           "score": 38.0,
           "judgment": "HOLD",
@@ -165,6 +182,7 @@
         },
         {
           "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
           "category": "market_monitor",
           "score": 38.0,
           "judgment": "HOLD",
@@ -172,6 +190,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -179,6 +198,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 40.0,
           "judgment": "HOLD",
@@ -205,6 +225,7 @@
       "culprits": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -212,6 +233,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -219,6 +241,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -226,6 +249,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -233,6 +257,7 @@
         },
         {
           "agent": "value_invest",
+          "agent_jp": "バリュー投資",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -242,6 +267,7 @@
       "heroes": [
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 29.0,
           "judgment": "REDUCE",
@@ -249,6 +275,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 32.0,
           "judgment": "REDUCE",
@@ -256,6 +283,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -263,6 +291,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 38.0,
           "judgment": "HOLD",
@@ -270,6 +299,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -295,6 +325,7 @@
       "culprits": [
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -302,6 +333,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -309,6 +341,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -316,6 +349,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 68.0,
           "judgment": "BUY",
@@ -323,6 +357,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 67.0,
           "judgment": "BUY",
@@ -332,6 +367,7 @@
       "heroes": [
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 19.0,
           "judgment": "SELL",
@@ -339,6 +375,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -346,6 +383,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -353,6 +391,7 @@
         },
         {
           "agent": "value_invest",
+          "agent_jp": "バリュー投資",
           "category": "trade_style",
           "score": 35.0,
           "judgment": "HOLD",
@@ -360,6 +399,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -385,6 +425,7 @@
       "culprits": [
         {
           "agent": "sector_semiconductor",
+          "agent_jp": "半導体",
           "category": "sector",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -392,6 +433,7 @@
         },
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -399,6 +441,7 @@
         },
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -406,6 +449,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -413,6 +457,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -422,6 +467,7 @@
       "heroes": [
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -429,6 +475,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 38.0,
           "judgment": "HOLD",
@@ -436,6 +483,7 @@
         },
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -443,6 +491,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -468,6 +517,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -475,6 +525,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 40.0,
           "judgment": "HOLD",
@@ -482,6 +533,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 38.0,
           "judgment": "HOLD",
@@ -489,6 +541,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 38.0,
           "judgment": "HOLD",
@@ -498,6 +551,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -505,6 +559,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -512,6 +567,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -519,6 +575,7 @@
         },
         {
           "agent": "sector_cloud_saas",
+          "agent_jp": "クラウド/SaaS",
           "category": "sector",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -526,6 +583,7 @@
         },
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 72.0,
           "judgment": "BUY",
@@ -552,6 +610,7 @@
       "culprits": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -559,6 +618,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -566,6 +626,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -573,6 +634,7 @@
         },
         {
           "agent": "sector_social_media",
+          "agent_jp": "ソーシャルメディア",
           "category": "sector",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -580,6 +642,7 @@
         },
         {
           "agent": "fundamental",
+          "agent_jp": "ファンダメンタル",
           "category": "analysis",
           "score": 73.0,
           "judgment": "BUY",
@@ -589,6 +652,7 @@
       "heroes": [
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 29.0,
           "judgment": "REDUCE",
@@ -596,6 +660,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -603,6 +668,7 @@
         },
         {
           "agent": "swing_trade",
+          "agent_jp": "スイングトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -610,6 +676,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 32.0,
           "judgment": "REDUCE",
@@ -617,6 +684,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -643,6 +711,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -650,6 +719,7 @@
         },
         {
           "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
           "category": "prediction",
           "score": 38.0,
           "judgment": "HOLD",
@@ -657,6 +727,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -664,6 +735,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 36.0,
           "judgment": "HOLD",
@@ -671,6 +743,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -680,6 +753,7 @@
       "heroes": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -687,6 +761,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -694,6 +769,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -701,6 +777,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -708,6 +785,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -733,6 +811,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -740,6 +819,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -747,6 +827,7 @@
         },
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 35.0,
           "judgment": "HOLD",
@@ -754,6 +835,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -761,6 +843,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -770,6 +853,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -777,6 +861,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -784,6 +869,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -791,6 +877,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -798,6 +885,7 @@
         },
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -824,6 +912,7 @@
       "culprits": [
         {
           "agent": "news_impact",
+          "agent_jp": "ニュース影響",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -831,6 +920,7 @@
         },
         {
           "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
           "category": "market_monitor",
           "score": 40.0,
           "judgment": "HOLD",
@@ -838,6 +928,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 40.0,
           "judgment": "WATCH",
@@ -845,6 +936,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -852,6 +944,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -861,6 +954,7 @@
       "heroes": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -868,6 +962,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -875,6 +970,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 70.0,
           "judgment": "BUY",
@@ -882,6 +978,7 @@
         },
         {
           "agent": "expected_value",
+          "agent_jp": "期待値",
           "category": "prediction",
           "score": 68.0,
           "judgment": "BUY",
@@ -889,6 +986,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 68.0,
           "judgment": "BUY",
@@ -914,6 +1012,7 @@
       "culprits": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -921,6 +1020,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -928,6 +1028,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -935,6 +1036,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -942,6 +1044,7 @@
         },
         {
           "agent": "risk_assessment",
+          "agent_jp": "リスク評価",
           "category": "analysis",
           "score": 65.0,
           "judgment": "BUY",
@@ -951,6 +1054,7 @@
       "heroes": [
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -958,6 +1062,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 35.0,
           "judgment": "HOLD",
@@ -965,6 +1070,7 @@
         },
         {
           "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
           "category": "market_monitor",
           "score": 38.0,
           "judgment": "HOLD",
@@ -972,6 +1078,7 @@
         },
         {
           "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
           "category": "prediction",
           "score": 40.0,
           "judgment": "HOLD",
@@ -979,6 +1086,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1004,6 +1112,7 @@
       "culprits": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -1011,6 +1120,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1018,6 +1128,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1025,6 +1136,7 @@
         },
         {
           "agent": "value_invest",
+          "agent_jp": "バリュー投資",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -1032,6 +1144,7 @@
         },
         {
           "agent": "fundamental",
+          "agent_jp": "ファンダメンタル",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -1041,6 +1154,7 @@
       "heroes": [
         {
           "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
           "category": "prediction",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -1048,6 +1162,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 32.0,
           "judgment": "REDUCE",
@@ -1055,6 +1170,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -1062,6 +1178,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1087,6 +1204,7 @@
       "culprits": [
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1094,6 +1212,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -1101,6 +1220,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -1108,6 +1228,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -1115,6 +1236,7 @@
         },
         {
           "agent": "expected_value",
+          "agent_jp": "期待値",
           "category": "prediction",
           "score": 68.0,
           "judgment": "BUY",
@@ -1124,6 +1246,7 @@
       "heroes": [
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 19.0,
           "judgment": "SELL",
@@ -1131,6 +1254,7 @@
         },
         {
           "agent": "value_invest",
+          "agent_jp": "バリュー投資",
           "category": "trade_style",
           "score": 35.0,
           "judgment": "HOLD",
@@ -1138,6 +1262,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1145,6 +1270,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1170,6 +1296,7 @@
       "culprits": [
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1177,6 +1304,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1186,6 +1314,7 @@
       "heroes": [
         {
           "agent": "sector_semiconductor",
+          "agent_jp": "半導体",
           "category": "sector",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -1193,6 +1322,7 @@
         },
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -1200,6 +1330,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1207,6 +1338,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -1214,6 +1346,7 @@
         },
         {
           "agent": "fundamental",
+          "agent_jp": "ファンダメンタル",
           "category": "analysis",
           "score": 78.0,
           "judgment": "STRONG_BUY",
@@ -1240,6 +1373,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1247,6 +1381,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 39.0,
           "judgment": "HOLD",
@@ -1256,6 +1391,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -1263,6 +1399,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1270,6 +1407,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1277,6 +1415,7 @@
         },
         {
           "agent": "sector_cloud_saas",
+          "agent_jp": "クラウド/SaaS",
           "category": "sector",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -1284,6 +1423,7 @@
         },
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 72.0,
           "judgment": "BUY",
@@ -1310,6 +1450,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1317,6 +1458,7 @@
         },
         {
           "agent": "swing_trade",
+          "agent_jp": "スイングトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -1324,6 +1466,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -1331,6 +1474,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 29.0,
           "judgment": "REDUCE",
@@ -1340,6 +1484,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -1347,6 +1492,7 @@
         },
         {
           "agent": "sector_social_media",
+          "agent_jp": "ソーシャルメディア",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1354,6 +1500,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1361,6 +1508,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1368,6 +1516,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 74.0,
           "judgment": "BUY",
@@ -1393,6 +1542,7 @@
       "culprits": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -1400,6 +1550,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -1407,6 +1558,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1414,6 +1566,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1421,6 +1574,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -1430,6 +1584,7 @@
       "heroes": [
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -1437,6 +1592,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -1444,6 +1600,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -1451,6 +1608,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1477,6 +1635,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1484,6 +1643,7 @@
         },
         {
           "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
           "category": "market_monitor",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1491,6 +1651,7 @@
         },
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 35.0,
           "judgment": "HOLD",
@@ -1498,6 +1659,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -1505,6 +1667,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 20.0,
           "judgment": "SELL",
@@ -1514,6 +1677,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -1521,6 +1685,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1528,6 +1693,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1535,6 +1701,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -1542,6 +1709,7 @@
         },
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -1549,7 +1717,7 @@
         }
       ],
       "suggestions": [
-        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
@@ -1568,6 +1736,7 @@
       "culprits": [
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1575,6 +1744,7 @@
         },
         {
           "agent": "alert",
+          "agent_jp": "アラート",
           "category": "integration",
           "score": 40.0,
           "judgment": "WATCH",
@@ -1582,6 +1752,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1591,6 +1762,7 @@
       "heroes": [
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -1598,6 +1770,7 @@
         },
         {
           "agent": "sector_semiconductor",
+          "agent_jp": "半導体",
           "category": "sector",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -1605,6 +1778,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1612,6 +1786,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -1619,6 +1794,7 @@
         },
         {
           "agent": "fundamental",
+          "agent_jp": "ファンダメンタル",
           "category": "analysis",
           "score": 78.0,
           "judgment": "STRONG_BUY",
@@ -1645,6 +1821,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1652,6 +1829,7 @@
         },
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 35.0,
           "judgment": "HOLD",
@@ -1659,6 +1837,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -1666,6 +1845,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -1673,6 +1853,7 @@
         },
         {
           "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
           "category": "market_monitor",
           "score": 28.0,
           "judgment": "REDUCE",
@@ -1682,6 +1863,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -1689,6 +1871,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1696,6 +1879,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1703,6 +1887,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -1710,6 +1895,7 @@
         },
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -1717,7 +1903,7 @@
         }
       ],
       "suggestions": [
-        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
@@ -1736,6 +1922,7 @@
       "culprits": [
         {
           "agent": "news_impact",
+          "agent_jp": "ニュース影響",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1743,6 +1930,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 40.0,
           "judgment": "WATCH",
@@ -1750,6 +1938,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1757,6 +1946,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -1764,6 +1954,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -1773,6 +1964,7 @@
       "heroes": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -1780,6 +1972,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 70.0,
           "judgment": "BUY",
@@ -1787,6 +1980,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -1794,6 +1988,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 68.0,
           "judgment": "BUY",
@@ -1801,6 +1996,7 @@
         },
         {
           "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
           "category": "prediction",
           "score": 67.0,
           "judgment": "BUY",
@@ -1826,6 +2022,7 @@
       "culprits": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -1833,6 +2030,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1840,6 +2038,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -1847,6 +2046,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -1854,6 +2054,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 67.0,
           "judgment": "BUY",
@@ -1863,6 +2064,7 @@
       "heroes": [
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -1870,6 +2072,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -1877,6 +2080,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -1884,6 +2088,7 @@
         },
         {
           "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
           "category": "market_monitor",
           "score": 38.0,
           "judgment": "HOLD",
@@ -1891,6 +2096,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1916,6 +2122,7 @@
       "culprits": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -1923,6 +2130,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1930,6 +2138,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -1937,6 +2146,7 @@
         },
         {
           "agent": "value_invest",
+          "agent_jp": "バリュー投資",
           "category": "trade_style",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -1944,6 +2154,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -1953,6 +2164,7 @@
       "heroes": [
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -1960,6 +2172,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1985,6 +2198,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1992,6 +2206,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 40.0,
           "judgment": "HOLD",
@@ -1999,6 +2214,7 @@
         },
         {
           "agent": "value_invest",
+          "agent_jp": "バリュー投資",
           "category": "trade_style",
           "score": 35.0,
           "judgment": "HOLD",
@@ -2006,6 +2222,7 @@
         },
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 19.0,
           "judgment": "SELL",
@@ -2015,6 +2232,7 @@
       "heroes": [
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2022,6 +2240,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 71.0,
           "judgment": "BUY",
@@ -2029,6 +2248,7 @@
         },
         {
           "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
           "category": "analysis",
           "score": 70.0,
           "judgment": "BUY",
@@ -2036,6 +2256,7 @@
         },
         {
           "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
           "category": "market_monitor",
           "score": 70.0,
           "judgment": "BUY",
@@ -2043,6 +2264,7 @@
         },
         {
           "agent": "expected_value",
+          "agent_jp": "期待値",
           "category": "prediction",
           "score": 68.0,
           "judgment": "BUY",
@@ -2069,6 +2291,7 @@
       "culprits": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -2076,6 +2299,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2083,6 +2307,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2090,6 +2315,7 @@
         },
         {
           "agent": "sector_cloud_saas",
+          "agent_jp": "クラウド/SaaS",
           "category": "sector",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -2097,6 +2323,7 @@
         },
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 72.0,
           "judgment": "BUY",
@@ -2106,6 +2333,7 @@
       "heroes": [
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 38.0,
           "judgment": "HOLD",
@@ -2113,6 +2341,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 39.0,
           "judgment": "HOLD",
@@ -2120,6 +2349,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2127,6 +2357,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2152,6 +2383,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2159,6 +2391,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 32.0,
           "judgment": "REDUCE",
@@ -2166,6 +2399,7 @@
         },
         {
           "agent": "swing_trade",
+          "agent_jp": "スイングトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -2173,6 +2407,7 @@
         },
         {
           "agent": "supply_demand",
+          "agent_jp": "需給分析",
           "category": "analysis",
           "score": 29.0,
           "judgment": "REDUCE",
@@ -2180,6 +2415,7 @@
         },
         {
           "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
           "category": "market_monitor",
           "score": 25.0,
           "judgment": "REDUCE",
@@ -2189,6 +2425,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -2196,6 +2433,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2203,6 +2441,7 @@
         },
         {
           "agent": "sector_social_media",
+          "agent_jp": "ソーシャルメディア",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2210,6 +2449,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2217,6 +2457,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2242,6 +2483,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2249,6 +2491,7 @@
         },
         {
           "agent": "contrarian",
+          "agent_jp": "逆張り",
           "category": "trade_style",
           "score": 38.0,
           "judgment": "HOLD",
@@ -2256,6 +2499,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -2263,6 +2507,7 @@
         },
         {
           "agent": "day_trade",
+          "agent_jp": "デイトレード",
           "category": "trade_style",
           "score": 30.0,
           "judgment": "REDUCE",
@@ -2272,6 +2517,7 @@
       "heroes": [
         {
           "agent": "momentum",
+          "agent_jp": "モメンタム",
           "category": "trade_style",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -2279,6 +2525,7 @@
         },
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -2286,6 +2533,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2293,6 +2541,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2300,6 +2549,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -2325,6 +2575,7 @@
       "culprits": [
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2332,6 +2583,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2339,6 +2591,7 @@
         },
         {
           "agent": "valuation",
+          "agent_jp": "バリュエーション",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2346,6 +2599,7 @@
         },
         {
           "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
           "category": "prediction",
           "score": 31.0,
           "judgment": "REDUCE",
@@ -2355,6 +2609,7 @@
       "heroes": [
         {
           "agent": "sector_semiconductor",
+          "agent_jp": "半導体",
           "category": "sector",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -2362,6 +2617,7 @@
         },
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 88.0,
           "judgment": "STRONG_BUY",
@@ -2369,6 +2625,7 @@
         },
         {
           "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
           "category": "analysis",
           "score": 85.0,
           "judgment": "STRONG_BUY",
@@ -2376,6 +2633,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2383,6 +2641,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 79.0,
           "judgment": "STRONG_BUY",
@@ -2409,6 +2668,7 @@
       "culprits": [
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2416,6 +2676,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2423,6 +2684,7 @@
         },
         {
           "agent": "downside_risk",
+          "agent_jp": "下落リスク",
           "category": "prediction",
           "score": 39.0,
           "judgment": "HOLD",
@@ -2430,6 +2692,7 @@
         },
         {
           "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
           "category": "prediction",
           "score": 34.0,
           "judgment": "REDUCE",
@@ -2439,6 +2702,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -2446,6 +2710,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2453,6 +2718,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2460,6 +2726,7 @@
         },
         {
           "agent": "sector_cloud_saas",
+          "agent_jp": "クラウド/SaaS",
           "category": "sector",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -2467,6 +2734,7 @@
         },
         {
           "agent": "growth_invest",
+          "agent_jp": "グロース投資",
           "category": "trade_style",
           "score": 72.0,
           "judgment": "BUY",
@@ -2492,6 +2760,7 @@
       "culprits": [
         {
           "agent": "news_impact",
+          "agent_jp": "ニュース影響",
           "category": "analysis",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2499,6 +2768,7 @@
         },
         {
           "agent": "alert",
+          "agent_jp": "アラート",
           "category": "integration",
           "score": 40.0,
           "judgment": "WATCH",
@@ -2506,6 +2776,7 @@
         },
         {
           "agent": "monthly_report",
+          "agent_jp": "月次レポート",
           "category": "integration",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2513,6 +2784,7 @@
         },
         {
           "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
           "category": "market_monitor",
           "score": 40.0,
           "judgment": "HOLD",
@@ -2520,6 +2792,7 @@
         },
         {
           "agent": "lgbm_prob",
+          "agent_jp": "LightGBM確率",
           "category": "prediction",
           "score": 37.0,
           "judgment": "HOLD",
@@ -2529,6 +2802,7 @@
       "heroes": [
         {
           "agent": "dividend_income",
+          "agent_jp": "配当インカム",
           "category": "trade_style",
           "score": 83.0,
           "judgment": "STRONG_BUY",
@@ -2536,6 +2810,7 @@
         },
         {
           "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
           "category": "personal",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2543,6 +2818,7 @@
         },
         {
           "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
           "category": "sector",
           "score": 80.0,
           "judgment": "STRONG_BUY",
@@ -2550,6 +2826,7 @@
         },
         {
           "agent": "sector_social_media",
+          "agent_jp": "ソーシャルメディア",
           "category": "sector",
           "score": 75.0,
           "judgment": "STRONG_BUY",
@@ -2557,6 +2834,7 @@
         },
         {
           "agent": "long_term_prob",
+          "agent_jp": "長期確率",
           "category": "prediction",
           "score": 74.0,
           "judgment": "BUY",
