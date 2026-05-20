@@ -1,8 +1,8 @@
 {
-  "version": "4.0.0",
-  "auditDate": "2026-05-13/20 (1st-4th round)",
-  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd-4th: PMI 公式PDF 直接照合",
-  "honestyStatement": "4回目監査でユーザー提供の PMI 公式 PDF 群（ECO・Glossary・Blueprint・Lesson 01・Shawpe ケーススタディ）を追加照合し、本アプリのコンテンツに『PMI公式由来素材』を多数統合しました。ただし以下が未処理: (a) 公式 Glossary 後半54ページ・推定350+用語、(b) Lesson 02-12 PDF (合計約 200MB)、(c) PMI 公式問題集 206ページ、(d) jp_v3.1 各種大容量 PDF。全資料の完全網羅は本セッション 1回では物理的に不可能なため、coverage-tracker.json で未処理項目を透明化。",
+  "version": "5.0.0",
+  "auditDate": "2026-05-13/20 (1st-5th round)",
+  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd-5th: PMI 公式PDF 直接照合",
+  "honestyStatement": "5回目監査で公式 Glossary 全70ページ完全読込・Lesson 02/03/10 主要ページ読込・新版 ECO 番号体系の発見を実施。累積発見: 19件 (重大6・軽微5・整合6・情報3 + 5回目新規 F019-F022)。なお Lesson 04-09・11・12・PMI 公式問題集 206p・Shawpe ケース後半は次イテレーション継続。",
   "scope": [
     "ECO 2021 ドメイン配分",
     "PMBOK 第7版 12原則",
@@ -224,6 +224,48 @@
       "myContent": "Lesson 02-12 (合計約 200MB)・jp_v3.1 各種 (合計約 100MB)・PMP_Learner_Handout (16MB)・PMI公式問題集 (206ページ) 等は本セッション範囲外",
       "publicSources": ["coverage-tracker.json"],
       "verdict": "ℹ 全 28 PDF のうち 6 PDF を処理（ECO・Blueprint・Glossary 前半・Lesson 01 構造・Shawpe・180問模試試行）、22 PDF を deferred として明示。ユーザーは coverage-tracker.json と /coverage UI で網羅状況を直接検証可能。"
+    },
+    {
+      "id": "F019",
+      "category": "公式用語集 17-70p 残り全頁完全読込（5th round）",
+      "severity": "MINOR",
+      "status": "残り処理完了",
+      "myContent": "4回目では公式 Glossary 1-16p のみ処理。残り 54 ページ約 350 語は次イテレーション扱いだった。",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\Glossary_for_PMP_2026_JA.pdf P.17-70"],
+      "verdict": "✅ 残り 54 ページから 135 語追加抽出（v2 セクション）。合計 195 公式用語を glossary-official-additions.json に収録。すべて公式ページ番号付。",
+      "action": "glossary-official-additions.json extras_v2_pages17to70 セクション追加"
+    },
+    {
+      "id": "F020",
+      "category": "新 ECO 番号体系の発見（5th round・CRITICAL）",
+      "severity": "CRITICAL",
+      "status": "番号体系差異判明 → 記録",
+      "myContent": "私の eco-official.json は 2021年1月版 ECO に基づき、領域 I（人）1-14・領域 II（プロセス）1-17・領域 III（ビジネス環境）1-4 の番号体系を使用。",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_02_-_Laying_the_Foundation-en_us-ja_jp-PE-C.pdf (© 2025 PMI)",
+        "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_03_-_Defining_Scope_Value_and_Success_Criteria-en_us-ja_jp-PE-C.pdf",
+        "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_10_-_Closing_the_Project_Successfully-en_us-ja_jp-PE-C.pdf"
+      ],
+      "verdict": "❌ PE-C コース (2025年版) は新 ECO 番号体系を使用: 1.1=共通ビジョン / 1.4=ステークホルダー関与 / 1.5=ステークホルダー期待整合 / 2.2=プロジェクト・スコープ / 2.3=価値ベースのデリバリー / 2.10=終結作業 / 3.1=ガバナンス / 3.2=プロジェクト・コンプライアンス。これは2021年版 ECO と完全に異なる。本アプリは 2021年版を主軸としているが、最新 PMP 試験対策には新番号体系も必要。lesson-mapping.json に明示し、次イテレーションで詳細マッピング必要。",
+      "action": "lesson-mapping.json に番号体系差異を記録予定"
+    },
+    {
+      "id": "F021",
+      "category": "Lesson 10 (終結) 主要内容確認（5th round）",
+      "severity": "VERIFIED",
+      "status": "整合",
+      "myContent": "chapter 2.17 (終結計画・管理) は受入基準・DoD・終結活動を扱う",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\PMP_-_Lesson_10_-_Closing_the_Project_Successfully-en_us-ja_jp-PE-C.pdf P.1-20"],
+      "verdict": "✅ Lesson 10 の主要トピック（早期/強制的な終結の8理由・終結活動7項目・移管準備状況評価対象・ハイパーケア・ベネフィット・オーナー3候補）は私の chapter 2.17 と整合。さらに細かい知識として『DoD = 予測型の受入基準』『ベネフィット・オーナーは BA/スポンサー/定常業務マネジャー』を確認。"
+    },
+    {
+      "id": "F022",
+      "category": "Lesson 02 主要内容確認（5th round）",
+      "severity": "VERIFIED",
+      "status": "整合",
+      "myContent": "chapter 1.9/1.10/2.4/2.14 は共通ビジョン・ステークホルダー関与・ガバナンスを扱う",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\PMP_-_Lesson_02_-_Laying_the_Foundation-en_us-ja_jp-PE-C.pdf P.1-15"],
+      "verdict": "✅ Lesson 02 の主要トピック（プロジェクト・ビジョン記述書・プロジェクト憲章・プロダクト・ボックス演習・XPメタファー・ビジネス・ケースとビジネス・ニーズ文書）は私の章本文と整合。追加発見: プロジェクト憲章に含まれる主要項目（氏名・説明・ビジネス・ニーズ・スケジュール・前提条件・ビジネス・ケース）の公式リスト。"
     }
   ],
   "verifiedItems": [

@@ -4,15 +4,21 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import glossaryData from '../../../data/pmp/glossary.json';
 import officialExtras from '../../../data/pmp/glossary-official-additions.json';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-// 既存 120 語 + 公式 PDF 由来追加 60 語を統合
+// 既存 120 語 + 公式 PDF 由来追加 195 語 (v1: 60 + v2: 135) を統合
 const existingTerms = glossaryData.terms.map((t: any) => ({ ...t, sourceGrade: 'B', officialPage: null }));
-const officialTerms = officialExtras.extras.map((t: any) => ({
+const officialV1 = (officialExtras.extras ?? []).map((t: any) => ({
   ...t,
   termJa: t.term,
   sourceGrade: 'A',
   relatedChapter: null,
 }));
-const terms = [...officialTerms, ...existingTerms];
+const officialV2 = ((officialExtras as any).extras_v2_pages17to70 ?? []).map((t: any) => ({
+  ...t,
+  termJa: t.term,
+  sourceGrade: 'A',
+  relatedChapter: null,
+}));
+const terms = [...officialV1, ...officialV2, ...existingTerms];
 const categories = glossaryData.categories;
 ---
 

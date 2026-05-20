@@ -1,14 +1,18 @@
 {
-  "version": "1.0.0",
-  "lastUpdated": "2026-05-20",
+  "version": "2.0.0",
+  "lastUpdated": "2026-05-20 (5th iteration)",
   "purpose": "C:\\Users\\81804\\Downloads\\ にある PMI 公式 PMP 資料群の処理状況を追跡。ユーザーが第三者検証できる状態を保つため、各 PDF の処理状態・反映先・出典ページを明示する。",
   "honestyStatement": "全 28 PDF・合計約 400MB・推定 2,000+ ページの完全処理は本セッション 1回では物理的に不可能。本ファイルは『何が処理済み・何が未処理』を透明化することで、ユーザーが網羅状況を直接検証できるようにするための追跡ファイル。",
   "summary": {
     "totalDocuments": 28,
-    "processed": 0,
-    "partiallyProcessed": 0,
-    "pending": 28,
-    "notApplicable": 0
+    "processed": 3,
+    "partiallyProcessed": 4,
+    "deferred": 16,
+    "skippedDuplicate": 1,
+    "ocrRequired": 1,
+    "pending": 3,
+    "notApplicable": 0,
+    "note": "5回目監査時点: 公式ECO・Blueprint・Glossary完全処理。Lesson 01/02/03/10 部分処理。残り次イテレーション。"
   },
   "documents": [
     {
@@ -47,9 +51,11 @@
       "sizeKB": 999,
       "pages": 70,
       "priority": "P1-CRITICAL",
-      "status": "in_queue",
-      "task": "#3",
-      "reflectionTarget": "src/data/pmp/glossary.json (既存120語) を公式日本語訳で補強"
+      "status": "processed",
+      "processedDate": "2026-05-20 (5th audit)",
+      "extractedPages": "1-70 全頁完全読込",
+      "reflectedIn": ["src/data/pmp/glossary-official-additions.json (195語・v1+v2)"],
+      "sourceGrade": "A"
     },
     {
       "file": "re_jp_Glossary_-_PMP_Feb_2023.pdf",
@@ -87,18 +93,26 @@
     {
       "file": "PMP_-_Lesson_02_-_Laying_the_Foundation-en_us-ja_jp-PE-C.pdf",
       "sizeKB": 2945,
-      "pages": "未確認",
+      "pages": 104,
       "priority": "P2-MEDIUM",
-      "status": "in_queue",
-      "task": "#6"
+      "status": "partially_processed",
+      "processedDate": "2026-05-20 (5th audit)",
+      "extractedPages": "1-15 (104p中・主要トピック確認済)",
+      "reflectedIn": ["src/data/pmp/audit-report.json F022", "src/data/pmp/lesson-mapping.json"],
+      "sourceGrade": "A",
+      "note": "104p の大容量。主要トピック15p読込、詳細部 (16-104p) は次イテレーション"
     },
     {
       "file": "PMP_-_Lesson_03_-_Defining_Scope_Value_and_Success_Criteria-en_us-ja_jp-PE-C.pdf",
       "sizeKB": 2748,
-      "pages": "未確認",
+      "pages": 99,
       "priority": "P2-MEDIUM",
-      "status": "in_queue",
-      "task": "#6"
+      "status": "partially_processed",
+      "processedDate": "2026-05-20 (5th audit)",
+      "extractedPages": "1-10 (99p中・主要トピック確認済)",
+      "reflectedIn": ["src/data/pmp/audit-report.json F020", "新ECO番号体系発見"],
+      "sourceGrade": "A",
+      "note": "新 ECO 番号体系 (PE-C 2025年版) を使用していることが判明 → F020"
     },
     {
       "file": "PMP_-_Lesson_04_-_Building_the_Plan-en_us-ja_jp-PE-C.pdf",
@@ -151,10 +165,14 @@
     {
       "file": "PMP_-_Lesson_10_-_Closing_the_Project_Successfully-en_us-ja_jp-PE-C.pdf",
       "sizeKB": 1234,
-      "pages": "未確認",
+      "pages": 28,
       "priority": "P2-MEDIUM",
-      "status": "in_queue",
-      "task": "#6"
+      "status": "partially_processed",
+      "processedDate": "2026-05-20 (5th audit)",
+      "extractedPages": "1-20 (28p中・主要トピック確認済)",
+      "reflectedIn": ["src/data/pmp/audit-report.json F021"],
+      "sourceGrade": "A",
+      "note": "chapter 2.17 と整合確認済。追加発見: ベネフィット・オーナーの3候補・ハイパーケア概念"
     },
     {
       "file": "PMP_-_Lesson_11_-_Driving_Organizational_Continuous_Improvement-en_us-ja_jp-PE-C.pdf",
