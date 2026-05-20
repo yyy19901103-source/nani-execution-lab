@@ -2,8 +2,17 @@
 import '../../../styles/pmp-mobile.css';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import glossaryData from '../../../data/pmp/glossary.json';
+import officialExtras from '../../../data/pmp/glossary-official-additions.json';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const terms = glossaryData.terms;
+// 既存 120 語 + 公式 PDF 由来追加 60 語を統合
+const existingTerms = glossaryData.terms.map((t: any) => ({ ...t, sourceGrade: 'B', officialPage: null }));
+const officialTerms = officialExtras.extras.map((t: any) => ({
+  ...t,
+  termJa: t.term,
+  sourceGrade: 'A',
+  relatedChapter: null,
+}));
+const terms = [...officialTerms, ...existingTerms];
 const categories = glossaryData.categories;
 ---
 
@@ -14,7 +23,7 @@ const categories = glossaryData.categories;
   <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
     <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
       <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
-      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;flex:1;">PMP用語集 · {terms.length} 語</h1>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;flex:1;">PMP用語集 · {terms.length} 語 <span style="color:#6ec897;font-size:0.7rem;">（公式PDF照合60語+既存120語）</span></h1>
       <input id="search" type="search" placeholder="🔎 検索..." style="background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.15);padding:0.35rem 0.7rem;font-size:0.78rem;font-family:inherit;width:200px;" />
     </div>
   </div>
@@ -31,16 +40,22 @@ const categories = glossaryData.categories;
     </div>
 
     <div id="glossary-list" style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.5rem 0;">
-      {terms.map((t, i) => (
-        <div class="glo-item" data-cat={t.category} data-search={`${t.term} ${t.termJa} ${t.definition}`.toLowerCase()} style="padding:0.85rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.04);">
+      {terms.map((t: any, i: number) => (
+        <div class="glo-item" data-cat={t.category} data-search={`${t.term} ${t.termJa ?? ''} ${t.definition}`.toLowerCase()} style="padding:0.85rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.04);">
           <div style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:baseline;margin-bottom:0.35rem;">
             <span style="color:#c8a96e;font-weight:600;font-size:0.88rem;">{t.term}</span>
-            <span style="color:rgba(237,237,232,0.7);font-size:0.8rem;">{t.termJa}</span>
+            {t.termJa && t.termJa !== t.term && <span style="color:rgba(237,237,232,0.7);font-size:0.8rem;">{t.termJa}</span>}
+            {t.termEn && <span style="color:rgba(237,237,232,0.5);font-size:0.75rem;">{t.termEn}</span>}
             <span style="background:rgba(200,169,110,0.06);color:rgba(200,169,110,0.85);padding:0.1rem 0.4rem;font-size:0.6rem;letter-spacing:0.05em;">{t.category}</span>
+            {t.sourceGrade === 'A' && <span style="background:rgba(110,200,151,0.1);color:#6ec897;padding:0.1rem 0.4rem;font-size:0.6rem;font-weight:600;letter-spacing:0.05em;">A·公式PDF</span>}
+            {t.sourceGrade === 'B' && <span style="background:rgba(232,180,110,0.08);color:#e8b46e;padding:0.1rem 0.4rem;font-size:0.6rem;letter-spacing:0.05em;">B·要検証</span>}
           </div>
           <p style="color:rgba(237,237,232,0.85);font-size:0.8rem;line-height:1.7;margin-bottom:0.35rem;">{t.definition}</p>
+          {t.officialPage && (
+            <span style="color:rgba(110,200,151,0.7);font-size:0.65rem;">📄 公式 Glossary p.{t.officialPage}</span>
+          )}
           {t.relatedChapter && (
-            <a href={`${base}/ai-tools/pmp-study/study/${t.relatedChapter}`} style="color:rgba(110,200,151,0.85);font-size:0.7rem;text-decoration:none;border-bottom:1px solid rgba(110,200,151,0.25);">関連章 {t.relatedChapter} →</a>
+            <a href={`${base}/ai-tools/pmp-study/study/${t.relatedChapter}`} style="color:rgba(110,200,151,0.85);font-size:0.7rem;text-decoration:none;border-bottom:1px solid rgba(110,200,151,0.25);margin-left:0.5rem;">関連章 {t.relatedChapter} →</a>
           )}
         </div>
       ))}

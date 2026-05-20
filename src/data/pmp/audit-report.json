@@ -1,8 +1,8 @@
 {
-  "version": "3.0.0",
-  "auditDate": "2026-05-13/20 (1st-3rd round)",
-  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd: PMI 公式PDF 直接照合",
-  "honestyStatement": "3回目監査でユーザー提供の PMI 公式 PDF（pmp-examination-content-outline.pdf 等）を直接照合し、過去2回の Web ベース監査では見つからなかった重大欠落・誤誘導を発見しました。これにより本アプリは『公式 ECO 直接照合済み』の構造に到達しました。ただし、章本文・問題プール・ケーススタディの個別細部の正確性は依然として要検証です。",
+  "version": "4.0.0",
+  "auditDate": "2026-05-13/20 (1st-4th round)",
+  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd-4th: PMI 公式PDF 直接照合",
+  "honestyStatement": "4回目監査でユーザー提供の PMI 公式 PDF 群（ECO・Glossary・Blueprint・Lesson 01・Shawpe ケーススタディ）を追加照合し、本アプリのコンテンツに『PMI公式由来素材』を多数統合しました。ただし以下が未処理: (a) 公式 Glossary 後半54ページ・推定350+用語、(b) Lesson 02-12 PDF (合計約 200MB)、(c) PMI 公式問題集 206ページ、(d) jp_v3.1 各種大容量 PDF。全資料の完全網羅は本セッション 1回では物理的に不可能なため、coverage-tracker.json で未処理項目を透明化。",
   "scope": [
     "ECO 2021 ドメイン配分",
     "PMBOK 第7版 12原則",
@@ -159,6 +159,71 @@
         "C:\\Users\\81804\\Downloads\\pmp-examination-content-outline.pdf P.1"
       ],
       "verdict": "🟡 → ✅ 公式 ECO は『PMP試験は ECO に基づき、PMBOK ガイドの制約を受けない』と明記。PMBOK 7 12原則・8パフォーマンスドメインは PMBOK 7 の体系であって、PMP 試験対策の主軸ではないことを eco-official.json の importantNote に明示。"
+    },
+    {
+      "id": "F013",
+      "category": "ATP 6レッスン Blueprint 構造（4th round）",
+      "severity": "MINOR",
+      "status": "未収録 → 追加",
+      "myContent": "PMI 認定トレーニング (ATP) コースの 6 レッスン構成と各レッスンの ECO イネーブラへのマッピングが本アプリに欠落していた",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\jp_Final_Blueprint_ECO_-_PMP_v3_20223.pdf (Copyright 2023 PMI)"
+      ],
+      "verdict": "✅ blueprint.json 新規作成。30 セクション、142 イネーブラへの完全マッピング、ECO 以外の追加トピック (アジャイル・マインドセット / 戦略の整合 / CI フレームワーク) も収録。"
+    },
+    {
+      "id": "F014",
+      "category": "公式 PMI 用語集との重大な乖離（4th round）",
+      "severity": "CRITICAL",
+      "status": "重大な不足 → 部分修正",
+      "myContent": "私の glossary.json は 120 語のみ。PMI 公式 Glossary_for_PMP_2026_JA.pdf は 70 ページ・推定 500 語以上。",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\Glossary_for_PMP_2026_JA.pdf (2024年8月版)"
+      ],
+      "verdict": "❌ → 🟡 公式 PDF 前半 16 ページから最重要 60 語を glossary-official-additions.json として追加（DEEP / DevOps / INVEST / SAFe / SoS / SWOT / T字型 / アジャイル宣言 / アジャイル12原則 / カイゼン / 狩野モデル 等）。残り 54 ページ・推定 350+ 用語は次イテレーション処理（coverage-tracker に記録）。",
+      "action": "glossary-official-additions.json 新規作成 + glossary.astro 統合表示"
+    },
+    {
+      "id": "F015",
+      "category": "12 レッスン公式コース構造（4th round）",
+      "severity": "MINOR",
+      "status": "未収録 → 構造のみ追加",
+      "myContent": "PMI 認定インストラクター主導コースの 12 レッスン構成（Lesson 01-12 PDF 約 200MB）が本アプリに反映されていなかった",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\PMP_-_Lesson_01_-_Foundation-en_us-ja_jp-PE-C.pdf (© 2025 PMI)"
+      ],
+      "verdict": "🟡 lesson-mapping.json 新規作成。3 パート × 12 レッスンの正式タイトル・サイズ・処理状態を記録。Lesson 01 の構造のみ完全読込済。Lesson 02-12 詳細は次イテレーション。"
+    },
+    {
+      "id": "F016",
+      "category": "公式ケーススタディ Shawpe Lifestyle Centre（4th round）",
+      "severity": "MINOR",
+      "status": "未収録 → 追加",
+      "myContent": "PMI 公式ケーススタディ（Shawpe Lifestyle Centre Project, 79ページ）が私のケーススタディ集に未収録",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\re2_jp_Shawpe_Lifestyle_Centre_Project_Case_Study_PMP_Version_3.1.pdf (Copyright 2023 PMI)"
+      ],
+      "verdict": "✅ CS11 として case-studies.json に追加。商業用不動産開発のハイブリッド・アプローチ事例。$7M・36ヶ月・C4C モデル・マトリックス組織。公式由来であることを sourceGrade='A' で明示。"
+    },
+    {
+      "id": "F017",
+      "category": "PMP_180問模試 PDF テキスト抽出不可（4th round）",
+      "severity": "INFO",
+      "status": "処理不能（OCR必要）",
+      "myContent": "本セッションでは処理試行のみ。",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\PMP_180問模試_完全版_V25R05.pdf"
+      ],
+      "verdict": "ℹ PDF からテキスト抽出ゼロ（画像ベース）。OCR が必要だが本ツールでは未対応。coverage-tracker に明記、次イテレーション課題。"
+    },
+    {
+      "id": "F018",
+      "category": "未処理 PDF 群の透明化（4th round メタ）",
+      "severity": "INFO",
+      "status": "transparency",
+      "myContent": "Lesson 02-12 (合計約 200MB)・jp_v3.1 各種 (合計約 100MB)・PMP_Learner_Handout (16MB)・PMI公式問題集 (206ページ) 等は本セッション範囲外",
+      "publicSources": ["coverage-tracker.json"],
+      "verdict": "ℹ 全 28 PDF のうち 6 PDF を処理（ECO・Blueprint・Glossary 前半・Lesson 01 構造・Shawpe・180問模試試行）、22 PDF を deferred として明示。ユーザーは coverage-tracker.json と /coverage UI で網羅状況を直接検証可能。"
     }
   ],
   "verifiedItems": [

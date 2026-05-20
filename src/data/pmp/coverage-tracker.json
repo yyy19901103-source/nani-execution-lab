@@ -1,0 +1,296 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-05-20",
+  "purpose": "C:\\Users\\81804\\Downloads\\ にある PMI 公式 PMP 資料群の処理状況を追跡。ユーザーが第三者検証できる状態を保つため、各 PDF の処理状態・反映先・出典ページを明示する。",
+  "honestyStatement": "全 28 PDF・合計約 400MB・推定 2,000+ ページの完全処理は本セッション 1回では物理的に不可能。本ファイルは『何が処理済み・何が未処理』を透明化することで、ユーザーが網羅状況を直接検証できるようにするための追跡ファイル。",
+  "summary": {
+    "totalDocuments": 28,
+    "processed": 0,
+    "partiallyProcessed": 0,
+    "pending": 28,
+    "notApplicable": 0
+  },
+  "documents": [
+    {
+      "file": "pmp-examination-content-outline.pdf",
+      "sizeKB": 635,
+      "pages": 20,
+      "priority": "P1-CRITICAL",
+      "status": "processed",
+      "processedDate": "2026-05-20 (3rd audit)",
+      "reflectedIn": [
+        "src/data/pmp/eco-official.json (35タスク・142イネーブラ完全収録)",
+        "src/pages/ai-tools/pmp-study/eco.astro (公式表示ページ)"
+      ],
+      "extractedPages": "P.1-14 完全読込",
+      "sourceGrade": "A",
+      "note": "PMI 公式 ECO 2021年1月版。本アプリの主軸として既に完全反映済み。"
+    },
+    {
+      "file": "pmp-examination-content-outline (1).pdf",
+      "sizeKB": 587,
+      "pages": "未確認",
+      "priority": "P3-LOW",
+      "status": "skipped-duplicate",
+      "note": "上記との重複ファイルと推定。処理不要。"
+    },
+    {
+      "file": "jp_Final_Blueprint_ECO_-_PMP_v3_20223.pdf",
+      "sizeKB": 647,
+      "pages": 11,
+      "priority": "P1-CRITICAL",
+      "status": "in_queue",
+      "task": "#2"
+    },
+    {
+      "file": "Glossary_for_PMP_2026_JA.pdf",
+      "sizeKB": 999,
+      "pages": 70,
+      "priority": "P1-CRITICAL",
+      "status": "in_queue",
+      "task": "#3",
+      "reflectionTarget": "src/data/pmp/glossary.json (既存120語) を公式日本語訳で補強"
+    },
+    {
+      "file": "re_jp_Glossary_-_PMP_Feb_2023.pdf",
+      "sizeKB": 1400,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "pending",
+      "note": "用語集の旧版または別版。Glossary_for_PMP_2026_JA との差分のみ確認推奨。"
+    },
+    {
+      "file": "PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf",
+      "sizeKB": 1515,
+      "pages": 206,
+      "priority": "P1-CRITICAL",
+      "status": "in_queue",
+      "task": "#4",
+      "reflectionTarget": "src/data/pmp/questions.json (既存103問) のフォーマット・配分検証"
+    },
+    {
+      "file": "PMP_180問模試_完全版_V25R05.pdf",
+      "sizeKB": 133,
+      "pages": 32,
+      "priority": "P1-CRITICAL",
+      "status": "in_queue",
+      "task": "#5"
+    },
+    {
+      "file": "PMP_-_Lesson_01_-_Foundation-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 1370,
+      "pages": "未確認",
+      "priority": "P1-CRITICAL",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_02_-_Laying_the_Foundation-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 2945,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_03_-_Defining_Scope_Value_and_Success_Criteria-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 2748,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_04_-_Building_the_Plan-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 3670,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_05_-_Procurement_Quality_and_Scheduling-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 18991,
+      "pages": "未確認 (大容量)",
+      "priority": "P2-MEDIUM",
+      "status": "deferred",
+      "note": "19MB の大容量。本セッション範囲外（次イテレーション）。"
+    },
+    {
+      "file": "PMP_-_Lesson_06_-_Communication_and_Knowledge_Transfer-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 2562,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_07_-_Leading_and_Empowering_the_Team-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 104093,
+      "pages": "未確認 (極大容量 104MB)",
+      "priority": "P3-LOW",
+      "status": "deferred",
+      "note": "104MB の極大容量。本セッション範囲外。"
+    },
+    {
+      "file": "PMP_-_Lesson_08_-_Managing_Risk_Change_and_Issues-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 2905,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_09_-_Monitoring_Progress_and_Maintaining_Alignment-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 30553,
+      "pages": "未確認 (大容量)",
+      "priority": "P3-LOW",
+      "status": "deferred",
+      "note": "31MB の大容量。本セッション範囲外。"
+    },
+    {
+      "file": "PMP_-_Lesson_10_-_Closing_the_Project_Successfully-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 1234,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_11_-_Driving_Organizational_Continuous_Improvement-en_us-ja_jp-PE-C.pdf",
+      "sizeKB": 1825,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "PMP_-_Lesson_12_-_Next_Steps-en_us-ja_jp-PE-C_.pdf",
+      "sizeKB": 2001,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "jp_v3.1_Intro_PMP_Auth_Exam_Prep.pdf",
+      "sizeKB": 49789,
+      "pages": "未確認 (極大容量 50MB)",
+      "priority": "P3-LOW",
+      "status": "deferred",
+      "note": "50MB の極大容量。本セッション範囲外。"
+    },
+    {
+      "file": "jp_PMP_Exam_Prep_V3.1__Student_Workbook.pdf",
+      "sizeKB": 29627,
+      "pages": "未確認 (大容量 30MB)",
+      "priority": "P3-LOW",
+      "status": "deferred",
+      "note": "30MB の大容量 Student Workbook。本セッション範囲外。"
+    },
+    {
+      "file": "jp_v3.1_Lesson_5_PMP_Auth_Exam_Prep.pdf",
+      "sizeKB": 23960,
+      "pages": "未確認 (大容量 24MB)",
+      "priority": "P3-LOW",
+      "status": "deferred"
+    },
+    {
+      "file": "re_jp_v3.1_Lesson_1_PMP_Auth_Exam_Prep.pdf",
+      "sizeKB": 5343,
+      "pages": "未確認",
+      "priority": "P3-LOW",
+      "status": "deferred"
+    },
+    {
+      "file": "re_jp_v3.1_Lesson_2_PMP_Auth_Exam_Prep.pdf",
+      "sizeKB": 40379,
+      "pages": "未確認 (大容量 40MB)",
+      "priority": "P3-LOW",
+      "status": "deferred"
+    },
+    {
+      "file": "re2_jp_v3.1_Lesson_3_PMP_Auth_Exam_Prep.pdf",
+      "sizeKB": 18795,
+      "pages": "未確認 (大容量 19MB)",
+      "priority": "P3-LOW",
+      "status": "deferred"
+    },
+    {
+      "file": "re2_jp_v3.1_Lesson_4_PMP_Auth_Exam_Prep.pdf",
+      "sizeKB": 11686,
+      "pages": "未確認 (大容量 12MB)",
+      "priority": "P3-LOW",
+      "status": "deferred"
+    },
+    {
+      "file": "re2_jp_v3.1_Lesson_6_PMP_Auth_Exam_Prep.pdf",
+      "sizeKB": 2352,
+      "pages": "未確認",
+      "priority": "P2-MEDIUM",
+      "status": "in_queue",
+      "task": "#6"
+    },
+    {
+      "file": "re2_jp_Shawpe_Lifestyle_Centre_Project_Case_Study_PMP_Version_3.1.pdf",
+      "sizeKB": 4408,
+      "pages": "未確認",
+      "priority": "P1-CRITICAL",
+      "status": "in_queue",
+      "task": "#7"
+    },
+    {
+      "file": "PMP_Learner_Handout_-_Combined_JA.pdf",
+      "sizeKB": 16451,
+      "pages": "未確認 (大容量 16MB)",
+      "priority": "P2-MEDIUM",
+      "status": "deferred",
+      "note": "Learner Handout 結合版。次イテレーション。"
+    },
+    {
+      "file": "ATPPMP02S.pdf",
+      "sizeKB": 6010,
+      "pages": "未確認",
+      "priority": "P3-LOW",
+      "status": "deferred"
+    },
+    {
+      "file": "PMP-JA-student-v1.zip",
+      "sizeKB": 12009,
+      "pages": "ZIP-N/A",
+      "priority": "P3-LOW",
+      "status": "deferred",
+      "note": "ZIP 圧縮ファイル。展開して内容確認が必要。次イテレーション。"
+    },
+    {
+      "file": "Project Management Plan.docx / .pdf",
+      "sizeKB": 700,
+      "pages": "未確認",
+      "priority": "P3-LOW",
+      "status": "deferred",
+      "note": "PM Plan サンプル文書。参考資料として保留。"
+    }
+  ],
+  "sessionProcessingScope": {
+    "thisSession": [
+      "Task #1: coverage-tracker.json 作成（このファイル）",
+      "Task #2: jp_Final_Blueprint_ECO (11ページ)",
+      "Task #3: Glossary_for_PMP_2026_JA (70ページ)",
+      "Task #4: PMI_PMP_Exam_Prep_Questions (206ページ - 抜粋)",
+      "Task #5: PMP_180問模試 (32ページ)",
+      "Task #6: Lesson 01・10・11・12 等の軽量レッスン",
+      "Task #7: Shawpe ケーススタディ",
+      "Task #8: audit-report.json 更新",
+      "Task #9: /coverage UI ページ作成",
+      "Task #10: ビルド・push・公開反映"
+    ],
+    "nextIteration": [
+      "Lesson 02-09 (大容量) 完全読込",
+      "jp_v3.1_Intro PMP Auth Exam Prep (50MB)",
+      "jp_PMP_Exam_Prep_V3.1__Student_Workbook (30MB)",
+      "re_jp_v3.1_Lesson 全 (合計 90MB+)",
+      "PMP_Learner_Handout (16MB)",
+      "PMP-JA-student-v1.zip 展開"
+    ]
+  }
+}

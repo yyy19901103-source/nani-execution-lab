@@ -8,7 +8,12 @@ const sevColor: Record<string, { bg: string; fg: string }> = {
   VERIFIED: { bg: 'rgba(110,200,151,0.08)', fg: '#6ec897' },
   CRITICAL: { bg: 'rgba(232,110,110,0.08)', fg: '#e86e6e' },
   MINOR: { bg: 'rgba(232,180,110,0.08)', fg: '#e8b46e' },
+  INFO: { bg: 'rgba(158,203,232,0.08)', fg: '#9ecbe8' },
 };
+
+function getSevColor(sev: string) {
+  return sevColor[sev] ?? { bg: 'rgba(255,255,255,0.05)', fg: 'rgba(255,255,255,0.5)' };
+}
 ---
 
 <BaseLayout
@@ -54,14 +59,14 @@ const sevColor: Record<string, { bg: string; fg: string }> = {
     <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.35em;margin-bottom:1rem;">FINDINGS · 発見項目</p>
 
     {auditData.findings.map((f: any) => (
-      <div style={`background:#111114;border-left:3px solid ${sevColor[f.severity].fg};padding:1.25rem 1.5rem;margin-bottom:0.75rem;`}>
+      <div style={`background:#111114;border-left:3px solid ${getSevColor(f.severity).fg};padding:1.25rem 1.5rem;margin-bottom:0.75rem;`}>
         <div style="display:flex;gap:0.6rem;align-items:baseline;flex-wrap:wrap;margin-bottom:0.6rem;">
-          <span style={`background:${sevColor[f.severity].bg};color:${sevColor[f.severity].fg};padding:0.2rem 0.55rem;font-size:0.65rem;letter-spacing:0.05em;font-weight:600;`}>{f.severity}</span>
+          <span style={`background:${getSevColor(f.severity).bg};color:${getSevColor(f.severity).fg};padding:0.2rem 0.55rem;font-size:0.65rem;letter-spacing:0.05em;font-weight:600;`}>{f.severity}</span>
           <span style="color:rgba(237,237,232,0.5);font-size:0.7rem;">{f.id}</span>
           <h3 style={`color:#edede8;font-size:0.95rem;margin:0;flex:1;`}>{f.category}</h3>
         </div>
         <p style="color:#edede8;font-size:0.85rem;line-height:1.7;margin-bottom:0.75rem;">
-          <strong style={`color:${sevColor[f.severity].fg};`}>{f.status}</strong>
+          <strong style={`color:${getSevColor(f.severity).fg};`}>{f.status}</strong>
         </p>
         <div style="margin-bottom:0.6rem;">
           <p style="color:rgba(237,237,232,0.55);font-size:0.7rem;letter-spacing:0.05em;margin-bottom:0.3rem;">📄 私の元コンテンツ:</p>

@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "title": "PMI 認定 PMP インストラクター主導試験準備コース・12レッスン構成",
+  "officialSource": "PMP_-_Lesson_01-12_-_*-en_us-ja_jp-PE-C.pdf (© 2025 PMI)",
+  "verificationDate": "2026-05-20",
+  "verificationLevel": "PMI 公式 PDF 直接読込 (Lesson 01 全文+他レッスン構造のみ)",
+  "note": "本コース構成は 12 レッスン編成。jp_Final_Blueprint_ECO の 6 レッスン構成（blueprint.json）とは別の体系で、より詳細な学習導線。両者は補完関係。",
+  "courseStructure": {
+    "part1": {
+      "title": "プロジェクトの立上げと計画",
+      "lessons": [
+        { "no": 1, "title": "基礎", "file": "PMP_-_Lesson_01_-_Foundation-en_us-ja_jp-PE-C.pdf", "pages": 35, "status": "structure_read" },
+        { "no": 2, "title": "基礎を築く—ビジョン、ステークホルダー、ガバナンス", "file": "PMP_-_Lesson_02_-_Laying_the_Foundation-en_us-ja_jp-PE-C.pdf", "sizeKB": 2945, "status": "deferred" },
+        { "no": 3, "title": "スコープ、価値、成功基準の定義", "file": "PMP_-_Lesson_03_-_Defining_Scope_Value_and_Success_Criteria-en_us-ja_jp-PE-C.pdf", "sizeKB": 2748, "status": "deferred" },
+        { "no": 4, "title": "計画書の策定—統合、資源、財務", "file": "PMP_-_Lesson_04_-_Building_the_Plan-en_us-ja_jp-PE-C.pdf", "sizeKB": 3670, "status": "deferred" },
+        { "no": 5, "title": "調達、品質、スケジューリング", "file": "PMP_-_Lesson_05_-_Procurement_Quality_and_Scheduling-en_us-ja_jp-PE-C.pdf", "sizeKB": 18991, "status": "deferred" },
+        { "no": 6, "title": "コミュニケーションと知識の転嫁", "file": "PMP_-_Lesson_06_-_Communication_and_Knowledge_Transfer-en_us-ja_jp-PE-C.pdf", "sizeKB": 2562, "status": "deferred" }
+      ]
+    },
+    "part2": {
+      "title": "プロジェクトの実行と監視",
+      "lessons": [
+        { "no": 7, "title": "チームの指揮および支援", "file": "PMP_-_Lesson_07_-_Leading_and_Empowering_the_Team-en_us-ja_jp-PE-C.pdf", "sizeKB": 104093, "status": "deferred", "note": "104MB の極大容量。次イテレーション" },
+        { "no": 8, "title": "リスク、変更、課題の管理", "file": "PMP_-_Lesson_08_-_Managing_Risk_Change_and_Issues-en_us-ja_jp-PE-C.pdf", "sizeKB": 2905, "status": "deferred" },
+        { "no": 9, "title": "進捗の監視と整合性の維持", "file": "PMP_-_Lesson_09_-_Monitoring_Progress_and_Maintaining_Alignment-en_us-ja_jp-PE-C.pdf", "sizeKB": 30553, "status": "deferred" }
+      ]
+    },
+    "part3": {
+      "title": "プロジェクトの終結と改善",
+      "lessons": [
+        { "no": 10, "title": "プロジェクトの円滑な終結", "file": "PMP_-_Lesson_10_-_Closing_the_Project_Successfully-en_us-ja_jp-PE-C.pdf", "sizeKB": 1234, "status": "deferred" },
+        { "no": 11, "title": "継続的かつ組織的な改善の促進", "file": "PMP_-_Lesson_11_-_Driving_Organizational_Continuous_Improvement-en_us-ja_jp-PE-C.pdf", "sizeKB": 1825, "status": "deferred" },
+        { "no": 12, "title": "次のステップ", "file": "PMP_-_Lesson_12_-_Next_Steps-en_us-ja_jp-PE-C_.pdf", "sizeKB": 2001, "status": "deferred" }
+      ]
+    }
+  },
+  "lifecycleIcons": {
+    "predictive": "予測型",
+    "adaptive": "適応型",
+    "hybrid": "ハイブリッド",
+    "note": "Lesson 01 P.10 で公式アイコン体系として明示。各ライフサイクルに特化した概念を区別する。"
+  },
+  "courseTeachingIcons": [
+    "重要 (Important)",
+    "インタラクティブ (Interactive)",
+    "専門家の判断を活用する (Expert Judgment)",
+    "ツールと技法 (Tools & Techniques)",
+    "質問 (Question)",
+    "ディスカッション (Discussion)",
+    "注記 (Note)",
+    "定義 (Definition)"
+  ],
+  "totalSize": "約 200MB",
+  "thisSessionScope": "Lesson 01 のコース構造のみ完全読込 (10ページ)。詳細本文と Lesson 02-12 は次イテレーション。"
+}

@@ -1,0 +1,146 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import coverageData from '../../../data/pmp/coverage-tracker.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// 状態別集計
+const statusGroups: Record<string, any[]> = {
+  processed: [],
+  in_queue: [],
+  deferred: [],
+  pending: [],
+  'skipped-duplicate': [],
+};
+for (const doc of coverageData.documents) {
+  const g = statusGroups[doc.status] ?? (statusGroups[doc.status] = []);
+  g.push(doc);
+}
+
+const statusLabels: Record<string, { label: string; color: string; bg: string }> = {
+  processed: { label: '✅ 処理済（公式PDF直接照合済）', color: '#6ec897', bg: 'rgba(110,200,151,0.06)' },
+  in_queue: { label: '🔄 処理待ち（本セッション対象）', color: '#c8a96e', bg: 'rgba(200,169,110,0.06)' },
+  deferred: { label: '⏳ 次イテレーション（容量・優先度の都合で繰越）', color: '#e8b46e', bg: 'rgba(232,180,110,0.06)' },
+  pending: { label: '⏸ 未着手', color: '#9ecbe8', bg: 'rgba(158,203,232,0.06)' },
+  'skipped-duplicate': { label: '🚫 重複のためスキップ', color: 'rgba(255,255,255,0.4)', bg: 'rgba(255,255,255,0.03)' },
+};
+
+const total = coverageData.documents.length;
+const processedCount = statusGroups.processed?.length ?? 0;
+const deferredCount = statusGroups.deferred?.length ?? 0;
+const inQueueCount = statusGroups.in_queue?.length ?? 0;
+const skippedCount = statusGroups['skipped-duplicate']?.length ?? 0;
+const coveragePct = Math.round((processedCount / total) * 100);
+---
+
+<BaseLayout
+  title="カバレッジマップ - PMP学習アプリ"
+  description="C:\\Users\\81804\\Downloads\\ の PMI 公式 PDF 群の処理状況。透明な追跡で、ユーザーが網羅状況を直接検証できる。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">カバレッジマップ</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1000px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    {/* 正直な前提 */}
+    <div style="background:rgba(232,180,110,0.06);border-left:3px solid #e8b46e;padding:1rem 1.25rem;margin-bottom:1.25rem;">
+      <p style="color:#e8b46e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.5rem;">HONESTY · 正直な前提</p>
+      <p style="color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.8;">{coverageData.honestyStatement}</p>
+    </div>
+
+    {/* サマリ */}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.75rem;margin-bottom:1.5rem;">
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.95rem 1.1rem;">
+        <p style="color:rgba(255,255,255,0.5);font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">総ドキュメント数</p>
+        <p style="color:#edede8;font-size:1.4rem;font-weight:300;">{total}</p>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(110,200,151,0.25);padding:0.95rem 1.1rem;">
+        <p style="color:#6ec897;font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">処理済</p>
+        <p style="color:#6ec897;font-size:1.4rem;font-weight:300;">{processedCount}</p>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(200,169,110,0.25);padding:0.95rem 1.1rem;">
+        <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">処理待ち</p>
+        <p style="color:#c8a96e;font-size:1.4rem;font-weight:300;">{inQueueCount}</p>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(232,180,110,0.25);padding:0.95rem 1.1rem;">
+        <p style="color:#e8b46e;font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">次イテレーション</p>
+        <p style="color:#e8b46e;font-size:1.4rem;font-weight:300;">{deferredCount}</p>
+      </div>
+      <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:0.95rem 1.1rem;">
+        <p style="color:rgba(255,255,255,0.5);font-size:0.62rem;letter-spacing:0.25em;margin-bottom:0.3rem;">完了率</p>
+        <p style="color:#6ec897;font-size:1.4rem;font-weight:300;">{coveragePct}%</p>
+      </div>
+    </div>
+
+    {/* 進捗バー */}
+    <div style="background:rgba(255,255,255,0.05);height:8px;border-radius:0;overflow:hidden;margin-bottom:1.5rem;display:flex;">
+      <div style={`width:${(processedCount/total)*100}%;background:#6ec897;`} title="処理済"></div>
+      <div style={`width:${(inQueueCount/total)*100}%;background:#c8a96e;`} title="処理待ち"></div>
+      <div style={`width:${(deferredCount/total)*100}%;background:#e8b46e;`} title="次イテレーション"></div>
+      <div style={`width:${(skippedCount/total)*100}%;background:rgba(255,255,255,0.2);`} title="スキップ"></div>
+    </div>
+
+    {/* セッションスコープ */}
+    <div style="background:#111114;border:1px solid rgba(200,169,110,0.2);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">THIS SESSION SCOPE · 本セッション処理対象</p>
+      <ul style="margin:0;padding-left:1.25rem;color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.85;">
+        {coverageData.sessionProcessingScope.thisSession.map((s: string) => <li>{s}</li>)}
+      </ul>
+    </div>
+
+    {/* 次イテレーション */}
+    <div style="background:#111114;border:1px solid rgba(232,180,110,0.2);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <p style="color:#e8b46e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">NEXT ITERATION · 次イテレーション</p>
+      <ul style="margin:0;padding-left:1.25rem;color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.85;">
+        {coverageData.sessionProcessingScope.nextIteration.map((s: string) => <li>{s}</li>)}
+      </ul>
+    </div>
+
+    {/* 状態別ドキュメント一覧 */}
+    {Object.entries(statusGroups).map(([status, docs]: [string, any[]]) => (
+      docs.length > 0 && (
+        <div style="margin-bottom:1.5rem;">
+          <div style={`background:${statusLabels[status]?.bg ?? 'transparent'};border-left:3px solid ${statusLabels[status]?.color ?? '#888'};padding:0.85rem 1.1rem;margin-bottom:0.5rem;`}>
+            <p style={`color:${statusLabels[status]?.color ?? '#888'};font-size:0.7rem;letter-spacing:0.2em;margin:0;`}>{statusLabels[status]?.label ?? status} ({docs.length})</p>
+          </div>
+          {docs.map((doc: any) => (
+            <div style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0.85rem 1.1rem;margin-bottom:0.3rem;">
+              <div style="display:flex;gap:0.5rem;align-items:baseline;flex-wrap:wrap;margin-bottom:0.4rem;">
+                <span style={`background:${statusLabels[status]?.bg ?? 'transparent'};color:${statusLabels[status]?.color ?? '#888'};padding:0.15rem 0.45rem;font-size:0.62rem;font-weight:600;letter-spacing:0.05em;`}>{doc.priority ?? '-'}</span>
+                <span style="color:#edede8;font-size:0.85rem;font-weight:500;flex:1;word-break:break-all;">{doc.file}</span>
+                <span style="color:rgba(237,237,232,0.5);font-size:0.7rem;white-space:nowrap;">{doc.sizeKB ? `${doc.sizeKB}KB` : ''} {doc.pages !== '未確認' && doc.pages !== 'ZIP-N/A' && doc.pages ? `· ${doc.pages}p` : ''}</span>
+              </div>
+              {doc.reflectedIn && (
+                <div style="font-size:0.72rem;color:rgba(237,237,232,0.7);line-height:1.6;margin-top:0.3rem;">
+                  <span style="color:#6ec897;">✓ 反映先:</span>
+                  <ul style="margin:0.2rem 0 0 1rem;padding:0;">
+                    {doc.reflectedIn.map((r: string) => <li>{r}</li>)}
+                  </ul>
+                </div>
+              )}
+              {doc.note && (
+                <p style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.6;margin:0.3rem 0 0 0;">{doc.note}</p>
+              )}
+              {doc.extractedPages && (
+                <p style="color:rgba(110,200,151,0.7);font-size:0.7rem;margin:0.3rem 0 0 0;">📄 抽出範囲: {doc.extractedPages}</p>
+              )}
+              {doc.task && (
+                <p style="color:rgba(200,169,110,0.6);font-size:0.7rem;margin:0.3rem 0 0 0;">関連タスク: {doc.task}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )
+    ))}
+
+    <p style="color:rgba(237,237,232,0.4);font-size:0.7rem;text-align:center;margin-top:2rem;line-height:1.7;">
+      最終更新: {coverageData.lastUpdated} · 本ファイルは coverage-tracker.json から自動生成<br/>
+      第三者検証: src/data/pmp/coverage-tracker.json + 各反映先ファイルを直接確認可能
+    </p>
+  </div>
+
+</BaseLayout>
