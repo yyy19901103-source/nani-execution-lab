@@ -1,8 +1,8 @@
 {
-  "version": "2.0.0",
-  "auditDate": "2026-05-13 (1st + 2nd round)",
-  "auditor": "Claude AI (Anthropic) — 公開Web資料ベース監査",
-  "honestyStatement": "本監査は PMI 公式 PDF（PMBOK 第7版・ECO 2021 原本）への直接アクセスがない状況で実施しました。PMI 公開Web資料・複数の公開二次資料を参照しています。完全な公式照合ではありませんが、最も重大な誤り・欠落を特定する best-effort 監査です。",
+  "version": "3.0.0",
+  "auditDate": "2026-05-13/20 (1st-3rd round)",
+  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd: PMI 公式PDF 直接照合",
+  "honestyStatement": "3回目監査でユーザー提供の PMI 公式 PDF（pmp-examination-content-outline.pdf 等）を直接照合し、過去2回の Web ベース監査では見つからなかった重大欠落・誤誘導を発見しました。これにより本アプリは『公式 ECO 直接照合済み』の構造に到達しました。ただし、章本文・問題プール・ケーススタディの個別細部の正確性は依然として要検証です。",
   "scope": [
     "ECO 2021 ドメイン配分",
     "PMBOK 第7版 12原則",
@@ -112,6 +112,53 @@
         "https://www.mindtools.com/pages/article/newLDR_86.htm"
       ],
       "verdict": "✅ 正確。1965年の Tuckman 原論文では4段階、1977年に Mary Ann Jensen と共に Adjourning（解散・別名 Mourning）を追加した経緯も含めて正しい。"
+    },
+    {
+      "id": "F009",
+      "category": "イネーブラ完全欠落（3rd round・公式PDF照合）",
+      "severity": "CRITICAL",
+      "status": "重大な欠落 → 修正済",
+      "myContent": "ECO 35 タスクは持っていたが、各タスク配下の『イネーブラ（具体的作業例）』全 142 件を欠いていた。試験問題はイネーブラから直接出題されるため、これは試験対策上致命的な欠落。",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\pmp-examination-content-outline.pdf (PMI 公式PDF)"
+      ],
+      "verdict": "❌ → ✅ eco-official.json に PMI 公式 PDF を直接読込み、35タスク・142イネーブラ完全収録。公式日本語名称使用。新規ページ /eco でアクセス可能。",
+      "action": "eco-official.json 新規作成 + /eco ページ追加"
+    },
+    {
+      "id": "F010",
+      "category": "『アジャイル優先』誤誘導（3rd round・公式PDF照合）",
+      "severity": "CRITICAL",
+      "status": "重大な誤誘導 → 修正済",
+      "myContent": "Mindset 原則 #1 で『アジャイル/ハイブリッド優先』と書き、『PMP 2021改訂以降、ECO の50%がアジャイル/ハイブリッド前提』と説明していた。",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\pmp-examination-content-outline.pdf P.6"
+      ],
+      "verdict": "❌ → ✅ 公式 ECO P.6 は『試験の約半分は予測型、残り半分はアジャイルまたはハイブリッド』と明記。『アジャイル優先』は誤誘導だった。mindset.json 原則 #1 を『approach-tailoring（プロジェクト特性に応じた方法論選択）』に変更。決定フローチャート #8 も修正。officialCorrection セクション追記。",
+      "action": "mindset.json #1 全面書き直し + decisionFlowchart #8 修正"
+    },
+    {
+      "id": "F011",
+      "category": "タスク名称の意訳化（3rd round・軽微）",
+      "severity": "MINOR",
+      "status": "意訳 → 公式名称に統一",
+      "myContent": "chapters.json および eco-structure.json で章タイトルを公式 ECO の意訳で記載していた。例: 公式『感情的知性の適用を通してチームのパフォーマンスを向上させる』→ 私『EQの活用』",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\pmp-examination-content-outline.pdf"
+      ],
+      "verdict": "🟡 → ✅ eco-official.json には完全な公式名称で収録。既存の chapters.json は内部参照用として残しつつ、ユーザー閲覧時は /eco ページで公式名称を確認可能に。今後の問題プール拡大時はイネーブラを利用。",
+      "action": "公式名称は eco-official.json に保持。既存 chapters.json はラベルとして利用継続"
+    },
+    {
+      "id": "F012",
+      "category": "PMP と PMBOK の関係（3rd round・公式PDF照合）",
+      "severity": "MINOR",
+      "status": "誤認識 → 修正済",
+      "myContent": "私のコンテンツは『PMBOK 7 を学べば PMP 試験対策になる』のように扱っていた箇所がある（特に PMBOK 7 12原則・8パフォーマンスドメインの導入時）",
+      "publicSources": [
+        "C:\\Users\\81804\\Downloads\\pmp-examination-content-outline.pdf P.1"
+      ],
+      "verdict": "🟡 → ✅ 公式 ECO は『PMP試験は ECO に基づき、PMBOK ガイドの制約を受けない』と明記。PMBOK 7 12原則・8パフォーマンスドメインは PMBOK 7 の体系であって、PMP 試験対策の主軸ではないことを eco-official.json の importantNote に明示。"
     }
   ],
   "verifiedItems": [

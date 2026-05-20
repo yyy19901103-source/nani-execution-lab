@@ -1,0 +1,105 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ecoData from '../../../data/pmp/eco-official.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const domainColors: Record<string, string> = {
+  I: '#c8a96e',
+  II: '#6ec897',
+  III: '#9ecbe8',
+};
+---
+
+<BaseLayout
+  title="PMI 公式 ECO（試験内容の概要）- PMP学習アプリ"
+  description="PMI 公式 PMP 試験内容の概要 2021年1月版を完全収録。35タスク・142イネーブラの公式日本語名称を全件掲載。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;flex:1;">公式 ECO · {ecoData.totalTasks}タスク · {ecoData.totalEnablers}イネーブラ</h1>
+    </div>
+  </div>
+
+  <div style="max-width:1000px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+
+    {/* 公式照合バッジ */}
+    <div style="background:rgba(110,200,151,0.06);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;margin-bottom:1.25rem;">
+      <p style="color:#6ec897;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.5rem;">✅ OFFICIAL PMI SOURCE · PMI 公式 PDF 直接照合済み</p>
+      <p style="color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.8;">
+        本ページは <strong>{ecoData.officialSource}</strong> を直接読み込み、完全に同一の日本語名称・構造で収録しています。
+        全 35 タスク・142 イネーブラ。
+      </p>
+    </div>
+
+    {/* 重要な公式注意 */}
+    <div style="background:rgba(232,180,110,0.06);border-left:3px solid #e8b46e;padding:0.85rem 1.1rem;margin-bottom:1.5rem;">
+      <p style="color:#e8b46e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.5rem;">⚠ 重要 · 公式の声明</p>
+      <p style="color:rgba(237,237,232,0.85);font-size:0.82rem;line-height:1.85;">{ecoData.importantNote}</p>
+    </div>
+
+    {/* アプローチ比率 */}
+    <div style="background:#111114;border:1px solid rgba(200,169,110,0.25);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.75rem;">試験アプローチ配分</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div style="background:#0a0a0c;border:1px solid rgba(110,200,151,0.2);padding:0.85rem 1rem;">
+          <p style="color:#6ec897;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.3rem;">予測型 (Predictive)</p>
+          <p style="color:#edede8;font-size:1.5rem;font-weight:300;">{Math.round(ecoData.examApproach.predictive * 100)}%</p>
+        </div>
+        <div style="background:#0a0a0c;border:1px solid rgba(158,203,232,0.2);padding:0.85rem 1rem;">
+          <p style="color:#9ecbe8;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.3rem;">アジャイル + ハイブリッド</p>
+          <p style="color:#edede8;font-size:1.5rem;font-weight:300;">{Math.round(ecoData.examApproach.agileOrHybrid * 100)}%</p>
+        </div>
+      </div>
+      <p style="color:rgba(237,237,232,0.65);font-size:0.75rem;line-height:1.7;margin-top:0.75rem;">{ecoData.examApproach.note}</p>
+    </div>
+
+    {/* 構造説明 */}
+    <div style="background:#0f0f12;border:1px solid rgba(255,255,255,0.07);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+      <p style="color:#c8a96e;font-size:0.62rem;letter-spacing:0.35em;margin-bottom:0.85rem;">STRUCTURE · 公式構造</p>
+      <div style="display:grid;gap:0.5rem;font-size:0.8rem;color:rgba(237,237,232,0.85);">
+        <div><strong style="color:#c8a96e;">領域 (Domain):</strong> {ecoData.structure.domain}</div>
+        <div><strong style="color:#6ec897;">タスク (Task):</strong> {ecoData.structure.task}</div>
+        <div><strong style="color:#9ecbe8;">イネーブラ (Enabler):</strong> {ecoData.structure.enabler}</div>
+      </div>
+    </div>
+
+    {/* 各領域 */}
+    {ecoData.domains.map((domain) => (
+      <div style="margin-bottom:2rem;">
+        <div style={`background:${domainColors[domain.id]}14;border-left:3px solid ${domainColors[domain.id]};padding:0.85rem 1.1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.75rem;`}>
+          <p style={`color:${domainColors[domain.id]};font-size:0.65rem;letter-spacing:0.3em;margin:0;`}>領域 {domain.id} · {domain.name.toUpperCase()} / {domain.nameEn}</p>
+          <span style="color:#edede8;font-size:0.95rem;font-weight:300;">{Math.round(domain.weight * 100)}%</span>
+          <span style="color:rgba(237,237,232,0.5);font-size:0.72rem;margin-left:auto;">{domain.tasks.length} タスク</span>
+        </div>
+
+        {domain.tasks.map((task) => (
+          <details style="background:#111114;border:1px solid rgba(255,255,255,0.07);padding:0;margin-bottom:0.5rem;">
+            <summary style="cursor:pointer;list-style:none;padding:0.85rem 1.1rem;">
+              <div style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:baseline;">
+                <span style={`background:${domainColors[domain.id]}1a;color:${domainColors[domain.id]};padding:0.2rem 0.55rem;font-size:0.65rem;font-weight:600;letter-spacing:0.05em;`}>タスク {task.no}</span>
+                <h3 style="color:#edede8;font-size:0.88rem;font-weight:400;margin:0;flex:1;">{task.title}</h3>
+                <span style="color:rgba(237,237,232,0.4);font-size:0.7rem;white-space:nowrap;">{task.enablers.length} イネーブラ ▼</span>
+              </div>
+              <p style="color:rgba(237,237,232,0.5);font-size:0.72rem;margin:0.35rem 0 0 0;padding-left:0.5rem;">{task.titleEn}</p>
+            </summary>
+            <div style="padding:0 1.1rem 1rem 1.1rem;">
+              <p style="color:rgba(110,200,151,0.85);font-size:0.62rem;letter-spacing:0.25em;margin:0.5rem 0;">イネーブラ（公式作業例）</p>
+              <ul style="margin:0;padding-left:1.25rem;color:rgba(237,237,232,0.85);font-size:0.8rem;line-height:1.85;">
+                {task.enablers.map((e: string) => <li style="margin-bottom:0.3rem;">{e}</li>)}
+              </ul>
+            </div>
+          </details>
+        ))}
+      </div>
+    ))}
+
+    <p style="color:rgba(237,237,232,0.4);font-size:0.7rem;text-align:center;margin-top:2rem;line-height:1.7;">
+      合計: {ecoData.totalTasks} タスク · {ecoData.totalEnablers} イネーブラ<br/>
+      {ecoData.officialSource}<br/>
+      ©2020 Project Management Institute, Inc. All rights reserved.
+    </p>
+  </div>
+
+</BaseLayout>
