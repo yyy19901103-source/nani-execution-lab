@@ -200,6 +200,7 @@ export default function Dashboard({ base }: { base: string }) {
         <NavCard href={`${base}/ai-tools/pmp-study/audit`} icon="🔍" label="監査レポート" desc="公式PDF照合済" />
         <NavCard href={`${base}/ai-tools/pmp-study/coverage`} icon="📊" label="カバレッジマップ" desc="全28PDF処理状況" />
         <NavCard href={`${base}/ai-tools/pmp-study/exam-changes`} icon="🚨" label="試験仕様変更" desc="2025/2026 重大変更" highlight />
+        <NavCard href={`${base}/ai-tools/pmp-study/weakness`} icon="🔍" label="弱点分析" desc="概念単位の診断" highlight />
         <NavCard href={`${base}/ai-tools/pmp-study/glossary`} icon="📖" label="用語集" desc="120語（要検証）" />
         <NavCard href={`${base}/ai-tools/pmp-study/cases`} icon="🎭" label="ケーススタディ" desc="10シナリオ" />
         <NavCard href={`${base}/ai-tools/pmp-study/search`} icon="🔎" label="横断検索" desc="全コンテンツ" />

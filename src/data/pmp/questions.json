@@ -2,12 +2,13 @@
   "version": "1.0.0",
   "generatedBy": "owner-curated",
   "lastUpdated": "2026-05-13",
-  "totalQuestions": 103,
+  "totalQuestions": 121,
   "domainDistribution": {
     "People": 42,
     "Process": 53,
-    "Business Environment": 8
+    "Business Environment": 26
   },
+  "v2Note": "Q104-Q121 を Business Environment 追加 (新版2025/2026 試験の 26% 配分対応)。新 ECO 26タスク (8+10+8) ベース。",
   "qualityNotes": "全問題はオリジナルシナリオ。PMBOK逐語転記なし。PMP Mindset（Agile優先・サーバントリーダーシップ・ステークホルダー第一・根本原因対処）に基づく判断問題。",
   "questions": [
     {
@@ -1090,6 +1091,132 @@
       "choices": ["導入完了として終了", "利用率低迷の根本原因（UI・学習コスト・業務適合・インセンティブ）を分析し、追加トレーニング・UX改善・チェンジエージェント配置等の介入を計画する", "利用率を改竄して報告", "現場の責任として放置"],
       "correctAnswer": "B", "explanation": "成果＝デプロイ＝完了ではない。実際の利用＋ベネフィット実現まで責任を持つ。終了（A）/改竄（C）/放置（D）はビジネス価値視点欠如・倫理違反含む。",
       "tags": ["Adoption", "Change Management", "Benefits Realization"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q104", "domain": "Business Environment", "chapter": "3.1", "eco2026Task": "3.1", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトのガバナンス構造を確立する段階で、スポンサー・PM・チーム間の意思決定権限と境界が不明確であることが判明した。最も適切な対応は何か。",
+      "choices": ["PM が独断で全権限を持つ", "意思決定権限を階層別に明示 (PM 単独・PM+スポンサー協議・スポンサー単独) し、エスカレーション・パスとしきい値を文書化する", "全決定をスポンサーに委ねる", "曖昧なまま開始し問題発生時に対処する"],
+      "correctAnswer": "B", "explanation": "ガバナンスは事前に意思決定権限・エスカレーションパス・しきい値を明文化する。曖昧運用は後の混乱と責任所在不明を招く。",
+      "tags": ["Governance", "Decision Authority", "Escalation"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q105", "domain": "Business Environment", "chapter": "3.1", "eco2026Task": "3.1", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "プログラム配下の複数プロジェクトでガバナンス基準が統一されておらず、ステークホルダーへの報告書式や承認プロセスがバラバラ。新規プロジェクト PM として最初にすべきことは何か。",
+      "choices": ["自分のプロジェクトだけ独自基準で進める", "プログラム・マネジャーやPMO と協議し、プログラム横断のガバナンス基準を採用・テーラリングする", "全プロジェクトの基準を自分が再設計する", "現状を無視し過去の慣例に従う"],
+      "correctAnswer": "B", "explanation": "プログラム配下では組織的に確立されたガバナンスを採用・テーラリングするのが基本。独自基準は組織整合性を損なう。",
+      "tags": ["Governance", "Program Management", "Tailoring"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q106", "domain": "Business Environment", "chapter": "3.2", "eco2026Task": "3.2", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "金融機関向けシステム開発で、開発中に新たな業界規制が施行され、6ヶ月以内の適合が必須となった。コンプライアンス計画の最初のステップは何か。",
+      "choices": ["新規制を無視する", "規制要件を法務・コンプライアンス部門と協議し詳細を確認、影響範囲を評価して既存の計画書・スコープ・スケジュール・予算への変更要求を CCB に提出する", "PM が独断で対応策を決定", "プロジェクト完了後に対応"],
+      "correctAnswer": "B", "explanation": "コンプライアンスは法務協議+影響評価+正式変更管理が必須。即停止や独断対応は組織ガバナンス違反。",
+      "tags": ["Compliance", "Regulation", "Change Control"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q107", "domain": "Business Environment", "chapter": "3.2", "eco2026Task": "3.2", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトのコンプライアンス違反が監査で発見された。発見直後の PM の最善の対応は何か。",
+      "choices": ["違反を隠蔽し報告しない", "違反内容・影響範囲・原因を速やかに文書化し、適切なステークホルダー (スポンサー・法務・コンプライアンス) へエスカレーションし是正計画を策定する", "違反者個人の責任にする", "次回監査まで対応を延期"],
+      "correctAnswer": "B", "explanation": "コンプライアンス違反は隠蔽でなく透明な報告+是正が原則。PMI 倫理規定にも合致。",
+      "tags": ["Compliance", "Ethics", "Escalation"], "qualityScore": 0.94
+    },
+    {
+      "id": "Q108", "domain": "Business Environment", "chapter": "2.10", "eco2026Task": "3.3", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "アジャイル・プロジェクトの途中で、プロダクト・オーナーから優先順位の大幅変更要求があった。スプリント中である。最適な対応は何か。",
+      "choices": ["即座に現スプリントの作業を中止し新優先順位で着手", "現スプリントは完了を目指しつつ、変更内容をプロダクト・バックログに反映し次スプリント計画で優先順位付け", "PM が変更要求を却下", "ステークホルダー全員の承認を得てから変更"],
+      "correctAnswer": "B", "explanation": "スクラム原則: 現スプリント中はスコープ凍結。変更はバックログ経由で次スプリントから反映。即中止は混乱を招く。",
+      "tags": ["Change Control", "Agile", "Sprint"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q109", "domain": "Business Environment", "chapter": "2.10", "eco2026Task": "3.3", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "予測型プロジェクトで、ステークホルダーが非公式に PM へ機能追加を要請してきた。承認済みベースラインからの変更となる。PM が最初にすべきことは何か。",
+      "choices": ["即座にチームに作業を追加", "変更要求書として正式に提出してもらい、影響評価 (スコープ・コスト・スケジュール・品質・リスク) を実施し CCB に提示する", "ステークホルダーの依頼なので即受入れる", "拒否してプロジェクトを進める"],
+      "correctAnswer": "B", "explanation": "全変更は正式プロセス必須。非公式受入はガバナンス違反、即拒否は協働姿勢欠如。",
+      "tags": ["Change Control", "CCB", "Impact Analysis"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q110", "domain": "Business Environment", "chapter": "1.7", "eco2026Task": "3.4", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "チームが3週間連続で外部ベンダーからの仕様回答待ちでブロックされている。PM の最善の対応は何か。",
+      "choices": ["待ち続ける", "ベンダー責任者へ直接エスカレーションし、状況確認+優先化を要求。並行して内部で進められる代替作業をチームと協議する", "プロジェクトを延期", "チームに仕様の推測で進めさせる"],
+      "correctAnswer": "B", "explanation": "障害除去は PM の中核責任。直接エスカレーション+代替作業並行が標準対応。",
+      "tags": ["Impediment Removal", "Escalation", "Vendor Management"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q111", "domain": "Business Environment", "chapter": "2.15", "eco2026Task": "3.4", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトの課題ログに 30件の未解決課題が蓄積されている。整理する最善のアプローチは何か。",
+      "choices": ["全課題を一斉にチームに分散", "影響度×緊急度マトリクスで優先順位付けし、高優先度はチーム対応、停滞中はエスカレーション、低優先度は監視と分類する", "古い課題から自動クローズ", "PM が全課題を個人対応"],
+      "correctAnswer": "B", "explanation": "課題管理はリスク管理同様優先度ベース。30件全てを均等に扱うのは非現実的。",
+      "tags": ["Issue Management", "Prioritization", "Triage"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q112", "domain": "Business Environment", "chapter": "2.3", "eco2026Task": "3.5", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "新技術採用プロジェクトで、技術リスクが PM の権限を超えるレベル (組織横断・戦略的影響) と判明した。最適な対応戦略は何か。",
+      "choices": ["PM が単独で軽減策を実施", "Escalate 戦略を採用し、プログラム・ポートフォリオレベルへリスク移管。プロジェクトリスク登録簿から上位の登録簿へ移行", "リスクを受容して継続", "プロジェクトを即中止"],
+      "correctAnswer": "B", "explanation": "Escalate (5戦略のひとつ・PMBOK 6th 以降追加) は PM 権限超のリスクを上位レベルに移管する正式戦略。",
+      "tags": ["Risk Response", "Escalate", "Strategic Risk"], "qualityScore": 0.94
+    },
+    {
+      "id": "Q113", "domain": "Business Environment", "chapter": "2.3", "eco2026Task": "3.5", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト計画段階でリスク登録簿を作成した後、その維持管理として最適なアプローチは何か。",
+      "choices": ["プロジェクト終了時に再確認", "定期的なリスク評価 (週次/スプリント末等) を実施し、新規リスクの追加・対応戦略の見直し・残存リスクの再評価を継続する", "問題発生時のみ更新", "リスク登録簿は不要"],
+      "correctAnswer": "B", "explanation": "リスク管理は『定常的な活動』。リスク登録簿は生きた文書として継続更新が必須。",
+      "tags": ["Risk Management", "Living Document", "Continuous Monitoring"], "qualityScore": 0.89
+    },
+    {
+      "id": "Q114", "domain": "Business Environment", "chapter": "2.3", "eco2026Task": "3.5", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "好機 (プラスリスク) として『規制緩和により新市場開拓可能』が登録された。最適な対応戦略はどれか。",
+      "choices": ["Avoid (回避)", "Exploit (活用) — 機会を確実に実現させるための積極的アクション (早期準備・専任チーム・資源確保)", "Mitigate (軽減)", "Transfer (転嫁)"],
+      "correctAnswer": "B", "explanation": "プラスリスクの対応戦略は Exploit/Enhance/Share/Accept/Escalate。Avoid・Mitigate・Transfer はマイナスリスク用語の誤適用。",
+      "tags": ["Positive Risk", "Exploit", "Opportunity"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q115", "domain": "Business Environment", "chapter": "2.16", "eco2026Task": "3.6", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクトの中間レビューで複数の課題が発見された。継続的改善の観点で最適なアプローチは何か。",
+      "choices": ["課題発見をプロジェクト末まで放置", "発見した課題から教訓を抽出し、即座に当該プロジェクトのプロセスに反映するとともに OPA (組織のプロセス資産) を更新する", "次プロジェクトの教訓として記録のみ", "課題を隠蔽"],
+      "correctAnswer": "B", "explanation": "継続的改善 (CI) は中間レビューを起点に即時反映+組織資産化。終了時の記録のみは『継続的』でない。",
+      "tags": ["Continuous Improvement", "Lessons Learned", "OPA"], "qualityScore": 0.91
+    },
+    {
+      "id": "Q116", "domain": "Business Environment", "chapter": "2.16", "eco2026Task": "3.6", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "アジャイル・チームのレトロスペクティブで改善案が出たが実行されない状態が続いている。PM/スクラムマスターの対応は何か。",
+      "choices": ["改善案を無視して進める", "改善案の優先順位付けとオーナー指定を行い、次スプリントの作業項目として実行コミットを得る。実施結果を次回レトロで検証", "改善案を経営層に提案", "レトロを廃止"],
+      "correctAnswer": "B", "explanation": "レトロの改善案は『実行コミットされて初めて価値』。Plan-Do-Check-Act サイクルの徹底が継続的改善の本質。",
+      "tags": ["Retrospective", "Continuous Improvement", "PDCA"], "qualityScore": 0.90
+    },
+    {
+      "id": "Q117", "domain": "Business Environment", "chapter": "3.4", "eco2026Task": "3.7", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "新システム導入プロジェクトで、現場部門から強い変革抵抗が発生した。組織変革支援として最適なアプローチは何か。",
+      "choices": ["強制的に導入を進める", "Kotter 8ステップや ADKAR モデルを活用し、危機感共有・ビジョン構築・コミュニケーション・短期成功・抵抗対処を段階的に進める", "抵抗を無視する", "プロジェクトを中止"],
+      "correctAnswer": "B", "explanation": "組織変革は『プロセスとして設計』する必要あり。Kotter/ADKAR は実証済みのフレームワーク。強制導入は深い抵抗を生む。",
+      "tags": ["Change Management", "Kotter", "ADKAR"], "qualityScore": 0.94
+    },
+    {
+      "id": "Q118", "domain": "Business Environment", "chapter": "3.4", "eco2026Task": "3.7", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "組織変革の影響評価の結果、現場の業務プロセスが大きく変わることが判明した。PM の対応は何か。",
+      "choices": ["影響評価結果を無視", "チェンジエージェント (現場リーダー) を任命・トレーニングし、現場側でも変革を主導してもらう。経営層の継続的な支持も確保", "経営層に変革中止を要求", "PM が現場に直接介入し変革を強制"],
+      "correctAnswer": "B", "explanation": "組織変革には『現場のチェンジエージェント』と『経営の支持』の両方が必須。PM の直接介入は持続的変革にならない。",
+      "tags": ["Change Agent", "Sponsor Support", "Field Leadership"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q119", "domain": "Business Environment", "chapter": "3.3", "eco2026Task": "3.8", "difficulty": 3, "source": "self", "reviewed": true,
+      "question": "プロジェクト実施中に主要競合が画期的な新製品を発表し、市場前提が大きく変わった。最も適切な対応は何か。",
+      "choices": ["既存計画を貫徹する", "PESTLE 等で外部環境変化を分析し、プロジェクトのビジネスケース妥当性を再評価。必要なら方向転換 (Pivot) の変更要求を出す", "プロジェクトを即中止", "競合を無視"],
+      "correctAnswer": "B", "explanation": "外部環境激変はビジネスケース再評価のトリガー。事実分析+影響評価+変更管理の正規プロセスで対応。",
+      "tags": ["External Change", "PESTLE", "Pivot"], "qualityScore": 0.93
+    },
+    {
+      "id": "Q120", "domain": "Business Environment", "chapter": "3.3", "eco2026Task": "3.8", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "外部ビジネス環境 (規制・技術・市場・地理的要因) の継続的監視体制を構築したい。最適な仕組みはどれか。",
+      "choices": ["PM 個人で気にかける", "PESTLE/Porter's Five Forces 等のフレーム + 定期外部環境レビュー (月次/四半期) + リスク登録簿への反映 + ステークホルダー報告の仕組み化", "経営層に任せる", "監視は不要"],
+      "correctAnswer": "B", "explanation": "外部環境監視は仕組み化が必須。個人依存・経営層任せ・不要 はいずれも失敗パターン。",
+      "tags": ["PESTLE", "Environmental Scanning", "Monitoring"], "qualityScore": 0.92
+    },
+    {
+      "id": "Q121", "domain": "Business Environment", "chapter": "3.3", "eco2026Task": "3.8", "difficulty": 4, "source": "self", "reviewed": true,
+      "question": "EV (電気自動車) 充電インフラ整備プロジェクトの 6ヶ月目、政府が水素ステーション補助金を増額。EV 補助金は縮小方向。最適な対応は何か。",
+      "choices": ["計画通り突き進む", "PESTLE 分析更新・シナリオプランニング (継続/楽観/悲観/Pivot) を実施し、各シナリオの NPV/ROI 試算をステアリングコミッティに提示", "焦って即中止", "PM が独断で Pivot 提案"],
+      "correctAnswer": "B", "explanation": "外部環境激変時はパニック判断を避ける。複数シナリオを定量評価しガバナンス経由で意思決定。",
+      "tags": ["Scenario Planning", "Pivot", "External Change", "PESTLE"], "qualityScore": 0.94
     }
   ]
 }

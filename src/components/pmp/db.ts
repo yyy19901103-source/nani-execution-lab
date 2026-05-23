@@ -243,9 +243,75 @@ export async function exportAll(): Promise<string> {
   return JSON.stringify(data, null, 2);
 }
 
-export async function importAll(jsonStr: string): Promise<void> {
+/**
+ * インポート前の事前検証 (CODEX 重点#18 対応)
+ * 壊れたバックアップで全 clear+bulkPut すると既存データが失われるため、
+ * インポート実行前に JSON 構造を検証してエラーを早期返却する。
+ */
+export interface ImportValidationResult {
+  ok: boolean;
+  errors: string[];
+  summary: { questionStates: number; chapterStates: number; studyLogs: number; examLogs: number; settings: number; notes: number; bookmarks: number };
+}
+
+export function validateImportJson(jsonStr: string): ImportValidationResult {
+  const errors: string[] = [];
+  const summary = { questionStates: 0, chapterStates: 0, studyLogs: 0, examLogs: 0, settings: 0, notes: 0, bookmarks: 0 };
+
+  let data: any;
+  try {
+    data = JSON.parse(jsonStr);
+  } catch (e) {
+    return { ok: false, errors: [`JSON パースエラー: ${(e as Error).message}`], summary };
+  }
+  if (!data || typeof data !== 'object') {
+    return { ok: false, errors: ['JSON はオブジェクトである必要があります'], summary };
+  }
+  if (!data.version) errors.push('version フィールドが欠落');
+  if (!data.exportedAt) errors.push('exportedAt フィールドが欠落');
+
+  // 各ストアの形式チェック (配列であること・必須キー存在)
+  const requireArray = (key: string, requiredFields?: string[]) => {
+    if (data[key] === undefined) return; // 存在しないのは OK (一部のみのバックアップ等)
+    if (!Array.isArray(data[key])) {
+      errors.push(`${key} は配列である必要があります`);
+      return;
+    }
+    summary[key as keyof typeof summary] = data[key].length;
+    if (requiredFields && data[key].length > 0) {
+      const sample = data[key][0];
+      const missing = requiredFields.filter((f) => !(f in sample));
+      if (missing.length > 0) errors.push(`${key}[0] に必須フィールド欠落: ${missing.join(', ')}`);
+    }
+  };
+  requireArray('questionStates', ['questionId']);
+  requireArray('chapterStates', ['chapterId']);
+  requireArray('studyLogs', ['date']);
+  requireArray('examLogs', ['id', 'date']);
+  requireArray('settings', ['id']);
+  requireArray('notes', ['key', 'refType', 'refId']);
+  requireArray('bookmarks', ['key', 'refType', 'refId']);
+
+  return { ok: errors.length === 0, errors, summary };
+}
+
+export async function importAll(jsonStr: string, options?: { skipValidation?: boolean }): Promise<{ imported: number; errors: string[] }> {
+  // CODEX 重点#18 対応: 事前検証
+  if (!options?.skipValidation) {
+    const validation = validateImportJson(jsonStr);
+    if (!validation.ok) {
+      throw new Error(
+        `インポートデータの検証に失敗しました。データは変更されていません。\n\nエラー:\n` +
+        validation.errors.map((e) => `  - ${e}`).join('\n'),
+      );
+    }
+  }
+
   const db = getDb();
   const data = JSON.parse(jsonStr);
+  let imported = 0;
+  const errors: string[] = [];
+
   await db.transaction(
     'rw',
     [db.questionStates, db.chapterStates, db.studyLogs, db.examLogs, db.settings, db.notes, db.bookmarks],
@@ -259,13 +325,23 @@ export async function importAll(jsonStr: string): Promise<void> {
         db.notes.clear(),
         db.bookmarks.clear(),
       ]);
-      if (data.questionStates) await db.questionStates.bulkPut(data.questionStates);
-      if (data.chapterStates) await db.chapterStates.bulkPut(data.chapterStates);
-      if (data.studyLogs) await db.studyLogs.bulkPut(data.studyLogs);
-      if (data.examLogs) await db.examLogs.bulkPut(data.examLogs);
-      if (data.settings) await db.settings.bulkPut(data.settings);
-      if (data.notes) await db.notes.bulkPut(data.notes);
-      if (data.bookmarks) await db.bookmarks.bulkPut(data.bookmarks);
+      const tryBulk = async (key: string, table: any) => {
+        if (!data[key] || !Array.isArray(data[key])) return;
+        try {
+          await table.bulkPut(data[key]);
+          imported += data[key].length;
+        } catch (e) {
+          errors.push(`${key} のインポート失敗: ${(e as Error).message}`);
+        }
+      };
+      await tryBulk('questionStates', db.questionStates);
+      await tryBulk('chapterStates', db.chapterStates);
+      await tryBulk('studyLogs', db.studyLogs);
+      await tryBulk('examLogs', db.examLogs);
+      await tryBulk('settings', db.settings);
+      await tryBulk('notes', db.notes);
+      await tryBulk('bookmarks', db.bookmarks);
     },
   );
+  return { imported, errors };
 }

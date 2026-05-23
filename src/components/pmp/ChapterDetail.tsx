@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import chaptersData from '../../data/pmp/chapters.json';
 import contentData from '../../data/pmp/chapter-content.json';
 import questionsData from '../../data/pmp/questions.json';
 import glossaryData from '../../data/pmp/glossary.json';
+import officialExtras from '../../data/pmp/glossary-official-additions.json';
 import casesData from '../../data/pmp/case-studies.json';
 import type { Chapter, Question } from '../../data/pmp/types';
 import NoteBookmark from './NoteBookmark';
@@ -42,6 +43,87 @@ export default function ChapterDetail({ chapterId, base }: { chapterId: string; 
     setCompleted(stored.includes(chapterId));
   }, [chapterId]);
 
+  // CODEX 重点#13 対応: DOM ベース用語自動リンク (TreeWalker で TextNode のみ走査)
+  const contentRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const root = contentRef.current;
+    // 用語マップ (長い用語を優先するためソート)
+    const allTerms: any[] = [];
+    for (const t of glossaryData.terms as any[]) allTerms.push(t);
+    const v1: any[] = (officialExtras as any).extras ?? [];
+    const v2: any[] = (officialExtras as any).extras_v2_pages17to70 ?? [];
+    for (const t of [...v1, ...v2]) allTerms.push(t);
+    // 用語キーを長い順にソートし、term -> Term オブジェクトのマップを作成
+    const termKeys: { key: string; term: any }[] = [];
+    const seen = new Set<string>();
+    for (const t of allTerms) {
+      const candidates = [t.term, t.termJa, t.termEn].filter(Boolean);
+      for (const c of candidates) {
+        if (c && !seen.has(c.toLowerCase()) && c.length >= 2) {
+          seen.add(c.toLowerCase());
+          termKeys.push({ key: c, term: t });
+        }
+      }
+    }
+    termKeys.sort((a, b) => b.key.length - a.key.length);
+    if (termKeys.length === 0) return;
+
+    // TreeWalker で TextNode のみ走査
+    const SKIP_TAGS = new Set(['A', 'CODE', 'PRE', 'SCRIPT', 'STYLE']);
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node: Node) {
+        let p: Node | null = node.parentNode;
+        while (p && p !== root) {
+          if (p.nodeType === 1 && SKIP_TAGS.has((p as Element).tagName)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          p = p.parentNode;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      },
+    });
+
+    const textNodes: Text[] = [];
+    let n: Node | null = walker.nextNode();
+    while (n) {
+      textNodes.push(n as Text);
+      n = walker.nextNode();
+    }
+
+    for (const textNode of textNodes) {
+      const text = textNode.nodeValue ?? '';
+      if (!text.trim()) continue;
+      // この TextNode 内で最も長い用語が含まれるかチェック
+      let matched: { key: string; term: any; idx: number } | null = null;
+      for (const { key, term } of termKeys) {
+        const idx = text.indexOf(key);
+        if (idx >= 0) {
+          matched = { key, term, idx };
+          break;
+        }
+      }
+      if (!matched) continue;
+      // TextNode を 3 分割: 前・リンク・後
+      const before = text.slice(0, matched.idx);
+      const matchedText = text.slice(matched.idx, matched.idx + matched.key.length);
+      const after = text.slice(matched.idx + matched.key.length);
+      const parent = textNode.parentNode;
+      if (!parent) continue;
+      const beforeNode = document.createTextNode(before);
+      const link = document.createElement('a');
+      link.href = `${base}/ai-tools/pmp-study/glossary#${encodeURIComponent(matched.term.term ?? matched.key)}`;
+      link.textContent = matchedText;
+      link.title = (matched.term.definition ?? '').slice(0, 100);
+      link.style.cssText = 'color:#c8a96e;border-bottom:1px dotted rgba(200,169,110,0.5);text-decoration:none;';
+      const afterNode = document.createTextNode(after);
+      parent.replaceChild(beforeNode, textNode);
+      parent.insertBefore(link, beforeNode.nextSibling);
+      parent.insertBefore(afterNode, link.nextSibling);
+      // 後の TextNode (afterNode) は次のイテレーションで処理されないため、複数用語のリンク化は1ノード1用語で完結
+    }
+  }, [content, base, chapterId]);
+
   function toggle() {
     const stored: string[] = JSON.parse(localStorage.getItem('pmp-completed-chapters') || '[]');
     if (completed) {
@@ -60,10 +142,16 @@ export default function ChapterDetail({ chapterId, base }: { chapterId: string; 
     return <div style={{ padding: '2rem', color: '#e86e6e' }}>章 {chapterId} が見つかりません</div>;
   }
 
-  // 用語集の全用語マップ（自動リンク用）
+  // 用語集の全用語マップ（既存126 + 公式追加202 = 328語 / CODEX 緊急対応）
   const termsByTerm = new Map<string, any>();
   for (const t of glossaryData.terms as any[]) {
     termsByTerm.set(t.term.toLowerCase(), t);
+    if (t.termJa) termsByTerm.set(t.termJa, t);
+  }
+  const v1Extras: any[] = (officialExtras as any).extras ?? [];
+  const v2Extras: any[] = (officialExtras as any).extras_v2_pages17to70 ?? [];
+  for (const t of [...v1Extras, ...v2Extras]) {
+    if (t.term) termsByTerm.set(t.term.toLowerCase(), t);
     if (t.termJa) termsByTerm.set(t.termJa, t);
   }
 
@@ -110,6 +198,7 @@ export default function ChapterDetail({ chapterId, base }: { chapterId: string; 
         <p style={{ color: '#c8a96e', fontSize: '0.62rem', letterSpacing: '0.35em', marginBottom: '1rem' }}>LESSON · 学習内容</p>
         {content ? (
           <div
+            ref={contentRef}
             className="md-content"
             style={{ color: 'rgba(237,237,232,0.85)', fontSize: '0.88rem', lineHeight: 1.85 }}
             dangerouslySetInnerHTML={{ __html: renderMarkdown(content, termsByTerm, base) }}
@@ -215,7 +304,8 @@ const navBtn: React.CSSProperties = {
 /**
  * Markdown レンダラー（用語自動リンク付き）
  */
-function renderMarkdown(md: string, terms: Map<string, any>, base: string): string {
+function renderMarkdown(md: string, _terms: Map<string, any>, _base: string): string {
+  // 注: terms/base は DOM ベース linkify への移行で未使用に。後方互換のため引数は維持。
   const escape = (s: string) =>
     s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -234,31 +324,13 @@ function renderMarkdown(md: string, terms: Map<string, any>, base: string): stri
   }
 
   // 用語の自動リンク化（大文字小文字を考慮しつつ単語境界で）
-  function linkifyTerms(html: string): string {
-    if (terms.size === 0) return html;
-    // 長い用語を先にマッチさせる
-    const keys = Array.from(terms.keys()).sort((a, b) => b.length - a.length);
-    let result = html;
-    // 既にHTMLタグ内のテキストにはマッチさせないよう、簡易的にタグ外のテキストノードのみを置換
-    // ここでは過剰一致を避けるため、用語の前後に空白/句読点/改行があるケースのみ
-    for (const k of keys) {
-      const term = terms.get(k);
-      if (!term) continue;
-      const safe = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      // 既にリンク化された箇所は除外（負の先読み）
-      const re = new RegExp(`(^|[\\s\\u3000、。「」（）\\(\\)：。])(${safe})(?![^<]*</a>)`, 'gi');
-      result = result.replace(re, (_m, p1, p2) => {
-        return `${p1}<a href="${base}/ai-tools/pmp-study/glossary#${encodeURIComponent(term.term)}" style="color:#c8a96e;border-bottom:1px dotted rgba(200,169,110,0.5);text-decoration:none;" title="${escape(term.definition).slice(0, 80)}...">${p2}</a>`;
-      });
-    }
-    return result;
-  }
-
+  // CODEX 重点#13 対応: linkifyTerms は HTML 文字列処理から DOM ベース処理に変更
+  // renderMarkdown 段階では用語リンク化を行わず、レンダリング後 useEffect で TreeWalker により TextNode のみ走査・置換する
+  // → useEffect の linkifyDOM() を参照
   const inlineFormat = (s: string): string => {
-    const escaped = escape(s)
+    return escape(s)
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.+?)`/g, '<code>$1</code>');
-    return linkifyTerms(escaped);
   };
 
   for (let i = 0; i < lines.length; i++) {

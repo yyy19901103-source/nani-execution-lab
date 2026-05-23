@@ -214,10 +214,13 @@
   ],
   "coverageNoteV2": {
     "extractedFromPages": "1-70 (公式用語集全頁完全読込)",
-    "termsExtractedTotal": 195,
-    "v1Pages1to16Terms": 60,
-    "v2Pages17to70Terms": 135,
+    "termsExtractedTotal": 202,
+    "v1Pages1to16Terms": 64,
+    "v2Pages17to70Terms": 138,
+    "existingGlossaryTerms": 126,
+    "grandTotalWithExistingGlossary": 328,
     "remaining": "公式用語集は本セッションで完全読込済",
-    "verificationLevel": "A - PMI 公式 PDF 直接照合"
+    "verificationLevel": "A - PMI 公式 PDF 直接照合",
+    "correctionNote": "前回までの記述『60+135=195』は誤集計。実数は『64+138=202公式追加、合計328語』(2026-05-20 CODEX 評価で発覚・実集計で訂正)"
   }
 }

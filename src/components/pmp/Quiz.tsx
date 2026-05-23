@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import questionsData from '../../data/pmp/questions.json';
 import chaptersData from '../../data/pmp/chapters.json';
 import glossaryData from '../../data/pmp/glossary.json';
+import officialExtras from '../../data/pmp/glossary-official-additions.json';
 import type { Question, DomainId } from '../../data/pmp/types';
 import { getDb, updateQuestionState, appendStudyLog } from './db';
 import NoteBookmark from './NoteBookmark';
@@ -192,6 +193,12 @@ export default function Quiz() {
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '1.5rem 1rem 4rem' }}>
       <ToastContainer />
+      {/* CODEX 緊急対応: 旧ECO配分警告 */}
+      <div style={{ background: 'rgba(232,180,110,0.06)', borderLeft: '3px solid #e8b46e', padding: '0.5rem 0.85rem', marginBottom: '0.75rem', fontSize: '0.72rem', color: 'rgba(237,237,232,0.75)' }}>
+        ⚠ 現プール 121問は <strong style={{ color: '#e8b46e' }}>2021 旧ECO 章番号</strong> ベース。
+        各問題に <code style={{ color: '#9ecbe8' }}>eco2026Task</code> フィールドで新版番号も併記。
+        詳細: <a href={typeof window !== 'undefined' && window.location.pathname.includes('/nani-execution-lab') ? '/nani-execution-lab/ai-tools/pmp-study/exam-changes' : '/ai-tools/pmp-study/exam-changes'} style={{ color: '#e8b46e', textDecoration: 'underline' }}>新旧対応</a>
+      </div>
       <FilterBar filter={filter} setFilter={setFilter} count={queue.length} />
 
       <div style={{ background: '#0a0a0c', border: '1px solid rgba(255,255,255,0.07)', padding: '0.6rem 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'rgba(237,237,232,0.7)', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -427,16 +434,27 @@ function DeepDive({ question }: { question: Question }) {
   const base = typeof window !== 'undefined' ? (location.pathname.includes('/nani-execution-lab') ? '/nani-execution-lab' : '') : '';
   const ch = (chaptersData.chapters as any[]).find((c) => c.id === question.chapter);
 
-  // 関連用語の自動抽出（タグ + 解説内の用語マッチ）
+  // 関連用語の自動抽出（既存126語 + 公式追加202語 = 328語 / CODEX 緊急対応）
   const matchedTerms = (() => {
     const found: any[] = [];
+    const v1Extras: any[] = (officialExtras as any).extras ?? [];
+    const v2Extras: any[] = (officialExtras as any).extras_v2_pages17to70 ?? [];
+    const allTerms: any[] = [
+      ...v1Extras.map((t: any) => ({ ...t, sourceGrade: 'A' })),
+      ...v2Extras.map((t: any) => ({ ...t, sourceGrade: 'A' })),
+      ...(glossaryData.terms as any[]).map((t: any) => ({ ...t, sourceGrade: 'B' })),
+    ];
     const blob = `${question.explanation} ${question.tags.join(' ')}`.toLowerCase();
-    for (const t of glossaryData.terms as any[]) {
-      const key = t.term.toLowerCase();
-      const keyJa = t.termJa;
-      if ((key && blob.includes(key)) || (keyJa && (question.explanation + question.tags.join(' ')).includes(keyJa))) {
-        found.push(t);
-        if (found.length >= 6) break;
+    const blobJa = `${question.explanation} ${question.tags.join(' ')}`;
+    for (const t of allTerms) {
+      const key = (t.term ?? '').toLowerCase();
+      const keyJa = t.termJa ?? t.term;
+      if ((key && blob.includes(key)) || (keyJa && blobJa.includes(keyJa))) {
+        // 重複チェック
+        if (!found.some((f) => f.term === t.term)) {
+          found.push(t);
+          if (found.length >= 6) break;
+        }
       }
     }
     return found;

@@ -2,6 +2,7 @@
 import '../../../styles/pmp-mobile.css';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import coverageData from '../../../data/pmp/coverage-tracker.json';
+import TrademarkFooter from '../../../components/pmp/TrademarkFooter.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // 状態別集計
@@ -143,4 +144,5 @@ const coveragePct = Math.round((processedCount / total) * 100);
     </p>
   </div>
 
+  <TrademarkFooter />
 </BaseLayout>

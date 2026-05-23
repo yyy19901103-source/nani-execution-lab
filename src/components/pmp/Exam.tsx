@@ -92,14 +92,30 @@ export default function Exam() {
   // ===== Setup =====
   if (phase === 'setup') {
     const limited = ALL.length;
+    const beCount = ALL.filter((q) => q.domain === 'Business Environment').length;
+    const beRatio = ((beCount / limited) * 100).toFixed(1);
     return (
       <div style={{ maxWidth: 700, margin: '2rem auto', padding: '0 1rem' }}>
+        {/* 🚨 旧ECO配分警告 (CODEX 緊急対応) */}
+        <div style={{ background: 'rgba(232,110,110,0.08)', borderLeft: '3px solid #e86e6e', padding: '0.85rem 1.1rem', marginBottom: '1rem' }}>
+          <p style={{ color: '#e86e6e', fontSize: '0.62rem', letterSpacing: '0.25em', marginBottom: '0.4rem' }}>
+            🚨 WARNING · 旧ECO配分
+          </p>
+          <p style={{ color: 'rgba(237,237,232,0.85)', fontSize: '0.78rem', lineHeight: 1.7 }}>
+            本模試は <strong>2021 旧ECO 配分 (42/50/8%)</strong> で出題します。
+            <strong style={{ color: '#e86e6e' }}>2025/2026 新試験 (33/41/26%) とは異なります</strong>。
+            特に Business Environment は新試験で 18%pt 増加 (8→26%) 。
+            現プール BE 問題は {beCount}/{limited} 問 ({beRatio}%) — 新試験対策には不足。
+            詳細: <a href={`${typeof window !== 'undefined' ? window.location.pathname.includes('/nani-execution-lab') ? '/nani-execution-lab' : '' : ''}/ai-tools/pmp-study/exam-changes`} style={{ color: '#e86e6e', textDecoration: 'underline' }}>試験仕様変更ページ</a>
+          </p>
+        </div>
+
         <div style={{ background: '#111114', border: '1px solid rgba(255,255,255,0.07)', padding: '1.75rem 2rem' }}>
           <p style={{ color: '#c8a96e', fontSize: '0.62rem', letterSpacing: '0.35em', marginBottom: '1rem' }}>
-            EXAM MODE · 模試
+            EXAM MODE · 模試 (旧ECO 2021 配分)
           </p>
           <p style={{ color: 'rgba(237,237,232,0.7)', fontSize: '0.85rem', lineHeight: 1.7, marginBottom: '1.25rem' }}>
-            現プールは{limited}問。本試験形式の構成比率（People 42% / Process 50% / Business 8%）で出題します。
+            現プールは{limited}問。本模試は 2021 旧 ECO 配分 (People 42% / Process 50% / Business 8%) で出題。
             問題プールが小さい場合、同じ問題が複数回出題されます。
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.25rem' }}>
@@ -112,7 +128,7 @@ export default function Exam() {
             <ModeCard
               active={mode === 'full'}
               label="フル模試"
-              detail="180問 / 230分"
+              detail="180問 / 230分 (旧版・新試験は 240分+10プレテスト)"
               onClick={() => setMode('full')}
             />
           </div>

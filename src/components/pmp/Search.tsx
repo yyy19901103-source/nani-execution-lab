@@ -3,6 +3,7 @@ import chaptersData from '../../data/pmp/chapters.json';
 import contentData from '../../data/pmp/chapter-content.json';
 import questionsData from '../../data/pmp/questions.json';
 import glossaryData from '../../data/pmp/glossary.json';
+import officialExtras from '../../data/pmp/glossary-official-additions.json';
 import casesData from '../../data/pmp/case-studies.json';
 
 interface SearchHit {
@@ -43,12 +44,23 @@ export default function Search({ base }: { base: string }) {
       });
     }
 
-    // 用語
+    // 用語 (既存 126語 + 公式追加 v1: 64語 + v2: 138語 = 328語 / CODEX 緊急対応)
     for (const t of glossaryData.terms) {
       items.push({
         type: 'term',
         id: t.term,
         title: `${t.term} / ${t.termJa}`,
+        excerpt: `${t.definition} ${t.category} ${(t.tags ?? []).join(' ')}`,
+        url: `${base}/ai-tools/pmp-study/glossary`,
+      });
+    }
+    const v1Extras: any[] = (officialExtras as any).extras ?? [];
+    const v2Extras: any[] = (officialExtras as any).extras_v2_pages17to70 ?? [];
+    for (const t of [...v1Extras, ...v2Extras]) {
+      items.push({
+        type: 'term',
+        id: t.term,
+        title: `${t.term}${t.termEn ? ' / ' + t.termEn : ''} [A:公式]`,
         excerpt: `${t.definition} ${t.category} ${(t.tags ?? []).join(' ')}`,
         url: `${base}/ai-tools/pmp-study/glossary`,
       });

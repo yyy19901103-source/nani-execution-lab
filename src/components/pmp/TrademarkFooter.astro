@@ -1,0 +1,13 @@
+---
+// CODEX Q6/重点#10 対応: 全 PMP ページ共通の商標フッター
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<div style="background:#080809;border-top:1px solid rgba(255,255,255,0.05);padding:0.85rem 1rem;font-size:0.68rem;color:rgba(237,237,232,0.45);line-height:1.6;text-align:center;">
+  ⚠️ 本アプリは <strong style="color:rgba(237,237,232,0.65);">PMI 非公認</strong>の個人学習補助ツールです。
+  <strong>PMI®, PMP®, PMBOK®</strong> は Project Management Institute, Inc. の登録商標です。
+  公式教材（Rita Mulcahy 本・PMBOK 第7版・PMI 公式 ECO PDF）との併用を前提とします。
+  本アプリ単体での合格保証はしません。<br/>
+  詳細: <a href={`${base}/ai-tools/pmp-study/audit`} style="color:rgba(110,200,151,0.7);text-decoration:underline;">監査レポート</a> ·
+  <a href={`${base}/ai-tools/pmp-study/coverage`} style="color:rgba(110,200,151,0.7);text-decoration:underline;">カバレッジマップ</a> ·
+  <a href={`${base}/ai-tools/pmp-study/exam-changes`} style="color:rgba(232,110,110,0.7);text-decoration:underline;">🚨 試験仕様変更 (2025/2026)</a>
+</div>

@@ -4,6 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import mindsetData from '../../../data/pmp/mindset.json';
 import pmbok7Data from '../../../data/pmp/pmbok7-principles.json';
 import domainsData from '../../../data/pmp/pmbok7-domains.json';
+import TrademarkFooter from '../../../components/pmp/TrademarkFooter.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -231,4 +232,5 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     localStorage.setItem('pmp-mindset-viewed', new Date().toISOString());
   </script>
 
+  <TrademarkFooter />
 </BaseLayout>

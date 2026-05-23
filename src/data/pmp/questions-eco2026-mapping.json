@@ -1,0 +1,102 @@
+{
+  "version": "1.0.0",
+  "title": "既存 103 問の新 ECO (2025/2026) タグ付けマッピング",
+  "verificationDate": "2026-05-20",
+  "purpose": "既存 questions.json の各問題 (旧版 chapter ベース) を新 ECO 26 タスクにマッピング。問題ファイル本体は変更せず、別ファイルで対応関係を維持し新版/旧版両モードに対応可能とする。",
+  "sourceGrade": "B",
+  "limitation": "既存問題の内容と新タスク説明の意味的近さで分類。新版問題集 (©2026) との完全一致は未検証。",
+  "mappings": {
+    "Q001": { "oldChapter": "1.1", "oldTask": "I.1 コンフリクト", "newEco2026": "1.2", "newTitle": "コンフリクトの管理", "newDomain": "I-People" },
+    "Q002": { "oldChapter": "1.3", "oldTask": "I.3 チームパフォーマンス支援", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q003": { "oldChapter": "1.11", "oldTask": "I.11 バーチャル・チーム", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q004": { "oldChapter": "1.9", "oldTask": "I.9 ステークホルダー協力", "newEco2026": "1.5", "newTitle": "ステークホルダーの期待を調整する", "newDomain": "I-People" },
+    "Q005": { "oldChapter": "1.2", "oldTask": "I.2 チームをリードする", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q006": { "oldChapter": "1.8", "oldTask": "I.8 プロジェクト合意の交渉", "newEco2026": "2.5", "newTitle": "調達の計画と管理", "newDomain": "II-Process" },
+    "Q007": { "oldChapter": "1.12", "oldTask": "I.12 チームの行動規範", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q008": { "oldChapter": "1.13", "oldTask": "I.13 メンタリング", "newEco2026": "1.7", "newTitle": "知識移転の確実な実施を支援する", "newDomain": "I-People" },
+    "Q009": { "oldChapter": "1.10", "oldTask": "I.10 共通理解構築", "newEco2026": "1.5", "newTitle": "ステークホルダーの期待を調整する", "newDomain": "I-People" },
+    "Q010": { "oldChapter": "1.4", "oldTask": "I.4 メンバー権限付与", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q011": { "oldChapter": "1.5", "oldTask": "I.5 トレーニング", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q012": { "oldChapter": "1.14", "oldTask": "I.14 EQ", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q013": { "oldChapter": "1.3", "oldTask": "I.3 チームパフォーマンス支援", "newEco2026": "1.3", "newTitle": "プロジェクトチームを率いる", "newDomain": "I-People" },
+    "Q014": { "oldChapter": "2.8", "oldTask": "II.8 スコープ管理", "newEco2026": "2.2", "newTitle": "プロジェクトのスコープを策定および管理する", "newDomain": "II-Process" },
+    "Q015": { "oldChapter": "2.3", "oldTask": "II.3 リスク管理", "newEco2026": "3.5", "newTitle": "リスクの計画と管理", "newDomain": "III-BusinessEnv" },
+    "Q016": { "oldChapter": "2.6", "oldTask": "II.6 スケジュール管理", "newEco2026": "2.8", "newTitle": "スケジュールの計画と管理", "newDomain": "II-Process" },
+    "Q017": { "oldChapter": "2.5", "oldTask": "II.5 予算・資源管理", "newEco2026": "2.9", "newTitle": "プロジェクトの状況を評価する", "newDomain": "II-Process" },
+    "Q018": { "oldChapter": "2.7", "oldTask": "II.7 品質管理", "newEco2026": "2.7", "newTitle": "製品や成果物の品質を計画し、最適化する", "newDomain": "II-Process" },
+    "Q019": { "oldChapter": "2.13", "oldTask": "II.13 方法論選定", "newEco2026": "2.1", "newTitle": "統合されたプロジェクト管理計画の策定および計画の実行", "newDomain": "II-Process" },
+    "Q020": { "oldChapter": "2.2", "oldTask": "II.2 コミュニケーション", "newEco2026": "1.8", "newTitle": "コミュニケーションの計画と管理", "newDomain": "I-People" },
+    "Q021": { "oldChapter": "2.10", "oldTask": "II.10 変更管理", "newEco2026": "3.3", "newTitle": "変更の管理と制御", "newDomain": "III-BusinessEnv" },
+    "Q022": { "oldChapter": "2.11", "oldTask": "II.11 調達管理", "newEco2026": "2.5", "newTitle": "調達の計画と管理", "newDomain": "II-Process" },
+    "Q023": { "oldChapter": "2.15", "oldTask": "II.15 課題管理", "newEco2026": "3.4", "newTitle": "障害を取り除き、問題を管理する", "newDomain": "III-BusinessEnv" },
+    "Q024": { "oldChapter": "2.16", "oldTask": "II.16 知識移転", "newEco2026": "1.7", "newTitle": "知識移転の確実な実施を支援する", "newDomain": "I-People" },
+    "Q025": { "oldChapter": "2.11", "oldTask": "II.11 調達管理", "newEco2026": "2.5", "newTitle": "調達の計画と管理", "newDomain": "II-Process" },
+    "Q026": { "oldChapter": "2.5", "oldTask": "II.5 予算・資源管理 (EVM)", "newEco2026": "2.9", "newTitle": "プロジェクトの状況を評価する", "newDomain": "II-Process" },
+    "Q027": { "oldChapter": "2.17", "oldTask": "II.17 終結管理", "newEco2026": "2.10", "newTitle": "プロジェクトの終了を管理する", "newDomain": "II-Process" },
+    "Q028": { "oldChapter": "2.1", "oldTask": "II.1 緊急性をもった実行", "newEco2026": "2.3", "newTitle": "価値に基づくデリバリーの確保を支援する", "newDomain": "II-Process" },
+    "Q029": { "oldChapter": "3.1", "oldTask": "III.1 コンプライアンス", "newEco2026": "3.2", "newTitle": "プロジェクトのコンプライアンスを計画し、管理する", "newDomain": "III-BusinessEnv" },
+    "Q030": { "oldChapter": "3.2", "oldTask": "III.2 ベネフィット実現", "newEco2026": "2.3", "newTitle": "価値に基づくデリバリーの確保を支援する", "newDomain": "II-Process" }
+  },
+  "mappingsAggregate": {
+    "Q031-Q103": "個別マッピングは記録省略。各 chapter フィールドから自動推定可能 (新 ECO 番号は chapter から導出)。次イテレーションで完全マッピング予定。",
+    "automaticDerivationRules": {
+      "1.1": "1.2 コンフリクト",
+      "1.2": "1.3 リード",
+      "1.3": "1.3 リード",
+      "1.4": "1.3 リード",
+      "1.5": "1.3 リード",
+      "1.6": "1.3 リード",
+      "1.7": "3.4 障害除去",
+      "1.8": "2.5 調達",
+      "1.9": "1.5 期待調整",
+      "1.10": "1.5 期待調整",
+      "1.11": "1.3 リード",
+      "1.12": "1.3 リード",
+      "1.13": "1.7 知識移転",
+      "1.14": "1.3 リード",
+      "2.1": "2.3 価値デリバリー",
+      "2.2": "1.8 コミュニケーション",
+      "2.3": "3.5 リスク",
+      "2.4": "1.4 ステークホルダー関与",
+      "2.5": "2.4 or 2.6 or 2.9 (見積/予算/EVM で判別)",
+      "2.6": "2.8 スケジュール",
+      "2.7": "2.7 品質",
+      "2.8": "2.2 スコープ",
+      "2.9": "2.1 統合",
+      "2.10": "3.3 変更",
+      "2.11": "2.5 調達",
+      "2.12": "2.1 統合",
+      "2.13": "2.1 統合",
+      "2.14": "3.1 ガバナンス",
+      "2.15": "3.4 障害除去",
+      "2.16": "1.7 知識移転",
+      "2.17": "2.10 終結",
+      "3.1": "3.2 コンプライアンス",
+      "3.2": "2.3 価値デリバリー",
+      "3.3": "3.8 外部環境",
+      "3.4": "3.7 組織変革"
+    }
+  },
+  "domainDistributionAnalysis": {
+    "currentByOldDomain": {
+      "People": "Q001-Q013 + Q031-Q059 = 13+29 = 42 (40.8%)",
+      "Process": "Q014-Q028 + Q060-Q097 = 15+38 = 53 (51.5%)",
+      "BusinessEnvironment": "Q029-Q030 + Q098-Q103 = 2+6 = 8 (7.8%)"
+    },
+    "afterReMappingByNewDomain": {
+      "People": "推定 35-40 問 (一部 II.* が People に移動)",
+      "Process": "推定 45-50 問",
+      "BusinessEnvironment": "推定 15-20 問 (II.10 変更/II.3 リスク/II.14 ガバナンスが移動)"
+    },
+    "shortfallForNew2026Distribution": {
+      "targetForBusinessEnv": "26% of 103 = 約 27 問",
+      "currentBusinessEnv": "再マッピング後でも約 15-20 問",
+      "shortfall": "BE 問題が 7-12 問不足"
+    }
+  },
+  "nextSteps": [
+    "Q104-Q121 として Business Environment 専用問題を新規追加 (18問)",
+    "新版モードで 27 問を BE として抽出可能に",
+    "個別マッピング Q031-Q103 を次イテレーションで完全反映"
+  ]
+}

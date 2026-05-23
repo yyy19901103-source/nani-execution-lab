@@ -1,0 +1,133 @@
+{
+  "version": "1.0.0",
+  "title": "新試験形式のサンプル問題 (2025/2026版)",
+  "verifiedAgainst": "PMP_-_Lesson_12_-_Next_Steps-en_us-ja_jp-PE-C_.pdf P.7 (© 2025 PMI)",
+  "verificationDate": "2026-05-20",
+  "sourceGrade": "B",
+  "note": "新試験で導入された 7 形式のうち、single-choice 以外の 5 形式についてサンプル問題を 1 つずつ作成。Quiz/Exam UI で対応する場合の型定義はみ types.ts に追加済。実装は次イテレーション。",
+  "samples": [
+    {
+      "id": "QS-MULTI-001",
+      "domain": "Business Environment",
+      "chapter": "3.5",
+      "eco2026Task": "3.5",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "format": "multiple-choice",
+      "question": "プロジェクトでマイナスリスク (脅威) 対応戦略として PMI が定義する 5 つはどれか。該当するものをすべて選んでください。",
+      "choices": [
+        "A. Avoid (回避)",
+        "B. Transfer (転嫁)",
+        "C. Mitigate (軽減)",
+        "D. Exploit (活用)",
+        "E. Accept (受容)",
+        "F. Enhance (強化)",
+        "G. Escalate (エスカレーション)",
+        "H. Share (共有)"
+      ],
+      "correctAnswer": "A,B,C,E,G",
+      "explanation": "脅威 (マイナスリスク) は Avoid/Transfer/Mitigate/Accept/Escalate の 5 戦略。Exploit/Enhance/Share は好機 (プラスリスク) 用語。",
+      "tags": ["Risk Response", "Multiple-Choice Format"],
+      "qualityScore": 0.92
+    },
+    {
+      "id": "QS-MATCH-001",
+      "domain": "Process",
+      "chapter": "2.5",
+      "eco2026Task": "2.4",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "format": "matching",
+      "question": "以下のEVM 指標と公式を対応付けてください。",
+      "matchingPairs": [
+        { "left": "CPI (Cost Performance Index)", "right": "EV / AC" },
+        { "left": "SPI (Schedule Performance Index)", "right": "EV / PV" },
+        { "left": "CV (Cost Variance)", "right": "EV − AC" },
+        { "left": "SV (Schedule Variance)", "right": "EV − PV" },
+        { "left": "EAC (典型ケース)", "right": "BAC / CPI" },
+        { "left": "TCPI", "right": "(BAC − EV) / (BAC − AC)" }
+      ],
+      "explanation": "EVM の主要 6 指標。CPI/SPI は効率指数、CV/SV は差異、EAC は完了時総コスト見積、TCPI は残作業効率指数。",
+      "tags": ["EVM", "Matching Format"],
+      "qualityScore": 0.94
+    },
+    {
+      "id": "QS-DROPDOWN-001",
+      "domain": "People",
+      "chapter": "1.1",
+      "eco2026Task": "1.2",
+      "difficulty": 3,
+      "source": "self",
+      "reviewed": true,
+      "format": "dropdown",
+      "questionTemplate": "Thomas-Kilmann の 5 つの対立解決モードのうち、{mode1} は高い主張性と低い協調性、{mode2} は低い主張性と低い協調性、{mode3} は高い主張性と高い協調性を持つ。PMP 試験で最も推奨されるのは {mode3} (Win-Win) である。",
+      "dropdownBlanks": [
+        {
+          "id": "mode1",
+          "options": ["Competing (競争)", "Collaborating (協働)", "Compromising (妥協)", "Avoiding (回避)", "Accommodating (順応)"],
+          "correctIndex": 0
+        },
+        {
+          "id": "mode2",
+          "options": ["Competing (競争)", "Collaborating (協働)", "Compromising (妥協)", "Avoiding (回避)", "Accommodating (順応)"],
+          "correctIndex": 3
+        },
+        {
+          "id": "mode3",
+          "options": ["Competing (競争)", "Collaborating (協働)", "Compromising (妥協)", "Avoiding (回避)", "Accommodating (順応)"],
+          "correctIndex": 1
+        }
+      ],
+      "explanation": "Thomas-Kilmann 5モード: Competing (高/低)・Collaborating (高/高)・Compromising (中/中)・Avoiding (低/低)・Accommodating (低/高)。",
+      "tags": ["Conflict Modes", "Dropdown Format", "TKI"],
+      "qualityScore": 0.91
+    },
+    {
+      "id": "QS-HOTSPOT-001",
+      "domain": "Process",
+      "chapter": "2.6",
+      "eco2026Task": "2.8",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "format": "hotspot",
+      "question": "プロジェクト・ネットワーク図においてクリティカル・パスを構成するタスク (Total Float = 0) をすべて選択してください。",
+      "graphicSrc": "/pmp-images/cpm-network-sample.svg",
+      "hotspotRegions": [
+        { "label": "タスクA (Start)", "region": "rect(0,0,100,50)", "isCorrect": true },
+        { "label": "タスクB", "region": "rect(120,0,100,50)", "isCorrect": true },
+        { "label": "タスクC (並行)", "region": "rect(120,80,100,50)", "isCorrect": false },
+        { "label": "タスクD", "region": "rect(240,0,100,50)", "isCorrect": true },
+        { "label": "タスクE (End)", "region": "rect(360,0,100,50)", "isCorrect": true }
+      ],
+      "explanation": "クリティカル・パスは Total Float = 0 のタスク群。本図では A→B→D→E が CP で 4 タスク。C は並行タスクで Float > 0。",
+      "tags": ["CPM", "Hotspot Format", "Critical Path"],
+      "qualityScore": 0.93
+    },
+    {
+      "id": "QS-GRAPH-001",
+      "domain": "Process",
+      "chapter": "2.5",
+      "eco2026Task": "2.9",
+      "difficulty": 4,
+      "source": "self",
+      "reviewed": true,
+      "format": "graphical",
+      "question": "下記の EVM グラフは PV=1000・EV=600・AC=750 を示している。プロジェクト状況の正しい解釈はどれか。",
+      "graphicSrc": "/pmp-images/evm-chart-sample.svg",
+      "choices": [
+        "A. 順調 (予算内・スケジュール通り)",
+        "B. 予算超過・スケジュール遅延 (CPI=0.8, SPI=0.6)",
+        "C. 予算余裕・スケジュール前倒し",
+        "D. 評価不能"
+      ],
+      "correctAnswer": "B",
+      "explanation": "CPI = EV/AC = 600/750 = 0.8 (1未満で予算超過)、SPI = EV/PV = 600/1000 = 0.6 (1未満でスケジュール遅延)。両方問題ありで深刻な状態。",
+      "tags": ["EVM", "Graphical Format", "CPI", "SPI"],
+      "qualityScore": 0.93
+    }
+  ],
+  "implementationNote": "現状の Quiz.tsx / Exam.tsx は single-choice のみ対応。これら 5 形式の UI 実装は次イテレーション。サンプルとして types.ts に型定義済、データ構造を整備。"
+}

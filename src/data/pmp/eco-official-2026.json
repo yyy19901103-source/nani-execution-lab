@@ -1,0 +1,475 @@
+{
+  "version": "1.0.0",
+  "title": "PMP 試験対策 ECO 2025/2026 完全データ (8+10+8=26タスク)",
+  "officialSource": "PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf (©2026 プロジェクトマネジメント協会)",
+  "verifiedAgainst": "C:\\Users\\81804\\Downloads\\PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf P.1-3 (目次完全読込)",
+  "verificationDate": "2026-05-20",
+  "verificationLevel": "PMI 公式 PDF 直接読込・目次完全反映",
+  "sourceGrade": "A",
+  "selfCorrection": {
+    "note": "前回 audit F024 で『8+8+8=24タスク』と記録したが、本イテレーション 7回目監査で『8+10+8=26タスク』が正しいことが判明。Process ドメインは 10 タスク (2.9=状況評価, 2.10=終了管理が含まれる)。これは F028 として記録。",
+    "previousClaim": "8+8+8=24",
+    "correctedFact": "8+10+8=26",
+    "discoveryPage": "公式問題集 目次 P.1-3"
+  },
+  "examConfig": {
+    "totalQuestions": 180,
+    "pretestQuestions": 10,
+    "durationMinutes": 240,
+    "blocks": 3,
+    "breakMinutes": 10,
+    "breakCount": 2,
+    "questionFormats": [
+      "選択式問題 (正解は1つ)",
+      "グラフで強化された選択肢 (正解は1つ)",
+      "複数選択 (複数正解)",
+      "ケーススタディまたはシナリオ",
+      "マッチングの強化",
+      "ポイント・アンド・クリック",
+      "プルダウン・リスト"
+    ]
+  },
+  "domains": [
+    {
+      "id": "I",
+      "name": "人々 (People)",
+      "weight": 0.33,
+      "taskCount": 8,
+      "officialPageRange": "3-37 (問題), 38-67 (解答キー)",
+      "tasks": [
+        {
+          "no": "1.1",
+          "title": "共通のビジョンを策定する",
+          "officialPage": 3,
+          "officialAnswerKeyPage": 38,
+          "mappingToOld": {
+            "old2021": "I.2.1 (チームをリード/明確なビジョンとミッションを設定する)",
+            "myChapter": "1.2",
+            "note": "サブタスクが独立タスクに昇格"
+          },
+          "enablersInferred": [
+            "主要ステークホルダー間で共通のビジョンを確立する",
+            "共有ビジョンを推進する",
+            "ステークホルダーが目指す成果に再び意識を合わせる"
+          ]
+        },
+        {
+          "no": "1.2",
+          "title": "コンフリクトの管理",
+          "officialPage": 7,
+          "officialAnswerKeyPage": 38,
+          "mappingToOld": {
+            "old2021": "I.1 コンフリクトを管理する",
+            "myChapter": "1.1",
+            "note": "番号変更 (I.1 → 1.2) のみで内容は同等"
+          },
+          "enablersInferred": [
+            "コンフリクトの根本的な原因を特定する",
+            "対立のより広い文脈を分析する (制約・根本要因)",
+            "解決アプローチを合意し、逸脱に対処する",
+            "明確なコンフリクトマネジメントの原則と期待事項を伝達する"
+          ]
+        },
+        {
+          "no": "1.3",
+          "title": "プロジェクトチームを率いる",
+          "officialPage": 11,
+          "mappingToOld": {
+            "old2021": "I.2 チームをリードする (1.1 を除く)",
+            "myChapter": "1.2"
+          },
+          "enablersInferred": [
+            "サーバント・リーダーシップを実践する",
+            "適切なリーダーシップ・スタイルを決定する",
+            "多様性と包括性をサポートする",
+            "チームメンバーを鼓舞し動機づける"
+          ]
+        },
+        {
+          "no": "1.4",
+          "title": "ステークホルダーの関与",
+          "officialPage": 14,
+          "mappingToOld": {
+            "old2021": "II.4 ステークホルダーを関与させる",
+            "myChapter": "2.4",
+            "note": "Process → People ドメインに移動"
+          },
+          "enablersInferred": [
+            "ステークホルダーを分析する (権力/関心度グリッド等)",
+            "ステークホルダーをカテゴリー分けする",
+            "カテゴリーごとにステークホルダーを関与させる",
+            "ステークホルダー・エンゲージメント戦略を作成・実行"
+          ]
+        },
+        {
+          "no": "1.5",
+          "title": "ステークホルダーの期待を調整する",
+          "officialPage": 18,
+          "mappingToOld": {
+            "old2021": "I.9 ステークホルダーと協力する (1.9.2 ニーズ・期待の整合)",
+            "myChapter": "1.9",
+            "note": "サブタスクが独立タスクに昇格"
+          },
+          "enablersInferred": [
+            "ステークホルダーのニーズ・期待・プロジェクト目標間の整合性を最適化",
+            "信頼関係を構築し影響を与える",
+            "整合性が保たれているか継続的に確認"
+          ]
+        },
+        {
+          "no": "1.6",
+          "title": "ステークホルダーの期待を管理する",
+          "officialPage": 23,
+          "mappingToOld": {
+            "old2021": "新規 (旧版に独立タスクなし)",
+            "myChapter": "1.9 部分",
+            "note": "新版で独立タスクとして追加"
+          },
+          "enablersInferred": [
+            "期待管理の継続的な実施",
+            "ステークホルダー満足度の評価",
+            "期待値の再調整プロセス"
+          ]
+        },
+        {
+          "no": "1.7",
+          "title": "知識移転の確実な実施を支援する",
+          "officialPage": 28,
+          "mappingToOld": {
+            "old2021": "II.16 知識を伝達してプロジェクトの継続性を確保する",
+            "myChapter": "2.16",
+            "note": "Process → People ドメインに移動"
+          },
+          "enablersInferred": [
+            "プロジェクトにおける重要な知識の特定",
+            "形式知/暗黙知の識別",
+            "知識共有文化の育成",
+            "様々な知識転嫁のアプローチを特定・実行"
+          ]
+        },
+        {
+          "no": "1.8",
+          "title": "コミュニケーションの計画と管理",
+          "officialPage": 33,
+          "mappingToOld": {
+            "old2021": "II.2 コミュニケーションを管理する",
+            "myChapter": "2.2",
+            "note": "Process → People ドメインに移動"
+          },
+          "enablersInferred": [
+            "すべてのステークホルダーのコミュニケーション・ニーズを分析",
+            "方法・チャネル・頻度・詳細レベルを決定",
+            "プロジェクト情報を伝え効果的に更新",
+            "コミュニケーションが理解されたことを確認"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "II",
+      "name": "プロセス (Process)",
+      "weight": 0.41,
+      "taskCount": 10,
+      "officialPageRange": "68-116 (問題), 117-147 (解答キー)",
+      "tasks": [
+        {
+          "no": "2.1",
+          "title": "統合されたプロジェクト管理計画の策定および計画の実行",
+          "officialPage": 68,
+          "mappingToOld": {
+            "old2021": "II.9 プロジェクト計画アクティビティを統合する",
+            "myChapter": "2.9"
+          },
+          "enablersInferred": [
+            "プロジェクトのニーズ・複雑性・規模を評価",
+            "プロジェクト方法論/アプローチを推奨",
+            "プロジェクト/フェーズ・プランを統合",
+            "情報に基づく意思決定を行う"
+          ]
+        },
+        {
+          "no": "2.2",
+          "title": "プロジェクトのスコープを策定および管理する",
+          "officialPage": 72,
+          "mappingToOld": {
+            "old2021": "II.8 スコープを計画し、管理する",
+            "myChapter": "2.8"
+          },
+          "enablersInferred": [
+            "プロジェクト・スコープを定義する",
+            "要求事項を決定し優先順位付け",
+            "スコープを細分化 (WBS、バックログ等)",
+            "スコープを監視し妥当性確認"
+          ]
+        },
+        {
+          "no": "2.3",
+          "title": "価値に基づくデリバリーの確保を支援する",
+          "officialPage": 77,
+          "mappingToOld": {
+            "old2021": "II.1 事業価値の提供 + III.2 ベネフィット評価",
+            "myChapter": "2.1 + 3.2"
+          },
+          "enablersInferred": [
+            "価値を漸進的に提供する機会を評価",
+            "プロジェクト全体を通して事業価値を調べる",
+            "MVP を見つけられるよう支援",
+            "ベネフィット実現の検証"
+          ]
+        },
+        {
+          "no": "2.4",
+          "title": "リソースの計画と管理",
+          "officialPage": 82,
+          "mappingToOld": {
+            "old2021": "II.5 予算と資源を計画し、管理する (資源部分)",
+            "myChapter": "2.5"
+          },
+          "enablersInferred": [
+            "資源要求事項とニーズを定義",
+            "資源を計画し管理",
+            "プロジェクト資源を割り当てる",
+            "資源カレンダーを作成・更新"
+          ]
+        },
+        {
+          "no": "2.5",
+          "title": "調達の計画と管理",
+          "officialPage": 87,
+          "mappingToOld": {
+            "old2021": "II.11 調達を計画し、管理する",
+            "myChapter": "2.11"
+          },
+          "enablersInferred": [
+            "資源要求事項を伝達",
+            "サプライヤー/契約を管理",
+            "調達戦略を計画し管理",
+            "デリバリー・ソリューションを開発"
+          ]
+        },
+        {
+          "no": "2.6",
+          "title": "財務の計画と管理",
+          "officialPage": 92,
+          "mappingToOld": {
+            "old2021": "II.5 予算と資源を計画し、管理する (予算部分)",
+            "myChapter": "2.5"
+          },
+          "enablersInferred": [
+            "プロジェクトのスコープと教訓に基づき予算見積",
+            "将来の予算に関する課題を予測",
+            "予算の差異を監視し調整",
+            "ガバナンス・プロセスと連携"
+          ]
+        },
+        {
+          "no": "2.7",
+          "title": "製品や成果物の品質を計画し、最適化する",
+          "officialPage": 97,
+          "mappingToOld": {
+            "old2021": "II.7 プロダクト/成果物の品質について計画し、管理する",
+            "myChapter": "2.7"
+          },
+          "enablersInferred": [
+            "成果物に求められる品質規格を決定",
+            "品質のギャップに基づき改善のオプションを提言",
+            "成果物の品質を継続的に調査"
+          ]
+        },
+        {
+          "no": "2.8",
+          "title": "スケジュールの計画と管理",
+          "officialPage": 102,
+          "mappingToOld": {
+            "old2021": "II.6 スケジュールを計画し、管理する",
+            "myChapter": "2.6"
+          },
+          "enablersInferred": [
+            "プロジェクトのタスク (マイルストーン・依存関係・ストーリーポイント) を見積",
+            "ベンチマークや履歴データを活用",
+            "方法論に基づきスケジュールを作成",
+            "進捗を測定し変更"
+          ]
+        },
+        {
+          "no": "2.9",
+          "title": "プロジェクトの状況を評価する",
+          "officialPage": 107,
+          "mappingToOld": {
+            "old2021": "新規 (旧版に独立タスクなし)",
+            "myChapter": "2.5 + 2.9 部分",
+            "note": "新版で独立タスクとして追加。EVM/KPI 等での状況評価"
+          },
+          "enablersInferred": [
+            "EVM 指標で進捗を評価",
+            "計画と実績の比較分析",
+            "プロジェクト状況の予測 (EAC・SPI・CPI)",
+            "ステークホルダーへの状況報告"
+          ]
+        },
+        {
+          "no": "2.10",
+          "title": "プロジェクトの終了を管理する",
+          "officialPage": 112,
+          "mappingToOld": {
+            "old2021": "II.17 プロジェクト/フェーズの終結または移管",
+            "myChapter": "2.17"
+          },
+          "enablersInferred": [
+            "プロジェクトまたはフェーズを終結させる基準を決定",
+            "移管に対する準備状況を確認",
+            "終結アクティビティを完結 (最終的な教訓・レトロスペクティブ・調達・資金・資源)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "III",
+      "name": "ビジネス環境 (Business Environment)",
+      "weight": 0.26,
+      "taskCount": 8,
+      "officialPageRange": "148-180 (問題), 181-205 (解答キー)",
+      "tasks": [
+        {
+          "no": "3.1",
+          "title": "プロジェクトガバナンスを定義し、確立する",
+          "officialPage": 148,
+          "mappingToOld": {
+            "old2021": "II.14 プロジェクト・ガバナンス構造を確立する",
+            "myChapter": "2.14",
+            "note": "Process → Business Environment ドメインに移動"
+          },
+          "enablersInferred": [
+            "プロジェクトにおける適切なガバナンスを決定",
+            "エスカレーション・パスとしきい値を定義",
+            "意思決定の権限を明確化"
+          ]
+        },
+        {
+          "no": "3.2",
+          "title": "プロジェクトのコンプライアンスを計画し、管理する",
+          "officialPage": 151,
+          "mappingToOld": {
+            "old2021": "III.1 プロジェクトのコンプライアンスを計画し、管理する",
+            "myChapter": "3.1"
+          },
+          "enablersInferred": [
+            "コンプライアンス要求事項を確認 (セキュリティ・安全衛生・規制順守)",
+            "コンプライアンスのカテゴリーを分類",
+            "潜在的脅威を特定",
+            "コンプライアンス違反の結果を分析"
+          ]
+        },
+        {
+          "no": "3.3",
+          "title": "変更の管理と制御",
+          "officialPage": 154,
+          "mappingToOld": {
+            "old2021": "II.10 プロジェクトの変更を管理する",
+            "myChapter": "2.10",
+            "note": "Process → Business Environment ドメインに移動"
+          },
+          "enablersInferred": [
+            "変更の必要性を予測し採用",
+            "変更に対処する戦略を決定",
+            "変更管理戦略を実行",
+            "変更対応を決定"
+          ]
+        },
+        {
+          "no": "3.4",
+          "title": "障害を取り除き、問題を管理する",
+          "officialPage": 157,
+          "mappingToOld": {
+            "old2021": "I.7 障害除去 + II.15 課題管理",
+            "myChapter": "1.7 + 2.15",
+            "note": "両タスクを統合"
+          },
+          "enablersInferred": [
+            "チームにとってクリティカルな障害を特定",
+            "障害を優先順位付けし除去",
+            "リスクが課題になるときを認識",
+            "課題に最適なアクションで対処"
+          ]
+        },
+        {
+          "no": "3.5",
+          "title": "リスクの計画と管理",
+          "officialPage": 161,
+          "mappingToOld": {
+            "old2021": "II.3 リスクを評価して管理する",
+            "myChapter": "2.3",
+            "note": "Process → Business Environment ドメインに移動"
+          },
+          "enablersInferred": [
+            "リスクの特定",
+            "リスク・マネジメントのオプションを決定",
+            "リスクの評価と優先順位付けを繰り返す",
+            "リスク対応戦略 (Avoid/Transfer/Mitigate/Accept/Escalate × Exploit/Enhance/Share/Accept/Escalate)"
+          ]
+        },
+        {
+          "no": "3.6",
+          "title": "継続的な改善",
+          "officialPage": 166,
+          "mappingToOld": {
+            "old2021": "新規 (旧版に独立タスクなし)",
+            "myChapter": "2.16 部分",
+            "note": "新版で独立タスクとして追加 (旧版では暗黙的)"
+          },
+          "enablersInferred": [
+            "教訓の活用",
+            "継続的改善プロセスを最新に保つ",
+            "組織のプロセス資産 (OPA) の更新",
+            "構造化された変更マネジメントの採用"
+          ]
+        },
+        {
+          "no": "3.7",
+          "title": "組織の変革を支援する",
+          "officialPage": 171,
+          "mappingToOld": {
+            "old2021": "III.4 組織の変更をサポートする",
+            "myChapter": "3.4"
+          },
+          "enablersInferred": [
+            "組織の文化を評価",
+            "組織の変更がプロジェクトに与える影響を評価",
+            "組織に対するプロジェクトの影響を評価",
+            "必要なアクションを決定"
+          ]
+        },
+        {
+          "no": "3.8",
+          "title": "外部ビジネス環境の変化を評価する",
+          "officialPage": 176,
+          "mappingToOld": {
+            "old2021": "III.3 外部ビジネス環境の変化によるスコープへの影響を評価",
+            "myChapter": "3.3"
+          },
+          "enablersInferred": [
+            "外部ビジネス環境 (規制・技術・地理・市場) の変化を調査",
+            "影響を評価し優先順位付け",
+            "スコープ/バックログの変更オプションを提言",
+            "継続的にレビュー"
+          ]
+        }
+      ]
+    }
+  ],
+  "totalTasks": 26,
+  "structuralChange": {
+    "summary": "旧 2021版 35タスク (14+17+4) → 新 2025/2026版 26タスク (8+10+8)",
+    "domainRebalancing": [
+      "People: 14 → 8 (-6, ステークホルダー関連の細分化)",
+      "Process: 17 → 10 (-7, ガバナンス・変更・リスクが Business Env に移動)",
+      "Business Environment: 4 → 8 (+4, 大幅拡大)"
+    ],
+    "newIndependentTasks": [
+      "1.6 ステークホルダーの期待を管理する (旧版はサブタスク)",
+      "2.9 プロジェクトの状況を評価する (新規)",
+      "3.6 継続的な改善 (旧版は暗黙的)"
+    ]
+  },
+  "limitations": "本ファイルは公式問題集の目次から得た公式タスクタイトル・ページ番号を元に構築。各タスクのイネーブラは公式 ECO PDF (PE-C 2025年版) を未確認のため『推定 enablersInferred』として記録。完全公式版イネーブラは次イテレーションで PE-C 2025 ECO PDF を入手次第更新予定。"
+}

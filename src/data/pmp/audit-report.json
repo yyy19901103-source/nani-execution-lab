@@ -1,8 +1,8 @@
 {
-  "version": "6.0.0",
-  "auditDate": "2026-05-13/20 (1st-6th round)",
-  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd-6th: PMI 公式PDF 直接照合",
-  "honestyStatement": "6回目監査で Lesson 04/06/08/11/12 + PMI 公式問題集 (©2026) 部分読込を実施。最重大発見: 試験仕様の大幅変更 (時間 230→240分・配分 42/50/8 → 33/41/26%・10プレテスト追加) と完全な新 ECO 24タスク体系 (8+8+8) の判明。本アプリの問題プール・模試は旧版前提のため、新版試験対策には Business Environment 比率を 8% → 26% に増やす必要あり。",
+  "version": "7.0.0",
+  "auditDate": "2026-05-13/20 (1st-7th round)",
+  "auditor": "Claude AI (Anthropic) — 1st-2nd: 公開Web資料 / 3rd-7th: PMI 公式PDF 直接照合",
+  "honestyStatement": "7回目監査で eco-official-2026.json 新規作成・Q104-Q121 追加 (BE 18問・121問・配分 35/44/22% に新版近似)・新質問形式 5 形式のサンプル・jp_v3.1 (2023版・230分) と PE-C (2025版・240分) の試験仕様タイムライン判明・180問模試は OCR 不要で PyMuPDF 抽出可能と判明。F028 で前回主張『24タスク』が誤り (正確には 26タスク 8+10+8) と自己訂正。",
   "scope": [
     "ECO 2021 ドメイン配分",
     "PMBOK 第7版 12原則",
@@ -321,6 +321,56 @@
       "myContent": "本アプリの103問はシナリオ+質問+ABCD選択肢形式",
       "publicSources": ["C:\\Users\\81804\\Downloads\\PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf"],
       "verdict": "✅ 公式問題集の形式 (シナリオ+質問+ABCD) は本アプリの103問と整合。新形式 (グラフ・複数選択・マッチング・ホットスポット・プルダウン) は本アプリ未対応 → 次イテレーション課題。"
+    },
+    {
+      "id": "F028",
+      "category": "🚨 自己訂正: 新ECOタスク数 (7th round・CRITICAL)",
+      "severity": "CRITICAL",
+      "status": "誤主張を自己訂正",
+      "myContent": "F024 で『8+8+8=24タスク』と主張していた",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\PMI_PMP_Exam_Prep_Questions_-_all_domains_en-us-ja_JP.pdf P.1-3 (目次)"],
+      "verdict": "🚨 公式問題集目次から正確な数は『8+10+8=26タスク』と判明。Process は 2.1-2.10 で 10タスク (2.9=状況評価, 2.10=終了管理 を含む)。前回主張は誤りで自己訂正。eco-official-2026.json で完全反映。",
+      "action": "eco-official-2026.json 新規作成・selfCorrection セクションで明示"
+    },
+    {
+      "id": "F029",
+      "category": "Business Environment 問題追加 (7th round)",
+      "severity": "MINOR",
+      "status": "新版配分対応強化",
+      "myContent": "103問・配分 People 41% / Process 51% / BE 8% (旧版前提)",
+      "publicSources": ["公式問題集 + eco-version-mapping F023"],
+      "verdict": "✅ Q104-Q121 として BE 問題 18問追加。121問・配分 People 35% / Process 44% / BE 22% に。新版目標 (33/41/26%) に大幅近似。各問題に eco2026Task フィールド付加で旧/新両対応。",
+      "action": "questions.json Q104-Q121 追加・各 BE タスク (3.1-3.8) を均等カバー"
+    },
+    {
+      "id": "F030",
+      "category": "新質問形式の型定義 (7th round)",
+      "severity": "INFO",
+      "status": "型定義のみ実装・UI未対応",
+      "myContent": "本アプリは single-choice のみ対応",
+      "publicSources": ["Lesson 12 P.7 + 公式問題集"],
+      "verdict": "🟡 types.ts に 6 形式 (single-choice/multiple-choice/matching/hotspot/dropdown/graphical) の型定義を追加。各形式のサンプル問題 5 問を questions-new-formats-samples.json に収録。UI 実装 (Quiz/Exam) は次イテレーション。",
+      "action": "types.ts 拡張・questions-new-formats-samples.json 新規作成"
+    },
+    {
+      "id": "F031",
+      "category": "jp_v3.1 (2023年版) と PE-C (2025年版) の試験仕様タイムライン判明 (7th round)",
+      "severity": "INFO",
+      "status": "追加発見",
+      "myContent": "F023 で PE-C (2025) のみ確認",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\jp_v3.1_Intro_PMP_Auth_Exam_Prep.pdf P.7,9 (© 2023 PMI)"],
+      "verdict": "✅ v3.1 (2023): 230分・180問・配分 42/50/8% (旧版)。PE-C (2025): 240分・180+10プレテスト・配分 33/41/26% (新版)。2023→2025 で大幅改定。試験仕様タイムラインが完成。",
+      "action": "eco-version-mapping.json に 2023版を追加予定 (次イテレーション)"
+    },
+    {
+      "id": "F032",
+      "category": "180問模試 OCR 不要 (7th round・前回失敗訂正)",
+      "severity": "INFO",
+      "status": "前回失敗を訂正",
+      "myContent": "F017 で『PDF からテキスト抽出ゼロ・OCR要』と記録",
+      "publicSources": ["C:\\Users\\81804\\Downloads\\PMP_180問模試_完全版_V25R05.pdf"],
+      "verdict": "✅ 自己訂正: PyMuPDF (Python fitz) で完全抽出可能だった。32 ページ・約 56,000字。中西さんの実受験記録 (147/180=81.7% 本番合格圏) を含む。個人情報を含むためアプリ統合は控え、メタ情報のみ記録。",
+      "action": "coverage-tracker.json で processed としマーク・メタ情報のみ反映"
     }
   ],
   "verifiedItems": [

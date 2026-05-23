@@ -1,0 +1,181 @@
+{
+  "version": "1.0.0",
+  "title": "PMP 学習アプリ 知識グラフ — 章/問題/用語/ケース/ECO2026/Mindset の相互リンク",
+  "verificationDate": "2026-05-20",
+  "purpose": "CODEX 新優先#1 対応。学習エンティティ間の関係を構造化し、誤答原因解析・推薦エンジン・概念地図 UI の土台とする。",
+  "sourceGrade": "B",
+  "limitation": "本グラフは既存 JSON データから機械的に推定したリンクと、手動で重要関係を付加したもの。エンティティ間の関係強度 (weight) は概念的近さの暫定推定。",
+  "entityTypes": ["chapter", "question", "term", "case", "eco2026Task", "mindsetPrinciple", "pmbok7Principle", "pmbok7Domain"],
+  "edgeTypes": [
+    "chapter-covers-eco2026Task",
+    "question-tagged-eco2026Task",
+    "question-tagged-chapter",
+    "question-cites-term",
+    "case-relates-to-chapter",
+    "case-relates-to-mindsetPrinciple",
+    "term-defined-in-chapter",
+    "mindsetPrinciple-relates-to-pmbok7Principle",
+    "pmbok7Domain-overlaps-eco2026Task"
+  ],
+  "nodes": {
+    "chapters": {
+      "count": 35,
+      "sourceFile": "chapters.json",
+      "indexedBy": "id (e.g., '1.1' to '3.4')"
+    },
+    "questions": {
+      "count": 121,
+      "sourceFile": "questions.json",
+      "indexedBy": "id (Q001-Q121)"
+    },
+    "terms": {
+      "count": 328,
+      "sourceFiles": ["glossary.json (126)", "glossary-official-additions.json (extras: 64, extras_v2_pages17to70: 138)"],
+      "indexedBy": "term (Japanese/English)"
+    },
+    "cases": {
+      "count": 11,
+      "sourceFile": "case-studies.json",
+      "indexedBy": "id (CS01-CS11)"
+    },
+    "eco2026Tasks": {
+      "count": 26,
+      "sourceFile": "eco-official-2026.json",
+      "indexedBy": "no (e.g., '1.1' to '3.8')",
+      "domains": { "I-People": 8, "II-Process": 10, "III-BusinessEnvironment": 8 }
+    },
+    "mindsetPrinciples": {
+      "count": 8,
+      "sourceFile": "mindset.json",
+      "indexedBy": "id (e.g., 'agile-first', 'servant-leadership')"
+    },
+    "pmbok7Principles": {
+      "count": 12,
+      "sourceFile": "pmbok7-principles.json"
+    },
+    "pmbok7Domains": {
+      "count": 8,
+      "sourceFile": "pmbok7-domains.json"
+    }
+  },
+  "edges": {
+    "chapter_to_eco2026Task": {
+      "description": "旧版 chapter ID → 新版 ECO 2026 タスク番号の対応 (questions-eco2026-mapping.json の automaticDerivationRules を逆引き)",
+      "source": "questions-eco2026-mapping.json",
+      "lookupTable": {
+        "1.1 (コンフリクト)": "1.2 (コンフリクトの管理)",
+        "1.2 (リード)": "1.3 (プロジェクトチームを率いる)",
+        "1.3 (パフォーマンス支援)": "1.3 (リード)",
+        "1.4 (権限付与)": "1.3 (リード)",
+        "1.5 (トレーニング)": "1.3 (リード)",
+        "1.6 (チーム形成)": "1.3 (リード)",
+        "1.7 (障害除去)": "3.4 (障害除去)",
+        "1.8 (交渉)": "2.5 (調達)",
+        "1.9 (ステークホルダー協力)": "1.5 (期待調整)",
+        "1.10 (共通理解)": "1.5 (期待調整)",
+        "1.11 (バーチャルチーム)": "1.3 (リード)",
+        "1.12 (グランドルール)": "1.3 (リード)",
+        "1.13 (メンタリング)": "1.7 (知識移転)",
+        "1.14 (EQ)": "1.3 (リード)",
+        "2.1 (緊急性実行)": "2.3 (価値デリバリー)",
+        "2.2 (コミュニケーション)": "1.8 (コミュニケーション)",
+        "2.3 (リスク)": "3.5 (リスク)",
+        "2.4 (ステークホルダー関与)": "1.4 (ステークホルダー関与)",
+        "2.5 (予算・資源)": "2.4 (資源) または 2.6 (財務) または 2.9 (状況評価)",
+        "2.6 (スケジュール)": "2.8 (スケジュール)",
+        "2.7 (品質)": "2.7 (品質)",
+        "2.8 (スコープ)": "2.2 (スコープ)",
+        "2.9 (統合)": "2.1 (統合)",
+        "2.10 (変更)": "3.3 (変更)",
+        "2.11 (調達)": "2.5 (調達)",
+        "2.12 (成果物管理)": "2.1 (統合)",
+        "2.13 (方法論)": "2.1 (統合)",
+        "2.14 (ガバナンス)": "3.1 (ガバナンス)",
+        "2.15 (課題管理)": "3.4 (障害除去)",
+        "2.16 (知識移転)": "1.7 (知識移転)",
+        "2.17 (終結)": "2.10 (終結)",
+        "3.1 (コンプライアンス)": "3.2 (コンプライアンス)",
+        "3.2 (ベネフィット)": "2.3 (価値デリバリー)",
+        "3.3 (外部環境)": "3.8 (外部環境)",
+        "3.4 (組織変革)": "3.7 (組織変革)"
+      }
+    },
+    "mindsetPrinciple_to_pmbok7Principle": {
+      "description": "Mindset 8原則と PMBOK 7 12原則の対応",
+      "source": "pmbok7-principles.json (relationToMindset.mappingTable)",
+      "lookupTable": {
+        "approach-tailoring": ["tailoring", "adaptability", "complexity"],
+        "servant-leadership": ["leadership", "team"],
+        "stakeholder-first": ["stakeholder", "value"],
+        "proactive": ["risk", "quality"],
+        "ethical-transparent": ["stewardship"],
+        "adaptive-planning": ["adaptability", "complexity", "change"],
+        "collaboration": ["team", "stakeholder", "leadership"],
+        "root-cause": ["quality", "systems"]
+      }
+    },
+    "eco2026Task_to_keyTerms": {
+      "description": "新ECO 26タスクと主要用語のリンク",
+      "lookupTable": {
+        "1.1 共通のビジョン": ["プロジェクト憲章", "プロダクト・ボックス演習", "ステークホルダー登録簿"],
+        "1.2 コンフリクト管理": ["Thomas-Kilmann Conflict Modes", "感情的知性 (EI)", "Active Listening", "心理的安全性"],
+        "1.3 チームを率いる": ["サーバント・リーダーシップ", "状況対応型リーダーシップ", "Tuckman Model", "RACI Matrix", "T字型"],
+        "1.4 ステークホルダー関与": ["Power/Interest Grid", "Salience Model", "Stakeholder Engagement Matrix", "影響の方向性"],
+        "1.5 期待調整": ["共感", "Active Listening", "Win-Win"],
+        "1.6 期待管理": ["Stakeholder Engagement Matrix", "ステークホルダー登録簿"],
+        "1.7 知識移転": ["形式知", "暗黙知", "SECI Model", "Community of Practice", "Lessons Learned"],
+        "1.8 コミュニケーション": ["Communication Channels Formula", "Push/Pull/Interactive Communication", "Information Radiator"],
+        "2.1 統合計画": ["プロジェクトマネジメント計画書", "Baseline", "段階的詳細化"],
+        "2.2 スコープ": ["WBS", "100% Rule", "MoSCoW", "Scope Creep", "WBS辞書"],
+        "2.3 価値デリバリー": ["MVP", "Minimum Business Increment", "アジャイル宣言", "事業価値"],
+        "2.4 資源計画": ["Resource Leveling", "資源カレンダー"],
+        "2.5 調達": ["FFP", "T&M", "CPFF", "RFP", "BATNA", "Make-or-Buy"],
+        "2.6 財務": ["BAC", "コスト・ベースライン", "Management Reserve", "Contingency Reserve"],
+        "2.7 品質": ["COQ", "QC", "QA", "Pareto Chart", "Fishbone Diagram", "Control Chart"],
+        "2.8 スケジュール": ["CPM", "PDM", "Critical Path", "Float", "Fast Tracking", "Crashing", "ガント・チャート"],
+        "2.9 状況評価": ["EV", "PV", "AC", "CPI", "SPI", "EAC", "ETC", "TCPI", "VAC"],
+        "2.10 終結": ["Lessons Learned", "Final Report", "Knowledge Repository"],
+        "3.1 ガバナンス": ["PMO", "Steering Committee", "Project Charter"],
+        "3.2 コンプライアンス": ["GDPR", "SOX", "監査"],
+        "3.3 変更": ["CCB", "Change Request", "Configuration Management", "Baseline"],
+        "3.4 障害除去": ["Issue Log", "Escalation", "RCA", "5 Whys"],
+        "3.5 リスク": ["Risk Register", "PI Matrix", "EMV", "Risk Avoid/Transfer/Mitigate/Accept/Escalate", "SWOT 分析", "デルファイ法"],
+        "3.6 継続的改善": ["継続的改善 (CI)", "PDCA / PDSA", "カイゼン", "Lessons Learned", "OPA"],
+        "3.7 組織変革": ["Kotter 8 Steps", "ADKAR", "Change Management"],
+        "3.8 外部環境": ["PESTLE Analysis", "SWOT 分析"]
+      }
+    },
+    "case_to_chapter": {
+      "description": "ケーススタディと関連章のリンク",
+      "source": "case-studies.json (各ケースの relatedChapters)",
+      "examples": {
+        "CS01 (規制対応スコープ変更)": ["2.10", "2.13", "3.1"],
+        "CS06 (予算超過の早期警告)": ["2.5", "2.10", "2.3"],
+        "CS11 (Shawpe Lifestyle Centre)": ["2.13", "1.9", "3.2"]
+      }
+    }
+  },
+  "useCases": [
+    {
+      "name": "誤答原因解析",
+      "description": "ユーザーが Q105 (ガバナンス) を誤答した場合、knowledge-graph で関連エンティティを辿り、章 2.14 / 用語『PMO・Steering Committee』/ Mindset『ethical-transparent』を弱点候補として提示",
+      "implementedIn": "weakness-analyzer (Task #43)"
+    },
+    {
+      "name": "推薦エンジン",
+      "description": "ある章を学習完了した時、knowledge-graph で関連する未学習章・未演習問題・未読用語を推薦",
+      "implementedIn": "curriculum.ts (既存・将来拡張)"
+    },
+    {
+      "name": "概念地図 UI",
+      "description": "学習者が『EVM』を選択した時、knowledge-graph で関連する用語 (9個)・章 (2.5/2.9)・問題 (Q017/Q026/Q070) ・Mindset 原則を視覚化",
+      "implementedIn": "次イテレーション (graph viz component)"
+    }
+  ],
+  "nextIterationFeatures": [
+    "edges を 1:N の lookupTable から (source, target, type, weight) のエッジリストへ正規化",
+    "graphology / vis-network 等のグラフ表現ライブラリで /graph ページを実装",
+    "学習進捗データ (questionStates / chapterStates) と knowledge-graph を結合し、ノードに『学習状態』属性付与",
+    "weight (関係強度) を学習データから自動計算 (頻度・誤答率ベース)"
+  ]
+}
