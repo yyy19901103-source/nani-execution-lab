@@ -1,16 +1,16 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-05-20 10:22",
+  "generated_at": "2026-05-23 09:52",
   "summary": {
     "rank": "watch",
-    "score": 49,
+    "score": 48,
     "prob_up_5d": 0.569,
     "prob_down_5pct": 0.05,
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-20 08:15",
-    "prediction_date": "2026-05-20"
+    "verdict": "【様子見】★★\n総合スコア: 48.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-23 09:52",
+    "prediction_date": "2026-05-23"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -26,14 +26,14 @@
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 51.1
+        "avg_score": 49.7
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 55.4
+        "avg_score": 55.2
       },
       "personal": {
         "count": 10,
@@ -47,7 +47,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 47.2
+        "avg_score": 46.9
       },
       "trade_style": {
         "count": 7,
@@ -61,7 +61,7 @@
         "buy": 0,
         "sell": 2,
         "hold": 4,
-        "avg_score": 40.2
+        "avg_score": 40.0
       },
       "sector": {
         "count": 19,
@@ -130,15 +130,6 @@
       "reason": "1d/5d上昇確率=59% / RSI=52 / MACD正"
     },
     {
-      "agent": "sector_rotation",
-      "agent_jp": "セクターローテーション",
-      "category": "market_monitor",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+11.0%)"
-    },
-    {
       "agent": "downside_risk",
       "agent_jp": "下落リスク",
       "category": "prediction",
@@ -157,24 +148,6 @@
       "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率56% / P10=-1.4% P90=+1.9%"
-    },
-    {
       "agent": "ensemble",
       "agent_jp": "アンサンブル",
       "category": "prediction",
@@ -182,6 +155,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "アンサンブル=55% / LGBM=57% / ルール=57% / ファンダ=50%"
+    },
+    {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "bayesian",
@@ -202,6 +184,15 @@
       "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率55% / P10=-1.4% P90=+1.7%"
+    },
+    {
       "agent": "trend_direction",
       "agent_jp": "トレンド方向",
       "category": "market_monitor",
@@ -209,6 +200,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "200MA下 / MACD正"
+    },
+    {
+      "agent": "final_judgment",
+      "agent_jp": "最終判定",
+      "category": "integration",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "【様子見】★★\n総合スコア: 48.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-23 09:52"
     }
   ],
   "fundamentals": null,
@@ -228,6 +228,12 @@
   "backtest": null,
   "news": [],
   "earnings_recent": [
+    {
+      "date": "2026-06-04",
+      "estimated_eps": -0.37274,
+      "actual_eps": null,
+      "surprise_pct": null
+    },
     {
       "date": "2026-05-28",
       "estimated_eps": -0.37274,

@@ -1,6 +1,6 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-20 10:22",
+  "generated_at": "2026-05-23 09:52",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,16 +9,17 @@
     "expected_return": 1.37,
     "risk_reward": 1.49,
     "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=53% / 3ヶ月=60% / 12ヶ月=72%\n下落確率: 3%=34% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-20 08:15",
-    "prediction_date": "2026-05-20"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=53% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=31% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-23 09:52",
+    "prediction_date": "2026-05-23"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 12,
-      "HOLD": 7,
-      "WATCH": 46
+      "BUY": 14,
+      "HOLD": 8,
+      "WATCH": 42,
+      "REDUCE": 1
     },
     "category_stats": {
       "trade_style": {
@@ -26,14 +27,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 4,
-        "avg_score": 58.1
-      },
-      "sector": {
-        "count": 19,
-        "buy": 2,
-        "sell": 0,
-        "hold": 17,
-        "avg_score": 52.9
+        "avg_score": 56.7
       },
       "personal": {
         "count": 10,
@@ -42,33 +36,40 @@
         "hold": 5,
         "avg_score": 59.5
       },
+      "sector": {
+        "count": 19,
+        "buy": 2,
+        "sell": 0,
+        "hold": 17,
+        "avg_score": 52.9
+      },
       "market_monitor": {
         "count": 7,
-        "buy": 1,
+        "buy": 2,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 52.3
+        "hold": 5,
+        "avg_score": 51.6
       },
       "prediction": {
         "count": 10,
         "buy": 2,
-        "sell": 0,
-        "hold": 8,
-        "avg_score": 52.5
+        "sell": 1,
+        "hold": 7,
+        "avg_score": 52.7
       },
       "analysis": {
         "count": 10,
-        "buy": 2,
+        "buy": 3,
         "sell": 0,
-        "hold": 8,
-        "avg_score": 52.8
+        "hold": 7,
+        "avg_score": 54.4
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 54.0
+        "avg_score": 52.7
       }
     }
   },
@@ -83,15 +84,6 @@
       "reason": "高配当(86.0%) / 高利益率(47%) / ROE高(34%)"
     },
     {
-      "agent": "japan_dividend",
-      "agent_jp": "日本高配当",
-      "category": "sector",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
-    },
-    {
       "agent": "rule_compliance",
       "agent_jp": "ルール遵守",
       "category": "personal",
@@ -99,6 +91,15 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "全ルール遵守"
+    },
+    {
+      "agent": "japan_dividend",
+      "agent_jp": "日本高配当",
+      "category": "sector",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
     },
     {
       "agent": "sector_cloud_saas",
@@ -134,7 +135,7 @@
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=68% / MA20=+0.0% / 売上成長=17%"
+      "reason": "20d/3m上昇確率=68% / MA20=+0.5% / 売上成長=17%"
     },
     {
       "agent": "fundamental",
@@ -146,13 +147,13 @@
       "reason": "高利益率(47%)"
     },
     {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
-      "score": 68.0,
+      "agent": "news_impact",
+      "agent_jp": "ニュース影響",
+      "category": "analysis",
+      "score": 67.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 4/10位"
+      "reason": "直近ニュース強ポジ(0.51) / 高関心・ポジティブ"
     },
     {
       "agent": "risk_assessment",
@@ -193,6 +194,15 @@
       "reason": "プロファイル適合"
     },
     {
+      "agent": "valuation",
+      "agent_jp": "バリュエーション",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "バリュエーション中立"
+    },
+    {
       "agent": "alert",
       "agent_jp": "アラート",
       "category": "integration",
@@ -202,13 +212,22 @@
       "reason": "異常なし"
     },
     {
-      "agent": "valuation",
-      "agent_jp": "バリュエーション",
-      "category": "analysis",
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "バリュエーション中立"
+      "reason": "低ボラ環境"
+    },
+    {
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=55% / 20d=53% / 3m=59% / 期待値=+1.37%"
     },
     {
       "agent": "bayesian",
@@ -220,24 +239,6 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=53% / 3m=60% / 期待値=+1.37%"
-    },
-    {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=55% / LGBM=55% / ルール=53% / ファンダ=58%"
-    },
-    {
       "agent": "score_integration",
       "agent_jp": "スコア統合",
       "category": "integration",
@@ -247,13 +248,13 @@
       "reason": "全エージェント統合スコア=54"
     },
     {
-      "agent": "sector_rotation",
-      "agent_jp": "セクターローテーション",
-      "category": "market_monitor",
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
+      "category": "prediction",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 直近強い(+3.0%) / S&P500比 月次弱い(-5.7%)"
+      "reason": "アンサンブル=53% / LGBM=55% / ルール=47% / ファンダ=58%"
     }
   ],
   "fundamentals": {
@@ -266,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9162,
+    "total_days": 9165,
     "approx_years": 36.4,
     "data_span_label": "IPO以降 約36.4年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 417.42,
-    "current_drawdown_pct": -22.7,
+    "current_close": 418.57,
+    "current_drawdown_pct": -22.5,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3311,
     "pct_time_below_30pct": 36.1,
-    "current_pct_of_ath": 77.3
+    "current_pct_of_ath": 77.5
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -291,45 +292,45 @@
   },
   "news": [
     {
-      "headline": "Buy the Dip in Nvidia Stock off of Record Highs as Q1 Earnings Approach?",
-      "sentiment": 0.3,
+      "headline": "Alphabet and NVIDIA: The Biggest Mag 7 Winners This Earnings Season",
+      "sentiment": 0.08,
       "importance": 5,
-      "published_at": "2026-05-19 05:01:00",
+      "published_at": "2026-05-23 05:01:00",
       "source": "yahoo"
     },
     {
-      "headline": "Grid Dynamics Launches AI-Native Modernization on Azure, Targeting Larger Enterprise Deals",
-      "sentiment": 0.79,
+      "headline": "CDL’s $2.29 annual dividend beats Treasury yields despite rising interest rates",
+      "sentiment": 0.7,
+      "importance": 4,
+      "published_at": "2026-05-23 03:30:54",
+      "source": "yahoo"
+    },
+    {
+      "headline": "GlobalFoundries (GFS) Launches Dedicated Quantum Technology Solutions Unit",
+      "sentiment": 0.92,
       "importance": 3,
-      "published_at": "2026-05-20 05:05:00",
+      "published_at": "2026-05-23 05:09:44",
       "source": "yahoo"
     },
     {
-      "headline": "Why Would Anyone Buy SCHB Instead of MAGS?",
-      "sentiment": 0.89,
-      "importance": 2,
-      "published_at": "2026-05-20 06:20:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Elon Musk said Sam Altman “stole” a non-profit — but the trial showed he had similar aims",
-      "sentiment": -0.8,
-      "importance": 2,
-      "published_at": "2026-05-20 05:11:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Beyond NVIDIA: The Next Phase of the AI Investment Boom",
+      "headline": "The Gates Foundation Sold All of Its Remaining Microsoft Stock. Should Investors Be Worried?",
       "sentiment": -0.3,
       "importance": 2,
-      "published_at": "2026-05-20 05:09:00",
+      "published_at": "2026-05-23 06:11:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "AI trade: Investors may want to look outside infrastructure, Nvidia",
+      "sentiment": 0.84,
+      "importance": 2,
+      "published_at": "2026-05-23 05:28:22",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-07-30",
-      "estimated_eps": 4.24422,
+      "estimated_eps": 4.23636,
       "actual_eps": null,
       "surprise_pct": null
     },

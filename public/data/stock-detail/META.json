@@ -1,33 +1,33 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-20 10:22",
+  "generated_at": "2026-05-23 09:52",
   "summary": {
     "rank": "watch",
-    "score": 53,
+    "score": 54,
     "prob_up_5d": 0.567,
-    "prob_down_5pct": 0.338,
+    "prob_down_5pct": 0.422,
     "expected_return": 1.54,
-    "risk_reward": 0.91,
-    "max_loss_est": -1.69,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=36% / 3ヶ月=73% / 12ヶ月=42%\n下落確率: 3%=59% / 5%=34% / 10%=12%\n期待値: +1.54% / リスクリワード: 0.91\n判定時刻: 2026-05-20 08:15",
-    "prediction_date": "2026-05-20"
+    "risk_reward": 0.73,
+    "max_loss_est": -2.11,
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=29% / 3ヶ月=62% / 12ヶ月=26%\n下落確率: 3%=69% / 5%=42% / 10%=11%\n期待値: +1.54% / リスクリワード: 0.73\n判定時刻: 2026-05-23 09:52",
+    "prediction_date": "2026-05-23"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 14,
-      "HOLD": 8,
-      "WATCH": 40,
-      "REDUCE": 3
+      "BUY": 13,
+      "HOLD": 10,
+      "WATCH": 41,
+      "REDUCE": 1
     },
     "category_stats": {
       "trade_style": {
         "count": 7,
-        "buy": 4,
+        "buy": 3,
         "sell": 1,
-        "hold": 2,
-        "avg_score": 59.4
+        "hold": 3,
+        "avg_score": 56.9
       },
       "sector": {
         "count": 19,
@@ -46,30 +46,30 @@
       "analysis": {
         "count": 10,
         "buy": 3,
-        "sell": 1,
-        "hold": 6,
-        "avg_score": 52.1
-      },
-      "market_monitor": {
-        "count": 7,
-        "buy": 2,
-        "sell": 1,
-        "hold": 4,
-        "avg_score": 49.1
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 54.6
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 53.1
+        "avg_score": 52.0
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 2,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 51.6
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.5
+        "avg_score": 52.7
       }
     }
   },
@@ -120,6 +120,15 @@
       "reason": "高利益率(41%) / 高成長(24%)"
     },
     {
+      "agent": "long_term_prob",
+      "agent_jp": "長期確率",
+      "category": "prediction",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=70% / ROIC=16% / PER=22x"
+    },
+    {
       "agent": "liquidity_risk",
       "agent_jp": "流動性リスク",
       "category": "market_monitor",
@@ -129,13 +138,13 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "contrarian",
-      "agent_jp": "逆張り",
-      "category": "trade_style",
-      "score": 68.0,
+      "agent": "news_impact",
+      "agent_jp": "ニュース影響",
+      "category": "analysis",
+      "score": 67.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "RSI超売られ(25)"
+      "reason": "直近ニュース強ポジ(0.66) / 高関心・ポジティブ"
     },
     {
       "agent": "risk_assessment",
@@ -154,35 +163,17 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
-    },
-    {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
     {
-      "agent": "bayesian",
-      "agent_jp": "ベイズ更新",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "過去勝率=50% / 事後確率=60%"
-    },
-    {
-      "agent": "mid_term_prob",
-      "agent_jp": "中期確率",
-      "category": "prediction",
+      "agent": "supply_demand",
+      "agent_jp": "需給分析",
+      "category": "analysis",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=58% / MA20=-4.1% / 売上成長=24%"
+      "reason": "OBV上昇（蓄積）"
     },
     {
       "agent": "expected_value",
@@ -191,7 +182,7 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "期待値=+1.40% / RR比=2.04 / 上昇確率=55%"
+      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
       "agent": "valuation",
@@ -209,7 +200,7 @@
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=36% / 3m=73% / 期待値=+1.54%"
+      "reason": "5d上昇確率=57% / 20d=29% / 3m=62% / 期待値=+1.54%"
     },
     {
       "agent": "investor_profile",
@@ -219,15 +210,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
-    },
-    {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=48)"
     },
     {
       "agent": "alert",
@@ -248,13 +230,31 @@
       "reason": "ストキャスKD買い"
     },
     {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
+      "agent": "momentum",
+      "agent_jp": "モメンタム",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ADXトレンド強(=47)"
+    },
+    {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=54% / LGBM=57% / ルール=47% / ファンダ=60%"
+      "reason": "20d/3m上昇確率=54% / MA20=-1.4% / 売上成長=24%"
     }
   ],
   "fundamentals": {
@@ -267,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "2012-05-18",
-    "total_days": 3520,
+    "total_days": 3523,
     "approx_years": 14.0,
     "data_span_label": "IPO以降 約14.0年（2012-05-18〜）",
     "all_time_high": 788.15,
-    "current_close": 602.61,
-    "current_drawdown_pct": -23.5,
+    "current_close": 610.26,
+    "current_drawdown_pct": -22.6,
     "max_drawdown_pct": -76.7,
     "days_below_30pct_dd": 585,
     "pct_time_below_30pct": 16.6,
-    "current_pct_of_ath": 76.5
+    "current_pct_of_ath": 77.4
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_META",
@@ -292,38 +292,38 @@
   },
   "news": [
     {
-      "headline": "Buy the Dip in Nvidia Stock off of Record Highs as Q1 Earnings Approach?",
-      "sentiment": 0.3,
+      "headline": "Good News Is Good News. The Market Has Passed the Earnings Test.",
+      "sentiment": 0.86,
       "importance": 5,
-      "published_at": "2026-05-19 05:01:00",
+      "published_at": "2026-05-23 03:10:00",
       "source": "yahoo"
     },
     {
-      "headline": "NextEra-Dominion Energy Merger To Create World’s Largest Electric Utility",
-      "sentiment": 0.9,
-      "importance": 5,
-      "published_at": "2026-05-19 02:30:00",
+      "headline": "RDDT Stock Drops To Near One-Month Lows After Meta Launches Rival App",
+      "sentiment": -0.2,
+      "importance": 3,
+      "published_at": "2026-05-23 07:00:00",
       "source": "yahoo"
     },
     {
-      "headline": "Nvidia Earnings Face High Expectations",
-      "sentiment": -0.13,
-      "importance": 5,
-      "published_at": "2026-05-19 02:05:35",
-      "source": "yahoo"
-    },
-    {
-      "headline": "How NextEra Can Fix Dominion’s Strange AI Problem",
-      "sentiment": -0.48,
+      "headline": "Vistra Taps AI Data Center Surge With Long Term Tech Power Deals",
+      "sentiment": 0.87,
       "importance": 2,
-      "published_at": "2026-05-20 06:31:00",
+      "published_at": "2026-05-23 08:12:05",
       "source": "yahoo"
     },
     {
-      "headline": "The Spill: Meta’s (META) $145 Billion Bet on Superintelligence",
-      "sentiment": 0.62,
+      "headline": "Is Snap (SNAP) Quietly Recasting Its Brand Strategy With Luke Wood’s Board Appointment?",
+      "sentiment": 0.7,
       "importance": 2,
-      "published_at": "2026-05-20 06:28:07",
+      "published_at": "2026-05-23 05:16:11",
+      "source": "yahoo"
+    },
+    {
+      "headline": "As Meta Misfires And Apple Shines, Amazon Stock Has Wall Street Smiling. Here's Why.",
+      "sentiment": 0.78,
+      "importance": 2,
+      "published_at": "2026-05-23 05:03:20",
       "source": "yahoo"
     }
   ],

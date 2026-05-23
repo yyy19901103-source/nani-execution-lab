@@ -1,6 +1,6 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-05-20 10:22",
+  "generated_at": "2026-05-23 09:52",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -9,8 +9,8 @@
     "expected_return": 1.55,
     "risk_reward": 6.2,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-20 08:15",
-    "prediction_date": "2026-05-20"
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-23 09:52",
+    "prediction_date": "2026-05-23"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -33,7 +33,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 54.7
+        "avg_score": 54.6
       },
       "personal": {
         "count": 10,
@@ -125,7 +125,7 @@
       "score": 61.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "RSI中立ゾーン / 直近ニュース良好(0.41)"
+      "reason": "RSI中立ゾーン / 直近ニュース良好(0.38)"
     },
     {
       "agent": "emotion_bias",
@@ -157,15 +157,6 @@
       "reason": "1d/5d上昇確率=59% / RSI=52 / MACD正"
     },
     {
-      "agent": "news_impact",
-      "agent_jp": "ニュース影響",
-      "category": "analysis",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ニュース中立"
-    },
-    {
       "agent": "lgbm_prob",
       "agent_jp": "LightGBM確率",
       "category": "prediction",
@@ -173,6 +164,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "5d上昇確率=57% / 20d=56% / 3m=55% / 期待値=+1.55%"
+    },
+    {
+      "agent": "news_impact",
+      "agent_jp": "ニュース影響",
+      "category": "analysis",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ニュース中立"
     },
     {
       "agent": "ensemble",
@@ -229,13 +229,13 @@
       "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
+      "agent": "final_judgment",
+      "agent_jp": "最終判定",
+      "category": "integration",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率53% / P10=-1.3% P90=+1.4%"
+      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-05-23 09:52"
     }
   ],
   "fundamentals": null,
