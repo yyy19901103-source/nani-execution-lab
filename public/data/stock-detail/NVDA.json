@@ -1,26 +1,33 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
-    "score": 54,
+    "score": 55,
     "prob_up_5d": 0.54,
     "prob_down_5pct": 0.223,
     "expected_return": 1.32,
     "risk_reward": 1.18,
     "max_loss_est": -1.12,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=24% / 5%=22% / 10%=17%\n期待値: +1.32% / リスクリワード: 1.18\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=24% / 5%=22% / 10%=17%\n期待値: +1.32% / リスクリワード: 1.18\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 7,
-      "BUY": 11,
-      "HOLD": 11,
+      "BUY": 12,
+      "HOLD": 10,
       "WATCH": 40
     },
     "category_stats": {
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 57.8
+      },
       "sector": {
         "count": 19,
         "buy": 3,
@@ -35,13 +42,6 @@
         "hold": 4,
         "avg_score": 60.0
       },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 56.7
-      },
       "personal": {
         "count": 10,
         "buy": 5,
@@ -51,28 +51,37 @@
       },
       "analysis": {
         "count": 10,
-        "buy": 3,
+        "buy": 4,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 52.5
+        "hold": 6,
+        "avg_score": 54.6
       },
       "prediction": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 55.5
+        "avg_score": 55.1
       },
       "market_monitor": {
         "count": 7,
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 47.6
+        "avg_score": 49.0
       }
     }
   },
   "top_buys": [
+    {
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 90.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 1/10位"
+    },
     {
       "agent": "sector_semiconductor",
       "agent_jp": "半導体",
@@ -90,15 +99,6 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
-    },
-    {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
-      "score": 84.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 2/10位"
     },
     {
       "agent": "rule_compliance",
@@ -202,6 +202,15 @@
       "reason": "異常なし"
     },
     {
+      "agent": "score_integration",
+      "agent_jp": "スコア統合",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=55"
+    },
+    {
       "agent": "bayesian",
       "agent_jp": "ベイズ更新",
       "category": "prediction",
@@ -209,15 +218,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "過去勝率=50% / 事後確率=55%"
-    },
-    {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
-      "category": "integration",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "全エージェント統合スコア=54"
     },
     {
       "agent": "lgbm_prob",
@@ -235,7 +235,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=24% / 5%=22% / 10%=17%\n期待値: +1.32% / リスクリワード: 1.18\n判定時刻: 2026-05-23 09:52"
+      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=70%\n下落確率: 3%=24% / 5%=22% / 10%=17%\n期待値: +1.32% / リスクリワード: 1.18\n判定時刻: 2026-05-24 20:57"
     },
     {
       "agent": "earnings_momentum",
@@ -298,38 +298,38 @@
       "source": "yahoo"
     },
     {
-      "headline": "The 1 Tech Stock I Keep Adding To on Red Days -- and Why I'll Do It Again",
-      "sentiment": null,
-      "importance": 2,
-      "published_at": "2026-05-23 09:20:00",
+      "headline": "CNBC Analyst Exposes the April 9 Pivot That Changed Everything for the S&P 500",
+      "sentiment": 0.05,
+      "importance": 4,
+      "published_at": "2026-05-24 20:45:06",
       "source": "yahoo"
     },
     {
-      "headline": "Why StubHub Holdings Stock Crushed it This Week",
-      "sentiment": 0.03,
+      "headline": "Covered-Call ETF MSTY Caps Your Gains While You Ride All the Losses",
+      "sentiment": 0.75,
       "importance": 2,
-      "published_at": "2026-05-23 09:03:08",
+      "published_at": "2026-05-24 20:45:55",
       "source": "yahoo"
     },
     {
-      "headline": "Google Just Triggered a $1 Billion AI Price War: Does It Make Alphabet Stock a Buy Right Now?",
-      "sentiment": -0.7,
+      "headline": "BOXX Saves High Earners $7,000 to $20,000 Annually in Taxes Versus Money Market Funds",
+      "sentiment": 0.38,
       "importance": 2,
-      "published_at": "2026-05-23 08:05:00",
+      "published_at": "2026-05-24 20:39:53",
       "source": "yahoo"
     },
     {
-      "headline": "SMCY’s Dreamy Distribution Hides a Track Record Even YieldMax Investors Should Find Concerning",
-      "sentiment": 0.18,
+      "headline": "Buried Deep in SpaceX’s Pre-IPO Disclosures: A Threat to Starlink That Sounds Like Science Fiction",
+      "sentiment": -0.36,
       "importance": 2,
-      "published_at": "2026-05-23 07:47:25",
+      "published_at": "2026-05-24 20:29:34",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-05-21",
-      "estimated_eps": 2.05133,
+      "estimated_eps": 2.09073,
       "actual_eps": null,
       "surprise_pct": null
     }

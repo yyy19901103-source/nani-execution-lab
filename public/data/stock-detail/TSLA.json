@@ -1,6 +1,6 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,8 +9,8 @@
     "expected_return": 0.5,
     "risk_reward": 0.27,
     "max_loss_est": -1.87,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=44% / 20日=45% / 3ヶ月=31% / 12ヶ月=35%\n下落確率: 3%=38% / 5%=37% / 10%=26%\n期待値: +0.50% / リスクリワード: 0.27\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=44% / 20日=45% / 3ヶ月=31% / 12ヶ月=35%\n下落確率: 3%=38% / 5%=37% / 10%=26%\n期待値: +0.50% / リスクリワード: 0.27\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -182,7 +182,7 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率60% / P10=-0.7% P90=+1.0%"
+      "reason": "MC 20日後: 中央値+0.2% / 上昇確率61% / P10=-0.7% P90=+1.0%"
     },
     {
       "agent": "sector_rotation",
@@ -212,6 +212,15 @@
       "reason": "EVマージン改善中"
     },
     {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -237,15 +246,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "売上高成長(16%) / ROIC低(2%)"
-    },
-    {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "volume_anomaly",

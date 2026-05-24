@@ -1,24 +1,24 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
-    "score": 54,
+    "score": 53,
     "prob_up_5d": 0.567,
     "prob_down_5pct": 0.422,
     "expected_return": 1.54,
     "risk_reward": 0.73,
     "max_loss_est": -2.11,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=29% / 3ヶ月=62% / 12ヶ月=26%\n下落確率: 3%=69% / 5%=42% / 10%=11%\n期待値: +1.54% / リスクリワード: 0.73\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=29% / 3ヶ月=62% / 12ヶ月=26%\n下落確率: 3%=69% / 5%=42% / 10%=11%\n期待値: +1.54% / リスクリワード: 0.73\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 13,
+      "BUY": 12,
       "HOLD": 10,
-      "WATCH": 41,
+      "WATCH": 42,
       "REDUCE": 1
     },
     "category_stats": {
@@ -48,28 +48,28 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 54.6
+        "avg_score": 54.0
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 52.0
+        "avg_score": 51.9
       },
       "market_monitor": {
         "count": 7,
-        "buy": 2,
+        "buy": 1,
         "sell": 0,
-        "hold": 5,
-        "avg_score": 51.6
+        "hold": 6,
+        "avg_score": 50.4
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.7
+        "avg_score": 53.8
       }
     }
   },
@@ -138,13 +138,13 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "news_impact",
-      "agent_jp": "ニュース影響",
-      "category": "analysis",
-      "score": 67.0,
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "直近ニュース強ポジ(0.66) / 高関心・ポジティブ"
+      "reason": "ウォッチリスト内 4/10位"
     },
     {
       "agent": "risk_assessment",
@@ -203,6 +203,15 @@
       "reason": "5d上昇確率=57% / 20d=29% / 3m=62% / 期待値=+1.54%"
     },
     {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -210,15 +219,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
-    },
-    {
-      "agent": "alert",
-      "agent_jp": "アラート",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
     },
     {
       "agent": "day_trade",
@@ -230,6 +230,15 @@
       "reason": "ストキャスKD買い"
     },
     {
+      "agent": "alert",
+      "agent_jp": "アラート",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
+    },
+    {
       "agent": "momentum",
       "agent_jp": "モメンタム",
       "category": "trade_style",
@@ -237,15 +246,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ADXトレンド強(=47)"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "mid_term_prob",
@@ -299,38 +299,38 @@
       "source": "yahoo"
     },
     {
-      "headline": "RDDT Stock Drops To Near One-Month Lows After Meta Launches Rival App",
-      "sentiment": -0.2,
+      "headline": "Meta Legal Pressures Mount As Shares Trade Below Analyst Valuations",
+      "sentiment": -0.8,
+      "importance": 4,
+      "published_at": "2026-05-24 08:10:40",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Google's AI Glasses Threaten Meta's 80% Market Grip, Analyst Says",
+      "sentiment": 0.1,
+      "importance": 4,
+      "published_at": "2026-05-24 07:31:12",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Meta, Broadcom And Others Launch $125 Million UCLA AI Chip Hub",
+      "sentiment": null,
       "importance": 3,
-      "published_at": "2026-05-23 07:00:00",
+      "published_at": "2026-05-24 09:31:14",
       "source": "yahoo"
     },
     {
-      "headline": "Vistra Taps AI Data Center Surge With Long Term Tech Power Deals",
-      "sentiment": 0.87,
-      "importance": 2,
-      "published_at": "2026-05-23 08:12:05",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Is Snap (SNAP) Quietly Recasting Its Brand Strategy With Luke Wood’s Board Appointment?",
-      "sentiment": 0.7,
-      "importance": 2,
-      "published_at": "2026-05-23 05:16:11",
-      "source": "yahoo"
-    },
-    {
-      "headline": "As Meta Misfires And Apple Shines, Amazon Stock Has Wall Street Smiling. Here's Why.",
-      "sentiment": 0.78,
-      "importance": 2,
-      "published_at": "2026-05-23 05:03:20",
+      "headline": "DoubleVerify (DV) Launches AI-Powered Pre-Screen Content Controls on Meta (META) Threads Feed",
+      "sentiment": 0.05,
+      "importance": 3,
+      "published_at": "2026-05-24 08:52:44",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-07-30",
-      "estimated_eps": 7.50889,
+      "estimated_eps": 7.528,
       "actual_eps": null,
       "surprise_pct": null
     },

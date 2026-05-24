@@ -1,24 +1,24 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
-    "score": 54,
+    "score": 53,
     "prob_up_5d": 0.546,
     "prob_down_5pct": 0.184,
     "expected_return": 1.37,
     "risk_reward": 1.49,
     "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=53% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=31% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=53% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=31% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 14,
+      "BUY": 12,
       "HOLD": 8,
-      "WATCH": 42,
+      "WATCH": 44,
       "REDUCE": 1
     },
     "category_stats": {
@@ -45,10 +45,17 @@
       },
       "market_monitor": {
         "count": 7,
+        "buy": 1,
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 50.1
+      },
+      "analysis": {
+        "count": 10,
         "buy": 2,
         "sell": 0,
-        "hold": 5,
-        "avg_score": 51.6
+        "hold": 8,
+        "avg_score": 52.8
       },
       "prediction": {
         "count": 10,
@@ -57,19 +64,12 @@
         "hold": 7,
         "avg_score": 52.7
       },
-      "analysis": {
-        "count": 10,
-        "buy": 3,
-        "sell": 0,
-        "hold": 7,
-        "avg_score": 54.4
-      },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.7
+        "avg_score": 52.5
       }
     }
   },
@@ -129,15 +129,6 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "mid_term_prob",
-      "agent_jp": "中期確率",
-      "category": "prediction",
-      "score": 68.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "20d/3m上昇確率=68% / MA20=+0.5% / 売上成長=17%"
-    },
-    {
       "agent": "fundamental",
       "agent_jp": "ファンダメンタル",
       "category": "analysis",
@@ -147,13 +138,13 @@
       "reason": "高利益率(47%)"
     },
     {
-      "agent": "news_impact",
-      "agent_jp": "ニュース影響",
-      "category": "analysis",
-      "score": 67.0,
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
+      "category": "prediction",
+      "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "直近ニュース強ポジ(0.51) / 高関心・ポジティブ"
+      "reason": "20d/3m上昇確率=68% / MA20=+0.5% / 売上成長=17%"
     },
     {
       "agent": "risk_assessment",
@@ -163,6 +154,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "portfolio_fit",
+      "agent_jp": "ポートフォリオ適合",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
     }
   ],
   "top_risks": [
@@ -194,15 +194,6 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "valuation",
-      "agent_jp": "バリュエーション",
-      "category": "analysis",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "バリュエーション中立"
-    },
-    {
       "agent": "alert",
       "agent_jp": "アラート",
       "category": "integration",
@@ -210,6 +201,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "valuation",
+      "agent_jp": "バリュエーション",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "バリュエーション中立"
     },
     {
       "agent": "volatility_env",
@@ -221,15 +221,6 @@
       "reason": "低ボラ環境"
     },
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=53% / 3m=59% / 期待値=+1.37%"
-    },
-    {
       "agent": "bayesian",
       "agent_jp": "ベイズ更新",
       "category": "prediction",
@@ -239,13 +230,22 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
-      "category": "integration",
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=54"
+      "reason": "5d上昇確率=55% / 20d=53% / 3m=59% / 期待値=+1.37%"
+    },
+    {
+      "agent": "score_integration",
+      "agent_jp": "スコア統合",
+      "category": "integration",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=53"
     },
     {
       "agent": "ensemble",
@@ -302,28 +302,28 @@
       "headline": "CDL’s $2.29 annual dividend beats Treasury yields despite rising interest rates",
       "sentiment": 0.7,
       "importance": 4,
+      "published_at": "2026-05-24 01:45:18",
+      "source": "yahoo"
+    },
+    {
+      "headline": "CDL’s $2.29 annual dividend beats Treasury yields despite rising interest rates",
+      "sentiment": 0.7,
+      "importance": 4,
       "published_at": "2026-05-23 03:30:54",
+      "source": "yahoo"
+    },
+    {
+      "headline": "AI productivity upside could be 10x the current estimates: BofA",
+      "sentiment": 0.9,
+      "importance": 3,
+      "published_at": "2026-05-24 15:41:27",
       "source": "yahoo"
     },
     {
       "headline": "GlobalFoundries (GFS) Launches Dedicated Quantum Technology Solutions Unit",
       "sentiment": 0.92,
       "importance": 3,
-      "published_at": "2026-05-23 05:09:44",
-      "source": "yahoo"
-    },
-    {
-      "headline": "The Gates Foundation Sold All of Its Remaining Microsoft Stock. Should Investors Be Worried?",
-      "sentiment": -0.3,
-      "importance": 2,
-      "published_at": "2026-05-23 06:11:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "AI trade: Investors may want to look outside infrastructure, Nvidia",
-      "sentiment": 0.84,
-      "importance": 2,
-      "published_at": "2026-05-23 05:28:22",
+      "published_at": "2026-05-24 06:15:44",
       "source": "yahoo"
     }
   ],

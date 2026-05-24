@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,8 +9,8 @@
     "expected_return": 1.38,
     "risk_reward": 1.05,
     "max_loss_est": -1.31,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=59% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=59% / 12ヶ月=68%\n下落確率: 3%=30% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -168,15 +168,6 @@
   ],
   "top_risks": [
     {
-      "agent": "swing_trade",
-      "agent_jp": "スイングトレード",
-      "category": "trade_style",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
-    },
-    {
       "agent": "monte_carlo",
       "agent_jp": "モンテカルロ",
       "category": "prediction",
@@ -184,6 +175,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "MC 20日後: 中央値+0.1% / 上昇確率62% / P10=-0.3% P90=+0.5%"
+    },
+    {
+      "agent": "swing_trade",
+      "agent_jp": "スイングトレード",
+      "category": "trade_style",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
       "agent": "expected_value",
@@ -222,13 +222,13 @@
       "reason": "アンサンブル=56% / LGBM=55% / ルール=53% / ファンダ=60%"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -240,13 +240,13 @@
       "reason": "RSI極値: 91"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "PBR高い(45.2x) / ROE高(152%) / 配当利回り38.0%"
     },
     {
       "agent": "volume_anomaly",

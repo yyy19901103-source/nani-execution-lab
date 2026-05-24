@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -9,8 +9,8 @@
     "expected_return": 1.72,
     "risk_reward": 2.92,
     "max_loss_est": -0.59,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=72% / 12ヶ月=50%\n下落確率: 3%=17% / 5%=12% / 10%=3%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=72% / 12ヶ月=50%\n下落確率: 3%=17% / 5%=12% / 10%=3%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -93,15 +93,6 @@
       "reason": "MFI買い圧力(70) / OBV上昇（蓄積） / VWAP上方"
     },
     {
-      "agent": "dividend_income",
-      "agent_jp": "配当インカム",
-      "category": "trade_style",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高配当(119.0%)"
-    },
-    {
       "agent": "liquidity_risk",
       "agent_jp": "流動性リスク",
       "category": "market_monitor",
@@ -109,6 +100,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
+    },
+    {
+      "agent": "dividend_income",
+      "agent_jp": "配当インカム",
+      "category": "trade_style",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "高配当(119.0%)"
     },
     {
       "agent": "japan_dividend",
@@ -185,15 +185,6 @@
       "reason": "期待値=+0.20% / RR比=1.11 / 上昇確率=40%"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "配当利回り119.0%"
-    },
-    {
       "agent": "mid_term_prob",
       "agent_jp": "中期確率",
       "category": "prediction",
@@ -201,6 +192,24 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "20d/3m上昇確率=55% / MA20=+1.9% / 売上成長=0%"
+    },
+    {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
     },
     {
       "agent": "investor_profile",
@@ -230,15 +239,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
       "agent": "volatility_env",
       "agent_jp": "ボラティリティ環境",
       "category": "market_monitor",
@@ -254,7 +254,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=72% / 12ヶ月=50%\n下落確率: 3%=17% / 5%=12% / 10%=3%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-23 09:52"
+      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=72% / 12ヶ月=50%\n下落確率: 3%=17% / 5%=12% / 10%=3%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-24 20:57"
     }
   ],
   "fundamentals": {

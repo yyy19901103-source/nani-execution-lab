@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,8 +9,8 @@
     "expected_return": 1.69,
     "risk_reward": 2.25,
     "max_loss_est": -0.75,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=59% / 20日=60% / 3ヶ月=62% / 12ヶ月=75%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.69% / リスクリワード: 2.25\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=59% / 20日=60% / 3ヶ月=62% / 12ヶ月=75%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.69% / リスクリワード: 2.25\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -194,15 +194,6 @@
       "reason": "ニュース中立"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
-    },
-    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -219,6 +210,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
     },
     {
       "agent": "day_trade",
@@ -245,7 +245,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=59% / 20日=60% / 3ヶ月=62% / 12ヶ月=75%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.69% / リスクリワード: 2.25\n判定時刻: 2026-05-23 09:52"
+      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=59% / 20日=60% / 3ヶ月=62% / 12ヶ月=75%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.69% / リスクリワード: 2.25\n判定時刻: 2026-05-24 20:57"
     },
     {
       "agent": "short_term_prob",

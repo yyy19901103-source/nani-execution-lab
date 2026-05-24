@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,8 +9,8 @@
     "expected_return": 1.57,
     "risk_reward": 1.37,
     "max_loss_est": -1.15,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=57% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=23% / 10%=14%\n期待値: +1.57% / リスクリワード: 1.37\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=57% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=23% / 10%=14%\n期待値: +1.57% / リスクリワード: 1.37\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -55,7 +55,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 50.1
+        "avg_score": 50.2
       },
       "sector": {
         "count": 19,
@@ -203,13 +203,22 @@
       "reason": "5d上昇確率=57% / 20d=61% / 3m=65% / 期待値=+1.57%"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ROE高(22%)"
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "低ボラ環境"
     },
     {
       "agent": "investor_profile",
@@ -230,6 +239,15 @@
       "reason": "異常なし"
     },
     {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ROE高(22%)"
+    },
+    {
       "agent": "fundamental",
       "agent_jp": "ファンダメンタル",
       "category": "analysis",
@@ -237,24 +255,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ファンダメンタル中立"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "低ボラ環境"
     }
   ],
   "fundamentals": {
@@ -294,7 +294,7 @@
   "earnings_recent": [
     {
       "date": "2026-07-31",
-      "estimated_eps": 1.81767,
+      "estimated_eps": 1.81367,
       "actual_eps": null,
       "surprise_pct": null
     }

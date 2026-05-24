@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-23 09:52",
+  "generated_at": "2026-05-24 20:57",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,8 +9,8 @@
     "expected_return": 1.35,
     "risk_reward": 1.5,
     "max_loss_est": -0.9,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=58% / 3ヶ月=61% / 12ヶ月=71%\n下落確率: 3%=26% / 5%=18% / 10%=8%\n期待値: +1.35% / リスクリワード: 1.50\n判定時刻: 2026-05-23 09:52",
-    "prediction_date": "2026-05-23"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=58% / 3ヶ月=61% / 12ヶ月=71%\n下落確率: 3%=26% / 5%=18% / 10%=8%\n期待値: +1.35% / リスクリワード: 1.50\n判定時刻: 2026-05-24 20:57",
+    "prediction_date": "2026-05-24"
   },
   "agent_summary": {
     "total_agents": 69,
@@ -147,15 +147,6 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
-    },
-    {
       "agent": "portfolio_fit",
       "agent_jp": "ポートフォリオ適合",
       "category": "personal",
@@ -163,6 +154,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
+    },
+    {
+      "agent": "failure_pattern",
+      "agent_jp": "失敗パターン",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
@@ -185,6 +185,15 @@
       "reason": "短期・中期MA上向き / 200MA上抜け / MACD負"
     },
     {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -194,6 +203,15 @@
       "reason": "プロファイル適合"
     },
     {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率57% / P10=-0.4% P90=+0.6%"
+    },
+    {
       "agent": "alert",
       "agent_jp": "アラート",
       "category": "integration",
@@ -201,24 +219,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.0% / 上昇確率56% / P10=-0.4% P90=+0.6%"
-    },
-    {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "volatility_env",
@@ -294,7 +294,7 @@
   "earnings_recent": [
     {
       "date": "2026-07-14",
-      "estimated_eps": 5.39566,
+      "estimated_eps": 5.3927,
       "actual_eps": null,
       "surprise_pct": null
     }
