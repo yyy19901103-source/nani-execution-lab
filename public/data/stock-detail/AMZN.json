@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-05-24 20:57",
+  "generated_at": "2026-05-27 22:14",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,16 +9,16 @@
     "expected_return": 1.57,
     "risk_reward": 1.37,
     "max_loss_est": -1.15,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=57% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=23% / 10%=14%\n期待値: +1.57% / リスクリワード: 1.37\n判定時刻: 2026-05-24 20:57",
-    "prediction_date": "2026-05-24"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=57% / 20日=61% / 3ヶ月=65% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=23% / 10%=14%\n期待値: +1.57% / リスクリワード: 1.37\n判定時刻: 2026-05-27 22:14",
+    "prediction_date": "2026-05-27"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 2,
       "BUY": 8,
-      "HOLD": 9,
-      "WATCH": 49,
+      "HOLD": 8,
+      "WATCH": 50,
       "REDUCE": 1
     },
     "category_stats": {
@@ -41,21 +41,21 @@
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 54.4
+        "avg_score": 53.0
       },
       "analysis": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 51.8
+        "avg_score": 51.2
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 50.2
+        "avg_score": 50.5
       },
       "sector": {
         "count": 19,
@@ -81,7 +81,7 @@
       "score": 85.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "52週高値近傍(-3.2%) / 60日リターン強(28.1%) / ADXトレンド強(=32) / 200MA大幅上回り"
+      "reason": "52週高値近傍(-3.5%) / 60日リターン強(26.3%) / ADXトレンド強(=31) / 200MA大幅上回り"
     },
     {
       "agent": "rule_compliance",
@@ -167,15 +167,6 @@
   ],
   "top_risks": [
     {
-      "agent": "supply_demand",
-      "agent_jp": "需給分析",
-      "category": "analysis",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇（蓄積）"
-    },
-    {
       "agent": "expected_value",
       "agent_jp": "期待値",
       "category": "prediction",
@@ -203,22 +194,13 @@
       "reason": "5d上昇確率=57% / 20d=61% / 3m=65% / 期待値=+1.57%"
     },
     {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "低ボラ環境"
+      "reason": "ROE高(22%)"
     },
     {
       "agent": "investor_profile",
@@ -239,13 +221,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ROE高(22%)"
+      "reason": "低ボラ環境"
     },
     {
       "agent": "fundamental",
@@ -255,6 +237,24 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ファンダメンタル中立"
+    },
+    {
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
+      "category": "prediction",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=53% / MA20=-0.8% / 売上成長=14%"
+    },
+    {
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
+      "category": "market_monitor",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "RSI中立ゾーン"
     }
   ],
   "fundamentals": {
@@ -267,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "1997-05-15",
-    "total_days": 7301,
+    "total_days": 7302,
     "approx_years": 29.0,
     "data_span_label": "IPO以降 約29.0年（1997-05-15〜）",
     "all_time_high": 274.99,
-    "current_close": 266.32,
-    "current_drawdown_pct": -3.2,
+    "current_close": 265.29,
+    "current_drawdown_pct": -3.5,
     "max_drawdown_pct": -94.4,
     "days_below_30pct_dd": 2576,
     "pct_time_below_30pct": 35.3,
-    "current_pct_of_ath": 96.8
+    "current_pct_of_ath": 96.5
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_AMZN",

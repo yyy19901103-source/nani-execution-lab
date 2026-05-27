@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-05-24 20:57",
+  "generated_at": "2026-05-27 22:14",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,15 +9,15 @@
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-24 20:57",
-    "prediction_date": "2026-05-24"
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-27 22:14",
+    "prediction_date": "2026-05-27"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "BUY": 9,
-      "HOLD": 10,
-      "WATCH": 50
+      "HOLD": 8,
+      "WATCH": 52
     },
     "category_stats": {
       "prediction": {
@@ -25,14 +25,14 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 57.2
+        "avg_score": 57.3
       },
       "analysis": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 50.9
+        "avg_score": 52.9
       },
       "personal": {
         "count": 10,
@@ -46,7 +46,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 50.7
+        "avg_score": 53.3
       },
       "trade_style": {
         "count": 7,
@@ -127,15 +127,6 @@
       "reason": "3%下落確率=23% / 5%下落確率=38% / 10%下落確率=70%"
     },
     {
-      "agent": "emotion_bias",
-      "agent_jp": "感情バイアス",
-      "category": "personal",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "感情バイアスなし"
-    },
-    {
       "agent": "trend_direction",
       "agent_jp": "トレンド方向",
       "category": "market_monitor",
@@ -143,6 +134,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "中期・長期MA上向き / 200MA下 / MACD正"
+    },
+    {
+      "agent": "emotion_bias",
+      "agent_jp": "感情バイアス",
+      "category": "personal",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "感情バイアスなし"
     },
     {
       "agent": "day_trade",
@@ -155,6 +155,15 @@
     }
   ],
   "top_risks": [
+    {
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
+    },
     {
       "agent": "short_term_prob",
       "agent_jp": "短期確率",
@@ -174,15 +183,6 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=60% / LGBM=63% / ルール=63% / ファンダ=50%"
-    },
-    {
       "agent": "supply_demand",
       "agent_jp": "需給分析",
       "category": "analysis",
@@ -198,7 +198,16 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+29.4%)"
+      "reason": "S&P500比 月次強い(+28.9%)"
+    },
+    {
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "直近ニュース良好(0.32)"
     },
     {
       "agent": "risk_assessment",
@@ -210,6 +219,15 @@
       "reason": "高ボラ(5.2%)"
     },
     {
+      "agent": "news_impact",
+      "agent_jp": "ニュース影響",
+      "category": "analysis",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ニュース中立"
+    },
+    {
       "agent": "mid_term_prob",
       "agent_jp": "中期確率",
       "category": "prediction",
@@ -219,15 +237,6 @@
       "reason": "20d/3m上昇確率=56% / MA20=+9.2% / 売上成長=0%"
     },
     {
-      "agent": "money_management",
-      "agent_jp": "資金管理",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
-    },
-    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -235,15 +244,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
-    },
-    {
-      "agent": "alert",
-      "agent_jp": "アラート",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
     }
   ],
   "fundamentals": null,
