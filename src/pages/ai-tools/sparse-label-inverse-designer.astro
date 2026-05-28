@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout title="コンプレッサ試運転バルブ操作支援 (v5.0)" description="ASME PTC 10 / API 617 準拠 — 操作対象は循環・吸込側バルブのみ。HH:MM:SS時刻・CP932/UTF-8自動判定・列マッピング・物理事前訓練・残差学習・AE事前学習・LOO-CV・サージ制約逆推定・感度分析・操作シーケンス計画・PTC10適合レポート・モデル保存。データ外部送信ゼロ。">
+<BaseLayout title="コンプレッサ試運転バルブ操作支援 (v5.1)" description="ASME PTC 10 / API 617 準拠 — 操作対象は循環・吸込側バルブのみ。HH:MM:SS時刻・CP932/UTF-8自動判定・列マッピング自由選択・物理事前訓練・残差学習・AE事前学習・LOO-CV・サージ制約逆推定・感度分析・操作シーケンス計画・PTC10適合レポート・モデル保存。データ外部送信ゼロ。">
 
   <style>
     /* ヘルプ・ツールチップ */
@@ -62,16 +62,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d0d1a 60%,#0c0c0e 100%);"></div>
     <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
     <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
-      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">Compressor Shop Test · v5.0</p>
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">Compressor Shop Test · v5.1</p>
       <h1 style="font-size:clamp(1.3rem,3.6vw,1.95rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:0.5rem;">コンプレッサ試運転バルブ操作支援</h1>
       <p style="color:rgba(255,255,255,0.45);font-size:0.78rem;font-weight:300;">物理事前訓練 × 残差GP × AE自己教師あり × HH:MM:SS時刻 × 列マッピング × PTC10レポート</p>
     </div>
   </div>
 
-  <!-- v5.0 機能リスト -->
+  <!-- v5.1 機能リスト -->
   <div style="max-width:1300px;margin:0 auto;padding:1rem 1rem 0;">
     <div style="background:linear-gradient(90deg,rgba(110,200,151,0.08) 0%,transparent 100%);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;">
-      <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.4rem;">v5.0 全機能（F1〜F17 + 物理/AE）</div>
+      <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.4rem;">v5.1 全機能（F1〜F17 + 物理/AE）</div>
       <div style="font-size:0.74rem;color:rgba(237,237,232,0.8);line-height:1.7;">
         <strong style="color:#edede8;">データ:</strong> HH:MM:SS時刻 / CP932自動判定 / 列マッピング / 欠損補間 / 時間範囲整合 / サニティチェック ／
         <strong style="color:#edede8;">モデル:</strong> 物理ON/OFFトグル / 残差学習 / AE事前学習 / N可変バルブ / RPM任意 / 複数吸込 ／
@@ -106,15 +106,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- 取込ボタン -->
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem;">
           <button id="btn-sample" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📦 物理ベース合成（HH:MM:SS形式）</button>
+          <span class="help-tip" data-tip="物理モデル（Ψ=a−b·Φ²の放物線特性・断熱圧縮・Greitzer一次遅れ整定）で合成データを生成します。12点の操作メモ（時刻 + Nバルブ）と 3660秒（=61分）の1秒間隔センサーストリーム（流量・圧力・温度）を作成。実データの形式・規模感を学ぶための練習データとしても使えます。">?</span>
           <label style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">
             📂 操作メモCSV
             <input type="file" id="csv-ops" accept=".csv" style="display:none;" />
           </label>
+          <span class="help-tip" data-tip="ベテランが操作した時刻と、その時のバルブ開度（と必要なら RPM）が並んだCSV。例: 時刻列 + valve_A_pct + valve_B_pct...。エンコーディングは UTF-8 / CP932 / Shift-JIS を自動判定。時刻は HH:MM:SS（24時間制・前ゼロなしOK）を推奨。10〜20行程度を想定。">?</span>
           <label style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">
             📂 センサーストリームCSV
             <input type="file" id="csv-stream" accept=".csv" style="display:none;" />
           </label>
+          <span class="help-tip" data-tip="1秒間隔のセンサー測定記録。時刻列 + 流量・圧力・温度（吸込側のみ）など複数の y を含む。数千〜数万行を想定。30000+行（数時間〜1日分）が理想。エンコーディングは UTF-8 / CP932 / Shift-JIS 自動判定。時間範囲は操作メモを包含している必要あり。">?</span>
           <button id="btn-template" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📥 テンプレートDL</button>
+          <span class="help-tip" data-tip="操作メモCSV と センサーストリームCSV の見本ファイルをダウンロードします。実データを用意する際の列構成・時刻形式の参考にできます。">?</span>
           <button id="btn-reset" style="background:transparent;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;margin-left:auto;">🗑 リセット</button>
         </div>
 
@@ -127,6 +131,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div id="mapping-ops" style="margin-bottom:0.8rem;"></div>
           <div id="mapping-stream"></div>
           <button id="btn-confirm-mapping" style="margin-top:0.8rem;background:#c8a96e;color:#0c0c0e;border:none;padding:0.5rem 1.2rem;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">マッピングを確定 →</button>
+          <span class="help-tip" data-tip="選択した列を u/y として確定し、サニティチェック（負値・温度範囲・欠損率・時間範囲整合）を実行します。問題があれば警告表示。物理モデルON時は y のどれが flow/press/temp に対応するかも確定。確定後は STEP 2 物理設定へ進めます。">?</span>
         </div>
 
         <!-- サニティチェック (F9) -->
@@ -154,6 +159,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <input type="checkbox" id="use-physics" checked />
           <strong>物理モデルを使用（残差学習モード）</strong>
           <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;">— OFF にすると純データ駆動 GP のみ</span>
+          <span class="help-tip" data-tip="ON: 物理モデル f_phys(u) で「だいたいの形」を計算し、GP は「物理からのズレ（残差）」だけを学習します。10点という極小データでも汎化しやすい。物理モデルが大きく間違っている場合は OFF にして純データ駆動 GP（直接モード）に切替可能。下のスライダーで物理パラメータを微調整できます。">?</span>
         </label>
         <div id="physics-params" style="display:block;font-size:0.78rem;color:rgba(237,237,232,0.8);line-height:1.7;">
           <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.5rem;">📐 物理パラメータ（既定値・スライダーで微調整）</div>
@@ -175,6 +181,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <input type="checkbox" id="use-ae" checked />
           <strong>オートエンコーダ事前学習を使用</strong>
           <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;">— センサーストリーム全体から表現学習</span>
+          <span class="help-tip" data-tip="dense センサーデータ（数万秒の時系列）を 75%オーバーラップでセグメント化し、MLPRegressor（隠れ層 16→latent→16）で自己回帰訓練。中間層から潜在ベクトルを取り出し、操作点の特徴量に追加します。これにより dense センサーの実質97%カバレッジを達成。OFF にすると AE 抜きで GP のみ。">?</span>
         </label>
         <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:0.8rem;font-size:0.75rem;color:rgba(237,237,232,0.7);">
           <label>セグメント長 (sec):
@@ -188,6 +195,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </label>
         </div>
         <button id="btn-ae" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1.2rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">▶ AE 事前学習を実行</button>
+        <span class="help-tip" data-tip="センサーストリームから AE を訓練します。初回は Pyodide + sklearn のダウンロードで30秒〜2分かかります（2回目以降はキャッシュで高速）。3660秒のサンプルで約520セグメント、訓練時間1秒前後。完了すると STEP 4 GP訓練 に進めます。">?</span>
         <span id="ae-elapsed" style="margin-left:0.7rem;color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
         <div id="ae-status" style="margin-top:0.7rem;font-family:'SF Mono',monospace;font-size:0.72rem;line-height:1.7;color:rgba(237,237,232,0.85);"></div>
         <div id="ae-result" style="display:none;margin-top:0.7rem;background:#0a0a0c;border:1px solid rgba(110,200,151,0.2);padding:0.8rem 1rem;font-size:0.74rem;color:rgba(237,237,232,0.9);"></div>
@@ -209,6 +217,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <label>n_restarts: <input type="number" id="opt-restarts" value="8" min="1" max="20" style="width:3rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" /></label>
         </div>
         <button id="btn-train" style="background:#c8a96e;color:#0c0c0e;border:none;padding:0.6rem 1.6rem;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">▶ GP訓練 + LOO-CV</button>
+        <span class="help-tip" data-tip="各操作 t について [整定待ち] 後の [整定窓] で y を平均化（aleatoric ノイズ低減）、[事前窓] の統計を u 特徴量に追加。物理ONなら残差GP、OFFなら直接GP。LOO-CV（Leave-One-Out 交差検証）で 12点での honest 精度（RMSE / 相対誤差% / 95%信頼区間被覆率）を計算。約6〜10秒。">?</span>
         <span id="train-elapsed" style="margin-left:0.7rem;color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
 
         <div id="train-status" style="margin-top:0.8rem;font-family:'SF Mono',monospace;font-size:0.72rem;line-height:1.7;color:rgba(237,237,232,0.85);"></div>
@@ -271,6 +280,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
           <button id="btn-inverse-all" style="background:#c8a96e;color:#0c0c0e;border:none;padding:0.6rem 1.6rem;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">▶ 全評価点を逆推定</button>
+          <span class="help-tip" data-tip="各評価点 (y*) について、目標を達成する u を differential_evolution + L-BFGS-B（多重起動）で逆算。サージ線を制約として組込み（余裕係数以下になる解はペナルティ）。各点で上位3候補を提示、各候補に GP予測±std / 公差判定（緑=合格・黄=要確認・赤=NG） / サージ余裕 を表示。感度分析ONなら ∂y/∂u、シーケンスONなら最適操作順序も出力。5点で20〜40秒。">?</span>
           <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">多重起動: <input type="number" id="opt-multistart" value="20" min="5" max="100" style="width:3.5rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" /></label>
           <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">
             <input type="checkbox" id="opt-sensitivity" checked style="margin-right:0.3rem;" /> 感度分析
@@ -312,8 +322,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem;">
           <button id="btn-export-csv" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📥 推奨結果CSV</button>
+          <span class="help-tip" data-tip="各評価点の推奨バルブ操作・予測値・誤差%・判定（PASS/WARN/FAIL）・サージ余裕を1ファイルのCSVに出力。試運転前の準備資料、現場での参照用、後日記録用に使えます。">?</span>
           <button id="btn-export-report" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📄 PTC10適合性レポート (HTML)</button>
+          <span class="help-tip" data-tip="ASME PTC 10 / API 617 形式に近い試験記録レポートをHTMLで出力。試験概要・LOO-CV精度・各評価点の判定詳細・操作シーケンス・整合性ガード遵守確認を含む。社内文書化や顧客報告に流用可能。HTMLなのでブラウザでPDF印刷もできます。">?</span>
           <button id="btn-export-audit" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 監査ログ</button>
+          <span class="help-tip" data-tip="本セッションで実行した全操作（データ取込・列マッピング確定・AE訓練・GP訓練・逆推定・エクスポート等）の時刻つきログをJSONで出力。「いつ・何を実行したか」のトレーサビリティ確保用。コンプライアンス要求対応。">?</span>
         </div>
         <div id="export-status" style="font-size:0.72rem;color:rgba(255,255,255,0.5);"></div>
       </div>
@@ -335,9 +348,144 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
     </section>
 
+    <!-- 仕様ガイド（折りたたみ） -->
+    <section class="spec-guide" style="margin-top:3rem;">
+      <div style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.3em;margin-bottom:0.8rem;">📖 仕様ガイド（クリックで開閉）</div>
+
+      <details>
+        <summary>このツールは何をする？</summary>
+        <p>遠心圧縮機の <strong>shop test（性能試運転）</strong> で、設計図書が指定する 1〜10 個の <strong>性能評価点</strong>（流量・圧力・温度の組）を達成するために、<strong>吸込・循環側のバルブをどう操作すべきか</strong>を AI が提案します。</p>
+        <p>ベテランの過去操作記録（操作メモCSV）と当日のセンサー記録（ストリームCSV）から学習し、目標の評価点を入力すると、バルブ開度を逆算します。</p>
+        <p><strong style="color:#ff6b6b;">吐出側は絶対に操作対象に含めません</strong>（測定領域への操作は性能試験の不正に該当）。</p>
+      </details>
+
+      <details>
+        <summary>入力データの仕様</summary>
+        <p><strong>① 操作メモCSV</strong>（10〜20行想定）</p>
+        <ul>
+          <li><code>時刻</code>: HH:MM:SS（例 <code>8:06:55</code>・前ゼロなし対応）</li>
+          <li><code>valve_*_pct</code>: 各バルブ開度 0〜100（%）</li>
+          <li><code>rpm</code>: 任意（速度を操作変数に含めるとき）</li>
+        </ul>
+        <p><strong>② センサーストリームCSV</strong>（1秒間隔・数千〜数万行）</p>
+        <ul>
+          <li><code>時刻</code>: HH:MM:SS</li>
+          <li>各種センサー（流量・圧力・温度・効率・振動など、列名は自由）</li>
+        </ul>
+        <p><strong>エンコーディング</strong>: UTF-8 / CP932 / Shift-JIS 自動判定</p>
+      </details>
+
+      <details>
+        <summary>モデルの仕組み</summary>
+        <p><strong>順モデル u → y</strong>（GP・ガウス過程）</p>
+        <ul>
+          <li>少データ（10〜20点）の黄金律。予測に <strong>不確実性 std</strong> も出力。</li>
+          <li>各 y 次元ごとに独立した GP を訓練（カーネル: <code>C × RBF(ARD) + WhiteKernel</code>）。</li>
+          <li>各操作の整定窓内 std を <code>alpha</code> として GP に渡し、計測ノイズを取り込む。</li>
+        </ul>
+        <p><strong>残差学習（物理モデル ON 時）</strong></p>
+        <ul>
+          <li>物理モデル <code>f_phys(u)</code> が「だいたいの形」を提供</li>
+          <li>GP は <code>y_real − f_phys(u)</code>（残差）だけを学習</li>
+          <li>予測時は <code>f_phys(u_new) + GP_residual(u_new)</code></li>
+          <li>物理が大幅に外れる場合は OFF で純データ駆動 GP に切替可能</li>
+        </ul>
+        <p><strong>AE事前学習</strong></p>
+        <ul>
+          <li>センサー全期間を 30秒セグメント（75%オーバーラップ）に分割</li>
+          <li>sklearn MLPRegressor(隠れ層 16→latent→16) で自己回帰訓練</li>
+          <li>中間層から潜在ベクトル抽出 → 操作点の追加特徴量に</li>
+          <li>dense センサーの実質97%カバレッジを達成</li>
+        </ul>
+        <p><strong>逆推定 y* → u</strong></p>
+        <ul>
+          <li>scipy.optimize: differential_evolution（広域探索）+ L-BFGS-B（多重起動精緻化）</li>
+          <li>サージ線をペナルティ項として制約化</li>
+          <li>上位3候補を提示（多解性を隠さない）</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>物理モデルの数式（v5.1 既定）</summary>
+        <p><strong>[1] バルブ → 流量</strong></p>
+        <p><code>q = q_max × (Σ αᵢ·vᵢ − Σ γᵢ·vᵢvᵢ₊₁/100) / 100 × (RPM/RPM_design)</code></p>
+        <p><strong>[2] 流量 → ヘッド（放物線特性）</strong></p>
+        <p><code>Φ = q / Φ_norm</code> &nbsp; <code>Ψ = a − b·Φ²</code> &nbsp; <code>H = Ψ × H_norm × (RPM/RPM_design)²</code></p>
+        <p><strong>[3] ヘッド → 温度（断熱圧縮）</strong></p>
+        <p><code>T_out = T_in × (1 + H/P_atm)^((κ−1)/κ)</code></p>
+        <p><strong>[4] サージ判定</strong></p>
+        <p><code>q &lt; surge_q × (RPM/RPM_design)</code> なら不安定領域</p>
+        <p>各パラメータは STEP 2 のスライダーで微調整可能。実機の性能曲線データシートから読んだ値に合わせてください。</p>
+      </details>
+
+      <details>
+        <summary>パラメータの起源（何が変わる/変わらん）</summary>
+        <p><strong>変わらん（ユニバーサル）</strong></p>
+        <ul>
+          <li><code>P_atm = 1.013 bar</code>: 大気圧。屋内なので実質固定</li>
+          <li><code>κ = 1.4</code>: 空気の比熱比。空気なら不変（ガス種が変われば変更）</li>
+          <li>熱力学第一法則と放物線特性 Ψ = a − b·Φ² の<strong>式の形</strong></li>
+        </ul>
+        <p><strong>変わる（機械・条件依存）</strong></p>
+        <ul>
+          <li><code>a, b, Φ_norm, H_norm</code>: <strong>インペラ羽根角度・直径・周速度</strong> → メーカー性能曲線データシート</li>
+          <li><code>surge_q</code>: <strong>インペラ失速点</strong> → メーカー曲線</li>
+          <li><code>T_in</code>: <strong>季節・空調・クーラー setpoint</strong> → 試験当日の計測</li>
+          <li><code>αᵢ, γᵢ</code>: <strong>試験ループのバルブ Cv・配管抵抗</strong> → 設備設計図書</li>
+          <li><code>τ_flow, τ_press, τ_temp</code>: <strong>配管容積・熱容量</strong> → 実測または推定</li>
+          <li><code>σ_*</code>: <strong>センサー機種・型式</strong> → 計器仕様書</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>精度評価の見方（LOO-CV）</summary>
+        <p>Leave-One-Out 交差検証で「10〜20点しかないデータで本当に当たるか」を honest に評価します。</p>
+        <ul>
+          <li><strong>RMSE</strong>: 二乗平均平方根誤差（小さいほど良い、単位 y と同じ）</li>
+          <li><strong>MAE</strong>: 平均絶対誤差</li>
+          <li><strong>相対誤差%</strong>: 目標値に対するズレの割合（5%以下なら良好）</li>
+          <li><strong>95%CI被覆率</strong>: 予測 ± 1.96·std の範囲に真値が入る割合（90%以上が望ましい・低いと GP の不確実性過小評価）</li>
+        </ul>
+        <p>合成データでは高精度に出ますが、実データで再評価が必要。被覆率が低い場合は <code>alpha</code> や n_restarts の調整余地あり。</p>
+      </details>
+
+      <details>
+        <summary>判定の見方（公差判定）</summary>
+        <p>各評価点で (流量, 圧力, 温度) の <strong>全3項目</strong>が許容公差内（既定 ±5%）にあるかで判定:</p>
+        <ul>
+          <li><strong>✓ PASS（緑）</strong>: 3項目すべて公差内 → 試運転で有効データと認められる</li>
+          <li><strong>⚠ WARN（黄）</strong>: 1項目だけ公差超過 → 設計余裕や運転条件の見直し推奨</li>
+          <li><strong>✗ FAIL（赤）</strong>: 2項目以上公差超過 → 達成困難、再設計または追加データ必要</li>
+        </ul>
+        <p>サージ余裕（予測流量 ÷ サージ流量）が 1.10 未満なら境界に近く危険。</p>
+      </details>
+
+      <details>
+        <summary>整合性ガードの意味（絶対遵守）</summary>
+        <p>本ツールは「<strong>性能試験の信頼性</strong>」を AI が損なわないため、以下を絶対遵守します:</p>
+        <ul>
+          <li>操作対象 u に含めるのは <strong>吸込側・循環ループのバルブのみ</strong></li>
+          <li><strong>吐出側は測定領域</strong>であり操作不可</li>
+          <li>吐出側を制御変数に含めることは性能試験の不正に該当（ASME PTC 10/API 617 の試験設定原則）</li>
+        </ul>
+        <p>列マッピングで吐出側列を u に選ばないようご注意ください。</p>
+      </details>
+
+      <details>
+        <summary>制限事項・既知の課題</summary>
+        <ul>
+          <li><strong>10点という極小データ</strong>はどんな手法でも超えられない構造的制約。手法では情報を増やせません。実機で「次にどの操作を試すべきか」をアクティブラーニング的に提案する機能で補います。</li>
+          <li><strong>物理モデル既定値はジェネリック</strong>。実機ごとにメーカー性能曲線データシートから読んだ値に置き換えてください。</li>
+          <li><strong>PDF版レポート未対応</strong>: HTML出力をブラウザで「印刷 → PDFに保存」で代替できます。</li>
+          <li><strong>速度RPMモード</strong>はON可能ですが UI 最適化は v5.2 以降。</li>
+          <li><strong>複数吸込ポート</strong>（段別センサーグループ）対応は v5.2 以降。</li>
+        </ul>
+      </details>
+    </section>
+
     <!-- このツールについて -->
-    <section style="margin-top:3rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);padding:1.4rem;">
-      <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.8rem;">ABOUT v5.0</div>
+    <section style="margin-top:2rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);padding:1.4rem;">
+      <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.8rem;">ABOUT v5.1</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
         <div>
           <div style="color:#edede8;font-weight:500;margin-bottom:0.4rem;">対象規格</div>
@@ -2256,7 +2404,7 @@ th { background: #f5f0e6; color: #6c5a3a; }
 .meta { background: #f9f7f0; border-left: 3px solid #c8a96e; padding: 0.6rem 1rem; font-size: 0.9rem; }
 </style></head><body>`;
       html += `<h1>コンプレッサ性能試験 適合性レポート</h1>`;
-      html += `<div class="meta">作成日時: ${now}<br>規格: ASME PTC 10 / API 617<br>ツール: Sparse-Label Inverse Designer v5.0<br>モデルモード: ${tr.mode === 'residual' ? '残差学習 (物理+GP)' : '直接GP'} ${tr.audit.use_ae ? '+ AE事前学習' : ''}</div>`;
+      html += `<div class="meta">作成日時: ${now}<br>規格: ASME PTC 10 / API 617<br>ツール: Sparse-Label Inverse Designer v5.1<br>モデルモード: ${tr.mode === 'residual' ? '残差学習 (物理+GP)' : '直接GP'} ${tr.audit.use_ae ? '+ AE事前学習' : ''}</div>`;
       html += `<h2>1. 試験概要</h2>`;
       html += `<table><tr><th>項目</th><th>値</th></tr>`;
       html += `<tr><td>評価点数</td><td>${r.n_points}</td></tr>`;
