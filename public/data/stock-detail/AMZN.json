@@ -1,15 +1,15 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-05-28 22:55",
+  "generated_at": "2026-05-28 23:05",
   "summary": {
     "rank": "watch",
     "score": 54,
-    "prob_up_5d": 0.569,
-    "prob_down_5pct": 0.239,
-    "expected_return": 1.55,
-    "risk_reward": 1.29,
-    "max_loss_est": -1.2,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=29% / 5%=24% / 10%=14%\n期待値: +1.55% / リスクリワード: 1.29\n判定時刻: 2026-05-28 22:55",
+    "prob_up_5d": 0.582,
+    "prob_down_5pct": 0.244,
+    "expected_return": 1.65,
+    "risk_reward": 1.35,
+    "max_loss_est": -1.22,
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=58% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=29% / 5%=24% / 10%=11%\n期待値: +1.65% / リスクリワード: 1.35\n判定時刻: 2026-05-28 23:05",
     "prediction_date": "2026-05-28"
   },
   "agent_summary": {
@@ -55,7 +55,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 54.1
+        "avg_score": 54.5
       },
       "integration": {
         "count": 6,
@@ -114,10 +114,10 @@
       "agent": "monte_carlo",
       "agent_jp": "モンテカルロ",
       "category": "prediction",
-      "score": 66.0,
+      "score": 67.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.2% / 上昇確率70% / P10=-0.3% P90=+0.6%"
+      "reason": "MC 20日後: 中央値+0.2% / 上昇確率71% / P10=-0.3% P90=+0.7%"
     },
     {
       "agent": "risk_assessment",
@@ -185,6 +185,15 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=58% / 20d=61% / 3m=63% / 期待値=+1.65%"
+    },
+    {
       "agent": "sector_ec_retail",
       "agent_jp": "EC/小売",
       "category": "sector",
@@ -194,15 +203,6 @@
       "reason": "EC成長14%"
     },
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=61% / 3m=63% / 期待値=+1.55%"
-    },
-    {
       "agent": "institutional_flow",
       "agent_jp": "機関投資家動向",
       "category": "analysis",
@@ -210,6 +210,24 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "静かな蓄積パターン"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ROE高(22%)"
+    },
+    {
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=55% / LGBM=58% / ルール=53% / ファンダ=55%"
     },
     {
       "agent": "investor_profile",
@@ -237,24 +255,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "低ボラ環境"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ROE高(22%)"
     }
   ],
   "fundamentals": {

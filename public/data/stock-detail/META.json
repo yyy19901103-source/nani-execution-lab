@@ -1,15 +1,15 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-28 22:55",
+  "generated_at": "2026-05-28 23:05",
   "summary": {
     "rank": "weak_buy",
     "score": 57,
     "prob_up_5d": 0.562,
-    "prob_down_5pct": 0.227,
+    "prob_down_5pct": 0.191,
     "expected_return": 1.5,
-    "risk_reward": 1.33,
-    "max_loss_est": -1.13,
-    "verdict": "【やや買い】★★★\n総合スコア: 57.0/100\n上昇確率: 5日=56% / 20日=38% / 3ヶ月=46% / 12ヶ月=14%\n下落確率: 3%=36% / 5%=23% / 10%=12%\n期待値: +1.50% / リスクリワード: 1.33\n判定時刻: 2026-05-28 22:55",
+    "risk_reward": 1.56,
+    "max_loss_est": -0.96,
+    "verdict": "【やや買い】★★★\n総合スコア: 57.0/100\n上昇確率: 5日=56% / 20日=30% / 3ヶ月=34% / 12ヶ月=10%\n下落確率: 3%=33% / 5%=19% / 10%=9%\n期待値: +1.50% / リスクリワード: 1.56\n判定時刻: 2026-05-28 23:05",
     "prediction_date": "2026-05-28"
   },
   "agent_summary": {
@@ -209,16 +209,7 @@
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=56% / 20d=38% / 3m=46% / 期待値=+1.50%"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "5d上昇確率=56% / 20d=30% / 3m=34% / 期待値=+1.50%"
     },
     {
       "agent": "institutional_flow",
@@ -230,15 +221,6 @@
       "reason": "静かな蓄積パターン"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "alert",
       "agent_jp": "アラート",
       "category": "integration",
@@ -248,6 +230,15 @@
       "reason": "異常なし"
     },
     {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
       "agent": "momentum",
       "agent_jp": "モメンタム",
       "category": "trade_style",
@@ -255,6 +246,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ADXトレンド強(=41)"
+    },
+    {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
     }
   ],
   "fundamentals": {

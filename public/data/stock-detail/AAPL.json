@@ -1,24 +1,25 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-05-28 22:55",
+  "generated_at": "2026-05-28 23:05",
   "summary": {
-    "rank": "watch",
+    "rank": "weak_buy",
     "score": 55,
-    "prob_up_5d": 0.547,
+    "prob_up_5d": 0.553,
     "prob_down_5pct": 0.261,
-    "expected_return": 1.38,
-    "risk_reward": 1.05,
-    "max_loss_est": -1.31,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=59% / 12ヶ月=68%\n下落確率: 3%=29% / 5%=26% / 10%=13%\n期待値: +1.38% / リスクリワード: 1.05\n判定時刻: 2026-05-28 22:55",
+    "expected_return": 1.42,
+    "risk_reward": 1.09,
+    "max_loss_est": -1.3,
+    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=62% / 12ヶ月=68%\n下落確率: 3%=32% / 5%=26% / 10%=13%\n期待値: +1.42% / リスクリワード: 1.09\n判定時刻: 2026-05-28 23:05",
     "prediction_date": "2026-05-28"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
-      "BUY": 14,
+      "STRONG_BUY": 6,
+      "BUY": 13,
+      "WEAK BUY": 1,
       "HOLD": 8,
-      "WATCH": 39,
+      "WATCH": 38,
       "REDUCE": 3
     },
     "category_stats": {
@@ -48,7 +49,14 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 53.8
+        "avg_score": 53.9
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 57.2
       },
       "analysis": {
         "count": 10,
@@ -63,13 +71,6 @@
         "sell": 1,
         "hold": 3,
         "avg_score": 56.1
-      },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 54.2
       }
     }
   },
@@ -120,6 +121,15 @@
       "reason": "12m上昇確率=79% / ROIC=24% / PER=34x"
     },
     {
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 76.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 3/10位"
+    },
+    {
       "agent": "growth_invest",
       "agent_jp": "グロース投資",
       "category": "trade_style",
@@ -154,15 +164,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
-    },
-    {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
-      "score": 68.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 4/10位"
     }
   ],
   "top_risks": [
@@ -212,13 +213,22 @@
       "reason": "テクニカル中立 / 強弱比=4.8:6.5"
     },
     {
-      "agent": "institutional_flow",
-      "agent_jp": "機関投資家動向",
-      "category": "analysis",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "静かな蓄積パターン"
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=55% / 20d=57% / 3m=62% / 期待値=+1.42%"
     },
     {
       "agent": "ensemble",
@@ -246,15 +256,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "RSI極値: 87"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
     }
   ],
   "fundamentals": {

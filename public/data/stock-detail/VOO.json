@@ -1,15 +1,15 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-28 22:55",
+  "generated_at": "2026-05-28 23:05",
   "summary": {
     "rank": "watch",
     "score": 52,
-    "prob_up_5d": 0.59,
-    "prob_down_5pct": 0.117,
-    "expected_return": 1.72,
-    "risk_reward": 2.92,
-    "max_loss_est": -0.59,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=70% / 12ヶ月=56%\n下落確率: 3%=17% / 5%=12% / 10%=20%\n期待値: +1.72% / リスクリワード: 2.92\n判定時刻: 2026-05-28 22:55",
+    "prob_up_5d": 0.591,
+    "prob_down_5pct": 0.136,
+    "expected_return": 1.73,
+    "risk_reward": 2.54,
+    "max_loss_est": -0.68,
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=71% / 12ヶ月=57%\n下落確率: 3%=17% / 5%=14% / 10%=25%\n期待値: +1.73% / リスクリワード: 2.54\n判定時刻: 2026-05-28 23:05",
     "prediction_date": "2026-05-28"
   },
   "agent_summary": {
@@ -62,7 +62,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 51.9
+        "avg_score": 51.8
       },
       "integration": {
         "count": 6,
@@ -129,15 +129,6 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "market_regime",
-      "agent_jp": "市場レジーム",
-      "category": "market_monitor",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "強気レジーム"
-    },
-    {
       "agent": "portfolio_fit",
       "agent_jp": "ポートフォリオ適合",
       "category": "personal",
@@ -154,6 +145,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "market_regime",
+      "agent_jp": "市場レジーム",
+      "category": "market_monitor",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "強気レジーム"
     },
     {
       "agent": "long_term_prob",
@@ -173,7 +173,7 @@
       "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=59% / 20d=67% / 3m=70% / 期待値=+1.72%"
+      "reason": "5d上昇確率=59% / 20d=67% / 3m=71% / 期待値=+1.73%"
     },
     {
       "agent": "expected_value",
@@ -185,6 +185,15 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "mid_term_prob",
       "agent_jp": "中期確率",
       "category": "prediction",
@@ -192,15 +201,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "20d/3m上昇確率=55% / MA20=+2.1% / 売上成長=0%"
-    },
-    {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -212,22 +212,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "配当利回り119.0%"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "volatility_env",
@@ -239,6 +230,15 @@
       "reason": "低ボラ環境"
     },
     {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
+    },
+    {
       "agent": "macro_environment",
       "agent_jp": "マクロ環境",
       "category": "analysis",
@@ -248,13 +248,13 @@
       "reason": "長期金利高(4.5%) / 金利低下中(株にプラス) / S&P500上昇中"
     },
     {
-      "agent": "bayesian",
-      "agent_jp": "ベイズ更新",
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "過去勝率=50% / 事後確率=55%"
+      "reason": "アンサンブル=55% / LGBM=59% / ルール=53% / ファンダ=50%"
     }
   ],
   "fundamentals": {

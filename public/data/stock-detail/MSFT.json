@@ -1,15 +1,15 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-28 22:55",
+  "generated_at": "2026-05-28 23:05",
   "summary": {
     "rank": "watch",
     "score": 53,
-    "prob_up_5d": 0.546,
-    "prob_down_5pct": 0.184,
-    "expected_return": 1.37,
-    "risk_reward": 1.49,
-    "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=54% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=36% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-28 22:55",
+    "prob_up_5d": 0.558,
+    "prob_down_5pct": 0.191,
+    "expected_return": 1.46,
+    "risk_reward": 1.54,
+    "max_loss_est": -0.95,
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=56% / 20日=55% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=33% / 5%=19% / 10%=6%\n期待値: +1.46% / リスクリワード: 1.54\n判定時刻: 2026-05-28 23:05",
     "prediction_date": "2026-05-28"
   },
   "agent_summary": {
@@ -62,7 +62,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 51.2
+        "avg_score": 51.3
       },
       "integration": {
         "count": 6,
@@ -176,13 +176,13 @@
       "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "低ボラ環境"
+      "reason": "5d上昇確率=56% / 20d=55% / 3m=59% / 期待値=+1.46%"
     },
     {
       "agent": "investor_profile",
@@ -192,6 +192,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
+    },
+    {
+      "agent": "valuation",
+      "agent_jp": "バリュエーション",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "バリュエーション中立"
     },
     {
       "agent": "alert",
@@ -212,22 +221,13 @@
       "reason": "ストキャスKD売り / RSI7売られ過ぎ"
     },
     {
-      "agent": "valuation",
-      "agent_jp": "バリュエーション",
-      "category": "analysis",
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "バリュエーション中立"
-    },
-    {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=54% / 3m=59% / 期待値=+1.37%"
+      "reason": "低ボラ環境"
     },
     {
       "agent": "macro_environment",

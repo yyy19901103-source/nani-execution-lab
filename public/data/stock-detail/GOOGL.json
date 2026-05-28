@@ -1,15 +1,15 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-28 22:55",
+  "generated_at": "2026-05-28 23:05",
   "summary": {
     "rank": "weak_buy",
     "score": 55,
-    "prob_up_5d": 0.563,
-    "prob_down_5pct": 0.15,
-    "expected_return": 1.5,
-    "risk_reward": 2.0,
-    "max_loss_est": -0.75,
-    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=56% / 20日=60% / 3ヶ月=62% / 12ヶ月=66%\n下落確率: 3%=24% / 5%=15% / 10%=6%\n期待値: +1.50% / リスクリワード: 2.00\n判定時刻: 2026-05-28 22:55",
+    "prob_up_5d": 0.572,
+    "prob_down_5pct": 0.166,
+    "expected_return": 1.58,
+    "risk_reward": 1.9,
+    "max_loss_est": -0.83,
+    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=57% / 20日=61% / 3ヶ月=62% / 12ヶ月=73%\n下落確率: 3%=22% / 5%=17% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.90\n判定時刻: 2026-05-28 23:05",
     "prediction_date": "2026-05-28"
   },
   "agent_summary": {
@@ -55,7 +55,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 54.6
+        "avg_score": 55.0
       },
       "market_monitor": {
         "count": 7,
@@ -188,10 +188,10 @@
       "agent": "lgbm_prob",
       "agent_jp": "LightGBM確率",
       "category": "prediction",
-      "score": 56.0,
+      "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=56% / 20d=60% / 3m=62% / 期待値=+1.50%"
+      "reason": "5d上昇確率=57% / 20d=61% / 3m=62% / 期待値=+1.58%"
     },
     {
       "agent": "news_impact",
@@ -203,13 +203,13 @@
       "reason": "ニュース中立"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
     },
     {
       "agent": "investor_profile",
@@ -230,13 +230,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
       "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "score_integration",

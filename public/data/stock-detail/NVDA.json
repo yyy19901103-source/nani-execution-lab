@@ -1,15 +1,15 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-28 22:55",
+  "generated_at": "2026-05-28 23:05",
   "summary": {
     "rank": "watch",
     "score": 55,
-    "prob_up_5d": 0.54,
-    "prob_down_5pct": 0.234,
-    "expected_return": 1.32,
-    "risk_reward": 1.13,
-    "max_loss_est": -1.17,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=64% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=26% / 5%=23% / 10%=17%\n期待値: +1.32% / リスクリワード: 1.13\n判定時刻: 2026-05-28 22:55",
+    "prob_up_5d": 0.541,
+    "prob_down_5pct": 0.239,
+    "expected_return": 1.33,
+    "risk_reward": 1.11,
+    "max_loss_est": -1.2,
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.11\n判定時刻: 2026-05-28 23:05",
     "prediction_date": "2026-05-28"
   },
   "agent_summary": {
@@ -48,7 +48,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 54.2
+        "avg_score": 54.1
       },
       "analysis": {
         "count": 10,
@@ -156,13 +156,13 @@
       "reason": "ウォッチリスト内 4/10位"
     },
     {
-      "agent": "mid_term_prob",
-      "agent_jp": "中期確率",
-      "category": "prediction",
+      "agent": "risk_assessment",
+      "agent_jp": "リスク評価",
+      "category": "analysis",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=65% / MA20=-0.9% / 売上成長=73%"
+      "reason": "リスク許容範囲内"
     }
   ],
   "top_risks": [
@@ -176,13 +176,13 @@
       "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
     },
     {
       "agent": "alert",
@@ -194,13 +194,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "score_integration",
@@ -221,6 +221,15 @@
       "reason": "長期金利高(4.5%) / 金利低下中(株にプラス) / S&P500上昇中"
     },
     {
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=54% / 20d=61% / 3m=64% / 期待値=+1.33%"
+    },
+    {
       "agent": "ensemble",
       "agent_jp": "アンサンブル",
       "category": "prediction",
@@ -230,31 +239,22 @@
       "reason": "アンサンブル=55% / LGBM=54% / ルール=37% / ファンダ=80%"
     },
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 53.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=54% / 20d=64% / 3m=64% / 期待値=+1.32%"
-    },
-    {
       "agent": "final_judgment",
       "agent_jp": "最終判定",
       "category": "integration",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=64% / 3ヶ月=64% / 12ヶ月=72%\n下落確率: 3%=26% / 5%=23% / 10%=17%\n期待値: +1.32% / リスクリワード: 1.13\n判定時刻: 2026-05-28 22:55"
+      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.11\n判定時刻: 2026-05-28 23:05"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
+      "agent": "earnings_momentum",
+      "agent_jp": "決算モメンタム",
+      "category": "analysis",
       "score": 50.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "PBR高い(30.8x) / ROE高(101%)"
+      "reason": "決算特記事項なし"
     }
   ],
   "fundamentals": {
