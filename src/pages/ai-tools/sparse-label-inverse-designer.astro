@@ -117,6 +117,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <input type="file" id="csv-stream" accept=".csv" style="display:none;" />
           </label>
           <span class="help-tip" data-tip="1秒間隔のセンサー測定記録。時刻列 + 流量・圧力・温度（吸込側のみ）など複数の y を含む。数千〜数万行を想定。30000+行（数時間〜1日分）が理想。エンコーディングは UTF-8 / CP932 / Shift-JIS 自動判定。時間範囲は操作メモを包含している必要あり。">?</span>
+          <label style="background:transparent;border:1px solid rgba(139,109,200,0.4);color:#b89bff;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">
+            🧬 外部埋め込みCSV（TimesFM等・任意）
+            <input type="file" id="csv-embed" accept=".csv" style="display:none;" />
+          </label>
+          <span class="help-tip" data-tip="L2 表現学習層との連携用。ローカル（家PC等）で時系列基盤モデル（TimesFM 2.0-500m 等）が出力した操作点ごとの埋め込みベクトルを取り込みます。形式: 時刻 + emb_1, emb_2, ..., emb_K の数値列。操作メモの各時刻に近いストリーム位置の埋め込みを使います。提供すれば AE と併用または置換が可能。任意（提供しなくても動作）。">?</span>
           <button id="btn-template" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📥 テンプレートDL</button>
           <span class="help-tip" data-tip="操作メモCSV と センサーストリームCSV の見本ファイルをダウンロードします。実データを用意する際の列構成・時刻形式の参考にできます。">?</span>
           <button id="btn-reset" style="background:transparent;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;margin-left:auto;">🗑 リセット</button>
@@ -472,6 +477,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </details>
 
       <details>
+        <summary>外部埋め込み連携（TimesFM 等・L2層）</summary>
+        <p>本ツールは <strong>3層設計（L1物理 + L2表現学習 + L3逆問題）</strong> の <strong>L2層</strong> に外部埋め込みベクトルを取り込めます。代表的な連携対象は <strong>TimesFM 2.0-500m</strong> 等の時系列基盤モデル。</p>
+        <p><strong>運用フロー（家PC + HP）</strong></p>
+        <ol>
+          <li>家PC（Python 3.11 venv）で TimesFM 等の事前学習済モデルをロード</li>
+          <li>センサーストリームを入力 → 操作時刻ごとに <strong>埋め込みベクトル</strong>（数百次元〜）を出力</li>
+          <li>CSV形式で保存: <code>時刻 + emb_1, emb_2, ..., emb_K</code></li>
+          <li>HP ツールの「🧬 外部埋め込みCSV」から取込</li>
+          <li>各操作時刻に最も近い行を最近傍マッチ → GP特徴量に追加</li>
+        </ol>
+        <p><strong>AEとの関係</strong>: 自前 AE と外部埋め込みは<strong>併用可能</strong>。両方ONなら両方が GP の特徴量に追加され、どちらが効くかを LOO-CV で比較できます。</p>
+        <p><strong>なぜ家PCで処理する？</strong> TimesFM 2.0-500m は約 4GB あり、ブラウザ Pyodide には載りません。重い表現抽出はローカル、軽い GP は HP（Pyodide）で分業する設計。</p>
+        <p><strong>導入時の注意</strong>（社用PCで TimesFM を構築する場合の典型障害と回避法）:</p>
+        <ul>
+          <li>Anaconda 商用ライセンス 403 → conda を捨て <strong>uv + PyPI</strong></li>
+          <li>SSL 傍受 (UnknownIssuer) → <code>uv --system-certs</code> で Windows 信頼ストア使用</li>
+          <li>python.org インストーラ 0x80070005 → <code>uv python install</code> で取得</li>
+          <li>TimesFM 2.0-500m モデル state_dict mismatch → <code>num_layers=50</code> / <code>use_positional_embedding=False</code> / <code>context_len=2048</code> を hparams に明示</li>
+        </ul>
+      </details>
+
+      <details>
         <summary>制限事項・既知の課題</summary>
         <ul>
           <li><strong>10点という極小データ</strong>はどんな手法でも超えられない構造的制約。手法では情報を増やせません。実機で「次にどの操作を試すべきか」をアクティブラーニング的に提案する機能で補います。</li>
@@ -521,15 +548,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       pyodide: null, pyReady: false, sklearnLoaded: false,
       opsRaw: null,       // {header, rows, encoding}
       streamRaw: null,    // {header, rows, encoding}
-      mapping: null,      // {opTime, valves[], rpm, sensorTime, flow, press, temp}
-      physicsParams: null, // 物理モデルパラメータ
-      aeReady: false,      // AE訓練済みか
+      embedRaw: null,     // {header, rows, encoding} — 外部埋め込み (TimesFM等)
+      mapping: null,      // {opTime, valves[], rpm, sensorTime, ...}
+      physicsParams: null,
+      aeReady: false,
       trained: false,
       surge: [],
       evalPoints: [],
       lastResults: null,
       auditLog: [],
-      isSampleData: false,  // サンプルデータか実データか
+      isSampleData: false,
     };
 
     const $ = id => document.getElementById(id);
@@ -1010,9 +1038,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     function updateDataStatus() {
       if (state.opsRaw && state.streamRaw) {
         const stRows = state.streamRaw.rows.length;
-        $('data-status').textContent = `✓ 操作メモ ${state.opsRaw.rows.length}行 / ストリーム ${stRows}行`;
+        const embTxt = state.embedRaw ? ` / 外部埋め込み ${state.embedRaw.rows.length}行 × ${state.embedRaw.header.length-1}次元` : '';
+        $('data-status').textContent = `✓ 操作メモ ${state.opsRaw.rows.length}行 / ストリーム ${stRows}行${embTxt}`;
         $('data-status').style.color = '#6ec897';
-        $('encoding-info').textContent = `エンコーディング: 操作=${state.opsRaw.encoding}, ストリーム=${state.streamRaw.encoding}`;
+        let encStr = `エンコーディング: 操作=${state.opsRaw.encoding}, ストリーム=${state.streamRaw.encoding}`;
+        if (state.embedRaw) encStr += `, 埋め込み=${state.embedRaw.encoding}`;
+        $('encoding-info').textContent = encStr;
         $('encoding-info').style.display = 'block';
         buildMappingUI();
       } else {
@@ -1056,14 +1087,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       audit('stream_csv_uploaded', { rows: d.rows.length, encoding: r.encoding });
       updateDataStatus();
     });
+    $('csv-embed').addEventListener('change', async e => {
+      const f = e.target.files[0]; if (!f) return;
+      prog('埋め込みCSV解析中...');
+      const r = await readCSVFile(f);
+      const d = parseCSV(r.text);
+      state.embedRaw = { ...d, encoding: r.encoding };
+      prog('');
+      audit('embed_csv_uploaded', { rows: d.rows.length, cols: d.header.length, encoding: r.encoding });
+      updateDataStatus();
+    });
     $('btn-template').addEventListener('click', () => {
       const d = generateSampleData();
       downloadCSV('operations-template.csv', d.ops.header, d.ops.rows);
-      setTimeout(() => downloadCSV('sensor-stream-template.csv', d.stream.header, d.stream.rows), 600);
+      setTimeout(() => downloadCSV('sensor-stream-template.csv', d.stream.header, d.stream.rows), 400);
+      // 埋め込みCSVテンプレ（操作時刻+ダミー4次元）
+      setTimeout(() => {
+        const opTimes = d.ops.rows.map(r => r[0]);
+        const embHeader = ['時刻', 'emb_1', 'emb_2', 'emb_3', 'emb_4'];
+        let s = 17; const rng = () => { s = (s*9301+49297)%233280; return (s/233280 - 0.5).toFixed(4); };
+        const embRows = opTimes.map(t => [t, rng(), rng(), rng(), rng()]);
+        downloadCSV('embedding-template.csv', embHeader, embRows);
+      }, 800);
     });
     $('btn-reset').addEventListener('click', () => {
       Object.assign(state, {
-        opsRaw: null, streamRaw: null, mapping: null,
+        opsRaw: null, streamRaw: null, embedRaw: null, mapping: null,
         physicsParams: null, aeReady: false, trained: false,
         surge: [], evalPoints: [], lastResults: null, isSampleData: false
       });
@@ -1276,8 +1325,30 @@ json.dumps(result)
           });
         }) : null;
 
+        // 外部埋め込みCSV（TimesFM等）が提供されていれば、操作時刻に最も近い行を抽出
+        let embedFeatures = null;
+        if (state.embedRaw && state.embedRaw.header.length >= 2) {
+          const embHdr = state.embedRaw.header;
+          const embTimeIdx = embHdr.findIndex(h => /時刻|time|timestamp/i.test(h));
+          const embTimeCol = embTimeIdx >= 0 ? embTimeIdx : 0;
+          const embColIdxs = embHdr.map((_, i) => i).filter(i => i !== embTimeCol);
+          const embTimes = state.embedRaw.rows.map(r => parseTimestamp(r[embTimeCol]));
+          const embVecs = state.embedRaw.rows.map(r => embColIdxs.map(i => parseFloat(r[i])));
+          embedFeatures = ops.map(o => {
+            let bestIdx = 0, bestDt = Infinity;
+            for (let i = 0; i < embTimes.length; i++) {
+              if (isNaN(embTimes[i])) continue;
+              const dt = Math.abs(embTimes[i] - o.t);
+              if (dt < bestDt) { bestDt = dt; bestIdx = i; }
+            }
+            return embVecs[bestIdx];
+          });
+          log('train-status', `✓ 外部埋め込み: ${embedFeatures[0].length}次元 × ${embedFeatures.length}操作点（最近傍マッチ）`, '#b89bff');
+        }
+
         state.pyodide.globals.set('ops_data', ops.map(o => ({ t: o.t, valves: o.valves, rpm: o.rpm })));
         state.pyodide.globals.set('stream_data', stream);
+        state.pyodide.globals.set('embed_features', embedFeatures);
         state.pyodide.globals.set('settle_sec', settle);
         state.pyodide.globals.set('settle_wait', wait);
         state.pyodide.globals.set('pre_sec', pre);
@@ -1405,11 +1476,28 @@ X_pre = np.array(X_pre, dtype=float)
 Y_steady = np.array(Y_steady, dtype=float)
 Y_std_arr = np.array(Y_std, dtype=float)
 
+# 外部埋め込み (TimesFM等) を取込（操作と同順序で来ているので、used_indices で揃える）
+X_embed_external = None
+try:
+    if embed_features is not None:
+        ef = list(embed_features.to_py())
+        # order_op に従い、skipped を除外
+        used = [int(i) for i in order_op if i not in [s['i'] for s in skipped]]
+        ef_sorted = [ef[i] for i in used if i < len(ef)]
+        if len(ef_sorted) == X_u.shape[0]:
+            X_embed_external = np.array(ef_sorted, dtype=float)
+            # NaN は 0 補間
+            X_embed_external = np.where(np.isnan(X_embed_external), 0.0, X_embed_external)
+except Exception:
+    X_embed_external = None
+
 # 連結
 parts = [X_u, X_pre]
 if use_ae_flag and len(X_ae):
     X_ae = np.array(X_ae, dtype=float)
     parts.append(X_ae)
+if X_embed_external is not None:
+    parts.append(X_embed_external)
 X_full = np.concatenate(parts, axis=1)
 nT = X_full.shape[0]
 nFeat = X_full.shape[1]
@@ -1537,6 +1625,7 @@ _use_ae_active = use_ae_flag
 _nU_actual = nU_actual
 _pre_default = X_pre.mean(axis=0).tolist()
 _ae_default = np.array([row for row in X_ae]).mean(axis=0).tolist() if (use_ae_flag and len(X_ae)) else []
+_embed_default = X_embed_external.mean(axis=0).tolist() if X_embed_external is not None else []
 _nU_valves = nU_valves
 _valve_names = vN
 _y_names = y_names
@@ -1546,6 +1635,7 @@ result = {
     "n_u_valves": int(nU_valves), "n_u_total": int(nU_actual),
     "n_pre": int(X_pre.shape[1]),
     "n_ae": int(0 if not (use_ae_flag and len(X_ae)) else len(X_ae[0])),
+    "n_embed_external": int(0 if X_embed_external is None else X_embed_external.shape[1]),
     "n_features": int(nFeat),
     "mode": mode,
     "fit_total_sec": round(t_fit_total, 3),
@@ -1568,7 +1658,7 @@ json.dumps(result)
         audit('gp_trained', res.audit);
 
         log('train-status', `✓ 集約 ${res.n_train}行 (除外${res.n_skipped})`, '#6ec897');
-        log('train-status', `✓ 特徴量: u=${res.n_u_total} + 事前窓=${res.n_pre}${res.n_ae?` + AE=${res.n_ae}`:''} = ${res.n_features}次元`);
+        log('train-status', `✓ 特徴量: u=${res.n_u_total} + 事前窓=${res.n_pre}${res.n_ae?` + AE=${res.n_ae}`:''}${res.n_embed_external?` + 外部埋め込み=${res.n_embed_external}`:''} = ${res.n_features}次元`);
         log('train-status', `✓ モード: ${res.mode === 'residual' ? '残差学習(物理+GP)' : '直接GP'} `, res.mode === 'residual' ? '#6ec897' : '#e8c97a');
         log('train-status', `✓ GP訓練 ${res.fit_total_sec}秒 + LOO-CV ${res.loo_sec}秒`, '#6ec897');
 
@@ -1807,6 +1897,7 @@ def physics_python(u_raw):
 
 pre_default = np.array(_pre_default)
 ae_default = np.array(_ae_default) if len(_ae_default) > 0 else None
+embed_default = np.array(_embed_default) if len(_embed_default) > 0 else None
 u_lo = np.array(_X_train.min(axis=0))
 u_hi = np.array(_X_train.max(axis=0))
 bounds_u = list(zip(u_lo.tolist(), u_hi.tolist()))
@@ -1823,6 +1914,8 @@ def make_X(u_raw):
     parts.append(pre_default)
     if ae_default is not None:
         parts.append(ae_default)
+    if embed_default is not None:
+        parts.append(embed_default)
     return np.concatenate(parts).reshape(1, -1)
 
 def predict_y_target(u_raw):
