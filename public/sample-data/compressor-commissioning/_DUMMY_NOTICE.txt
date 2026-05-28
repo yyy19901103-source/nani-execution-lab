@@ -1,0 +1,24 @@
+==============================================================
+  ⚠️  DUMMY DATA — DO NOT USE FOR ACTUAL EVALUATION  ⚠️
+==============================================================
+
+All CSV files in this folder are SYNTHETIC data generated from
+a physical model (Psi = a - b*Phi^2) using:
+
+    scripts/gen_compressor_sample.py  (seed=42)
+
+They are NOT measured from a real compressor.
+
+Intended use:
+  - Tool functionality demo
+  - UI exercise / training
+  - Reference for column structure
+
+NOT intended for:
+  - Actual machine performance evaluation
+  - PTC10 / API617 compliance reporting
+  - Customer deliverables
+  - Academic citation
+
+For real use, supply your own CSV with the same column layout.
+==============================================================

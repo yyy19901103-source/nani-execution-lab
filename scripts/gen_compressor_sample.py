@@ -57,16 +57,16 @@ def physics(u1, u2, u3, rpm):
 # 経験者が広く分散して取った点（学習用）
 operations = [
     # (timestamp[s], rpm, u1_suction, u2_circ, u3_inlet, label)
-    (300,  6500, 40, 60, 50, "warm-up A"),
-    (600,  7000, 55, 40, 60, "low-Q point"),
-    (900,  7200, 70, 25, 70, "mid-Q point"),
-    (1200, 7500, 80, 15, 80, "high-Q point"),
-    (1500, 7800, 90, 10, 85, "near-design"),
-    (1800, 7800, 65, 35, 60, "recirc test"),
-    (2100, 7500, 50, 50, 50, "balanced"),
-    (2400, 7300, 75, 20, 75, "surge margin test"),
-    (2700, 7600, 85, 12, 82, "high-η search"),
-    (3000, 7400, 60, 45, 55, "verification"),
+    (300,  6500, 40, 60, 50, "[DUMMY] warm-up A"),
+    (600,  7000, 55, 40, 60, "[DUMMY] low-Q point"),
+    (900,  7200, 70, 25, 70, "[DUMMY] mid-Q point"),
+    (1200, 7500, 80, 15, 80, "[DUMMY] high-Q point"),
+    (1500, 7800, 90, 10, 85, "[DUMMY] near-design"),
+    (1800, 7800, 65, 35, 60, "[DUMMY] recirc test"),
+    (2100, 7500, 50, 50, 50, "[DUMMY] balanced"),
+    (2400, 7300, 75, 20, 75, "[DUMMY] surge margin test"),
+    (2700, 7600, 85, 12, 82, "[DUMMY] high-η search"),
+    (3000, 7400, 60, 45, 55, "[DUMMY] verification"),
 ]
 
 # operations.csv
@@ -138,11 +138,11 @@ with open(OUT / "embeddings_timesfm25.csv", "w", newline="", encoding="utf-8") a
 # PTC10 / API617 通常 5 点
 eval_points = [
     # (name, y1_Q, y2_dP, y3_eta)
-    ("100% design", 12500, 105, 76.0),
-    ("80% Q", 10000, 92, 74.5),
-    ("60% Q", 7500, 75, 70.0),
-    ("110% Q overload", 13800, 115, 73.5),
-    ("min flow (surge margin)", 6000, 65, 65.0),
+    ("[DUMMY] 100% design", 12500, 105, 76.0),
+    ("[DUMMY] 80% Q", 10000, 92, 74.5),
+    ("[DUMMY] 60% Q", 7500, 75, 70.0),
+    ("[DUMMY] 110% Q overload", 13800, 115, 73.5),
+    ("[DUMMY] min flow (surge margin)", 6000, 65, 65.0),
 ]
 with open(OUT / "eval_points.csv", "w", newline="", encoding="utf-8") as f:
     w = csv.writer(f)
@@ -178,8 +178,49 @@ with open(OUT / "actual_run2.csv", "w", newline="", encoding="utf-8") as f:
         eta += random.gauss(0, 0.6)
         w.writerow([name, rpm, u1, u2, u3, f"{Q:.1f}", f"{dP:.3f}", f"{eta:.2f}"])
 
+# --- DUMMY NOTICE ---
+notice = """==============================================================
+  ⚠️  DUMMY DATA — DO NOT USE FOR ACTUAL EVALUATION  ⚠️
+==============================================================
+
+All CSV files in this folder are SYNTHETIC data generated from
+a physical model (Psi = a - b*Phi^2) using:
+
+    scripts/gen_compressor_sample.py  (seed=42)
+
+They are NOT measured from a real compressor.
+
+Intended use:
+  - Tool functionality demo
+  - UI exercise / training
+  - Reference for column structure
+
+NOT intended for:
+  - Actual machine performance evaluation
+  - PTC10 / API617 compliance reporting
+  - Customer deliverables
+  - Academic citation
+
+For real use, supply your own CSV with the same column layout.
+==============================================================
+"""
+(OUT / "_DUMMY_NOTICE.txt").write_text(notice, encoding="utf-8")
+
 # --- README ---
-readme = """# コンプレッサ試運転 完全サンプルデータ
+readme = """# ⚠️ ダミーデータ（合成・架空）— 実機データではありません
+
+このフォルダの **全 CSV は実機計測ではなく**、物理モデル
+（Ψ = a − b·Φ²）からスクリプト `scripts/gen_compressor_sample.py`
+で計算合成した **架空データ** です。乱数シードは 42 固定。
+
+- 用途: ツール動作確認・UI デモ・学習用
+- 禁止: 実機性能評価・規格適合判定・顧客報告・論文引用
+
+実機データを使う場合は同じ列構成で自前 CSV を用意してください。
+
+---
+
+# コンプレッサ試運転 完全サンプルデータ (DUMMY)
 
 物理整合（Ψ-Φ放物線 + サージ近傍）で生成した「完璧な」訓練用データセット。
 
