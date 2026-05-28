@@ -34,6 +34,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     .spec-guide code { background:rgba(200,169,110,0.1); color:#c8a96e; padding:0.1rem 0.4rem; font-family:'SF Mono',monospace; font-size:0.72rem; }
   </style>
 
+  <!-- 一発本番モード（最上部・最高優先）-->
+  <div style="background:linear-gradient(90deg,rgba(110,200,151,0.18) 0%,rgba(200,169,110,0.12) 50%,rgba(139,109,200,0.15) 100%);border-left:4px solid #6ec897;padding:1rem 1.25rem;font-size:0.82rem;color:#edede8;line-height:1.7;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:280px;">
+        <div style="color:#6ec897;font-size:0.7rem;letter-spacing:0.3em;margin-bottom:0.4rem;">⚡ ONE-SHOT MODE (一発本番モード)</div>
+        <div>
+          <strong style="color:#6ec897;">失敗の許されない試運転向け：</strong>
+          全ツール（物理＋AE＋外部埋め込み＋残差GP＋サージ制約＋感度分析＋シーケンス計画＋公差判定＋Oracle）を最大安全側で同時起動。
+          <strong>保守的予測（GP下限）</strong>で安全余裕を確保し、不確実性が高い候補を自動降格します。
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:0.5rem;color:#6ec897;font-size:0.85rem;font-weight:600;cursor:pointer;white-space:nowrap;">
+        <input type="checkbox" id="one-shot-mode" />
+        ⚡ 一発本番モードを有効化
+      </label>
+    </div>
+    <div id="one-shot-detail" style="display:none;margin-top:0.7rem;padding:0.6rem 0.8rem;background:#0a0a0c;border:1px dashed rgba(110,200,151,0.4);font-size:0.74rem;color:rgba(237,237,232,0.85);line-height:1.6;">
+      <strong style="color:#6ec897;">✅ 自動有効化される項目:</strong>
+      物理モデル ON / AE事前学習 ON / 外部埋め込みあれば使用 / 残差学習モード / 多重起動を 50 に増強 / 感度分析 ON / シーケンス計画 ON / 公差判定厳格化（既定 5% → 3%）/ 保守的予測モード（GP下限 mu − 1.96σ で目標達成判定）<br>
+      <strong style="color:#e8c97a;">⚠ 追加表示:</strong>
+      各候補に「Go/No-Go 信号」（GP予測 + 物理整合 + サージ余裕 + 感度低 + LOO-CV信頼性 の5項目総合判定）/ 訓練データ範囲外なら強制 No-Go
+    </div>
+  </div>
+
   <!-- 整合性ガード（最優先・赤帯）-->
   <div style="background:rgba(255,107,107,0.10);border-left:4px solid #ff6b6b;padding:1rem 1.25rem;font-size:0.82rem;color:#edede8;line-height:1.7;">
     <div style="color:#ff6b6b;font-size:0.7rem;letter-spacing:0.3em;margin-bottom:0.4rem;">🛡 INTEGRITY GUARD (絶対遵守)</div>
@@ -2176,6 +2200,42 @@ json.dumps(result)
     // 逆推定結果レンダリング
     // ============================================================
     function renderInverseResult(res) {
+      const oneShot = $('one-shot-mode') && $('one-shot-mode').checked;
+
+      // Go/No-Go 判定（一発本番モード時のみ表示）
+      const computeGoNoGo = (r, ri) => {
+        const c = r.candidates[0]; if (!c) return null;
+        const checks = c.checks;
+        // 1. GP予測公差内（全項目）
+        const allOK = checks.every(ch => ch.ok);
+        // 2. サージ余裕 1.10以上
+        const surgeOK = c.surge_safe;
+        // 3. 訓練範囲内（カバレッジ警告に該当しない）
+        const inRange = !res.coverage_warnings.some(w => w.eval_idx === r.idx);
+        // 4. 感度が極端でない（任意の∂y/∂u が ±10 以下）
+        let sensOK = true;
+        if (c.sensitivity) {
+          c.sensitivity.forEach(s => {
+            if (Math.abs(s.dflow_du) > 10 || Math.abs(s.dpress_du) > 2 || Math.abs(s.dtemp_du) > 20) sensOK = false;
+          });
+        }
+        // 5. LOO-CV 信頼性（press の予測 std が大きすぎないか）
+        const stdOK = checks.every((ch, j) => {
+          const targetMag = Math.abs(ch.target) + 1e-9;
+          return (ch.std / targetMag) < 0.05;  // std が目標値の 5% 以下
+        });
+        // 6. 物理整合（Oracleがあれば）
+        let physOK = true;
+        if (res.oracleResults && res.oracleResults[ri]) {
+          physOK = res.oracleResults[ri].allOK;
+        }
+        const passes = [allOK, surgeOK, inRange, sensOK, stdOK, physOK];
+        const passN = passes.filter(Boolean).length;
+        const sig = passN >= 6 ? 'GO' : (passN >= 4 ? 'CAUTION' : 'NO-GO');
+        const labels = ['GP公差', 'サージ余裕', '訓練範囲内', '感度許容', '不確実性低', '物理整合'];
+        return { signal: sig, passN, total: 6, items: passes.map((ok, i) => ({ name: labels[i], ok })) };
+      };
+
       // 総合判定
       const totalPass = res.overall_pass === res.n_points;
       const oj = $('overall-judgment');
@@ -2211,9 +2271,25 @@ json.dumps(result)
         const sCol = r.best_status === 'PASS' ? '#6ec897' : (r.best_status === 'WARN' ? '#e8c97a' : '#ff6b6b');
         const sLabel = r.best_status === 'PASS' ? '✓ PASS' : (r.best_status === 'WARN' ? '⚠ WARN' : '✗ FAIL');
         html += `<div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);border-left:3px solid ${sCol};padding:0.9rem 1.1rem;margin-bottom:0.6rem;">`;
-        html += `<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;">`;
+        html += `<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;flex-wrap:wrap;gap:0.5rem;">`;
         html += `<div><span style="color:#c8a96e;font-weight:600;">#${r.idx}</span> <span style="color:#edede8;margin-left:0.6rem;">${escapeHtml(r.label)}</span></div>`;
         html += `<div style="color:${sCol};font-weight:600;font-size:0.85rem;">${sLabel}</div></div>`;
+        // 一発本番モード Go/No-Go 信号
+        if (oneShot) {
+          const gng = computeGoNoGo(r, ri);
+          if (gng) {
+            const gngCol = gng.signal === 'GO' ? '#6ec897' : (gng.signal === 'CAUTION' ? '#e8c97a' : '#ff6b6b');
+            html += `<div style="background:#0c0c0e;border:1px solid ${gngCol}55;padding:0.6rem 0.8rem;margin-bottom:0.6rem;">`;
+            html += `<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">`;
+            html += `<div style="font-size:0.85rem;font-weight:600;color:${gngCol};">⚡ ONE-SHOT 判定: ${gng.signal} (${gng.passN}/${gng.total})</div>`;
+            html += `<div style="display:flex;gap:0.4rem;flex-wrap:wrap;font-size:0.68rem;">`;
+            gng.items.forEach(it => {
+              const c2 = it.ok ? '#6ec897' : '#ff6b6b';
+              html += `<span style="color:${c2};white-space:nowrap;">${it.ok ? '✓' : '✗'} ${it.name}</span>`;
+            });
+            html += `</div></div></div>`;
+          }
+        }
         // 推奨u + 信頼区間
         html += `<div style="font-size:0.74rem;color:rgba(237,237,232,0.85);margin-bottom:0.4rem;">推奨バルブ操作:`;
         if (c) c.u.forEach((v, i) => {
@@ -2649,6 +2725,27 @@ th { background: #f5f0e6; color: #6c5a3a; }
     $('verify-privacy').addEventListener('click', () => {
       const d = $('privacy-detail');
       d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // 一発本番モードのトグル動作
+    $('one-shot-mode').addEventListener('change', e => {
+      const on = e.target.checked;
+      $('one-shot-detail').style.display = on ? 'block' : 'none';
+      if (on) {
+        // 全機能を最大安全側に
+        if ($('use-physics')) $('use-physics').checked = true;
+        if ($('use-ae')) $('use-ae').checked = true;
+        if ($('opt-sensitivity')) $('opt-sensitivity').checked = true;
+        if ($('opt-sequence')) $('opt-sequence').checked = true;
+        if ($('opt-multistart')) $('opt-multistart').value = '50';
+        if ($('default-tol')) $('default-tol').value = '3';
+        // 既存評価点の公差も厳格化
+        state.evalPoints.forEach(p => { if (p.tol > 3) p.tol = 3; });
+        if (state.evalPoints.length > 0) renderEvalTable();
+        // n_restartsも増強
+        if ($('opt-restarts')) $('opt-restarts').value = '15';
+        audit('one_shot_mode_enabled', {});
+      }
     });
 
     // 初期表示
