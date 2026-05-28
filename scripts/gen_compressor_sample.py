@@ -83,25 +83,39 @@ with open(OUT / "operations.csv", "w", newline="", encoding="utf-8") as f:
         w.writerow([ts, rpm, u1, u2, u3, f"{Q:.2f}", f"{dP:.3f}", f"{eta:.2f}", lbl])
 
 # --- センサーストリーム (3660s, 1Hz, 6ch) ---
-# 操作点を中心にスムーズに遷移。間は擬似定常 + 微小ノイズ
-def smooth_path(t):
-    """t[s] → (rpm,u1,u2,u3) を線形補間"""
-    pts = [(0, 0, 0, 100, 0)] + [(o[0], o[1], o[2], o[3], o[4]) for o in operations] + [(3660, 6000, 0, 100, 0)]
+# 「各操作点の前後 90 秒で完全定常 + 間は急遷移」のステップ構造
+# ツールの整定窓（settle_sec=60, settle_wait=20）内では Q が動かないようにする
+STEADY_BAND = 90  # 各 op の前後 ±90s は完全定常
+def step_path(t):
+    """t[s] → (rpm,u1,u2,u3) を「op近傍は定常、間は急遷移」で返す"""
+    # 各操作点の中心から ±STEADY_BAND 以内なら、その op の値を返す
+    for o in operations:
+        if abs(t - o[0]) <= STEADY_BAND:
+            return o[1], o[2], o[3], o[4]
+    # 操作点間 → 線形補間で遷移
+    pts = [(0, 6000, 0, 100, 0)] + [(o[0], o[1], o[2], o[3], o[4]) for o in operations] + [(3660, 6000, 0, 100, 0)]
     for i in range(len(pts) - 1):
         if pts[i][0] <= t <= pts[i+1][0]:
-            f = (t - pts[i][0]) / (pts[i+1][0] - pts[i][0] + 1e-9)
+            # 定常領域を引いた遷移区間で補間
+            a = pts[i][0] + (STEADY_BAND if i > 0 else 0)
+            b = pts[i+1][0] - (STEADY_BAND if i < len(pts) - 2 else 0)
+            if t < a: return pts[i][1], pts[i][2], pts[i][3], pts[i][4]
+            if t > b: return pts[i+1][1], pts[i+1][2], pts[i+1][3], pts[i+1][4]
+            f = (t - a) / (b - a + 1e-9)
             rpm = pts[i][1] + (pts[i+1][1] - pts[i][1]) * f
             u1 = pts[i][2] + (pts[i+1][2] - pts[i][2]) * f
             u2 = pts[i][3] + (pts[i+1][3] - pts[i][3]) * f
             u3 = pts[i][4] + (pts[i+1][4] - pts[i][4]) * f
             return rpm, u1, u2, u3
     return 6000, 0, 100, 0
+smooth_path = step_path  # alias for back-compat
 
 with open(OUT / "stream.csv", "w", newline="", encoding="utf-8") as f:
     w = csv.writer(f)
+    # 出力 y の順序: Q_Nm3h → p_disch_kPa → T_disch_C (DOM selectedOptions が header 順を返すため)
     w.writerow(["t_s", "rpm", "u1_suction", "u2_circ", "u3_inlet",
-                "p_suction_kPa", "p_disch_kPa", "T_suction_C", "T_disch_C",
-                "Q_Nm3h", "vib_um"])
+                "Q_Nm3h", "p_disch_kPa", "T_disch_C",
+                "p_suction_kPa", "T_suction_C", "vib_um"])
     for t in range(0, 3660):
         rpm, u1, u2, u3 = smooth_path(t)
         Q, dP, eta = physics(u1, u2, u3, rpm)
@@ -112,8 +126,8 @@ with open(OUT / "stream.csv", "w", newline="", encoding="utf-8") as f:
         vib = 8 + (rpm - 6500) / 200 + random.gauss(0, 0.6)
         Qn = Q * (1 + random.gauss(0, 0.01))
         w.writerow([t, f"{rpm:.0f}", f"{u1:.1f}", f"{u2:.1f}", f"{u3:.1f}",
-                    f"{ps:.2f}", f"{pd:.2f}", f"{Ts:.2f}", f"{Td:.2f}",
-                    f"{Qn:.1f}", f"{vib:.2f}"])
+                    f"{Qn:.1f}", f"{pd:.2f}", f"{Td:.2f}",
+                    f"{ps:.2f}", f"{Ts:.2f}", f"{vib:.2f}"])
 
 # --- 外部埋め込み (TimesFM 2.5 風, 16 次元) ---
 # 操作時刻ごとに 16-d ベクトル: 操作点近傍のセンサーパターンを encode した「ぽい」もの
@@ -167,8 +181,10 @@ def solve_valves_for_target(Q_t, dP_t, rpm_target=7800):
 
 with open(OUT / "actual_run2.csv", "w", newline="", encoding="utf-8") as f:
     w = csv.writer(f)
+    # ツール GP の出力名と一致するキーを含める（Q_Nm3h_actual, p_disch_kPa_actual, T_disch_C_actual）
     w.writerow(["eval_name",
                 "rpm", "u1_suction_pct", "u2_circ_pct", "u3_inlet_pct",
+                "Q_Nm3h_actual", "p_disch_kPa_actual", "T_disch_C_actual",
                 "y1_Q_Nm3h_actual", "y2_dP_kPa_actual", "y3_eta_pct_actual"])
     for name, Qt, dPt, etat in eval_points:
         _, u1, u2, u3, rpm, Q, dP, eta = solve_valves_for_target(Qt, dPt)
@@ -176,7 +192,13 @@ with open(OUT / "actual_run2.csv", "w", newline="", encoding="utf-8") as f:
         Q *= 1 + random.gauss(0, 0.015)
         dP *= 1 + random.gauss(0, 0.012)
         eta += random.gauss(0, 0.6)
-        w.writerow([name, rpm, u1, u2, u3, f"{Q:.1f}", f"{dP:.3f}", f"{eta:.2f}"])
+        # 絶対圧として p_disch = p_suction + dP (吸込側 ~101.3 kPa を仮定)
+        p_disch_kPa = 101.3 + dP
+        # T_disch を物理から推定（T_in=298 K + dP * 0.18 + noise）
+        T_disch_C = 25 + dP * 0.18 + random.gauss(0, 1.0)
+        w.writerow([name, rpm, u1, u2, u3,
+                    f"{Q:.1f}", f"{p_disch_kPa:.2f}", f"{T_disch_C:.2f}",
+                    f"{Q:.1f}", f"{dP:.3f}", f"{eta:.2f}"])
 
 # --- DUMMY NOTICE ---
 notice = """==============================================================

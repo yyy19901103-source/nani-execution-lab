@@ -1,6 +1,6 @@
-eval_name,rpm,u1_suction_pct,u2_circ_pct,u3_inlet_pct,y1_Q_Nm3h_actual,y2_dP_kPa_actual,y3_eta_pct_actual
-[DUMMY] 100% design,7800,90,5,85,12206.6,100.193,40.43
-[DUMMY] 80% Q,7800,75,5,65,10218.4,101.263,38.25
-[DUMMY] 60% Q,7800,45,5,85,7908.7,104.790,62.00
-[DUMMY] 110% Q overload,7800,95,5,90,13195.4,102.149,39.80
-[DUMMY] min flow (surge margin),7800,35,10,80,6331.6,105.651,70.26
+eval_name,rpm,u1_suction_pct,u2_circ_pct,u3_inlet_pct,Q_Nm3h_actual,p_disch_kPa_actual,T_disch_C_actual,y1_Q_Nm3h_actual,y2_dP_kPa_actual,y3_eta_pct_actual
+[DUMMY] 100% design,7800,90,5,85,12206.6,201.49,43.76,12206.6,100.193,40.43
+[DUMMY] 80% Q,7800,75,5,65,9844.8,201.10,42.65,9844.8,99.799,41.01
+[DUMMY] 60% Q,7800,45,5,85,7778.7,206.61,43.62,7778.7,105.311,62.49
+[DUMMY] 110% Q overload,7800,95,5,90,13497.6,201.40,42.36,13497.6,100.102,39.23
+[DUMMY] min flow (surge margin),7800,35,10,80,6052.1,208.92,45.78,6052.1,107.620,71.97

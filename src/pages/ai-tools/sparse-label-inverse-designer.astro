@@ -1271,14 +1271,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         setMulti('map-op-u', ['rpm', 'u1_suction_pct', 'u2_circ_pct', 'u3_inlet_pct']);
         setSel('map-st-time', 't_s');
         setMulti('map-st-y', ['Q_Nm3h', 'p_disch_kPa', 'T_disch_C']);
-        // 物理モデルマッピング
+        // ⚠️ サンプルデータは外部物理モデル（gen_compressor_sample.py）で生成されており
+        // ツール内蔵物理モデル (physicsCompressor) と式構造が異なるため、
+        // ワンクリック取込時は「物理モデル OFF」(純データ駆動 GP) で学習する。
+        // 実機データで使う時は手動で物理 ON + パラメータ調整推奨。
         const usePhys = $('use-physics');
-        if (usePhys) usePhys.checked = true;
+        if (usePhys) usePhys.checked = false;
         if (typeof updatePhysYMapping === 'function') updatePhysYMapping();
         await new Promise(r => setTimeout(r, 200));
-        setSel('map-phys-flow', 'Q_Nm3h');
-        setSel('map-phys-press', 'p_disch_kPa');
-        setSel('map-phys-temp', 'T_disch_C');
+        // 物理対応マッピングは物理 OFF なので不要だが、念のためクリア
+        ['map-phys-flow', 'map-phys-press', 'map-phys-temp'].forEach(id => {
+          const el = $(id); if (el) el.value = '';
+        });
 
         // マッピング確定
         confirmMapping();
@@ -1297,6 +1301,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           setStep(4, true);
           setStep(10, true);
         }
+        // 小規模データ向け推奨設定: n_restarts を 20 に増強 (ARD 局所最適回避)
+        const restarts = $('opt-restarts'); if (restarts) restarts.value = '20';
+
+        // 🔧 補助特徴を OFF にして u 直接学習
+        // 理由: 逆推定では pre/AE/embed は default 値で固定するため、GP がこれらに依存すると
+        // u を変えても予測が変わらず最適化が機能しない（探索面が平坦になる）
+        const optPre = $('opt-pre'); if (optPre) optPre.value = '0';
+        const useAE = $('use-ae'); if (useAE) useAE.checked = false;
+        const useEmbedNo = $('use-embed-no');
+        if (useEmbedNo) { useEmbedNo.checked = true; useEmbedNo.dispatchEvent(new Event('change', {bubbles:true})); }
+
+        // 🎯 評価点を DUMMY スケールで自動投入
+        // (Y 出力: [Q_Nm3h, p_disch_kPa, T_disch_C] スケール)
+        // 訓練データ実測レンジ: Q 1846-12361, p_disch 176-207, T_disch 38-46
+        // 物理達成可能な範囲に合わせて設定 (tol 8% で実機ノイズ吸収)
+        state.evalPoints = [
+          { label: '100% design (Q≈12000)', flow: 12000, press: 203, temp: 43.0, tol: 8 },
+          { label: '90% Q',                 flow: 11000, press: 201, temp: 43.0, tol: 8 },
+          { label: '80% Q',                 flow: 10000, press: 198, temp: 42.5, tol: 8 },
+          { label: '60% Q',                 flow: 7500,  press: 190, temp: 42.0, tol: 8 },
+          { label: '40% Q (low load)',      flow: 4500,  press: 184, temp: 41.0, tol: 8 },
+        ];
+        if (typeof renderEvalTable === 'function') renderEvalTable();
+        if (typeof setStep === 'function') setStep(6, true);
 
         // 次の手順ガイド
         const nextSteps = document.getElementById('next-steps-guide') || (() => {
@@ -1308,7 +1336,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           return d;
         })();
         nextSteps.innerHTML = '<strong style="color:#6ec897;">✅ ダミー取込完了。次の手順:</strong><br>' +
-          '1) <strong>STEP 2</strong>: 物理パラメータは既定値で OK（必要ならスライダーで微調整）<br>' +
+          '1) <strong>STEP 2</strong>: 物理モデル <strong style="color:#ffb454;">OFF</strong> に自動切替済（このサンプルは外部式で生成のため、純データ駆動 GP が最良）<br>' +
+          '&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:rgba(255,255,255,0.6);font-size:0.72rem;">※実機データを使う時は物理 ON + パラメータ調整推奨</span><br>' +
           '2) <strong>STEP 3</strong>: 「▶ AE 事前学習を実行」を押す（初回 Pyodide 起動 30秒〜2分、2回目以降は数秒）<br>' +
           '3) <strong>STEP 4</strong>: 「▶ GP訓練 + LOO-CV」を押す（数秒）<br>' +
           '4) <strong>Phase B</strong> タブへ → STEP 5-7 で逆推定<br>' +
@@ -1554,7 +1583,7 @@ json.dumps(result)
         const m = state.mapping;
         const settle = parseInt($('opt-settle').value) || 60;
         const wait = parseInt($('opt-settle-wait').value) || 20;
-        const pre = parseInt($('opt-pre').value) || 30;
+        const _preRaw = parseInt($('opt-pre').value); const pre = isNaN(_preRaw) ? 30 : _preRaw;
         const restarts = parseInt($('opt-restarts').value) || 8;
         const usePhysics = $('use-physics').checked;
         const useAE = $('use-ae').checked && state.aeReady;
@@ -1756,7 +1785,13 @@ except Exception:
     X_embed_external = None
 
 # 連結
-parts = [X_u, X_pre]
+# 🔧 pre_sec=0 で X_pre 全列がゼロ分散になると StandardScaler が NaN を出すので除外
+parts = [X_u]
+if int(pre_sec) > 0 and X_pre.shape[1] > 0 and X_pre.var() > 1e-12:
+    parts.append(X_pre)
+    _pre_included = True
+else:
+    _pre_included = False
 if use_ae_flag and len(X_ae):
     X_ae = np.array(X_ae, dtype=float)
     parts.append(X_ae)
@@ -1803,17 +1838,25 @@ scaler = StandardScaler().fit(X_full)
 Xs = scaler.transform(X_full)
 
 def make_kernel():
+    # ARD: length_scale 上限を 1e4 まで広げて、無関係特徴量は length_scale → 大 で無効化
+    # 小規模データ (10〜30 行) で 33+ 特徴量を扱うため、強い ARD が必要
     return (
-        C(1.0, (1e-3, 1e3))
-        * RBF(length_scale=np.ones(nFeat), length_scale_bounds=(1e-1, 1e2))
-        + WhiteKernel(noise_level=0.1, noise_level_bounds=(1e-4, 1e1))
+        C(1.0, (1e-2, 1e3))
+        * RBF(length_scale=np.ones(nFeat), length_scale_bounds=(1e-1, 1e4))
+        + WhiteKernel(noise_level=0.1, noise_level_bounds=(1e-5, 1e1))
     )
 
 # 訓練
+# 🔧 alpha 正規化バグ修正:
+# normalize_y=True は y を (y - mean) / std にスケーリングするが、alpha は元スケールのまま
+# diagonal に加算される。Y_std² を生で渡すと、Y のレンジが大きい変数 (例: Q ~10000) で
+# alpha >> 1 となり GP が「全部ノイズ」と判定 → 定数予測に落ち込む。
+# 対策: y_train_std² で割って正規化スケールに合わせる。
 models = []; fit_info = []; t_fit_total = 0.0
 for j in range(nY):
     yj = Y_target[:, j]
-    alpha_j = Y_std_arr[:, j] ** 2
+    y_var = float(np.var(yj)) + 1e-12
+    alpha_j = (Y_std_arr[:, j] ** 2) / y_var + 1e-8  # 正規化された noise variance
     gpr = GaussianProcessRegressor(
         kernel=make_kernel(), normalize_y=True,
         n_restarts_optimizer=int(n_restarts), random_state=42+j, alpha=alpha_j
@@ -1835,13 +1878,15 @@ t_loo_start = time.time()
 for j in range(nY):
     yj_target = Y_target[:, j]
     yj_real = Y_steady[:, j]
-    alpha_j = Y_std_arr[:, j] ** 2
+    # alpha も正規化スケールへ
+    y_var = float(np.var(yj_target)) + 1e-12
+    alpha_j = (Y_std_arr[:, j] ** 2) / y_var + 1e-8
     preds_real = np.zeros(nT); stds = np.zeros(nT)
     for i in range(nT):
         mask = np.ones(nT, dtype=bool); mask[i] = False
         gpr_i = GaussianProcessRegressor(
             kernel=make_kernel(), normalize_y=True,
-            n_restarts_optimizer=2, random_state=42+j,
+            n_restarts_optimizer=8, random_state=42+j,  # 局所最適回避のため 2 → 8
             alpha=alpha_j[mask]
         )
         gpr_i.fit(Xs[mask], yj_target[mask])
@@ -1887,7 +1932,8 @@ _mode = mode
 _use_rpm = use_rpm_flag
 _use_ae_active = use_ae_flag
 _nU_actual = nU_actual
-_pre_default = X_pre.mean(axis=0).tolist()
+_pre_default = X_pre.mean(axis=0).tolist() if _pre_included else []
+_pre_included_flag = bool(_pre_included)
 _ae_default = np.array([row for row in X_ae]).mean(axis=0).tolist() if (use_ae_flag and len(X_ae)) else []
 _embed_default = X_embed_external.mean(axis=0).tolist() if X_embed_external is not None else []
 _nU_valves = nU_valves
@@ -2178,10 +2224,12 @@ y_scale = np.array([_Y_train[:, j].std() if _Y_train[:, j].std() > 1e-9 else 1.0
 
 def make_X(u_raw):
     parts = [u_raw]
-    parts.append(pre_default)
-    if ae_default is not None:
+    # pre_default は訓練時に含まれた場合のみ追加（pre_sec=0 では空）
+    if len(pre_default) > 0:
+        parts.append(pre_default)
+    if ae_default is not None and len(ae_default) > 0:
         parts.append(ae_default)
-    if embed_default is not None:
+    if embed_default is not None and len(embed_default) > 0:
         parts.append(embed_default)
     return np.concatenate(parts).reshape(1, -1)
 
@@ -2957,9 +3005,10 @@ pre_default = np.array(_pre_default)
 ae_default = np.array(_ae_default) if len(_ae_default) > 0 else None
 embed_default = np.array(_embed_default) if len(_embed_default) > 0 else None
 def make_X(u_full):
-    parts = [u_full, pre_default]
-    if ae_default is not None: parts.append(ae_default)
-    if embed_default is not None: parts.append(embed_default)
+    parts = [u_full]
+    if pre_default is not None and len(pre_default) > 0: parts.append(pre_default)
+    if ae_default is not None and len(ae_default) > 0: parts.append(ae_default)
+    if embed_default is not None and len(embed_default) > 0: parts.append(embed_default)
     return np.concatenate(parts).reshape(1, -1)
 def physics_at(u_full):
     try:
@@ -3490,8 +3539,8 @@ th { background: #f5f0e6; color: #6c5a3a; }
       const f = $('actual-csv')?.files?.[0];
       if (!f) { alert('CSVファイルを選択してください'); return; }
       try {
-        const buf = await f.arrayBuffer();
-        const text = decodeAuto(new Uint8Array(buf));
+        const r = await readCSVFile(f);
+        const text = r.text;
         const lines = text.split(/\r?\n/).filter(l => l.trim());
         const header = lines[0].split(',').map(s => s.trim());
         const rows = lines.slice(1).map(line => {
@@ -3563,10 +3612,11 @@ for r in actual:
             if un.lower() in str(k).lower() or (un=='rpm' and 'rpm' in str(k).lower()):
                 if isinstance(r[k], (int,float)): match = float(r[k]); break
         if match is not None: u[i] = match
-    # X 構築
-    parts = [u, np.array(_pre_default)]
-    if len(_ae_default)>0: parts.append(np.array(_ae_default))
-    if len(_embed_default)>0: parts.append(np.array(_embed_default))
+    # X 構築 (pre/ae/embed が訓練時に空なら追加しない)
+    parts = [u]
+    if len(_pre_default) > 0: parts.append(np.array(_pre_default))
+    if len(_ae_default) > 0: parts.append(np.array(_ae_default))
+    if len(_embed_default) > 0: parts.append(np.array(_embed_default))
     X = np.concatenate(parts).reshape(1,-1)
     Xs = _scaler.transform(X)
     y_pred = []
