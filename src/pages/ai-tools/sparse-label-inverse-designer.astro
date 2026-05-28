@@ -114,7 +114,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <button data-phase="C" class="phase-tab" style="background:rgba(200,169,110,0.15);color:#c8a96e;border:1px solid rgba(200,169,110,0.4);padding:0.6rem 1.1rem;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">Phase C · 予実差確認</button>
       <button data-phase="ALL" class="phase-tab" style="background:transparent;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.15);padding:0.6rem 1.1rem;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">全表示</button>
       <div style="margin-left:auto;display:flex;gap:0.5rem;align-items:center;">
-        <a href="/sample-data/compressor-commissioning/README.md" target="_blank" style="color:#ffb454;font-size:0.72rem;text-decoration:none;border:1px solid rgba(255,180,84,0.5);padding:0.5rem 0.9rem;letter-spacing:0.05em;" title="物理モデルから合成した架空データ。実機データではありません。">⚠️ サンプルデータ (DUMMY・架空)</a>
+        <a href={`${base}/sample-data/compressor-commissioning/README.md`} target="_blank" style="color:#ffb454;font-size:0.72rem;text-decoration:none;border:1px solid rgba(255,180,84,0.5);padding:0.5rem 0.9rem;letter-spacing:0.05em;" title="物理モデルから合成した架空データ。実機データではありません。">⚠️ サンプルデータ (DUMMY・架空)</a>
       </div>
     </div>
     <div id="phase-desc" style="background:rgba(200,169,110,0.05);border-left:3px solid #c8a96e;padding:0.7rem 1rem;margin-bottom:1.5rem;font-size:0.78rem;color:rgba(237,237,232,0.85);line-height:1.7;">
@@ -679,6 +679,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
+  <div id="tool-base-root" data-base={base} style="display:none;"></div>
   <script src="https://cdn.jsdelivr.net/pyodide/v0.29.4/full/pyodide.js" is:inline></script>
 
   <script is:inline>
@@ -1239,8 +1240,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const orig = btn.textContent;
       btn.disabled = true; btn.textContent = '⏳ ダミーデータ取込中...';
       try {
-        const base = (document.querySelector('base')?.getAttribute('href') || '/').replace(/\/$/, '');
-        const baseDir = base + '/sample-data/compressor-commissioning';
+        const toolBase = (document.getElementById('tool-base-root')?.dataset.base || '').replace(/\/$/, '');
+        const baseDir = toolBase + '/sample-data/compressor-commissioning';
         const [opsTxt, streamTxt, embTxt] = await Promise.all([
           fetch(baseDir + '/operations.csv').then(r => { if (!r.ok) throw new Error('operations.csv ' + r.status); return r.text(); }),
           fetch(baseDir + '/stream.csv').then(r => { if (!r.ok) throw new Error('stream.csv ' + r.status); return r.text(); }),
