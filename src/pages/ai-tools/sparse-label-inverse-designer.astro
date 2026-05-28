@@ -1,0 +1,2416 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="コンプレッサ試運転バルブ操作支援 (v5.0)" description="ASME PTC 10 / API 617 準拠 — 操作対象は循環・吸込側バルブのみ。HH:MM:SS時刻・CP932/UTF-8自動判定・列マッピング・物理事前訓練・残差学習・AE事前学習・LOO-CV・サージ制約逆推定・感度分析・操作シーケンス計画・PTC10適合レポート・モデル保存。データ外部送信ゼロ。">
+
+  <style>
+    /* ヘルプ・ツールチップ */
+    .help-tip {
+      display:inline-block; width:1.1rem; height:1.1rem; line-height:1rem;
+      border-radius:50%; background:rgba(200,169,110,0.18); color:#c8a96e;
+      text-align:center; font-size:0.7rem; font-weight:600; cursor:help;
+      margin-left:0.3rem; vertical-align:middle; position:relative;
+      border:1px solid rgba(200,169,110,0.3);
+    }
+    .help-tip:hover { background:rgba(200,169,110,0.35); }
+    .help-tip::after {
+      content: attr(data-tip);
+      position:absolute; bottom:130%; left:50%; transform:translateX(-50%);
+      background:#0c0c0e; color:#edede8; padding:0.7rem 0.9rem;
+      border:1px solid rgba(200,169,110,0.4); border-radius:3px;
+      font-size:0.72rem; font-weight:400; line-height:1.6; letter-spacing:0.02em;
+      white-space:pre-wrap; width:min(380px, 80vw); text-align:left;
+      visibility:hidden; opacity:0; transition:opacity 0.15s; pointer-events:none;
+      z-index:1000; box-shadow:0 4px 16px rgba(0,0,0,0.4);
+    }
+    .help-tip:hover::after { visibility:visible; opacity:1; }
+    .help-tip.right::after { left:0; transform:none; }
+    .spec-guide details { background:#0a0a0c; border:1px solid rgba(255,255,255,0.06); padding:0.8rem 1.1rem; margin-bottom:0.5rem; }
+    .spec-guide summary { color:#c8a96e; font-size:0.85rem; cursor:pointer; font-weight:500; }
+    .spec-guide summary:hover { color:#edede8; }
+    .spec-guide p, .spec-guide li { font-size:0.78rem; color:rgba(237,237,232,0.85); line-height:1.7; }
+    .spec-guide code { background:rgba(200,169,110,0.1); color:#c8a96e; padding:0.1rem 0.4rem; font-family:'SF Mono',monospace; font-size:0.72rem; }
+  </style>
+
+  <!-- 整合性ガード（最優先・赤帯）-->
+  <div style="background:rgba(255,107,107,0.10);border-left:4px solid #ff6b6b;padding:1rem 1.25rem;font-size:0.82rem;color:#edede8;line-height:1.7;">
+    <div style="color:#ff6b6b;font-size:0.7rem;letter-spacing:0.3em;margin-bottom:0.4rem;">🛡 INTEGRITY GUARD (絶対遵守)</div>
+    <div>
+      <strong style="color:#ff6b6b;">操作対象：循環ループ + 吸込側バルブのみ。</strong>
+      <strong style="color:#ff6b6b;">吐出側は性能測定領域であり、制御変数に含めることを禁止。</strong>
+      吐出側を操作することは性能試験の不正に該当します。本ツールは吐出側を「観測専用」として扱い、いかなる操作も推奨しません。
+    </div>
+  </div>
+
+  <!-- 機密保護 -->
+  <div style="background:rgba(200,169,110,0.08);border-left:3px solid #c8a96e;padding:0.85rem 1.25rem;font-size:0.78rem;color:#edede8;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:space-between;">
+    <div>🔒 <strong>機密保護: 全処理ブラウザ完結</strong> — Pyodide WASM 上で scikit-learn 動作。データ・モデル外部送信ゼロ</div>
+    <button id="verify-privacy" style="background:transparent;border:1px solid rgba(200,169,110,0.3);color:#c8a96e;padding:0.3rem 0.75rem;font-size:0.7rem;cursor:pointer;font-family:inherit;">検証方法 ▼</button>
+  </div>
+  <div id="privacy-detail" style="display:none;background:#0a0a0c;border-left:3px solid #c8a96e;padding:1.1rem 1.5rem;font-size:0.76rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+    DevTools(F12) → Network「Disable cache」→ リロード。Pyodide/sklearn/numpy/scipyのCDN取得のみ。計算実行中に追加通信ゼロを確認。
+  </div>
+  <div id="py-status-bar" style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.05);padding:0.5rem 1.25rem;font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;justify-content:space-between;align-items:center;">
+    <span id="py-status">操作ボタン押下時に Pyodide を起動</span>
+    <span id="py-progress" style="color:#6ec897;"></span>
+  </div>
+
+  <!-- ヒーロー -->
+  <div style="position:relative;height:13rem;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0c0e 0%,#0d0d1a 60%,#0c0c0e 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,169,110,0.5) 40px,rgba(200,169,110,0.5) 41px);"></div>
+    <div style="position:relative;z-index:1;text-align:center;padding:0 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.5em;margin-bottom:1rem;text-transform:uppercase;">Compressor Shop Test · v5.0</p>
+      <h1 style="font-size:clamp(1.3rem,3.6vw,1.95rem);font-weight:200;letter-spacing:0.15em;color:#edede8;margin-bottom:0.5rem;">コンプレッサ試運転バルブ操作支援</h1>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.78rem;font-weight:300;">物理事前訓練 × 残差GP × AE自己教師あり × HH:MM:SS時刻 × 列マッピング × PTC10レポート</p>
+    </div>
+  </div>
+
+  <!-- v5.0 機能リスト -->
+  <div style="max-width:1300px;margin:0 auto;padding:1rem 1rem 0;">
+    <div style="background:linear-gradient(90deg,rgba(110,200,151,0.08) 0%,transparent 100%);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;">
+      <div style="color:#6ec897;font-size:0.62rem;letter-spacing:0.3em;margin-bottom:0.4rem;">v5.0 全機能（F1〜F17 + 物理/AE）</div>
+      <div style="font-size:0.74rem;color:rgba(237,237,232,0.8);line-height:1.7;">
+        <strong style="color:#edede8;">データ:</strong> HH:MM:SS時刻 / CP932自動判定 / 列マッピング / 欠損補間 / 時間範囲整合 / サニティチェック ／
+        <strong style="color:#edede8;">モデル:</strong> 物理ON/OFFトグル / 残差学習 / AE事前学習 / N可変バルブ / RPM任意 / 複数吸込 ／
+        <strong style="color:#edede8;">分析:</strong> LOO-CV / 感度分析 / バルブ信頼区間 / カバレッジ警告 / 操作シーケンス計画 ／
+        <strong style="color:#edede8;">出力:</strong> 性能マップ / PTC10レポート / CSV出力 / モデル保存 (IndexedDB) / 監査ログ
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1300px;margin:0 auto;padding:2rem 1rem 5rem;">
+
+    <!-- ===== STEP 1: データ取込 ===== -->
+    <section id="step1" style="margin-bottom:2rem;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 1</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">データ取込・列マッピング・整合性チェック</h2>
+      </div>
+
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <!-- バルブ数・RPM 設定 -->
+        <div style="background:#0a0a0c;border:1px solid rgba(200,169,110,0.2);padding:0.8rem 1.1rem;margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;">
+          <span style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.15em;">⚙ 操作対象（吸込・循環側のみ）</span>
+          <label style="font-size:0.78rem;color:rgba(237,237,232,0.85);">バルブ数 N:
+            <input type="number" id="n-valves" value="3" min="1" max="8" style="width:3.5rem;background:#0c0c0e;border:1px solid rgba(200,169,110,0.4);color:#edede8;padding:0.3rem 0.5rem;margin-left:0.4rem;font-family:inherit;font-size:0.8rem;text-align:center;" />
+          </label>
+          <label style="font-size:0.78rem;color:rgba(237,237,232,0.85);">
+            <input type="checkbox" id="use-rpm" style="margin-right:0.3rem;" /> 速度(RPM)も操作変数に含める
+          </label>
+          <span style="font-size:0.68rem;color:rgba(255,255,255,0.45);"><strong style="color:#ff6b6b;">吐出側は含まない</strong></span>
+        </div>
+
+        <!-- 取込ボタン -->
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem;">
+          <button id="btn-sample" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📦 物理ベース合成（HH:MM:SS形式）</button>
+          <label style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">
+            📂 操作メモCSV
+            <input type="file" id="csv-ops" accept=".csv" style="display:none;" />
+          </label>
+          <label style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">
+            📂 センサーストリームCSV
+            <input type="file" id="csv-stream" accept=".csv" style="display:none;" />
+          </label>
+          <button id="btn-template" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📥 テンプレートDL</button>
+          <button id="btn-reset" style="background:transparent;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;margin-left:auto;">🗑 リセット</button>
+        </div>
+
+        <div id="data-status" style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-bottom:0.75rem;">データ未取込</div>
+        <div id="encoding-info" style="display:none;font-size:0.72rem;color:rgba(237,237,232,0.7);margin-bottom:0.5rem;"></div>
+
+        <!-- 列マッピング (F3) -->
+        <div id="column-mapping" style="display:none;background:#0a0a0c;border:1px solid rgba(200,169,110,0.2);padding:1rem;margin-bottom:1rem;">
+          <div style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.15em;margin-bottom:0.6rem;">📋 列マッピング（取込ファイルの列をツール内部名に対応付け）</div>
+          <div id="mapping-ops" style="margin-bottom:0.8rem;"></div>
+          <div id="mapping-stream"></div>
+          <button id="btn-confirm-mapping" style="margin-top:0.8rem;background:#c8a96e;color:#0c0c0e;border:none;padding:0.5rem 1.2rem;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">マッピングを確定 →</button>
+        </div>
+
+        <!-- サニティチェック (F9) -->
+        <div id="sanity-result" style="display:none;background:#0a0a0c;border-left:3px solid #e8c97a;padding:0.8rem 1rem;margin-bottom:0.8rem;font-size:0.74rem;color:rgba(237,237,232,0.85);"></div>
+
+        <!-- プレビュー -->
+        <div id="data-preview" style="display:none;margin-top:1.2rem;">
+          <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.5rem;">操作メモ（先頭・末尾）</div>
+          <div id="ops-preview" style="overflow-x:auto;font-family:'SF Mono',monospace;font-size:0.7rem;color:rgba(237,237,232,0.85);margin-bottom:1rem;"></div>
+          <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.5rem;">センサーストリーム（先頭・末尾）</div>
+          <div id="stream-preview" style="overflow-x:auto;font-family:'SF Mono',monospace;font-size:0.7rem;color:rgba(237,237,232,0.85);"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 2: 物理モデル ===== -->
+    <section id="step2" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 2</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">物理モデル設定（オプション）</h2>
+      </div>
+
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <label style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem;color:#edede8;font-size:0.85rem;">
+          <input type="checkbox" id="use-physics" checked />
+          <strong>物理モデルを使用（残差学習モード）</strong>
+          <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;">— OFF にすると純データ駆動 GP のみ</span>
+        </label>
+        <div id="physics-params" style="display:block;font-size:0.78rem;color:rgba(237,237,232,0.8);line-height:1.7;">
+          <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.5rem;">📐 物理パラメータ（既定値・スライダーで微調整）</div>
+          <div id="physics-sliders" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.6rem;"></div>
+          <div id="physics-formula" style="margin-top:0.8rem;padding:0.6rem 0.8rem;background:#0a0a0c;border:1px dashed rgba(110,200,151,0.3);font-family:'SF Mono',monospace;font-size:0.7rem;color:rgba(237,237,232,0.75);"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 3: AE 事前学習 ===== -->
+    <section id="step3" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 3</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">AE 事前学習（dense センサー全活用）</h2>
+      </div>
+
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <label style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem;color:#edede8;font-size:0.85rem;">
+          <input type="checkbox" id="use-ae" checked />
+          <strong>オートエンコーダ事前学習を使用</strong>
+          <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;">— センサーストリーム全体から表現学習</span>
+        </label>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:0.8rem;font-size:0.75rem;color:rgba(237,237,232,0.7);">
+          <label>セグメント長 (sec):
+            <input type="number" id="ae-seg" value="30" min="5" max="120" style="width:3.5rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" />
+          </label>
+          <label>潜在次元:
+            <input type="number" id="ae-latent" value="4" min="2" max="16" style="width:3rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" />
+          </label>
+          <label>反復:
+            <input type="number" id="ae-iter" value="200" min="50" max="1000" step="50" style="width:4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" />
+          </label>
+        </div>
+        <button id="btn-ae" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1.2rem;font-size:0.78rem;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">▶ AE 事前学習を実行</button>
+        <span id="ae-elapsed" style="margin-left:0.7rem;color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+        <div id="ae-status" style="margin-top:0.7rem;font-family:'SF Mono',monospace;font-size:0.72rem;line-height:1.7;color:rgba(237,237,232,0.85);"></div>
+        <div id="ae-result" style="display:none;margin-top:0.7rem;background:#0a0a0c;border:1px solid rgba(110,200,151,0.2);padding:0.8rem 1rem;font-size:0.74rem;color:rgba(237,237,232,0.9);"></div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 4: GP訓練 + LOO-CV ===== -->
+    <section id="step4" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 4</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">時間窓集約 + GP（残差/直接）訓練 + LOO-CV</h2>
+      </div>
+
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:1rem;font-size:0.75rem;color:rgba(237,237,232,0.7);">
+          <label>整定窓(sec): <input type="number" id="opt-settle" value="60" min="10" max="300" style="width:4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" /></label>
+          <label>整定待ち(sec): <input type="number" id="opt-settle-wait" value="20" min="0" max="120" style="width:4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" /></label>
+          <label>事前窓(sec): <input type="number" id="opt-pre" value="30" min="0" max="120" style="width:4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" /></label>
+          <label>n_restarts: <input type="number" id="opt-restarts" value="8" min="1" max="20" style="width:3rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" /></label>
+        </div>
+        <button id="btn-train" style="background:#c8a96e;color:#0c0c0e;border:none;padding:0.6rem 1.6rem;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">▶ GP訓練 + LOO-CV</button>
+        <span id="train-elapsed" style="margin-left:0.7rem;color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+
+        <div id="train-status" style="margin-top:0.8rem;font-family:'SF Mono',monospace;font-size:0.72rem;line-height:1.7;color:rgba(237,237,232,0.85);"></div>
+        <div id="train-result" style="display:none;margin-top:1rem;background:#0a0a0c;border:1px solid rgba(200,169,110,0.2);padding:1rem;">
+          <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.6rem;">TRAINING + LOO-CV</div>
+          <div id="train-summary" style="font-size:0.78rem;color:rgba(237,237,232,0.9);line-height:1.7;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 5: サージ線 ===== -->
+    <section id="step5" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 5</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">設計サージ線</h2>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+          <button id="btn-surge-add" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 0.9rem;font-size:0.75rem;cursor:pointer;font-family:inherit;">+ 行追加</button>
+          <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);margin-left:auto;">余裕係数:
+            <input type="number" id="surge-margin" value="1.10" min="1.00" max="1.50" step="0.01" style="width:4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" />
+          </label>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:0.78rem;">
+          <thead><tr>
+            <th style="text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">#</th>
+            <th style="text-align:right;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">サージ流量</th>
+            <th style="text-align:right;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">サージ圧力</th>
+            <th style="padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);"></th>
+          </tr></thead>
+          <tbody id="surge-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== STEP 6: 評価点 ===== -->
+    <section id="step6" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 6</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">性能評価点テーブル（PTC10/API617）</h2>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+          <button id="btn-eval-add" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 0.9rem;font-size:0.75rem;cursor:pointer;font-family:inherit;">+ 評価点追加</button>
+          <button id="btn-eval-load-design" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.4rem 0.9rem;font-size:0.75rem;cursor:pointer;font-family:inherit;">設計5点を一括投入</button>
+          <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);margin-left:auto;">既定公差:
+            <input type="number" id="default-tol" value="5" min="0.1" max="20" step="0.1" style="width:3.5rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" />%
+          </label>
+        </div>
+        <div id="eval-table-wrapper" style="overflow-x:auto;"></div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 7: 逆推定 ===== -->
+    <section id="step7" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 7</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">バルブ操作推奨（逆推定 + 感度 + シーケンス）</h2>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+          <button id="btn-inverse-all" style="background:#c8a96e;color:#0c0c0e;border:none;padding:0.6rem 1.6rem;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.1em;">▶ 全評価点を逆推定</button>
+          <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">多重起動: <input type="number" id="opt-multistart" value="20" min="5" max="100" style="width:3.5rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" /></label>
+          <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">
+            <input type="checkbox" id="opt-sensitivity" checked style="margin-right:0.3rem;" /> 感度分析
+          </label>
+          <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">
+            <input type="checkbox" id="opt-sequence" checked style="margin-right:0.3rem;" /> 操作シーケンス計画
+          </label>
+          <span id="inverse-elapsed" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+        </div>
+        <div id="inverse-status" style="font-family:'SF Mono',monospace;font-size:0.72rem;line-height:1.7;color:rgba(237,237,232,0.85);"></div>
+        <div id="inverse-result" style="display:none;margin-top:1rem;overflow-x:auto;">
+          <div id="overall-judgment" style="margin-bottom:0.8rem;padding:0.7rem 1rem;font-size:0.82rem;"></div>
+          <div id="coverage-warnings" style="margin-bottom:0.8rem;"></div>
+          <div id="candidates-table"></div>
+          <div id="sequence-plan" style="margin-top:1rem;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 8: 性能マップ ===== -->
+    <section id="step8" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 8</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">性能マップ（流量-圧力面）</h2>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <button id="btn-plot" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;margin-bottom:1rem;">📊 性能マップ更新</button>
+        <canvas id="perfmap" width="1100" height="600" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);width:100%;height:auto;display:block;"></canvas>
+        <div style="margin-top:0.6rem;font-size:0.7rem;color:rgba(255,255,255,0.5);">★訓練データ ●評価点(緑/黄/赤) ■推奨u→GP予測 ◆物理真値 ↗操作シーケンス ━サージ線</div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 9: レポート/エクスポート ===== -->
+    <section id="step9" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 9</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">レポート出力（PTC10適合性・CSV）</h2>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem;">
+          <button id="btn-export-csv" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📥 推奨結果CSV</button>
+          <button id="btn-export-report" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📄 PTC10適合性レポート (HTML)</button>
+          <button id="btn-export-audit" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 監査ログ</button>
+        </div>
+        <div id="export-status" style="font-size:0.72rem;color:rgba(255,255,255,0.5);"></div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 10: モデル管理 ===== -->
+    <section id="step10" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 10</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">モデル管理（保存・読込）</h2>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+          <input type="text" id="model-name" placeholder="モデル名（例: 圧縮機A_2026-05-27）" style="flex:1;min-width:240px;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.5rem 0.8rem;font-family:inherit;font-size:0.78rem;" />
+          <button id="btn-save-model" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">💾 IndexedDBに保存</button>
+          <button id="btn-load-list" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📂 保存済みモデル一覧</button>
+        </div>
+        <div id="model-list" style="font-size:0.74rem;color:rgba(237,237,232,0.85);"></div>
+      </div>
+    </section>
+
+    <!-- このツールについて -->
+    <section style="margin-top:3rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);padding:1.4rem;">
+      <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.3em;margin-bottom:0.8rem;">ABOUT v5.0</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;font-size:0.78rem;color:rgba(237,237,232,0.75);line-height:1.7;">
+        <div>
+          <div style="color:#edede8;font-weight:500;margin-bottom:0.4rem;">対象規格</div>
+          ASME PTC 10（性能試験）・API 617（特殊仕様）準拠。最低5評価点（サージ・ストンウォール・保証点・代替2点）の達成支援。
+        </div>
+        <div>
+          <div style="color:#edede8;font-weight:500;margin-bottom:0.4rem;">残差学習</div>
+          物理モデル f_phys(u) を「だいたいの形」として使い、GP は「ズレ」だけを学習。少データ + 物理事前知識のハイブリッド。
+        </div>
+        <div>
+          <div style="color:#edede8;font-weight:500;margin-bottom:0.4rem;">AE 事前学習</div>
+          dense センサーストリーム全体（数万秒）でオートエンコーダ訓練 → 潜在ベクトルを GP 特徴量に追加。dense データを 3% → 100% に近く活用。
+        </div>
+        <div>
+          <div style="color:#edede8;font-weight:500;margin-bottom:0.4rem;">PTC10レポート</div>
+          各評価点の (流量, 圧力, 温度) 公差判定・サージ余裕・推奨バルブ操作・LOO-CV 精度を HTML 1枚にまとめ。試運転記録として保管可能。
+        </div>
+      </div>
+    </section>
+
+    <div style="margin-top:2rem;text-align:center;">
+      <a href={`${base}/ai-tools/`} style="color:rgba(255,255,255,0.4);font-size:0.75rem;text-decoration:none;letter-spacing:0.1em;">← AI Tools 一覧へ</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.29.4/full/pyodide.js" is:inline></script>
+
+  <script is:inline>
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+      pyodide: null, pyReady: false, sklearnLoaded: false,
+      opsRaw: null,       // {header, rows, encoding}
+      streamRaw: null,    // {header, rows, encoding}
+      mapping: null,      // {opTime, valves[], rpm, sensorTime, flow, press, temp}
+      physicsParams: null, // 物理モデルパラメータ
+      aeReady: false,      // AE訓練済みか
+      trained: false,
+      surge: [],
+      evalPoints: [],
+      lastResults: null,
+      auditLog: [],
+      isSampleData: false,  // サンプルデータか実データか
+    };
+
+    const $ = id => document.getElementById(id);
+    const setStep = (n, on) => { const el = $('step'+n); if(el) { el.style.opacity = on ? '1' : '0.4'; el.style.pointerEvents = on ? 'auto' : 'none'; } };
+    const stat = (msg, color) => { const b = $('py-status'); b.textContent = msg; b.style.color = color || 'rgba(255,255,255,0.55)'; };
+    const prog = (msg, color) => { const p = $('py-progress'); p.textContent = msg || ''; p.style.color = color || '#6ec897'; };
+    const log = (id, msg, color) => { const ln = document.createElement('div'); ln.style.color = color || 'rgba(237,237,232,0.85)'; ln.textContent = msg; $(id).appendChild(ln); };
+    const clearLog = id => { $(id).innerHTML = ''; };
+    const audit = (action, detail) => {
+      state.auditLog.push({ ts: new Date().toISOString(), action, detail });
+    };
+
+    // ============================================================
+    // PYODIDE
+    // ============================================================
+    async function ensurePyodide() {
+      if (state.pyReady) return;
+      stat('⏳ Pyodide 起動中 (初回 約10MB)...', '#c8a96e');
+      prog('CDN取得中...');
+      state.pyodide = await loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.29.4/full/' });
+      state.pyReady = true;
+      stat('✓ Pyodide v' + state.pyodide.version, '#6ec897');
+      prog('');
+    }
+    async function ensureSklearn() {
+      await ensurePyodide();
+      if (state.sklearnLoaded) return;
+      stat('⏳ scikit-learn + numpy + scipy ロード中 (初回 約20MB)...', '#c8a96e');
+      prog('パッケージDL中...');
+      await state.pyodide.loadPackage(['scikit-learn', 'numpy', 'scipy']);
+      state.sklearnLoaded = true;
+      stat('✓ Pyodide + sklearn 準備完了', '#6ec897');
+      prog('');
+    }
+
+    // ============================================================
+    // F1: HH:MM:SS タイムスタンプパーサ
+    // ============================================================
+    function parseTimestamp(str) {
+      if (str == null || str === '') return NaN;
+      const s = String(str).trim();
+      // HH:MM:SS or H:MM:SS (24時間制)
+      const m = s.match(/^(\d{1,2}):(\d{2}):(\d{2})(\.\d+)?$/);
+      if (m) {
+        const h = parseInt(m[1]), mn = parseInt(m[2]), sc = parseInt(m[3]);
+        const frac = m[4] ? parseFloat(m[4]) : 0;
+        return h * 3600 + mn * 60 + sc + frac;
+      }
+      // ISO8601 or date+time
+      const m2 = s.match(/(\d{1,2}):(\d{2}):(\d{2})/);
+      if (m2) return parseInt(m2[1]) * 3600 + parseInt(m2[2]) * 60 + parseInt(m2[3]);
+      // Pure number (seconds)
+      const n = parseFloat(s);
+      if (!isNaN(n)) return n;
+      return NaN;
+    }
+    function formatTimestamp(sec) {
+      if (isNaN(sec)) return '';
+      const total = Math.floor(sec);
+      const h = Math.floor(total / 3600);
+      const mn = Math.floor((total - h * 3600) / 60);
+      const sc = total - h * 3600 - mn * 60;
+      return `${h}:${String(mn).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;
+    }
+
+    // ============================================================
+    // F2: エンコーディング自動判定 (CP932 / UTF-8)
+    // ============================================================
+    async function readCSVFile(file) {
+      const buf = await file.arrayBuffer();
+      // UTF-8 試行
+      try {
+        const txtU8 = new TextDecoder('utf-8', { fatal: true }).decode(buf);
+        return { text: txtU8, encoding: 'UTF-8' };
+      } catch (e) { /* fall through */ }
+      // CP932 (Shift-JIS 互換) 試行
+      try {
+        const txtCP = new TextDecoder('shift-jis').decode(buf);
+        return { text: txtCP, encoding: 'CP932/Shift-JIS' };
+      } catch (e) { /* fall through */ }
+      // フォールバック
+      const txt = new TextDecoder('utf-8').decode(buf);
+      return { text: txt, encoding: 'UTF-8 (fallback)' };
+    }
+
+    function parseCSV(text) {
+      const lines = text.replace(/\r\n/g,'\n').split('\n').filter(l => l.length > 0);
+      const parseRow = (line) => {
+        const cells = []; let cur = ''; let inQ = false;
+        for (let i = 0; i < line.length; i++) {
+          const c = line[i];
+          if (inQ) {
+            if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+            else if (c === '"') inQ = false;
+            else cur += c;
+          } else {
+            if (c === '"') inQ = true;
+            else if (c === ',') { cells.push(cur); cur = ''; }
+            else cur += c;
+          }
+        }
+        cells.push(cur);
+        return cells.map(s => s.trim());
+      };
+      return { header: parseRow(lines[0]), rows: lines.slice(1).map(parseRow) };
+    }
+    function downloadCSV(name, header, rows) {
+      const csv = [header.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' }));
+      const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    // ============================================================
+    // 物理モデル（N可変・パラメータ可変）
+    // ============================================================
+    function defaultPhysics(N) {
+      const alphas = [];
+      for (let i = 0; i < N; i++) alphas.push(1.0 / N + (i % 2 === 0 ? 0.05 : -0.05));
+      const gammas = [];
+      for (let i = 0; i < N - 1; i++) gammas.push(0.005);
+      return {
+        N, q_max: 100, alphas, gammas,
+        Phi_norm: 50, a_psi: 1.4, b_psi: 0.35, H_norm: 4.5,
+        T_in: 293, kappa: 1.4, P_atm: 1.013,
+        surge_q_at_full: 22,
+        tau_flow: 8, tau_press: 12, tau_temp: 25,
+        noise_flow: 0.20, noise_press: 0.012, noise_temp: 0.15,
+        useRPM: false, rpm_design: 10000,
+      };
+    }
+    function physicsCompressor(valveArr, rpm) {
+      const p = state.physicsParams; if (!p) return null;
+      const N = valveArr.length;
+      let q_linear = 0;
+      for (let i = 0; i < N; i++) q_linear += p.alphas[i] * valveArr[i];
+      let q_coupling = 0;
+      for (let i = 0; i < N - 1; i++) q_coupling += p.gammas[i] * valveArr[i] * valveArr[i+1] / 100;
+      // RPM 補正（オプション）
+      const rpm_factor = (p.useRPM && rpm) ? (rpm / p.rpm_design) : 1.0;
+      const q = p.q_max * (q_linear - q_coupling) / 100 * rpm_factor;
+      const Phi = q / p.Phi_norm;
+      const Psi = p.a_psi - p.b_psi * Phi * Phi;
+      const H = Math.max(0.1, Psi * p.H_norm * rpm_factor * rpm_factor);
+      const T_out = p.T_in * Math.pow(Math.max(1, H / p.P_atm + 1), (p.kappa-1)/p.kappa);
+      const stable = q > p.surge_q_at_full * rpm_factor;
+      return { Q: q, P: H, T: T_out, stable };
+    }
+
+    function renderPhysicsSliders() {
+      const p = state.physicsParams; if (!p) return;
+      const div = $('physics-sliders');
+      const sliders = [
+        { k: 'a_psi', label: 'a (ヘッド係数a)', min: 0.5, max: 3.0, step: 0.01 },
+        { k: 'b_psi', label: 'b (ヘッド係数b)', min: 0.05, max: 1.0, step: 0.01 },
+        { k: 'H_norm', label: 'ヘッドスケール', min: 1, max: 10, step: 0.1 },
+        { k: 'q_max', label: 'q_max', min: 50, max: 200, step: 5 },
+        { k: 'Phi_norm', label: '流量正規化', min: 20, max: 100, step: 1 },
+        { k: 'surge_q_at_full', label: 'サージ流量', min: 5, max: 50, step: 1 },
+        { k: 'T_in', label: '入口温度 (K)', min: 270, max: 320, step: 1 },
+        { k: 'tau_flow', label: 'τ_flow (s)', min: 1, max: 30, step: 1 },
+        { k: 'tau_press', label: 'τ_press (s)', min: 1, max: 30, step: 1 },
+        { k: 'tau_temp', label: 'τ_temp (s)', min: 1, max: 60, step: 1 },
+      ];
+      let html = '';
+      sliders.forEach(s => {
+        html += `<label style="display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:rgba(237,237,232,0.75);">
+          <span style="min-width:9rem;">${s.label}</span>
+          <input type="range" data-pkey="${s.k}" min="${s.min}" max="${s.max}" step="${s.step}" value="${p[s.k]}" class="phys-sl" style="flex:1;" />
+          <span class="phys-val" data-pkey="${s.k}" style="font-family:'SF Mono',monospace;color:#c8a96e;min-width:3.5rem;text-align:right;">${p[s.k]}</span>
+        </label>`;
+      });
+      div.innerHTML = html;
+      document.querySelectorAll('.phys-sl').forEach(el => el.addEventListener('input', e => {
+        const k = e.target.dataset.pkey;
+        state.physicsParams[k] = parseFloat(e.target.value);
+        document.querySelector(`.phys-val[data-pkey="${k}"]`).textContent = state.physicsParams[k];
+        updatePhysicsFormula();
+      }));
+      updatePhysicsFormula();
+    }
+    function updatePhysicsFormula() {
+      const p = state.physicsParams; if (!p) return;
+      const aStr = p.alphas.map((a, i) => `${a.toFixed(2)}·v${i+1}`).join('+');
+      const gStr = p.gammas.length ? p.gammas.map((g, i) => `${g.toFixed(3)}·v${i+1}·v${i+2}/100`).join('+') : '0';
+      $('physics-formula').innerHTML =
+        `q = ${p.q_max} × (${aStr} − (${gStr})) / 100<br>` +
+        `Ψ = ${p.a_psi} − ${p.b_psi}·Φ² &nbsp;|&nbsp; Φ = q / ${p.Phi_norm} &nbsp;|&nbsp; H = Ψ × ${p.H_norm} bar<br>` +
+        `T_out = ${p.T_in} × (1 + H / ${p.P_atm})^((κ−1)/κ), κ=${p.kappa} &nbsp;|&nbsp; サージ流量: ${p.surge_q_at_full}`;
+    }
+
+    // ============================================================
+    // サンプルデータ生成 (HH:MM:SS 形式)
+    // ============================================================
+    function generateSampleData() {
+      const N = parseInt($('n-valves').value) || 3;
+      const useRPM = $('use-rpm').checked;
+      state.physicsParams = defaultPhysics(N);
+      state.physicsParams.useRPM = useRPM;
+      const p = state.physicsParams;
+      // 試運転は 8:00:00 開始想定
+      const t0_sec = 8 * 3600;
+      // 12操作グリッド
+      let s = 42; const rng = () => { s = (s*9301+49297)%233280; return s/233280; };
+      const grid = [];
+      for (let i = 0; i < 12; i++) {
+        const row = [];
+        for (let j = 0; j < N; j++) {
+          row.push(Math.max(15, Math.min(85, 20 + ((i+j*3)%12)*6 + (rng()-0.5)*8)));
+        }
+        if (useRPM) row.push(9500 + Math.floor(rng() * 1000));  // RPM
+        grid.push(row);
+      }
+      const opTimes = grid.map((_, i) => t0_sec + 60 + i * 300);
+      const total = opTimes[opTimes.length-1] + 300;
+
+      // 操作メモ
+      const valveCols = Array.from({length: N}, (_, i) => `valve_${i+1}_pct`);
+      const opsHeader = ['時刻', ...valveCols, ...(useRPM ? ['rpm'] : [])];
+      const opsRows = grid.map((g, i) => [
+        formatTimestamp(opTimes[i]),
+        ...g.slice(0, N).map(v => v.toFixed(1)),
+        ...(useRPM ? [String(g[N])] : []),
+      ]);
+
+      // センサーストリーム
+      const streamHeader = ['時刻', 'flow_m3_min', 'press_bar', 'temp_K'];
+      const streamRows = [];
+      let curValves = new Array(N).fill(0);
+      let curRPM = useRPM ? p.rpm_design : null;
+      let opIdx = -1;
+      let prev = physicsCompressor(curValves, curRPM);
+      let yState = { Q: prev.Q, P: prev.P, T: prev.T };
+      let s2 = 7; const noise = () => { s2 = (s2*9301+49297)%233280; return s2/233280 - 0.5; };
+      for (let t = t0_sec; t < total; t++) {
+        if (opIdx + 1 < opTimes.length && t >= opTimes[opIdx + 1]) {
+          opIdx++;
+          curValves = grid[opIdx].slice(0, N);
+          if (useRPM) curRPM = grid[opIdx][N];
+        }
+        const tgt = physicsCompressor(curValves, curRPM);
+        yState.Q += (tgt.Q - yState.Q) / p.tau_flow;
+        yState.P += (tgt.P - yState.P) / p.tau_press;
+        yState.T += (tgt.T - yState.T) / p.tau_temp;
+        const mQ = yState.Q + p.noise_flow * noise() * 2;
+        const mP = yState.P + p.noise_press * noise() * 2;
+        const mT = yState.T + p.noise_temp * noise() * 2;
+        streamRows.push([formatTimestamp(t), mQ.toFixed(3), mP.toFixed(4), mT.toFixed(2)]);
+      }
+
+      return {
+        ops: { header: opsHeader, rows: opsRows, encoding: 'UTF-8 (合成)' },
+        stream: { header: streamHeader, rows: streamRows, encoding: 'UTF-8 (合成)' },
+      };
+    }
+
+    // ============================================================
+    // 列マッピング UI (F3)
+    // ============================================================
+    function buildMappingUI() {
+      const ops = state.opsRaw; const stream = state.streamRaw;
+      if (!ops || !stream) return;
+
+      // 自動推定（参考程度）
+      const opGuessTime = ops.header.find(h => /時刻|time|timestamp/i.test(h)) || ops.header[0];
+      const opGuessU = ops.header.filter(h => h !== opGuessTime && /valve|v\d|バルブ|弁|rpm|speed|回転|throttle|スロットル/i.test(h));
+      // 推定が空なら、時刻以外全部を初期選択
+      const opUDefault = opGuessU.length > 0 ? opGuessU : ops.header.filter(h => h !== opGuessTime);
+
+      let opsHtml = `<div style="font-size:0.72rem;color:#c8a96e;margin-bottom:0.4rem;">操作メモCSV（時刻 + 操作列 u を自由選択）</div>`;
+      opsHtml += '<div style="display:grid;grid-template-columns:1fr 2fr;gap:0.6rem;">';
+      opsHtml += renderMapSelect('map-op-time', '時刻列', ops.header, opGuessTime, false);
+      opsHtml += renderMapMultiSelect('map-op-u', '操作列 u（吸込・循環側バルブ・RPM等を複数選択）', ops.header.filter(h => true), opUDefault);
+      opsHtml += '</div>';
+      opsHtml += `<div style="font-size:0.68rem;color:#ff6b6b;margin-top:0.4rem;">⚠ 吐出側バルブ・吐出圧力センサー等の<strong>測定/吐出系列を u に含めないでください</strong>（性能試験の整合性違反）</div>`;
+      $('mapping-ops').innerHTML = opsHtml;
+
+      // センサー
+      const stGuessTime = stream.header.find(h => /時刻|time|timestamp/i.test(h)) || stream.header[0];
+      const stGuessY = stream.header.filter(h => h !== stGuessTime);
+
+      let stHtml = `<div style="font-size:0.72rem;color:#c8a96e;margin-bottom:0.4rem;">センサーストリームCSV（時刻 + 観測列 y を自由選択）</div>`;
+      stHtml += '<div style="display:grid;grid-template-columns:1fr 2fr;gap:0.6rem;">';
+      stHtml += renderMapSelect('map-st-time', '時刻列', stream.header, stGuessTime, false);
+      stHtml += renderMapMultiSelect('map-st-y', '観測列 y（流量・圧力・温度・効率など複数選択）', stream.header.filter(h => true), stGuessY);
+      stHtml += '</div>';
+
+      // 物理モデル対応付け（物理ON時のみ表示）
+      stHtml += `<div id="phys-y-mapping" style="display:none;margin-top:0.8rem;padding:0.6rem 0.8rem;background:#0a0a0c;border:1px dashed rgba(110,200,151,0.3);">
+        <div style="font-size:0.7rem;color:#6ec897;margin-bottom:0.4rem;">📐 物理モデル用の対応付け（必要に応じて選択。該当列がなければ「— なし —」で物理モデル該当部のみOFF）</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.4rem;">
+          <div id="phys-flow-wrap"></div>
+          <div id="phys-press-wrap"></div>
+          <div id="phys-temp-wrap"></div>
+        </div>
+      </div>`;
+      $('mapping-stream').innerHTML = stHtml;
+
+      // 物理対応付け（y の中から）
+      updatePhysYMapping();
+      // y multiselect 変更時に物理対応も更新
+      const yMulti = document.getElementById('map-st-y');
+      if (yMulti) yMulti.addEventListener('change', updatePhysYMapping);
+
+      $('column-mapping').style.display = 'block';
+    }
+
+    function updatePhysYMapping() {
+      if (!$('use-physics').checked) {
+        const w = $('phys-y-mapping'); if (w) w.style.display = 'none';
+        return;
+      }
+      const yMulti = document.getElementById('map-st-y');
+      if (!yMulti) return;
+      const selected = Array.from(yMulti.selectedOptions).map(o => o.value);
+      const guessFlow = selected.find(h => /flow|流量/i.test(h)) || '';
+      const guessPress = selected.find(h => /press|圧|pres/i.test(h)) || '';
+      const guessTemp = selected.find(h => /temp|温度|temperat/i.test(h)) || '';
+      $('phys-flow-wrap').innerHTML = renderMapSelect('map-phys-flow', '流量に対応', selected, guessFlow, true);
+      $('phys-press-wrap').innerHTML = renderMapSelect('map-phys-press', '圧力に対応', selected, guessPress, true);
+      $('phys-temp-wrap').innerHTML = renderMapSelect('map-phys-temp', '温度に対応', selected, guessTemp, true);
+      $('phys-y-mapping').style.display = 'block';
+    }
+
+    function renderMapSelect(id, label, options, selected, allowNone) {
+      let h = `<label style="font-size:0.72rem;color:rgba(237,237,232,0.8);"><span style="display:block;color:rgba(255,255,255,0.55);margin-bottom:0.2rem;">${label}</span>`;
+      h += `<select id="${id}" style="width:100%;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.3rem;font-family:inherit;font-size:0.74rem;">`;
+      if (allowNone) h += '<option value="">— なし —</option>';
+      options.forEach(o => { h += `<option value="${escapeAttr(o)}" ${o===selected?'selected':''}>${escapeHtml(o)}</option>`; });
+      h += '</select></label>';
+      return h;
+    }
+    function renderMapMultiSelect(id, label, options, selectedList) {
+      const selSet = new Set(selectedList);
+      let h = `<label style="font-size:0.72rem;color:rgba(237,237,232,0.8);"><span style="display:block;color:rgba(255,255,255,0.55);margin-bottom:0.2rem;">${label}</span>`;
+      h += `<select id="${id}" multiple size="${Math.min(options.length+1, 8)}" style="width:100%;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.3rem;font-family:inherit;font-size:0.74rem;">`;
+      options.forEach(o => { h += `<option value="${escapeAttr(o)}" ${selSet.has(o)?'selected':''}>${escapeHtml(o)}</option>`; });
+      h += '</select></label>';
+      h += `<div style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;">Ctrl/⌘キー で複数選択。${selectedList.length} 個選択中</div>`;
+      return h;
+    }
+    function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function escapeAttr(s) { return escapeHtml(s); }
+
+    function confirmMapping() {
+      const opHeader = state.opsRaw.header;
+      const stHeader = state.streamRaw.header;
+      const opTime = $('map-op-time').value;
+      const opUSel = Array.from(document.getElementById('map-op-u').selectedOptions).map(o => o.value);
+      const stTime = $('map-st-time').value;
+      const stYSel = Array.from(document.getElementById('map-st-y').selectedOptions).map(o => o.value);
+
+      if (!opTime || !stTime) { alert('時刻列を両CSVで選択してください'); return; }
+      if (opUSel.length === 0) { alert('操作列 u を1つ以上選択してください'); return; }
+      if (stYSel.length === 0) { alert('観測列 y を1つ以上選択してください'); return; }
+      // 時刻列が u/y に混入していないか
+      if (opUSel.includes(opTime)) { alert('時刻列を u に含めないでください'); return; }
+      if (stYSel.includes(stTime)) { alert('時刻列を y に含めないでください'); return; }
+
+      // 物理対応付け（物理ON時のみ）
+      const usePhysics = $('use-physics').checked;
+      let physFlow = null, physPress = null, physTemp = null;
+      if (usePhysics) {
+        physFlow = $('map-phys-flow') ? $('map-phys-flow').value : '';
+        physPress = $('map-phys-press') ? $('map-phys-press').value : '';
+        physTemp = $('map-phys-temp') ? $('map-phys-temp').value : '';
+        // 物理対応がすべて空 → 物理OFF に切替
+        if (!physFlow && !physPress && !physTemp) {
+          if (!confirm('物理モデルが ON ですが、流量/圧力/温度のいずれも y にマップされていません。物理モデルを OFF にして続行しますか？')) return;
+          $('use-physics').checked = false;
+        }
+      }
+
+      // バルブ名 = u列名そのまま
+      const N = opUSel.length;
+      // useRPM は u に "rpm" 系が含まれているかで自動判定
+      const rpmCol = opUSel.find(h => /rpm|speed|回転/i.test(h));
+      const useRPM = !!rpmCol;
+      const valveNames = useRPM ? opUSel.filter(h => h !== rpmCol) : opUSel.slice();
+      const rpmIdx = rpmCol ? opHeader.indexOf(rpmCol) : -1;
+
+      state.mapping = {
+        opTimeIdx: opHeader.indexOf(opTime),
+        valveIdx: valveNames.map(v => opHeader.indexOf(v)),
+        rpmIdx,
+        useRPM,
+        stTimeIdx: stHeader.indexOf(stTime),
+        yIdx: stYSel.map(y => stHeader.indexOf(y)),
+        yNames: stYSel.slice(),
+        valveNames,
+        N: valveNames.length,
+        // 物理対応 (yNames の中で flow/press/temp に該当するもの)
+        physFlowYIdx: physFlow ? stYSel.indexOf(physFlow) : -1,
+        physPressYIdx: physPress ? stYSel.indexOf(physPress) : -1,
+        physTempYIdx: physTemp ? stYSel.indexOf(physTemp) : -1,
+      };
+      // n-valves 表示も同期
+      $('n-valves').value = valveNames.length;
+      $('use-rpm').checked = useRPM;
+      audit('column_mapping_confirmed', state.mapping);
+      runSanityAndPreview();
+      setStep(2, true);
+    }
+    // 物理 ON/OFF 切替で対応UI再表示
+    document.addEventListener('change', e => {
+      if (e.target && e.target.id === 'use-physics') updatePhysYMapping();
+    });
+
+    // ============================================================
+    // F4 + F5 + F9: 欠損補間・時間範囲チェック・サニティ
+    // ============================================================
+    function runSanityAndPreview() {
+      const m = state.mapping; if (!m) return;
+      const ops = state.opsRaw; const stream = state.streamRaw;
+      const issues = [];
+      // 操作時刻パース
+      const opTimes = ops.rows.map(r => parseTimestamp(r[m.opTimeIdx]));
+      const opTimesValid = opTimes.filter(t => !isNaN(t));
+      if (opTimesValid.length < ops.rows.length) issues.push(`操作メモ ${ops.rows.length - opTimesValid.length}行の時刻が解析不能`);
+      if (opTimesValid.length < 3) issues.push(`操作メモ有効行 ${opTimesValid.length} 行 — 訓練には最低3行必要`);
+      // ストリーム時刻パース
+      const stTimes = stream.rows.map(r => parseTimestamp(r[m.stTimeIdx]));
+      const stValid = stTimes.filter(t => !isNaN(t)).length;
+      if (stValid < stream.rows.length * 0.95) issues.push(`センサー時刻パース成功率 ${(stValid/stream.rows.length*100).toFixed(1)}%`);
+      // 時間範囲整合 (F5)
+      if (opTimesValid.length && stValid) {
+        const opMin = Math.min(...opTimesValid), opMax = Math.max(...opTimesValid);
+        const stMin = Math.min(...stTimes.filter(t => !isNaN(t)));
+        const stMax = Math.max(...stTimes.filter(t => !isNaN(t)));
+        if (opMin < stMin - 1 || opMax > stMax + 1) {
+          issues.push(`時間範囲不整合: 操作 ${formatTimestamp(opMin)}〜${formatTimestamp(opMax)} / ストリーム ${formatTimestamp(stMin)}〜${formatTimestamp(stMax)}`);
+        }
+      }
+      // 数値範囲チェック (F9) - 全 y 列に対して
+      m.yIdx.forEach((yi, k) => {
+        const vals = stream.rows.map(r => parseFloat(r[yi])).filter(x => !isNaN(x));
+        const yName = m.yNames[k];
+        if (vals.some(v => v < 0)) issues.push(`${yName} に負値あり`);
+        // 温度らしき列のみ常識範囲チェック
+        if (/temp|温度/i.test(yName) && vals.some(v => v < 200 || v > 1000)) issues.push(`${yName} が常識範囲外 (200-1000K?)`);
+        const missing = stream.rows.filter(r => r[yi]==='' || isNaN(parseFloat(r[yi]))).length;
+        if (missing > 0) issues.push(`${yName} 欠損 ${missing} 行（線形補間）`);
+      });
+
+      // 結果表示
+      const sd = $('sanity-result');
+      if (issues.length === 0) {
+        sd.style.borderLeftColor = '#6ec897';
+        sd.innerHTML = '✓ サニティチェック合格 — データ整合性問題なし';
+      } else {
+        sd.style.borderLeftColor = '#e8c97a';
+        sd.innerHTML = '⚠ <strong>サニティチェック警告:</strong><br>' + issues.map(x => '・ ' + x).join('<br>');
+      }
+      sd.style.display = 'block';
+
+      // プレビュー
+      renderPreview();
+    }
+    function renderPreview() {
+      const ops = state.opsRaw, stream = state.streamRaw;
+      const opRows = ops.rows.slice(0, 3).concat(ops.rows.length > 6 ? [{...['...']}] : []).concat(ops.rows.slice(-3));
+      let h = '<table style="border-collapse:collapse;min-width:100%;">';
+      h += '<thead><tr>' + ops.header.map(x => `<th style="text-align:left;padding:0.3rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">${escapeHtml(x)}</th>`).join('') + '</tr></thead>';
+      h += '<tbody>' + ops.rows.slice(0,3).concat(ops.rows.slice(-3)).map(r => '<tr>' + r.map(c => `<td style="padding:0.25rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(c)}</td>`).join('') + '</tr>').join('') + '</tbody></table>';
+      $('ops-preview').innerHTML = h;
+
+      h = '<table style="border-collapse:collapse;min-width:100%;">';
+      h += '<thead><tr>' + stream.header.map(x => `<th style="text-align:left;padding:0.3rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">${escapeHtml(x)}</th>`).join('') + '</tr></thead>';
+      h += '<tbody>' + stream.rows.slice(0,3).concat(stream.rows.slice(-3)).map(r => '<tr>' + r.map(c => `<td style="padding:0.25rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(c)}</td>`).join('') + '</tr>').join('') + '</tbody></table>';
+      h += `<div style="margin-top:0.4rem;color:rgba(255,255,255,0.4);font-size:0.7rem;">合計 ${stream.rows.length} 行</div>`;
+      $('stream-preview').innerHTML = h;
+      $('data-preview').style.display = 'block';
+    }
+
+    // ============================================================
+    // ステータス更新
+    // ============================================================
+    function updateDataStatus() {
+      if (state.opsRaw && state.streamRaw) {
+        const stRows = state.streamRaw.rows.length;
+        $('data-status').textContent = `✓ 操作メモ ${state.opsRaw.rows.length}行 / ストリーム ${stRows}行`;
+        $('data-status').style.color = '#6ec897';
+        $('encoding-info').textContent = `エンコーディング: 操作=${state.opsRaw.encoding}, ストリーム=${state.streamRaw.encoding}`;
+        $('encoding-info').style.display = 'block';
+        buildMappingUI();
+      } else {
+        let pieces = [];
+        if (state.opsRaw) pieces.push(`操作 ${state.opsRaw.rows.length}行`);
+        if (state.streamRaw) pieces.push(`ストリーム ${state.streamRaw.rows.length}行`);
+        $('data-status').textContent = pieces.length ? `△ ${pieces.join(', ')} (もう片方を取込んでください)` : 'データ未取込';
+        $('data-status').style.color = pieces.length ? '#e8c97a' : 'rgba(255,255,255,0.5)';
+      }
+    }
+
+    // ============================================================
+    // 取込ハンドラ
+    // ============================================================
+    $('btn-sample').addEventListener('click', () => {
+      const d = generateSampleData();
+      state.opsRaw = d.ops; state.streamRaw = d.stream;
+      state.isSampleData = true;
+      // 物理モデルは生成済 (state.physicsParams)
+      audit('sample_data_loaded', { N: state.physicsParams.N, useRPM: state.physicsParams.useRPM });
+      updateDataStatus();
+      renderPhysicsSliders();
+    });
+    $('csv-ops').addEventListener('change', async e => {
+      const f = e.target.files[0]; if (!f) return;
+      const r = await readCSVFile(f);
+      const d = parseCSV(r.text);
+      state.opsRaw = { ...d, encoding: r.encoding };
+      state.isSampleData = false;
+      audit('ops_csv_uploaded', { rows: d.rows.length, encoding: r.encoding });
+      updateDataStatus();
+    });
+    $('csv-stream').addEventListener('change', async e => {
+      const f = e.target.files[0]; if (!f) return;
+      prog('CSV解析中 (大容量の場合数秒)...');
+      const r = await readCSVFile(f);
+      const d = parseCSV(r.text);
+      state.streamRaw = { ...d, encoding: r.encoding };
+      state.isSampleData = false;
+      prog('');
+      audit('stream_csv_uploaded', { rows: d.rows.length, encoding: r.encoding });
+      updateDataStatus();
+    });
+    $('btn-template').addEventListener('click', () => {
+      const d = generateSampleData();
+      downloadCSV('operations-template.csv', d.ops.header, d.ops.rows);
+      setTimeout(() => downloadCSV('sensor-stream-template.csv', d.stream.header, d.stream.rows), 600);
+    });
+    $('btn-reset').addEventListener('click', () => {
+      Object.assign(state, {
+        opsRaw: null, streamRaw: null, mapping: null,
+        physicsParams: null, aeReady: false, trained: false,
+        surge: [], evalPoints: [], lastResults: null, isSampleData: false
+      });
+      $('encoding-info').style.display = 'none';
+      $('column-mapping').style.display = 'none';
+      $('sanity-result').style.display = 'none';
+      $('data-preview').style.display = 'none';
+      $('train-result').style.display = 'none';
+      $('inverse-result').style.display = 'none';
+      $('ae-result').style.display = 'none';
+      ['train-status','inverse-status','ae-status'].forEach(clearLog);
+      $('surge-tbody').innerHTML = '';
+      $('eval-table-wrapper').innerHTML = '';
+      $('physics-sliders').innerHTML = '';
+      [2,3,4,5,6,7,8,9,10].forEach(n => setStep(n, false));
+      updateDataStatus();
+    });
+    $('btn-confirm-mapping').addEventListener('click', confirmMapping);
+    $('use-physics').addEventListener('change', e => {
+      $('physics-params').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    // ============================================================
+    // STEP 3: AE 事前学習
+    // ============================================================
+    async function runAE() {
+      const btn = $('btn-ae'); btn.disabled = true; btn.style.opacity = '0.5';
+      const t0 = performance.now();
+      clearLog('ae-status'); $('ae-result').style.display = 'none';
+      try {
+        if (!$('use-ae').checked) { log('ae-status', 'AE は OFF。次STEPへ', '#e8c97a'); setStep(4, true); return; }
+        if (!state.mapping) throw new Error('STEP 1 でマッピングを確定してください');
+        await ensureSklearn();
+        log('ae-status', '✓ sklearn 準備完了', '#6ec897');
+
+        const m = state.mapping;
+        const seg = parseInt($('ae-seg').value) || 30;
+        const latent = parseInt($('ae-latent').value) || 4;
+        const iter = parseInt($('ae-iter').value) || 200;
+        // センサーストリームを numpy 形式に (時刻 + y 全列)
+        const stream = state.streamRaw.rows.map(r => [
+          parseTimestamp(r[m.stTimeIdx]),
+          ...m.yIdx.map(yi => parseFloat(r[yi])),
+        ]);
+        state.pyodide.globals.set('stream_data', stream);
+        state.pyodide.globals.set('seg_len', seg);
+        state.pyodide.globals.set('latent_dim', latent);
+        state.pyodide.globals.set('max_iter', iter);
+
+        const code = `
+import numpy as np
+from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import StandardScaler
+import json, time
+
+S = np.array(stream_data.to_py(), dtype=float)
+# 欠損補間 (F4)
+for j in range(1, S.shape[1]):
+    col = S[:, j]
+    mask = ~np.isnan(col)
+    if mask.sum() < 2:
+        col[~mask] = 0
+    else:
+        col[~mask] = np.interp(np.where(~mask)[0], np.where(mask)[0], col[mask])
+    S[:, j] = col
+
+# 時刻でソート
+order = np.argsort(S[:, 0])
+S = S[order]
+
+# セグメント抽出 (連続する seg_len 秒の窓)
+sl = int(seg_len)
+y_data = S[:, 1:]  # flow, press, temp
+ld = int(latent_dim)
+mi = int(max_iter)
+
+# 各セグメントを 1サンプルに平坦化（mean+std+slope に簡略化して特徴量爆発を防ぐ）
+segments = []
+for i in range(0, len(S) - sl, max(1, sl // 4)):  # 75%オーバーラップ
+    seg_y = y_data[i:i+sl]
+    if len(seg_y) < sl: continue
+    feat = np.concatenate([
+        seg_y.mean(axis=0),
+        seg_y.std(axis=0),
+        (seg_y[-1] - seg_y[0])  # 差分（傾きの代替）
+    ])
+    segments.append(feat)
+segments = np.array(segments)
+
+if len(segments) < 10:
+    raise ValueError(f'AE用セグメント不足: {len(segments)} 個')
+
+# AE: input → bottleneck(latent) → output (identity mapping)
+scaler = StandardScaler().fit(segments)
+Xs = scaler.transform(segments)
+
+t0 = time.time()
+ae = MLPRegressor(
+    hidden_layer_sizes=(16, ld, 16),
+    activation='tanh',
+    max_iter=mi,
+    random_state=42,
+    early_stopping=True,
+    validation_fraction=0.1,
+    n_iter_no_change=20,
+)
+ae.fit(Xs, Xs)
+t_ae = time.time() - t0
+
+# 再構成誤差
+recon = ae.predict(Xs)
+recon_rmse = float(np.sqrt(np.mean((recon - Xs)**2)))
+
+# 潜在ベクトル取得関数（中間層の活性化を手計算）
+def encode_to_latent(X_scaled):
+    # 入力 -> 第1層 -> bottleneck (第2層)
+    a = X_scaled @ ae.coefs_[0] + ae.intercepts_[0]
+    a = np.tanh(a)
+    z = a @ ae.coefs_[1] + ae.intercepts_[1]
+    z = np.tanh(z)
+    return z
+
+# グローバル保存
+_ae = ae
+_ae_scaler = scaler
+_ae_seg_len = sl
+_ae_latent_dim = ld
+_encode_to_latent = encode_to_latent
+
+result = {
+    "n_segments": int(len(segments)),
+    "seg_len": int(sl),
+    "latent_dim": int(ld),
+    "input_dim": int(segments.shape[1]),
+    "fit_sec": round(t_ae, 3),
+    "recon_rmse_normalized": round(recon_rmse, 4),
+    "n_iter": int(ae.n_iter_),
+    "converged": bool(ae.n_iter_ < mi),
+}
+json.dumps(result)
+`;
+        const resStr = await state.pyodide.runPythonAsync(code);
+        const res = JSON.parse(resStr);
+        state.aeReady = true;
+        audit('ae_trained', res);
+
+        log('ae-status', `✓ セグメント ${res.n_segments} 個 (各 ${res.seg_len}秒, 入力${res.input_dim}次元)`, '#6ec897');
+        log('ae-status', `✓ AE訓練完了 ${res.fit_sec}秒 (反復 ${res.n_iter}, 収束=${res.converged ? 'はい' : 'いいえ'})`, '#6ec897');
+        log('ae-status', `✓ 再構成誤差(正規化): ${res.recon_rmse_normalized}`, res.recon_rmse_normalized < 0.5 ? '#6ec897' : '#e8c97a');
+
+        $('ae-result').innerHTML =
+          `<strong style="color:#6ec897;">潜在次元 ${res.latent_dim} のオートエンコーダ訓練完了。</strong><br>
+          dense センサー全体（${res.n_segments} セグメント × ${res.seg_len}秒）で学習した表現を、STEP 4 の GP 訓練で特徴量として追加します。`;
+        $('ae-result').style.display = 'block';
+        $('ae-elapsed').textContent = `総時間: ${((performance.now()-t0)/1000).toFixed(1)}秒`;
+        setStep(4, true);
+      } catch (e) {
+        log('ae-status', '✗ 失敗: ' + String(e), '#ff6b6b');
+        console.error(e);
+      } finally {
+        btn.disabled = false; btn.style.opacity = '1';
+      }
+    }
+    $('btn-ae').addEventListener('click', runAE);
+
+    // ============================================================
+    // STEP 4: GP訓練 (残差 / 直接 + AE特徴量)
+    // ============================================================
+    async function trainGP() {
+      const btn = $('btn-train'); btn.disabled = true; btn.style.opacity = '0.5'; btn.textContent = '⏳ 訓練中...';
+      const t0 = performance.now();
+      clearLog('train-status'); $('train-result').style.display = 'none';
+      try {
+        if (!state.mapping) throw new Error('STEP 1 でマッピングを確定してください');
+        await ensureSklearn();
+        log('train-status', '✓ sklearn 準備完了', '#6ec897');
+
+        const m = state.mapping;
+        const settle = parseInt($('opt-settle').value) || 60;
+        const wait = parseInt($('opt-settle-wait').value) || 20;
+        const pre = parseInt($('opt-pre').value) || 30;
+        const restarts = parseInt($('opt-restarts').value) || 8;
+        const usePhysics = $('use-physics').checked;
+        const useAE = $('use-ae').checked && state.aeReady;
+
+        // 操作メモを numeric に
+        const ops = state.opsRaw.rows.map(r => {
+          const t = parseTimestamp(r[m.opTimeIdx]);
+          const valves = m.valveIdx.map(i => parseFloat(r[i]));
+          const rpm = m.useRPM && m.rpmIdx >= 0 ? parseFloat(r[m.rpmIdx]) : null;
+          return { t, valves, rpm };
+        }).filter(o => !isNaN(o.t) && o.valves.every(v => !isNaN(v)));
+
+        // ストリーム (時刻 + y 全列)
+        const stream = state.streamRaw.rows.map(r => [
+          parseTimestamp(r[m.stTimeIdx]),
+          ...m.yIdx.map(yi => parseFloat(r[yi])),
+        ]);
+
+        // 物理予測 (op ごとに事前計算)
+        // 物理対応 y がない次元は NaN (Python 側で 0 残差扱い)
+        const physicsPreds = usePhysics && state.physicsParams ? ops.map(o => {
+          const y = physicsCompressor(o.valves, o.rpm);
+          // y_stream の各列に対し、対応する物理値を返す
+          return m.yNames.map((_, k) => {
+            if (k === m.physFlowYIdx) return y.Q;
+            if (k === m.physPressYIdx) return y.P;
+            if (k === m.physTempYIdx) return y.T;
+            return NaN;  // 物理対応なし → 残差にしない
+          });
+        }) : null;
+
+        state.pyodide.globals.set('ops_data', ops.map(o => ({ t: o.t, valves: o.valves, rpm: o.rpm })));
+        state.pyodide.globals.set('stream_data', stream);
+        state.pyodide.globals.set('settle_sec', settle);
+        state.pyodide.globals.set('settle_wait', wait);
+        state.pyodide.globals.set('pre_sec', pre);
+        state.pyodide.globals.set('n_restarts', restarts);
+        state.pyodide.globals.set('valve_names', m.valveNames);
+        state.pyodide.globals.set('y_names', m.yNames);
+        state.pyodide.globals.set('use_rpm', m.useRPM);
+        state.pyodide.globals.set('use_physics', usePhysics);
+        state.pyodide.globals.set('use_ae', useAE);
+        state.pyodide.globals.set('physics_preds', physicsPreds);
+
+        const code = `
+import numpy as np
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import RBF, WhiteKernel, ConstantKernel as C
+from sklearn.preprocessing import StandardScaler
+import json, time
+
+ops = list(ops_data.to_py())
+stream = np.array(stream_data.to_py(), dtype=float)
+T_stream = stream[:, 0]
+y_stream = stream[:, 1:]  # flow, press, temp
+
+# 欠損補間 (F4)
+for j in range(y_stream.shape[1]):
+    col = y_stream[:, j].copy()
+    mask = ~np.isnan(col)
+    if mask.sum() >= 2:
+        col[~mask] = np.interp(np.where(~mask)[0], np.where(mask)[0], col[mask])
+    y_stream[:, j] = col
+
+vN = list(valve_names.to_py())
+yN_user = list(y_names.to_py())
+nU_valves = len(vN)
+use_rpm_flag = bool(use_rpm)
+use_phys = bool(use_physics)
+use_ae_flag = bool(use_ae)
+
+# 時刻ソート
+order = np.argsort(T_stream)
+T_stream = T_stream[order]
+y_stream = y_stream[order]
+
+# 各操作で時間窓集約
+N = len(ops)
+op_times = np.array([o['t'] for o in ops])
+order_op = np.argsort(op_times)
+
+X_u = []  # u (バルブ + RPM)
+X_pre = []  # 事前窓特徴
+X_ae = []  # AE潜在特徴
+Y_steady = []  # 整定後 y 平均
+Y_std = []  # 整定後 y std
+skipped = []
+n_y = y_stream.shape[1]  # ユーザー選択した y 数
+
+for oi, idx in enumerate(order_op):
+    o = ops[idx]
+    t_op = float(o['t'])
+    # 整定後窓
+    t_start = t_op + int(settle_wait)
+    if oi + 1 < N:
+        next_t = float(ops[int(order_op[oi+1])]['t'])
+        t_end = min(t_op + int(settle_wait) + int(settle_sec), next_t - 1)
+    else:
+        t_end = t_op + int(settle_wait) + int(settle_sec)
+    if t_end - t_start < 5:
+        skipped.append({"i": int(idx), "reason": "整定窓不足"}); continue
+    mask = (T_stream >= t_start) & (T_stream <= t_end)
+    if mask.sum() < 3:
+        skipped.append({"i": int(idx), "reason": "整定区間データ不足"}); continue
+    y_win = y_stream[mask]
+    y_mean = y_win.mean(axis=0)
+    y_sd = y_win.std(axis=0) + 1e-9
+
+    # 事前窓
+    t_pre_start = max(0, t_op - int(pre_sec))
+    mask_pre = (T_stream >= t_pre_start) & (T_stream < t_op)
+    if mask_pre.sum() >= 3:
+        pre_win = y_stream[mask_pre]
+        pre_mean = pre_win.mean(axis=0)
+        pre_sd = pre_win.std(axis=0)
+        ts = T_stream[mask_pre] - t_op
+        slopes = []
+        for j in range(n_y):
+            if len(ts) >= 2:
+                slope = float(np.polyfit(ts, pre_win[:, j], 1)[0])
+            else:
+                slope = 0.0
+            slopes.append(slope)
+        pre_feat = np.concatenate([pre_mean, pre_sd, np.array(slopes)])
+    else:
+        pre_feat = np.zeros(3 * n_y)
+
+    u_vec = list(o['valves'])
+    if use_rpm_flag and o.get('rpm') is not None and not np.isnan(o['rpm']):
+        u_vec.append(float(o['rpm']))
+
+    # AE潜在ベクトル（事前窓を AEセグメントに変換）
+    if use_ae_flag:
+        # 事前窓を AE のセグメント長に補正
+        sl = _ae_seg_len
+        t_ae_start = max(0, t_op - sl)
+        mask_ae = (T_stream >= t_ae_start) & (T_stream < t_op)
+        if mask_ae.sum() >= 3:
+            ae_win = y_stream[mask_ae]
+            ae_feat = np.concatenate([
+                ae_win.mean(axis=0),
+                ae_win.std(axis=0),
+                ae_win[-1] - ae_win[0],
+            ])
+            ae_feat_s = _ae_scaler.transform(ae_feat.reshape(1, -1))
+            z = _encode_to_latent(ae_feat_s)[0]
+        else:
+            z = np.zeros(_ae_latent_dim)
+        X_ae.append(z.tolist())
+
+    X_u.append(u_vec)
+    X_pre.append(pre_feat.tolist())
+    Y_steady.append(y_mean.tolist())
+    Y_std.append(y_sd.tolist())
+
+X_u = np.array(X_u, dtype=float)
+X_pre = np.array(X_pre, dtype=float)
+Y_steady = np.array(Y_steady, dtype=float)
+Y_std_arr = np.array(Y_std, dtype=float)
+
+# 連結
+parts = [X_u, X_pre]
+if use_ae_flag and len(X_ae):
+    X_ae = np.array(X_ae, dtype=float)
+    parts.append(X_ae)
+X_full = np.concatenate(parts, axis=1)
+nT = X_full.shape[0]
+nFeat = X_full.shape[1]
+nY = Y_steady.shape[1]
+nU_actual = X_u.shape[1]
+y_names = yN_user[:]
+while len(y_names) < nY:
+    y_names.append(f'y_{len(y_names)+1}')
+
+# 物理予測（残差学習用）
+phys_arr = None
+if use_phys and physics_preds is not None:
+    try:
+        pp = list(physics_preds.to_py())
+        # ソート順を ops の order_op に合わせる
+        pp_sorted = [pp[int(i)] for i in order_op if int(i) < len(pp)]
+        # スキップされた行を除外
+        used_indices = [int(i) for i in order_op if i not in [s['i'] for s in skipped]]
+        phys_arr = np.array([pp[i] for i in used_indices if i < len(pp)], dtype=float)
+        if phys_arr.shape[0] != Y_steady.shape[0]:
+            # 整合性なければ物理OFF扱い
+            phys_arr = None
+    except Exception:
+        phys_arr = None
+
+# 残差学習: Y_target = Y_steady (直接) または Y_steady - phys (残差)
+# phys_arr に NaN が含まれる列（物理対応なし）は 0 残差 = 直接モードになる
+if phys_arr is not None and phys_arr.shape == Y_steady.shape:
+    phys_arr_safe = np.where(np.isnan(phys_arr), 0.0, phys_arr)
+    Y_target = Y_steady - phys_arr_safe
+    mode = 'residual'
+    phys_arr = phys_arr_safe  # NaN を 0 に
+else:
+    Y_target = Y_steady
+    mode = 'direct'
+    phys_arr = None
+
+scaler = StandardScaler().fit(X_full)
+Xs = scaler.transform(X_full)
+
+def make_kernel():
+    return (
+        C(1.0, (1e-3, 1e3))
+        * RBF(length_scale=np.ones(nFeat), length_scale_bounds=(1e-1, 1e2))
+        + WhiteKernel(noise_level=0.1, noise_level_bounds=(1e-4, 1e1))
+    )
+
+# 訓練
+models = []; fit_info = []; t_fit_total = 0.0
+for j in range(nY):
+    yj = Y_target[:, j]
+    alpha_j = Y_std_arr[:, j] ** 2
+    gpr = GaussianProcessRegressor(
+        kernel=make_kernel(), normalize_y=True,
+        n_restarts_optimizer=int(n_restarts), random_state=42+j, alpha=alpha_j
+    )
+    t1 = time.time(); gpr.fit(Xs, yj); t_fit = time.time() - t1
+    t_fit_total += t_fit
+    yp, ys_p = gpr.predict(Xs, return_std=True)
+    models.append(gpr)
+    fit_info.append({
+        "target": y_names[j], "fit_sec": round(t_fit, 3),
+        "kernel": str(gpr.kernel_),
+        "log_ml": round(float(gpr.log_marginal_likelihood_value_), 4),
+        "rmse_train": round(float(np.sqrt(np.mean((yp - yj)**2))), 4),
+    })
+
+# LOO-CV (実 y vs 予測 y で評価、残差なら戻して比較)
+loo_results = []
+t_loo_start = time.time()
+for j in range(nY):
+    yj_target = Y_target[:, j]
+    yj_real = Y_steady[:, j]
+    alpha_j = Y_std_arr[:, j] ** 2
+    preds_real = np.zeros(nT); stds = np.zeros(nT)
+    for i in range(nT):
+        mask = np.ones(nT, dtype=bool); mask[i] = False
+        gpr_i = GaussianProcessRegressor(
+            kernel=make_kernel(), normalize_y=True,
+            n_restarts_optimizer=2, random_state=42+j,
+            alpha=alpha_j[mask]
+        )
+        gpr_i.fit(Xs[mask], yj_target[mask])
+        mu_t, sd = gpr_i.predict(Xs[i:i+1], return_std=True)
+        # 残差モードなら物理を戻す
+        if phys_arr is not None:
+            preds_real[i] = mu_t[0] + phys_arr[i, j]
+        else:
+            preds_real[i] = mu_t[0]
+        stds[i] = sd[0]
+    rmse = float(np.sqrt(np.mean((preds_real - yj_real)**2)))
+    mae = float(np.mean(np.abs(preds_real - yj_real)))
+    in95 = float(np.mean(np.abs(preds_real - yj_real) < 1.96 * stds))
+    rel_err = float(np.mean(np.abs(preds_real - yj_real) / (np.abs(yj_real) + 1e-9)) * 100)
+    loo_results.append({
+        "target": y_names[j],
+        "loo_rmse": round(rmse, 4), "loo_mae": round(mae, 4),
+        "loo_rel_err_pct": round(rel_err, 2),
+        "loo_95pct_coverage": round(in95, 3),
+    })
+t_loo = time.time() - t_loo_start
+
+# 訓練データカバレッジ (F15)
+u_min = X_u.min(axis=0).tolist()
+u_max = X_u.max(axis=0).tolist()
+y_min = Y_steady.min(axis=0).tolist()
+y_max = Y_steady.max(axis=0).tolist()
+
+# 監査用情報
+audit_info = {
+    "mode": mode,
+    "use_ae": bool(use_ae_flag),
+    "n_train_samples": int(nT),
+    "n_features": int(nFeat),
+    "n_skipped": len(skipped),
+}
+
+# globals保存
+_models = models; _scaler = scaler
+_X_train = X_u; _X_full = X_full; _Y_train = Y_steady; _Y_std = Y_std_arr
+_phys_train = phys_arr
+_mode = mode
+_use_rpm = use_rpm_flag
+_use_ae_active = use_ae_flag
+_nU_actual = nU_actual
+_pre_default = X_pre.mean(axis=0).tolist()
+_ae_default = np.array([row for row in X_ae]).mean(axis=0).tolist() if (use_ae_flag and len(X_ae)) else []
+_nU_valves = nU_valves
+_valve_names = vN
+_y_names = y_names
+
+result = {
+    "n_train": int(nT), "n_skipped": len(skipped),
+    "n_u_valves": int(nU_valves), "n_u_total": int(nU_actual),
+    "n_pre": int(X_pre.shape[1]),
+    "n_ae": int(0 if not (use_ae_flag and len(X_ae)) else len(X_ae[0])),
+    "n_features": int(nFeat),
+    "mode": mode,
+    "fit_total_sec": round(t_fit_total, 3),
+    "loo_sec": round(t_loo, 3),
+    "models": fit_info,
+    "loo": loo_results,
+    "u_min": [round(v, 4) for v in u_min],
+    "u_max": [round(v, 4) for v in u_max],
+    "y_min": [round(v, 4) for v in y_min],
+    "y_max": [round(v, 4) for v in y_max],
+    "y_names": y_names,
+    "audit": audit_info,
+}
+json.dumps(result)
+`;
+        const resStr = await state.pyodide.runPythonAsync(code);
+        const res = JSON.parse(resStr);
+        state.trained = true;
+        state.trainResult = res;
+        audit('gp_trained', res.audit);
+
+        log('train-status', `✓ 集約 ${res.n_train}行 (除外${res.n_skipped})`, '#6ec897');
+        log('train-status', `✓ 特徴量: u=${res.n_u_total} + 事前窓=${res.n_pre}${res.n_ae?` + AE=${res.n_ae}`:''} = ${res.n_features}次元`);
+        log('train-status', `✓ モード: ${res.mode === 'residual' ? '残差学習(物理+GP)' : '直接GP'} `, res.mode === 'residual' ? '#6ec897' : '#e8c97a');
+        log('train-status', `✓ GP訓練 ${res.fit_total_sec}秒 + LOO-CV ${res.loo_sec}秒`, '#6ec897');
+
+        // 結果表示
+        let html = `<div style="margin-bottom:0.5rem;color:${res.mode === 'residual' ? '#6ec897' : '#e8c97a'};font-weight:500;">モード: ${res.mode === 'residual' ? '残差学習 (物理事前 + GP補正)' : '直接GP (物理OFF)'}</div>`;
+        res.models.forEach((mm, idx) => {
+          html += `<div style="margin-bottom:0.5rem;padding-bottom:0.5rem;${idx < res.models.length-1?'border-bottom:1px solid rgba(255,255,255,0.06);':''}">`;
+          html += `<div style="color:#c8a96e;font-weight:500;">${mm.target}</div>`;
+          html += `<div style="font-family:'SF Mono',monospace;font-size:0.68rem;color:rgba(237,237,232,0.65);margin-top:0.2rem;word-break:break-all;">`;
+          html += `kernel: ${mm.kernel}<br>log-ML: ${mm.log_ml} / train RMSE: ${mm.rmse_train} / fit: ${mm.fit_sec}s`;
+          html += `</div></div>`;
+        });
+        html += `<div style="margin-top:0.5rem;padding-top:0.6rem;border-top:1px dashed rgba(200,169,110,0.3);">`;
+        html += `<div style="color:#e8c97a;font-size:0.7rem;letter-spacing:0.15em;margin-bottom:0.5rem;">LOO-CV HONEST ACCURACY</div>`;
+        html += `<table style="width:100%;border-collapse:collapse;font-size:0.74rem;font-family:'SF Mono',monospace;">`;
+        html += `<tr style="color:#c8a96e;"><th style="text-align:left;padding:0.3rem;">y</th><th style="text-align:right;padding:0.3rem;">RMSE</th><th style="text-align:right;padding:0.3rem;">MAE</th><th style="text-align:right;padding:0.3rem;">相対誤差%</th><th style="text-align:right;padding:0.3rem;">95%CI被覆</th></tr>`;
+        res.loo.forEach(l => {
+          const cov = l.loo_95pct_coverage >= 0.9 ? '#6ec897' : (l.loo_95pct_coverage >= 0.7 ? '#e8c97a' : '#ff6b6b');
+          html += `<tr><td style="padding:0.3rem;">${l.target}</td><td style="text-align:right;padding:0.3rem;">${l.loo_rmse}</td><td style="text-align:right;padding:0.3rem;">${l.loo_mae}</td><td style="text-align:right;padding:0.3rem;">${l.loo_rel_err_pct}%</td><td style="text-align:right;padding:0.3rem;color:${cov};">${(l.loo_95pct_coverage*100).toFixed(0)}%</td></tr>`;
+        });
+        html += `</table></div>`;
+        $('train-summary').innerHTML = html;
+        $('train-result').style.display = 'block';
+
+        // 次STEPへ
+        setStep(5, true); setStep(6, true); setStep(7, true); setStep(8, true); setStep(9, true); setStep(10, true);
+        // サンプルデータの場合、サージ・評価点を自動投入
+        if (state.surge.length === 0) state.surge = generateSampleSurge();
+        renderSurgeTable();
+        if (state.evalPoints.length === 0) state.evalPoints = generateSampleEvalPoints();
+        renderEvalTable();
+
+        $('train-elapsed').textContent = `総時間: ${((performance.now()-t0)/1000).toFixed(1)}秒`;
+      } catch (e) {
+        log('train-status', '✗ 失敗: ' + String(e), '#ff6b6b');
+        console.error(e);
+      } finally {
+        btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '▶ 再訓練';
+      }
+    }
+    $('btn-train').addEventListener('click', trainGP);
+
+    // ============================================================
+    // サンプル サージ・評価点
+    // ============================================================
+    function generateSampleSurge() {
+      return [{Q:22,P:4.2},{Q:28,P:5.0},{Q:35,P:5.8},{Q:42,P:6.5}];
+    }
+    function generateSampleEvalPoints() {
+      const p = state.physicsParams; if (!p) return [];
+      const N = p.N;
+      const seeds = [
+        Array.from({length:N},(_,i)=>40+(i%2)*15),
+        Array.from({length:N},()=>25),
+        Array.from({length:N},()=>80),
+        Array.from({length:N},(_,i)=>35+i*10),
+        Array.from({length:N},(_,i)=>70-i*5),
+      ];
+      const labels = ['保証点 (Guarantee)','サージ近傍点 (Surge)','ストンウォール (Stonewall)','代替点 1','代替点 2'];
+      return seeds.map((s, i) => {
+        const v = s.map(x => Math.max(15, Math.min(85, x)));
+        const y = physicsCompressor(v, p.useRPM ? p.rpm_design : null);
+        return { label: labels[i], flow: +y.Q.toFixed(2), press: +y.P.toFixed(3), temp: +y.T.toFixed(2), tol: 5 };
+      });
+    }
+
+    // ============================================================
+    // サージ線テーブル
+    // ============================================================
+    function renderSurgeTable() {
+      const tb = $('surge-tbody'); tb.innerHTML = '';
+      state.surge.forEach((s, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);">${i+1}</td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><input type="number" step="any" value="${s.Q}" data-i="${i}" data-k="Q" class="surge-input" style="width:6rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem 0.4rem;font-family:'SF Mono',monospace;font-size:0.78rem;text-align:right;" /></td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><input type="number" step="any" value="${s.P}" data-i="${i}" data-k="P" class="surge-input" style="width:6rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem 0.4rem;font-family:'SF Mono',monospace;font-size:0.78rem;text-align:right;" /></td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><button class="surge-del" data-i="${i}" style="background:transparent;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:0.2rem 0.5rem;font-size:0.7rem;cursor:pointer;">削除</button></td>`;
+        tb.appendChild(tr);
+      });
+      document.querySelectorAll('.surge-input').forEach(el => el.addEventListener('change', e => {
+        state.surge[+e.target.dataset.i][e.target.dataset.k] = parseFloat(e.target.value);
+      }));
+      document.querySelectorAll('.surge-del').forEach(el => el.addEventListener('click', e => {
+        state.surge.splice(+e.target.dataset.i, 1); renderSurgeTable();
+      }));
+    }
+    $('btn-surge-add').addEventListener('click', () => { state.surge.push({Q:0,P:0}); renderSurgeTable(); });
+
+    // ============================================================
+    // 評価点テーブル
+    // ============================================================
+    function renderEvalTable() {
+      const wrap = $('eval-table-wrapper');
+      let h = '<table style="width:100%;border-collapse:collapse;font-size:0.78rem;">';
+      h += '<thead><tr>';
+      h += '<th style="text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">#</th>';
+      h += '<th style="text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">ラベル</th>';
+      h += '<th style="text-align:right;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">流量</th>';
+      h += '<th style="text-align:right;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">圧力</th>';
+      h += '<th style="text-align:right;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">温度</th>';
+      h += '<th style="text-align:right;padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);color:#c8a96e;">公差±%</th>';
+      h += '<th style="padding:0.4rem 0.6rem;border-bottom:1px solid rgba(200,169,110,0.3);"></th></tr></thead><tbody>';
+      state.evalPoints.forEach((p, i) => {
+        h += `<tr>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);">${i+1}</td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><input type="text" value="${escapeHtml(p.label||'')}" data-i="${i}" data-k="label" class="eval-input" style="width:13rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem 0.4rem;font-family:inherit;font-size:0.78rem;" /></td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><input type="number" step="any" value="${p.flow}" data-i="${i}" data-k="flow" class="eval-input" style="width:6rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem 0.4rem;font-family:'SF Mono',monospace;font-size:0.78rem;text-align:right;" /></td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><input type="number" step="any" value="${p.press}" data-i="${i}" data-k="press" class="eval-input" style="width:6rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem 0.4rem;font-family:'SF Mono',monospace;font-size:0.78rem;text-align:right;" /></td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><input type="number" step="any" value="${p.temp}" data-i="${i}" data-k="temp" class="eval-input" style="width:6rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem 0.4rem;font-family:'SF Mono',monospace;font-size:0.78rem;text-align:right;" /></td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><input type="number" step="any" value="${p.tol}" data-i="${i}" data-k="tol" class="eval-input" style="width:4rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem 0.4rem;font-family:'SF Mono',monospace;font-size:0.78rem;text-align:right;" /></td>
+          <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);"><button class="eval-del" data-i="${i}" style="background:transparent;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:0.2rem 0.5rem;font-size:0.7rem;cursor:pointer;">削除</button></td>
+        </tr>`;
+      });
+      h += '</tbody></table>';
+      wrap.innerHTML = h;
+      document.querySelectorAll('.eval-input').forEach(el => el.addEventListener('change', e => {
+        const i = +e.target.dataset.i, k = e.target.dataset.k;
+        state.evalPoints[i][k] = (k === 'label') ? e.target.value : parseFloat(e.target.value);
+      }));
+      document.querySelectorAll('.eval-del').forEach(el => el.addEventListener('click', e => {
+        state.evalPoints.splice(+e.target.dataset.i, 1); renderEvalTable();
+      }));
+    }
+    $('btn-eval-add').addEventListener('click', () => {
+      const tol = parseFloat($('default-tol').value) || 5;
+      state.evalPoints.push({ label: `評価点 ${state.evalPoints.length+1}`, flow: 0, press: 0, temp: 0, tol });
+      renderEvalTable();
+    });
+    $('btn-eval-load-design').addEventListener('click', () => {
+      if (!state.physicsParams) { alert('物理モデルがありません。STEP 1でサンプル生成または STEP 2 で物理パラメータを設定してください'); return; }
+      state.evalPoints = generateSampleEvalPoints();
+      const tol = parseFloat($('default-tol').value) || 5;
+      state.evalPoints.forEach(p => p.tol = tol);
+      renderEvalTable();
+    });
+
+    // ============================================================
+    // STEP 7: 逆推定 + 感度 + シーケンス + カバレッジ
+    // ============================================================
+    async function runInverseAll() {
+      const btn = $('btn-inverse-all'); btn.disabled = true; btn.style.opacity = '0.5'; btn.textContent = '⏳ 推定中...';
+      const t0 = performance.now();
+      clearLog('inverse-status'); $('inverse-result').style.display = 'none';
+      try {
+        if (!state.trained) throw new Error('STEP 4 で GP を訓練してください');
+        if (state.evalPoints.length === 0) throw new Error('STEP 6 で評価点を追加してください');
+        const nStart = parseInt($('opt-multistart').value) || 20;
+        const sm = parseFloat($('surge-margin').value) || 1.10;
+        const sc = state.surge.map(s => [s.Q, s.P]).sort((a,b)=>a[0]-b[0]);
+        const doSens = $('opt-sensitivity').checked;
+        const doSeq = $('opt-sequence').checked;
+        const usePhysics = $('use-physics').checked;
+
+        log('inverse-status', `${state.evalPoints.length} 評価点を逆推定中（多重起動 ${nStart} 回 × ${state.evalPoints.length} 点）...`);
+
+        // 物理予測関数を Python に渡せないので、評価点ごとに JS で物理値を計算
+        const physicsAtU = (u) => {
+          if (!usePhysics || !state.physicsParams) return null;
+          const valves = u.slice(0, state.physicsParams.N);
+          const rpm = state.mapping.useRPM && u.length > state.physicsParams.N ? u[state.physicsParams.N] : (state.physicsParams.useRPM ? state.physicsParams.rpm_design : null);
+          const y = physicsCompressor(valves, rpm);
+          return [y.Q, y.P, y.T];
+        };
+
+        state.pyodide.globals.set('eval_points', state.evalPoints.map(p => ({
+          label: p.label, flow: p.flow, press: p.press, temp: p.temp, tol: p.tol
+        })));
+        state.pyodide.globals.set('n_start', nStart);
+        state.pyodide.globals.set('surge_curve', sc);
+        state.pyodide.globals.set('surge_margin_v', sm);
+        state.pyodide.globals.set('do_sens', doSens);
+        // 物理パラメータを Python に渡す（残差モードで足し戻すため）
+        const phys = state.physicsParams;
+        state.pyodide.globals.set('phys_params', phys ? {
+          N: phys.N, q_max: phys.q_max, alphas: phys.alphas, gammas: phys.gammas,
+          Phi_norm: phys.Phi_norm, a_psi: phys.a_psi, b_psi: phys.b_psi, H_norm: phys.H_norm,
+          T_in: phys.T_in, kappa: phys.kappa, P_atm: phys.P_atm,
+          surge_q_at_full: phys.surge_q_at_full,
+          useRPM: phys.useRPM, rpm_design: phys.rpm_design,
+        } : null);
+
+        // 物理予測 grid を u 空間に
+        // 簡略化: Python 側で物理予測のために最適化中に呼び出せるよう、callback では遅いので
+        // 残差モードの場合は訓練時に既に物理を引いてあるので、予測関数で物理を足し戻す
+        // ここでは Python 側で訓練時保存した _phys_train, _mode を使用
+
+        const code = `
+import numpy as np
+from scipy.optimize import minimize, differential_evolution
+import json, time
+
+eps = list(eval_points.to_py())
+ns = int(n_start)
+sc = list(surge_curve.to_py())
+sm = float(surge_margin_v)
+do_sens_flag = bool(do_sens)
+
+# 物理パラメータ取得 (残差モード時に必要)
+_phys_py = None
+try:
+    pp = phys_params.to_py() if phys_params is not None else None
+    if pp is not None:
+        _phys_py = {
+            'N': int(pp['N']),
+            'q_max': float(pp['q_max']),
+            'alphas': [float(x) for x in pp['alphas']],
+            'gammas': [float(x) for x in pp['gammas']],
+            'Phi_norm': float(pp['Phi_norm']),
+            'a_psi': float(pp['a_psi']),
+            'b_psi': float(pp['b_psi']),
+            'H_norm': float(pp['H_norm']),
+            'T_in': float(pp['T_in']),
+            'kappa': float(pp['kappa']),
+            'P_atm': float(pp['P_atm']),
+            'useRPM': bool(pp['useRPM']),
+            'rpm_design': float(pp['rpm_design']),
+        }
+except Exception:
+    _phys_py = None
+
+def physics_python(u_raw):
+    """JS physicsCompressor の Python 実装。残差モード時に物理予測を返す"""
+    if _phys_py is None: return None
+    p = _phys_py; N = p['N']
+    valves = u_raw[:N]
+    rpm = u_raw[N] if (p['useRPM'] and len(u_raw) > N) else (p['rpm_design'] if p['useRPM'] else None)
+    q_linear = sum(p['alphas'][i] * valves[i] for i in range(N))
+    q_coupling = sum(p['gammas'][i] * valves[i] * valves[i+1] / 100 for i in range(N-1))
+    rpm_factor = (rpm / p['rpm_design']) if (p['useRPM'] and rpm is not None) else 1.0
+    q = p['q_max'] * (q_linear - q_coupling) / 100 * rpm_factor
+    Phi = q / p['Phi_norm']
+    Psi = p['a_psi'] - p['b_psi'] * Phi * Phi
+    H = max(0.1, Psi * p['H_norm'] * rpm_factor * rpm_factor)
+    T_out = p['T_in'] * pow(max(1, H / p['P_atm'] + 1), (p['kappa']-1)/p['kappa'])
+    return [q, H, T_out]
+
+pre_default = np.array(_pre_default)
+ae_default = np.array(_ae_default) if len(_ae_default) > 0 else None
+u_lo = np.array(_X_train.min(axis=0))
+u_hi = np.array(_X_train.max(axis=0))
+bounds_u = list(zip(u_lo.tolist(), u_hi.tolist()))
+
+# y_scale
+y_scale = np.array([_Y_train[:, j].std() if _Y_train[:, j].std() > 1e-9 else 1.0 for j in range(3)])
+
+# 物理関数を Python 側で再現（JS と同じ式）
+# 物理が必要な場合、JS から physics_preds を渡す方が確実だが、最適化中に大量呼出すので
+# Python 内で簡略物理関数を作る（ただし JS の physicsCompressor と同期する必要あり）
+
+def make_X(u_raw):
+    parts = [u_raw]
+    parts.append(pre_default)
+    if ae_default is not None:
+        parts.append(ae_default)
+    return np.concatenate(parts).reshape(1, -1)
+
+def predict_y_target(u_raw):
+    X = make_X(u_raw)
+    Xs = _scaler.transform(X)
+    mus = []; sds = []
+    for m in _models:
+        mu, sd = m.predict(Xs, return_std=True)
+        mus.append(float(mu[0])); sds.append(float(sd[0]))
+    return np.array(mus), np.array(sds)
+
+# 物理足し戻し（残差モード時）
+def predict_y_real(u_raw, phys_y=None):
+    mu_t, sd = predict_y_target(u_raw)
+    if _mode == 'residual':
+        # phys_y が渡されなければ物理関数で計算
+        if phys_y is None:
+            ph = physics_python(u_raw.tolist() if hasattr(u_raw, 'tolist') else list(u_raw))
+            if ph is not None:
+                phys_y = np.array(ph)
+        if phys_y is not None:
+            mu_real = mu_t + phys_y
+        else:
+            mu_real = mu_t
+    else:
+        mu_real = mu_t
+    return mu_real, sd
+
+sc_arr = np.array(sc, dtype=float) if len(sc) > 0 else None
+def surge_flow_at_press(p):
+    if sc_arr is None or len(sc_arr) == 0: return -np.inf
+    ps = sc_arr[:, 1]; fs = sc_arr[:, 0]
+    order = np.argsort(ps); ps = ps[order]; fs = fs[order]
+    if p <= ps[0]: return float(fs[0])
+    if p >= ps[-1]: return float(fs[-1])
+    return float(np.interp(p, ps, fs))
+
+# 物理予測 JS-Python 共通化のために、ここでは GP のみで完結
+# (残差モードの足し戻し用物理値は JS から事前計算して渡すべきだが、まずGP単独で動かす)
+
+all_results = []
+t_total_start = time.time()
+for k, ep in enumerate(eps):
+    y_star = np.array([ep['flow'], ep['press'], ep['temp']], dtype=float)
+
+    def objective(u_raw, phys_y=None):
+        mu, sd = predict_y_real(u_raw, phys_y)
+        err = 0.0
+        for j in range(3):
+            err += ((mu[j] - y_star[j]) / y_scale[j]) ** 2
+        return float(err)
+
+    def surge_penalty(u_raw, phys_y=None):
+        mu, _ = predict_y_real(u_raw, phys_y)
+        pred_flow = mu[0]; pred_press = mu[1]
+        sf = surge_flow_at_press(pred_press)
+        if sf == -np.inf: return 0.0
+        if pred_flow < sf * sm:
+            return ((sf * sm - pred_flow) / max(sf, 1e-9)) ** 2 * 100.0
+        return 0.0
+
+    # 残差モード時の物理値は最適化中の u に依存するため、ここでは GP のみ最適化
+    # (本来は物理関数を Python に同梱すべきだが、JS-Python 重複を避け、訓練時のオフセットのみ使う)
+    def total_obj(u_raw):
+        return objective(u_raw) + surge_penalty(u_raw)
+
+    rng = np.random.default_rng(42+k)
+    candidates = []
+    try:
+        de = differential_evolution(total_obj, bounds_u, maxiter=60, popsize=15, tol=1e-6, seed=42+k, polish=True)
+        candidates.append((de.fun, de.x.tolist()))
+    except Exception: pass
+    for i in range(ns):
+        u0 = rng.uniform(u_lo, u_hi)
+        try:
+            r = minimize(total_obj, u0, method='L-BFGS-B', bounds=bounds_u, options={'maxiter': 100})
+            candidates.append((float(r.fun), r.x.tolist()))
+        except Exception: pass
+    candidates.sort(key=lambda x: x[0])
+    uniq = []
+    for f, u in candidates:
+        dup = False
+        for fu, uu in uniq:
+            d = np.linalg.norm((np.array(u) - np.array(uu)) / (u_hi - u_lo + 1e-9))
+            if d < 0.05: dup = True; break
+        if not dup: uniq.append((f, u))
+        if len(uniq) >= 3: break
+
+    cand_out = []
+    for rank, (f, u) in enumerate(uniq):
+        u_arr = np.array(u)
+        mu, sd = predict_y_real(u_arr)
+        targets = [ep['flow'], ep['press'], ep['temp']]
+        labels = ['flow', 'press', 'temp']
+        check = []; n_pass = 0
+        for j in range(3):
+            err_pct = abs(mu[j] - targets[j]) / (abs(targets[j]) + 1e-9) * 100.0
+            ok = err_pct <= ep['tol']
+            if ok: n_pass += 1
+            check.append({"name": labels[j], "target": round(targets[j], 4), "pred": round(float(mu[j]), 4),
+                          "std": round(float(sd[j]), 4), "err_pct": round(float(err_pct), 3), "ok": bool(ok)})
+        status = "PASS" if n_pass == 3 else ("WARN" if n_pass == 2 else "FAIL")
+        pred_flow = mu[0]; pred_press = mu[1]
+        sf_at_p = surge_flow_at_press(pred_press)
+        surge_margin_actual = pred_flow / sf_at_p if (sf_at_p != -np.inf and sf_at_p > 0) else None
+
+        # 感度分析 (F12): 数値微分
+        sens = None
+        if do_sens_flag and rank == 0:
+            eps_u = 0.5  # %開度ステップ
+            grads = []
+            for ui in range(_nU_actual):
+                u_plus = u_arr.copy(); u_plus[ui] += eps_u
+                u_minus = u_arr.copy(); u_minus[ui] -= eps_u
+                mu_p, _ = predict_y_real(u_plus)
+                mu_m, _ = predict_y_real(u_minus)
+                gj = (mu_p - mu_m) / (2 * eps_u)
+                grads.append({
+                    "u_index": int(ui),
+                    "dflow_du": round(float(gj[0]), 4),
+                    "dpress_du": round(float(gj[1]), 4),
+                    "dtemp_du": round(float(gj[2]), 4),
+                })
+            sens = grads
+
+        # F13: バルブ信頼区間（多重起動で得た解の分散）
+        u_ci = None
+        if rank == 0 and len(uniq) > 0:
+            # 上位30%の候補の標準偏差
+            top_k = max(3, int(len(candidates) * 0.3))
+            us_top = np.array([c[1] for c in candidates[:top_k]])
+            if us_top.shape[0] >= 2:
+                u_ci = us_top.std(axis=0).tolist()
+                u_ci = [round(v, 3) for v in u_ci]
+
+        cand_out.append({
+            "rank": rank+1, "u": [round(v, 3) for v in u_arr.tolist()],
+            "checks": check, "status": status, "loss": round(float(f), 6),
+            "surge_margin": None if surge_margin_actual is None else round(float(surge_margin_actual), 3),
+            "surge_safe": bool(surge_margin_actual is None or surge_margin_actual >= sm),
+            "sensitivity": sens, "u_ci": u_ci,
+        })
+
+    all_results.append({
+        "idx": k+1, "label": ep.get('label', f'評価点 {k+1}'),
+        "target": {"flow": ep['flow'], "press": ep['press'], "temp": ep['temp'], "tol": ep['tol']},
+        "candidates": cand_out,
+        "best_status": cand_out[0]["status"] if cand_out else "NONE",
+    })
+
+opt_sec = time.time() - t_total_start
+
+# F15: カバレッジチェック
+coverage_warnings = []
+for r in all_results:
+    if not r['candidates']: continue
+    c = r['candidates'][0]
+    u = np.array(c['u'])
+    in_range = np.all((u >= u_lo - 1e-6) & (u <= u_hi + 1e-6))
+    if not in_range:
+        outside = []
+        for ui in range(len(u)):
+            if u[ui] < u_lo[ui] - 1e-6 or u[ui] > u_hi[ui] + 1e-6:
+                outside.append(_valve_names[ui] if ui < len(_valve_names) else f'u{ui}')
+        coverage_warnings.append({
+            "eval_idx": r['idx'], "label": r['label'],
+            "outside_vars": outside,
+            "msg": f"#{r['idx']} {r['label']}: 推奨が訓練範囲外 ({', '.join(outside)})"
+        })
+
+# u_min/u_max を JSにも返す
+result = {
+    "n_points": len(eps),
+    "opt_sec": round(opt_sec, 3),
+    "valve_names": _valve_names,
+    "u_names_full": _valve_names + (['rpm'] if _use_rpm else []),
+    "y_names": _y_names,
+    "u_min": u_lo.tolist(),
+    "u_max": u_hi.tolist(),
+    "results": all_results,
+    "overall_pass": sum(1 for r in all_results if r["best_status"] == "PASS"),
+    "overall_warn": sum(1 for r in all_results if r["best_status"] == "WARN"),
+    "overall_fail": sum(1 for r in all_results if r["best_status"] == "FAIL"),
+    "coverage_warnings": coverage_warnings,
+}
+json.dumps(result)
+`;
+        const resStr = await state.pyodide.runPythonAsync(code);
+        const res = JSON.parse(resStr);
+
+        // Oracle (サンプルデータ時のみ)
+        if (state.isSampleData && state.physicsParams) {
+          res.oracleResults = res.results.map(r => {
+            const c = r.candidates[0]; if (!c) return null;
+            const u = c.u;
+            const valves = u.slice(0, state.physicsParams.N);
+            const rpm = state.mapping.useRPM && u.length > state.physicsParams.N ? u[state.physicsParams.N] : (state.physicsParams.useRPM ? state.physicsParams.rpm_design : null);
+            const truth = physicsCompressor(valves, rpm);
+            const tol = r.target.tol / 100;
+            const okF = Math.abs(truth.Q - r.target.flow) / r.target.flow <= tol;
+            const okP = Math.abs(truth.P - r.target.press) / r.target.press <= tol;
+            const okT = Math.abs(truth.T - r.target.temp) / r.target.temp <= tol;
+            return { idx: r.idx, truth, okF, okP, okT, allOK: okF && okP && okT };
+          });
+        }
+
+        // F14: 操作シーケンス計画 (簡易: 評価点を nearest-neighbor 順序)
+        if ($('opt-sequence').checked && res.results.length > 1) {
+          res.sequence = computeSequence(res.results);
+        }
+
+        state.lastResults = res;
+        audit('inverse_completed', { n: res.n_points, pass: res.overall_pass, warn: res.overall_warn, fail: res.overall_fail });
+
+        log('inverse-status', `✓ ${res.n_points} 点を ${res.opt_sec}秒で推定（PASS=${res.overall_pass} / WARN=${res.overall_warn} / FAIL=${res.overall_fail}）`, '#6ec897');
+
+        renderInverseResult(res);
+
+        $('inverse-elapsed').textContent = `総時間: ${((performance.now()-t0)/1000).toFixed(1)}秒`;
+        drawPerfMap();
+      } catch (e) {
+        log('inverse-status', '✗ 失敗: ' + String(e), '#ff6b6b');
+        console.error(e);
+      } finally {
+        btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '▶ 再推定';
+      }
+    }
+    $('btn-inverse-all').addEventListener('click', runInverseAll);
+
+    // ============================================================
+    // F14: 操作シーケンス計画 (簡易TSP nearest-neighbor)
+    // ============================================================
+    function computeSequence(results) {
+      // 各評価点の (flow, press) を 2D 距離で順序付け
+      const pts = results.map((r, i) => ({ idx: i, flow: r.target.flow, press: r.target.press, label: r.label }));
+      if (pts.length <= 1) return pts.map(p => p.idx);
+      // サージ近くから安全側へ
+      // 開始: 流量が中程度の点
+      const flows = pts.map(p => p.flow);
+      const startVal = (Math.min(...flows) + Math.max(...flows)) / 2;
+      let unvisited = [...pts];
+      let cur = unvisited.reduce((a, b) => Math.abs(a.flow - startVal) < Math.abs(b.flow - startVal) ? a : b);
+      const order = [cur];
+      unvisited = unvisited.filter(p => p.idx !== cur.idx);
+      while (unvisited.length) {
+        const next = unvisited.reduce((a, b) => {
+          const da = (a.flow-cur.flow)**2 + ((a.press-cur.press)*10)**2;
+          const db = (b.flow-cur.flow)**2 + ((b.press-cur.press)*10)**2;
+          return da < db ? a : b;
+        });
+        order.push(next); cur = next;
+        unvisited = unvisited.filter(p => p.idx !== next.idx);
+      }
+      return order.map(p => p.idx);
+    }
+
+    // ============================================================
+    // 逆推定結果レンダリング
+    // ============================================================
+    function renderInverseResult(res) {
+      // 総合判定
+      const totalPass = res.overall_pass === res.n_points;
+      const oj = $('overall-judgment');
+      if (totalPass) {
+        oj.style.background = 'rgba(110,200,151,0.12)'; oj.style.borderLeft = '3px solid #6ec897'; oj.style.color = '#6ec897';
+        oj.innerHTML = `✓ 全 ${res.n_points} 評価点が許容公差内（GP予測ベース）`;
+      } else if (res.overall_fail === 0) {
+        oj.style.background = 'rgba(232,201,122,0.10)'; oj.style.borderLeft = '3px solid #e8c97a'; oj.style.color = '#e8c97a';
+        oj.innerHTML = `⚠ ${res.overall_pass} PASS / ${res.overall_warn} WARN`;
+      } else {
+        oj.style.background = 'rgba(255,107,107,0.10)'; oj.style.borderLeft = '3px solid #ff6b6b'; oj.style.color = '#ff6b6b';
+        oj.innerHTML = `✗ ${res.overall_fail} FAIL — 達成困難`;
+      }
+      if (res.oracleResults) {
+        const okN = res.oracleResults.filter(r => r && r.allOK).length;
+        oj.innerHTML += `<div style="margin-top:0.4rem;font-size:0.74rem;color:#e8c97a;">📐 Oracle検証: ${okN}/${res.n_points} 物理的に公差内</div>`;
+      }
+
+      // カバレッジ警告 (F15)
+      const cw = $('coverage-warnings');
+      if (res.coverage_warnings && res.coverage_warnings.length) {
+        let html = '<div style="background:rgba(232,201,122,0.10);border-left:3px solid #e8c97a;padding:0.7rem 1rem;font-size:0.78rem;color:#e8c97a;">';
+        html += '⚠ <strong>訓練データ範囲外の推奨:</strong><br>';
+        res.coverage_warnings.forEach(w => { html += `・ ${w.msg}<br>`; });
+        html += '</div>';
+        cw.innerHTML = html;
+      } else { cw.innerHTML = ''; }
+
+      // 候補テーブル
+      let html = '';
+      res.results.forEach((r, ri) => {
+        const c = r.candidates[0];
+        const sCol = r.best_status === 'PASS' ? '#6ec897' : (r.best_status === 'WARN' ? '#e8c97a' : '#ff6b6b');
+        const sLabel = r.best_status === 'PASS' ? '✓ PASS' : (r.best_status === 'WARN' ? '⚠ WARN' : '✗ FAIL');
+        html += `<div style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);border-left:3px solid ${sCol};padding:0.9rem 1.1rem;margin-bottom:0.6rem;">`;
+        html += `<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;">`;
+        html += `<div><span style="color:#c8a96e;font-weight:600;">#${r.idx}</span> <span style="color:#edede8;margin-left:0.6rem;">${escapeHtml(r.label)}</span></div>`;
+        html += `<div style="color:${sCol};font-weight:600;font-size:0.85rem;">${sLabel}</div></div>`;
+        // 推奨u + 信頼区間
+        html += `<div style="font-size:0.74rem;color:rgba(237,237,232,0.85);margin-bottom:0.4rem;">推奨バルブ操作:`;
+        if (c) c.u.forEach((v, i) => {
+          const ciStr = (c.u_ci && c.u_ci[i] !== undefined) ? ` <span style="color:rgba(255,255,255,0.4);">±${c.u_ci[i]}</span>` : '';
+          html += ` <span style="font-family:'SF Mono',monospace;color:#c8a96e;">${res.u_names_full[i]}=${v}${ciStr}</span>`;
+        });
+        html += `</div>`;
+        if (c) {
+          html += '<table style="width:100%;border-collapse:collapse;font-size:0.72rem;margin-top:0.3rem;">';
+          html += '<tr style="color:rgba(255,255,255,0.5);"><th style="text-align:left;padding:0.2rem 0.4rem;">項目</th><th style="text-align:right;padding:0.2rem 0.4rem;">目標</th><th style="text-align:right;padding:0.2rem 0.4rem;">GP予測±std</th><th style="text-align:right;padding:0.2rem 0.4rem;">誤差%</th><th style="text-align:center;padding:0.2rem 0.4rem;">±'+r.target.tol+'%</th>';
+          if (res.oracleResults) html += '<th style="text-align:right;padding:0.2rem 0.4rem;color:#e8c97a;">真値</th><th style="text-align:center;padding:0.2rem 0.4rem;color:#e8c97a;">物理OK</th>';
+          html += '</tr>';
+          c.checks.forEach((ch, ci) => {
+            const okCol = ch.ok ? '#6ec897' : '#ff6b6b';
+            html += `<tr><td style="padding:0.2rem 0.4rem;color:rgba(237,237,232,0.85);">${ch.name}</td>
+              <td style="text-align:right;padding:0.2rem 0.4rem;font-family:'SF Mono',monospace;">${ch.target}</td>
+              <td style="text-align:right;padding:0.2rem 0.4rem;font-family:'SF Mono',monospace;">${ch.pred} <span style="color:rgba(255,255,255,0.4);">± ${ch.std}</span></td>
+              <td style="text-align:right;padding:0.2rem 0.4rem;font-family:'SF Mono',monospace;color:${okCol};">${ch.err_pct}%</td>
+              <td style="text-align:center;padding:0.2rem 0.4rem;color:${okCol};">${ch.ok ? '✓' : '✗'}</td>`;
+            if (res.oracleResults) {
+              const orc = res.oracleResults[ri];
+              if (orc) {
+                const tv = ci===0?orc.truth.Q:(ci===1?orc.truth.P:orc.truth.T);
+                const ok2 = ci===0?orc.okF:(ci===1?orc.okP:orc.okT);
+                html += `<td style="text-align:right;padding:0.2rem 0.4rem;font-family:'SF Mono',monospace;color:#e8c97a;">${tv.toFixed(3)}</td>
+                  <td style="text-align:center;padding:0.2rem 0.4rem;color:${ok2?'#6ec897':'#ff6b6b'};">${ok2?'✓':'✗'}</td>`;
+              }
+            }
+            html += '</tr>';
+          });
+          html += '</table>';
+          if (c.surge_margin !== null) {
+            const smCol = c.surge_safe ? '#6ec897' : '#ff6b6b';
+            html += `<div style="margin-top:0.4rem;font-size:0.72rem;color:${smCol};">サージ余裕: 予測流量/サージ流量 = <strong>${c.surge_margin}</strong> ${c.surge_safe ? '✓ 安全側' : '✗ 境界に近い'}</div>`;
+          }
+          // F12: 感度分析
+          if (c.sensitivity) {
+            html += `<div style="margin-top:0.5rem;padding-top:0.4rem;border-top:1px dashed rgba(255,255,255,0.1);font-size:0.72rem;">`;
+            html += `<div style="color:#c8a96e;margin-bottom:0.3rem;">感度分析 (∂y/∂u, +5%開度あたりの y 変化):</div>`;
+            html += '<table style="border-collapse:collapse;font-size:0.7rem;">';
+            html += '<tr style="color:rgba(255,255,255,0.55);"><th style="text-align:left;padding:0.15rem 0.5rem;">u</th><th style="text-align:right;padding:0.15rem 0.5rem;">∂flow</th><th style="text-align:right;padding:0.15rem 0.5rem;">∂press</th><th style="text-align:right;padding:0.15rem 0.5rem;">∂temp</th></tr>';
+            c.sensitivity.forEach(s => {
+              html += `<tr><td style="padding:0.15rem 0.5rem;color:rgba(237,237,232,0.8);">${res.u_names_full[s.u_index]}</td>
+                <td style="text-align:right;padding:0.15rem 0.5rem;font-family:'SF Mono',monospace;">${s.dflow_du}</td>
+                <td style="text-align:right;padding:0.15rem 0.5rem;font-family:'SF Mono',monospace;">${s.dpress_du}</td>
+                <td style="text-align:right;padding:0.15rem 0.5rem;font-family:'SF Mono',monospace;">${s.dtemp_du}</td></tr>`;
+            });
+            html += '</table></div>';
+          }
+        }
+        html += `</div>`;
+      });
+      $('candidates-table').innerHTML = html;
+
+      // F14: シーケンス
+      if (res.sequence) {
+        const seq = res.sequence;
+        let h = `<div style="background:#0a0a0c;border:1px solid rgba(110,200,151,0.2);padding:0.9rem 1.1rem;">`;
+        h += `<div style="color:#6ec897;font-size:0.65rem;letter-spacing:0.2em;margin-bottom:0.5rem;">⤴ 推奨操作シーケンス (流量変化を最小化、サージ回避優先)</div>`;
+        h += '<div style="font-size:0.78rem;color:rgba(237,237,232,0.85);">';
+        seq.forEach((idx, i) => {
+          const r = res.results[idx];
+          h += `${i > 0 ? ' → ' : ''}<span style="color:#c8a96e;">#${r.idx} ${escapeHtml(r.label)}</span>`;
+        });
+        h += '</div></div>';
+        $('sequence-plan').innerHTML = h;
+      } else { $('sequence-plan').innerHTML = ''; }
+
+      $('inverse-result').style.display = 'block';
+    }
+
+    // ============================================================
+    // STEP 8: 性能マップ
+    // ============================================================
+    function drawPerfMap() {
+      if (!state.trained) return;
+      const cv = $('perfmap'); const ctx = cv.getContext('2d');
+      const W = cv.width, H = cv.height;
+      ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, W, H);
+
+      const code = `
+import json
+out = {"Y_train": _Y_train.tolist(), "y_names": _y_names}
+json.dumps(out)
+`;
+      state.pyodide.runPythonAsync(code).then(s => {
+        const d = JSON.parse(s);
+        const yx = d.Y_train.map(r => r[0]), yy = d.Y_train.map(r => r[1]);
+        const candX = [], candY = [], candStatus = [];
+        const evalX = [], evalY = [], evalStatus = [];
+        const oracleX = [], oracleY = [];
+        if (state.lastResults) {
+          state.lastResults.results.forEach((r, ri) => {
+            evalX.push(r.target.flow); evalY.push(r.target.press);
+            evalStatus.push(r.best_status);
+            if (r.candidates[0]) {
+              const m = r.candidates[0].checks;
+              candX.push(m[0].pred); candY.push(m[1].pred); candStatus.push(r.best_status);
+              if (state.lastResults.oracleResults && state.lastResults.oracleResults[ri]) {
+                oracleX.push(state.lastResults.oracleResults[ri].truth.Q);
+                oracleY.push(state.lastResults.oracleResults[ri].truth.P);
+              }
+            }
+          });
+        }
+        const surgeX = [], surgeY = [];
+        if (state.surge.length > 0) {
+          [...state.surge].sort((a,b)=>a.Q-b.Q).forEach(s => { surgeX.push(s.Q); surgeY.push(s.P); });
+        }
+        const allX = [...yx, ...candX, ...evalX, ...oracleX, ...surgeX];
+        const allY = [...yy, ...candY, ...evalY, ...oracleY, ...surgeY];
+        let xMin = Math.min(...allX), xMax = Math.max(...allX);
+        let yMin = Math.min(...allY), yMax = Math.max(...allY);
+        const xP = (xMax-xMin)*0.15||1, yP = (yMax-yMin)*0.15||1;
+        xMin -= xP; xMax += xP; yMin -= yP; yMax += yP;
+        const PL=70, PR=30, PT=30, PB=50;
+        const pW = W-PL-PR, pH = H-PT-PB;
+        const sx = v => PL + (v-xMin)/(xMax-xMin)*pW;
+        const sy = v => PT + (1-(v-yMin)/(yMax-yMin))*pH;
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 1; ctx.strokeRect(PL, PT, pW, pH);
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.font = '11px monospace'; ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        for (let i = 0; i <= 5; i++) {
+          const x = PL+pW*i/5, v1 = xMin+(xMax-xMin)*i/5;
+          ctx.beginPath(); ctx.moveTo(x, PT); ctx.lineTo(x, PT+pH); ctx.stroke();
+          ctx.fillText(v1.toFixed(2), x-18, PT+pH+16);
+          const y = PT+pH*i/5, v2 = yMax-(yMax-yMin)*i/5;
+          ctx.beginPath(); ctx.moveTo(PL, y); ctx.lineTo(PL+pW, y); ctx.stroke();
+          ctx.fillText(v2.toFixed(2), 6, y+4);
+        }
+        ctx.fillStyle = '#c8a96e'; ctx.font = '12px sans-serif';
+        ctx.fillText('流量 (m³/min)', W/2-40, H-12);
+        ctx.save(); ctx.translate(16, H/2+40); ctx.rotate(-Math.PI/2); ctx.fillText('圧力 (bar)', 0, 0); ctx.restore();
+
+        // サージ線
+        if (surgeX.length >= 2) {
+          ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 2;
+          ctx.beginPath();
+          surgeX.forEach((x, i) => { if (i===0) ctx.moveTo(sx(x), sy(surgeY[i])); else ctx.lineTo(sx(x), sy(surgeY[i])); });
+          ctx.stroke();
+          ctx.fillStyle = '#ff6b6b';
+          surgeX.forEach((x, i) => {
+            const px = sx(x), py = sy(surgeY[i]);
+            ctx.beginPath(); ctx.moveTo(px-4, py); ctx.lineTo(px, py-4); ctx.lineTo(px+4, py); ctx.lineTo(px, py+4); ctx.closePath(); ctx.fill();
+          });
+        }
+
+        // 訓練点 ★
+        ctx.fillStyle = 'rgba(200,169,110,0.7)';
+        for (let i = 0; i < yx.length; i++) {
+          const px = sx(yx[i]), py = sy(yy[i]);
+          ctx.beginPath();
+          for (let k = 0; k < 5; k++) {
+            const a1 = (k*2*Math.PI/5)-Math.PI/2; const a2 = ((k+0.5)*2*Math.PI/5)-Math.PI/2;
+            ctx.lineTo(px + Math.cos(a1)*5, py + Math.sin(a1)*5);
+            ctx.lineTo(px + Math.cos(a2)*2, py + Math.sin(a2)*2);
+          }
+          ctx.closePath(); ctx.fill();
+        }
+
+        // シーケンス線
+        if (state.lastResults && state.lastResults.sequence) {
+          ctx.strokeStyle = 'rgba(110,200,151,0.5)'; ctx.lineWidth = 1.5; ctx.setLineDash([6,3]);
+          ctx.beginPath();
+          state.lastResults.sequence.forEach((idx, k) => {
+            const px = sx(evalX[idx]), py = sy(evalY[idx]);
+            if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          });
+          ctx.stroke(); ctx.setLineDash([]);
+        }
+
+        // 評価点 ●
+        for (let i = 0; i < evalX.length; i++) {
+          const px = sx(evalX[i]), py = sy(evalY[i]);
+          const col = evalStatus[i] === 'PASS' ? '#6ec897' : (evalStatus[i] === 'WARN' ? '#e8c97a' : '#ff6b6b');
+          if (state.lastResults) {
+            const tol = state.lastResults.results[i].target.tol / 100;
+            const rx = Math.abs(sx(evalX[i] * (1+tol)) - sx(evalX[i]));
+            const ry = Math.abs(sy(evalY[i] * (1+tol)) - sy(evalY[i]));
+            ctx.strokeStyle = col + '55'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.ellipse(px, py, rx, ry, 0, 0, Math.PI*2); ctx.stroke();
+          }
+          ctx.fillStyle = col;
+          ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI*2); ctx.fill();
+          ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = 'bold 11px sans-serif';
+          ctx.fillText(String(i+1), px+8, py-8);
+        }
+
+        // 推奨GP予測 ■
+        for (let i = 0; i < candX.length; i++) {
+          const px = sx(candX[i]), py = sy(candY[i]);
+          const col = candStatus[i] === 'PASS' ? 'rgba(110,200,151,0.85)' : (candStatus[i] === 'WARN' ? 'rgba(232,201,122,0.85)' : 'rgba(255,107,107,0.85)');
+          ctx.fillStyle = col; ctx.fillRect(px-4, py-4, 8, 8);
+          ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+          ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(sx(evalX[i]), sy(evalY[i])); ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        // Oracle ◇
+        for (let i = 0; i < oracleX.length; i++) {
+          const px = sx(oracleX[i]), py = sy(oracleY[i]);
+          ctx.strokeStyle = '#e8c97a'; ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(px, py-7); ctx.lineTo(px+7, py); ctx.lineTo(px, py+7); ctx.lineTo(px-7, py); ctx.closePath();
+          ctx.stroke();
+        }
+
+        // 凡例
+        ctx.font = '10px sans-serif';
+        const ly = PT+14;
+        ctx.fillStyle = 'rgba(200,169,110,0.7)';
+        ctx.beginPath();
+        for (let k = 0; k < 5; k++) {
+          const a1 = (k*2*Math.PI/5)-Math.PI/2; const a2 = ((k+0.5)*2*Math.PI/5)-Math.PI/2;
+          ctx.lineTo(PL+10 + Math.cos(a1)*5, ly + Math.sin(a1)*5);
+          ctx.lineTo(PL+10 + Math.cos(a2)*2, ly + Math.sin(a2)*2);
+        }
+        ctx.closePath(); ctx.fill();
+        ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('訓練データ', PL+20, ly+3);
+        ctx.fillStyle = '#6ec897'; ctx.beginPath(); ctx.arc(PL+95, ly, 5, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('評価点', PL+105, ly+3);
+        ctx.fillStyle = 'rgba(110,200,151,0.85)'; ctx.fillRect(PL+155, ly-4, 8, 8);
+        ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('GP予測', PL+168, ly+3);
+        if (oracleX.length > 0) {
+          ctx.strokeStyle = '#e8c97a'; ctx.lineWidth = 2; ctx.beginPath();
+          ctx.moveTo(PL+220, ly-5); ctx.lineTo(PL+227, ly); ctx.lineTo(PL+220, ly+5); ctx.lineTo(PL+213, ly); ctx.closePath(); ctx.stroke();
+          ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('物理真値', PL+233, ly+3);
+        }
+        if (surgeX.length >= 2) {
+          ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(PL+295, ly); ctx.lineTo(PL+315, ly); ctx.stroke();
+          ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('サージ線', PL+322, ly+3);
+        }
+        if (state.lastResults && state.lastResults.sequence) {
+          ctx.strokeStyle = 'rgba(110,200,151,0.5)'; ctx.setLineDash([6,3]);
+          ctx.beginPath(); ctx.moveTo(PL+390, ly); ctx.lineTo(PL+410, ly); ctx.stroke(); ctx.setLineDash([]);
+          ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('操作シーケンス', PL+417, ly+3);
+        }
+      }).catch(e => console.error(e));
+    }
+    $('btn-plot').addEventListener('click', drawPerfMap);
+
+    // ============================================================
+    // STEP 9: エクスポート (F8, F16)
+    // ============================================================
+    $('btn-export-csv').addEventListener('click', () => {
+      if (!state.lastResults) { alert('先に逆推定を実行してください'); return; }
+      const r = state.lastResults;
+      const header = ['#', 'ラベル', ...r.u_names_full.map(n => `推奨_${n}`),
+                      '流量_目標', '流量_予測', '流量_誤差%', '流量_判定',
+                      '圧力_目標', '圧力_予測', '圧力_誤差%', '圧力_判定',
+                      '温度_目標', '温度_予測', '温度_誤差%', '温度_判定',
+                      'サージ余裕', '総合判定'];
+      const rows = r.results.map(rr => {
+        const c = rr.candidates[0]; if (!c) return null;
+        const row = [rr.idx, rr.label];
+        c.u.forEach(v => row.push(v));
+        c.checks.forEach(ch => row.push(ch.target, ch.pred, ch.err_pct, ch.ok ? 'OK' : 'NG'));
+        row.push(c.surge_margin || '', rr.best_status);
+        return row.map(v => String(v));
+      }).filter(Boolean);
+      downloadCSV('valve-recommendations.csv', header, rows);
+      $('export-status').textContent = `✓ CSV出力完了 (${rows.length} 行)`;
+      audit('csv_exported', { rows: rows.length });
+    });
+
+    $('btn-export-report').addEventListener('click', () => {
+      if (!state.lastResults) { alert('先に逆推定を実行してください'); return; }
+      const r = state.lastResults;
+      const tr = state.trainResult;
+      const now = new Date().toLocaleString('ja-JP');
+      let html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>PTC10適合性レポート</title>
+<style>
+body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; max-width: 980px; margin: 2rem auto; padding: 1rem; color: #222; line-height: 1.7; }
+h1 { border-bottom: 3px solid #c8a96e; padding-bottom: 0.5rem; }
+h2 { color: #6c5a3a; margin-top: 2rem; border-left: 4px solid #c8a96e; padding-left: 0.6rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+th, td { border: 1px solid #ccc; padding: 0.5rem 0.7rem; }
+th { background: #f5f0e6; color: #6c5a3a; }
+.pass { color: #2e8b57; font-weight: bold; }
+.warn { color: #b8860b; font-weight: bold; }
+.fail { color: #c0392b; font-weight: bold; }
+.meta { background: #f9f7f0; border-left: 3px solid #c8a96e; padding: 0.6rem 1rem; font-size: 0.9rem; }
+</style></head><body>`;
+      html += `<h1>コンプレッサ性能試験 適合性レポート</h1>`;
+      html += `<div class="meta">作成日時: ${now}<br>規格: ASME PTC 10 / API 617<br>ツール: Sparse-Label Inverse Designer v5.0<br>モデルモード: ${tr.mode === 'residual' ? '残差学習 (物理+GP)' : '直接GP'} ${tr.audit.use_ae ? '+ AE事前学習' : ''}</div>`;
+      html += `<h2>1. 試験概要</h2>`;
+      html += `<table><tr><th>項目</th><th>値</th></tr>`;
+      html += `<tr><td>評価点数</td><td>${r.n_points}</td></tr>`;
+      html += `<tr><td>PASS / WARN / FAIL</td><td><span class="pass">${r.overall_pass}</span> / <span class="warn">${r.overall_warn}</span> / <span class="fail">${r.overall_fail}</span></td></tr>`;
+      html += `<tr><td>訓練データ数</td><td>${tr.n_train} 行（除外 ${tr.n_skipped}）</td></tr>`;
+      html += `<tr><td>特徴量次元</td><td>${tr.n_features} (u=${tr.n_u_total} + 事前窓=${tr.n_pre}${tr.n_ae?' + AE='+tr.n_ae:''})</td></tr>`;
+      html += `</table>`;
+      html += `<h2>2. LOO-CV 精度</h2>`;
+      html += `<table><tr><th>y</th><th>RMSE</th><th>MAE</th><th>相対誤差%</th><th>95%CI被覆</th></tr>`;
+      tr.loo.forEach(l => {
+        html += `<tr><td>${l.target}</td><td>${l.loo_rmse}</td><td>${l.loo_mae}</td><td>${l.loo_rel_err_pct}%</td><td>${(l.loo_95pct_coverage*100).toFixed(0)}%</td></tr>`;
+      });
+      html += `</table>`;
+      html += `<h2>3. 各評価点の判定</h2>`;
+      r.results.forEach(rr => {
+        const c = rr.candidates[0]; if (!c) return;
+        const cls = rr.best_status === 'PASS' ? 'pass' : (rr.best_status === 'WARN' ? 'warn' : 'fail');
+        html += `<h3>#${rr.idx} ${rr.label} <span class="${cls}">[${rr.best_status}]</span></h3>`;
+        html += `<p><strong>推奨バルブ操作:</strong> `;
+        c.u.forEach((v, i) => { html += `${r.u_names_full[i]}=${v}${c.u_ci?` ±${c.u_ci[i]}`:''} `; });
+        html += `</p>`;
+        html += `<table><tr><th>項目</th><th>目標</th><th>予測±std</th><th>誤差%</th><th>判定(±${rr.target.tol}%)</th></tr>`;
+        c.checks.forEach(ch => {
+          html += `<tr><td>${ch.name}</td><td>${ch.target}</td><td>${ch.pred} ± ${ch.std}</td><td>${ch.err_pct}%</td><td class="${ch.ok?'pass':'fail'}">${ch.ok?'OK':'NG'}</td></tr>`;
+        });
+        html += `</table>`;
+        if (c.surge_margin !== null) html += `<p>サージ余裕: <strong>${c.surge_margin}</strong> ${c.surge_safe ? '(安全側)' : '(境界に近い)'}</p>`;
+      });
+      html += `<h2>4. 操作シーケンス推奨</h2>`;
+      if (r.sequence) {
+        html += `<p>${r.sequence.map(idx => `#${r.results[idx].idx} ${r.results[idx].label}`).join(' → ')}</p>`;
+      } else html += `<p>シーケンス計画は実行されませんでした。</p>`;
+      html += `<h2>5. 整合性ガード遵守確認</h2>`;
+      html += `<p>本レポートにおける推奨バルブ操作は、すべて<strong>循環ループ + 吸込側</strong>のバルブに限定されています。吐出側を操作対象とした推奨は含まれていません（性能試験の信頼性確保のため）。</p>`;
+      html += `<hr><p style="color:#888;font-size:0.8rem;">本レポートはブラウザ完結ツールで生成されています。データは外部送信されていません。</p>`;
+      html += `</body></html>`;
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `PTC10_report_${Date.now()}.html`; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      $('export-status').textContent = '✓ レポートHTML出力完了';
+      audit('report_exported', {});
+    });
+
+    $('btn-export-audit').addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(state.auditLog, null, 2)], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `audit-log-${Date.now()}.json`; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      $('export-status').textContent = `✓ 監査ログ出力 (${state.auditLog.length} エントリ)`;
+    });
+
+    // ============================================================
+    // STEP 10: モデル保存/読込 (F11 IndexedDB)
+    // ============================================================
+    const DB_NAME = 'compressor-models'; const STORE = 'models';
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: 'name' });
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    async function saveModel() {
+      if (!state.trained) { alert('先に GP を訓練してください'); return; }
+      const name = $('model-name').value.trim();
+      if (!name) { alert('モデル名を入力してください'); return; }
+      // モデルは Pyodide 側にあるため、JS で保持できる「メタ情報 + サンプル」のみ保存
+      const data = {
+        name, savedAt: new Date().toISOString(),
+        mapping: state.mapping,
+        physicsParams: state.physicsParams,
+        surge: state.surge,
+        evalPoints: state.evalPoints,
+        lastResults: state.lastResults,
+        trainResult: state.trainResult,
+        auditLog: state.auditLog,
+      };
+      try {
+        const db = await openDB();
+        const tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).put(data);
+        await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
+        $('export-status').textContent = `✓ モデル「${name}」を保存`;
+        audit('model_saved', { name });
+        listModels();
+      } catch (e) { alert('保存失敗: ' + e); }
+    }
+    async function listModels() {
+      try {
+        const db = await openDB();
+        const tx = db.transaction(STORE, 'readonly');
+        const req = tx.objectStore(STORE).getAll();
+        const all = await new Promise((res, rej) => { req.onsuccess = () => res(req.result); req.onerror = () => rej(req.error); });
+        if (all.length === 0) { $('model-list').textContent = '保存済みモデルなし'; return; }
+        let html = '<table style="width:100%;border-collapse:collapse;font-size:0.74rem;"><tr style="color:#c8a96e;"><th style="text-align:left;padding:0.3rem 0.6rem;">名前</th><th style="text-align:left;padding:0.3rem 0.6rem;">保存日時</th><th></th></tr>';
+        all.forEach(m => {
+          html += `<tr><td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(m.name)}</td>
+            <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);">${new Date(m.savedAt).toLocaleString('ja-JP')}</td>
+            <td style="padding:0.3rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.05);">
+              <button class="m-load" data-name="${escapeAttr(m.name)}" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.2rem 0.6rem;font-size:0.7rem;cursor:pointer;">読込</button>
+              <button class="m-del" data-name="${escapeAttr(m.name)}" style="background:transparent;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:0.2rem 0.6rem;font-size:0.7rem;cursor:pointer;">削除</button>
+            </td></tr>`;
+        });
+        html += '</table>';
+        $('model-list').innerHTML = html;
+        document.querySelectorAll('.m-load').forEach(b => b.addEventListener('click', async e => {
+          await loadModel(e.target.dataset.name);
+        }));
+        document.querySelectorAll('.m-del').forEach(b => b.addEventListener('click', async e => {
+          if (!confirm('削除しますか?')) return;
+          const db = await openDB();
+          const tx = db.transaction(STORE, 'readwrite');
+          tx.objectStore(STORE).delete(e.target.dataset.name);
+          await new Promise(r => tx.oncomplete = r);
+          listModels();
+        }));
+      } catch (e) { $('model-list').textContent = '読込失敗: ' + e; }
+    }
+    async function loadModel(name) {
+      try {
+        const db = await openDB();
+        const tx = db.transaction(STORE, 'readonly');
+        const req = tx.objectStore(STORE).get(name);
+        const m = await new Promise((res, rej) => { req.onsuccess = () => res(req.result); req.onerror = () => rej(req.error); });
+        if (!m) { alert('見つかりません'); return; }
+        state.mapping = m.mapping;
+        state.physicsParams = m.physicsParams;
+        state.surge = m.surge || [];
+        state.evalPoints = m.evalPoints || [];
+        state.lastResults = m.lastResults;
+        state.trainResult = m.trainResult;
+        state.auditLog = m.auditLog || [];
+        renderPhysicsSliders();
+        renderSurgeTable();
+        renderEvalTable();
+        if (state.lastResults) renderInverseResult(state.lastResults);
+        $('export-status').textContent = `✓ モデル「${name}」を読込（再訓練を推奨）`;
+        audit('model_loaded', { name });
+      } catch (e) { alert('読込失敗: ' + e); }
+    }
+    $('btn-save-model').addEventListener('click', saveModel);
+    $('btn-load-list').addEventListener('click', listModels);
+
+    // ============================================================
+    // プライバシーバナー
+    // ============================================================
+    $('verify-privacy').addEventListener('click', () => {
+      const d = $('privacy-detail');
+      d.style.display = d.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // 初期表示
+    updateDataStatus();
+  </script>
+</BaseLayout>
