@@ -1282,8 +1282,38 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         // マッピング確定
         confirmMapping();
-        // 物理スライダー描画
+
+        // 🔧 物理パラメータ初期化（バグ修正: generateSampleData() を通らないので明示初期化必要）
+        if (state.mapping && !state.physicsParams) {
+          state.physicsParams = defaultPhysics(state.mapping.N);
+          state.physicsParams.useRPM = state.mapping.useRPM;
+        }
         if (typeof renderPhysicsSliders === 'function') renderPhysicsSliders();
+
+        // ✅ STEP 3 (AE), STEP 4 (GP) のアンロックを明示（STEP 2 確定相当の処置）
+        // 物理パラメータはデフォルト値が入っているのでそのまま STEP 3, 4 へ進める
+        if (typeof setStep === 'function') {
+          setStep(3, true);
+          setStep(4, true);
+          setStep(10, true);
+        }
+
+        // 次の手順ガイド
+        const nextSteps = document.getElementById('next-steps-guide') || (() => {
+          const d = document.createElement('div');
+          d.id = 'next-steps-guide';
+          d.style.cssText = 'background:rgba(110,200,151,0.08);border-left:3px solid #6ec897;padding:0.85rem 1.1rem;margin:1rem 0;font-size:0.78rem;color:rgba(237,237,232,0.9);line-height:1.7;';
+          const step1 = document.getElementById('step1');
+          step1.parentNode.insertBefore(d, step1.nextSibling);
+          return d;
+        })();
+        nextSteps.innerHTML = '<strong style="color:#6ec897;">✅ ダミー取込完了。次の手順:</strong><br>' +
+          '1) <strong>STEP 2</strong>: 物理パラメータは既定値で OK（必要ならスライダーで微調整）<br>' +
+          '2) <strong>STEP 3</strong>: 「▶ AE 事前学習を実行」を押す（初回 Pyodide 起動 30秒〜2分、2回目以降は数秒）<br>' +
+          '3) <strong>STEP 4</strong>: 「▶ GP訓練 + LOO-CV」を押す（数秒）<br>' +
+          '4) <strong>Phase B</strong> タブへ → STEP 5-7 で逆推定<br>' +
+          '5) <strong>Phase C</strong> タブへ → STEP 11 で予実差確認<br>' +
+          '<span style="color:rgba(255,255,255,0.55);font-size:0.72rem;">※ STEP 3-4 が灰色なら、ブラウザを強リロード (Ctrl+Shift+R) してください</span>';
 
         // バナー表示
         const status = $('data-status');
