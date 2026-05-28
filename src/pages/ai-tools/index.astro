@@ -86,6 +86,14 @@ const etoTools = [
     href: `${base}/ai-tools/spec-risk-extractor/`,
     tag: 'BM25 · Review Learning',
     when: '受注前 RFQ・仕様書レビュー'
+  },
+  {
+    name: 'コンプレッサ試運転バルブ操作支援',
+    icon: '🌀',
+    desc: 'ASME PTC 10 / API 617 準拠の遠心圧縮機性能試験で、設計の性能評価点（1〜10点）を達成するバルブ操作を AI が提案。Pyodide + scikit-learn GP・残差学習・AE事前学習・サージ制約逆推定・PTC10適合性レポート。整合性ガード（吐出側操作禁止）で試験不正を防止。データ外部送信ゼロ。',
+    href: `${base}/ai-tools/sparse-label-inverse-designer/`,
+    tag: 'Pyodide · GP · Residual',
+    when: '試運転・性能試験前のバルブ操作計画'
   }
 ];
 
