@@ -1,6 +1,6 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-05-27 22:14",
+  "generated_at": "2026-05-28 22:55",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,16 +9,16 @@
     "expected_return": 1.37,
     "risk_reward": 1.49,
     "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=53% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=34% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-27 22:14",
-    "prediction_date": "2026-05-27"
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=54% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=36% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-28 22:55",
+    "prediction_date": "2026-05-28"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
       "BUY": 13,
-      "HOLD": 5,
-      "WATCH": 44,
+      "HOLD": 7,
+      "WATCH": 42,
       "REDUCE": 3
     },
     "category_stats": {
@@ -27,14 +27,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 4,
-        "avg_score": 57.4
-      },
-      "sector": {
-        "count": 19,
-        "buy": 2,
-        "sell": 0,
-        "hold": 17,
-        "avg_score": 52.9
+        "avg_score": 58.9
       },
       "personal": {
         "count": 10,
@@ -43,12 +36,19 @@
         "hold": 5,
         "avg_score": 59.5
       },
+      "sector": {
+        "count": 19,
+        "buy": 2,
+        "sell": 0,
+        "hold": 17,
+        "avg_score": 52.9
+      },
       "market_monitor": {
         "count": 7,
-        "buy": 1,
+        "buy": 2,
         "sell": 2,
-        "hold": 4,
-        "avg_score": 47.6
+        "hold": 3,
+        "avg_score": 48.7
       },
       "analysis": {
         "count": 10,
@@ -62,14 +62,14 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 50.9
+        "avg_score": 51.2
       },
       "integration": {
         "count": 6,
-        "buy": 1,
+        "buy": 0,
         "sell": 0,
-        "hold": 5,
-        "avg_score": 52.5
+        "hold": 6,
+        "avg_score": 51.2
       }
     }
   },
@@ -84,15 +84,6 @@
       "reason": "高配当(86.0%) / 高利益率(47%) / ROE高(34%)"
     },
     {
-      "agent": "japan_dividend",
-      "agent_jp": "日本高配当",
-      "category": "sector",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
-    },
-    {
       "agent": "rule_compliance",
       "agent_jp": "ルール遵守",
       "category": "personal",
@@ -100,6 +91,15 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "全ルール遵守"
+    },
+    {
+      "agent": "japan_dividend",
+      "agent_jp": "日本高配当",
+      "category": "sector",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
     },
     {
       "agent": "sector_cloud_saas",
@@ -138,6 +138,15 @@
       "reason": "高利益率(47%)"
     },
     {
+      "agent": "long_term_prob",
+      "agent_jp": "長期確率",
+      "category": "prediction",
+      "score": 66.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=66% / ROIC=15% / PER=26x"
+    },
+    {
       "agent": "risk_assessment",
       "agent_jp": "リスク評価",
       "category": "analysis",
@@ -154,15 +163,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
-    },
-    {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
@@ -176,6 +176,15 @@
       "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "低ボラ環境"
+    },
+    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -183,15 +192,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
-    },
-    {
-      "agent": "valuation",
-      "agent_jp": "バリュエーション",
-      "category": "analysis",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "バリュエーション中立"
     },
     {
       "agent": "alert",
@@ -203,13 +203,22 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "低ボラ環境"
+      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
+    },
+    {
+      "agent": "valuation",
+      "agent_jp": "バリュエーション",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "バリュエーション中立"
     },
     {
       "agent": "lgbm_prob",
@@ -218,16 +227,16 @@
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=53% / 3m=59% / 期待値=+1.37%"
+      "reason": "5d上昇確率=55% / 20d=54% / 3m=59% / 期待値=+1.37%"
     },
     {
-      "agent": "market_sentiment",
-      "agent_jp": "市場センチメント",
-      "category": "market_monitor",
-      "score": 53.0,
+      "agent": "macro_environment",
+      "agent_jp": "マクロ環境",
+      "category": "analysis",
+      "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "RSI中立ゾーン"
+      "reason": "長期金利高(4.5%) / 金利低下中(株にプラス) / S&P500上昇中"
     },
     {
       "agent": "score_integration",
@@ -239,22 +248,13 @@
       "reason": "全エージェント統合スコア=53"
     },
     {
-      "agent": "final_judgment",
-      "agent_jp": "最終判定",
+      "agent": "comparative",
+      "agent_jp": "比較評価",
       "category": "integration",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=53% / 3ヶ月=59% / 12ヶ月=72%\n下落確率: 3%=34% / 5%=18% / 10%=6%\n期待値: +1.37% / リスクリワード: 1.49\n判定時刻: 2026-05-27 22:14"
-    },
-    {
-      "agent": "earnings_momentum",
-      "agent_jp": "決算モメンタム",
-      "category": "analysis",
-      "score": 50.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "決算特記事項なし"
+      "reason": "ウォッチリスト内 6/10位"
     }
   ],
   "fundamentals": {
@@ -267,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9166,
+    "total_days": 9167,
     "approx_years": 36.4,
     "data_span_label": "IPO以降 約36.4年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 416.03,
-    "current_drawdown_pct": -22.9,
+    "current_close": 412.67,
+    "current_drawdown_pct": -23.6,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3311,
     "pct_time_below_30pct": 36.1,
-    "current_pct_of_ath": 77.1
+    "current_pct_of_ath": 76.4
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -299,6 +299,20 @@
       "source": "yahoo"
     },
     {
+      "headline": "Vertice Launches AI Cost Optimization to Tackle Unchecked AI Spend",
+      "sentiment": 0.46,
+      "importance": 3,
+      "published_at": "2026-05-28 22:00:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Dell wins $9.7 billion Pentagon Microsoft software contract",
+      "sentiment": 0.81,
+      "importance": 3,
+      "published_at": "2026-05-28 21:13:15",
+      "source": "yahoo"
+    },
+    {
       "headline": "Elemental Impact Launches the Data Center Innovation Initiative with Amazon, Google, Meta, and Microsoft",
       "sentiment": 0.94,
       "importance": 3,
@@ -306,24 +320,10 @@
       "source": "yahoo"
     },
     {
-      "headline": "Stock Market Today: Dow Rises As Oil Prices Extend Their Losses; Micron Continues To Surge (Live Coverage)",
-      "sentiment": -0.25,
+      "headline": "Leah Earns the Solutions Partner With Certified Software Designation",
+      "sentiment": 0.65,
       "importance": 2,
-      "published_at": "2026-05-27 21:53:52",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Bandwidth to Participate in TD Cowen Inaugural Disruptive Technology Summit",
-      "sentiment": -0.23,
-      "importance": 2,
-      "published_at": "2026-05-27 21:13:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Agora, the Denodo Cloud Service, now available on the Microsoft Marketplace to Power Agentic AI Use Cases",
-      "sentiment": null,
-      "importance": 2,
-      "published_at": "2026-05-27 20:00:00",
+      "published_at": "2026-05-28 22:00:00",
       "source": "yahoo"
     }
   ],

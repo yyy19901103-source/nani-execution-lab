@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-27 22:14",
+  "generated_at": "2026-05-28 22:55",
   "today": {
-    "date": "2026-05-22",
-    "vix": 16.7,
-    "us10y": 4.56,
-    "sp500_ret_20d_pct": 4.3
+    "date": "2026-05-26",
+    "vix": 17.01,
+    "us10y": 4.5,
+    "sp500_ret_20d_pct": 4.81
   },
   "similar_days": [
     {
       "date": "2007-09-27",
-      "distance": 0.083,
+      "distance": 0.061,
       "vix": 17.0,
       "us10y": 4.58,
       "sp500_ret_20d_pct": 4.62,
@@ -17,22 +17,22 @@
       "next_30d_return_pct": -3.7
     },
     {
+      "date": "2004-01-05",
+      "distance": 0.081,
+      "vix": 17.49,
+      "us10y": 4.41,
+      "sp500_ret_20d_pct": 4.91,
+      "context": "平静",
+      "next_30d_return_pct": 2.64
+    },
+    {
       "date": "2025-07-15",
-      "distance": 0.1,
+      "distance": 0.093,
       "vix": 17.38,
       "us10y": 4.5,
       "sp500_ret_20d_pct": 4.46,
       "context": "平静",
       "next_30d_return_pct": 3.56
-    },
-    {
-      "date": "2025-07-11",
-      "distance": 0.113,
-      "vix": 16.4,
-      "us10y": 4.43,
-      "sp500_ret_20d_pct": 3.94,
-      "context": "平静",
-      "next_30d_return_pct": 3.31
     }
   ]
 }
