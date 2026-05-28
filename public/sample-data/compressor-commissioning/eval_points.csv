@@ -1,0 +1,6 @@
+name,y1_Q_Nm3h_target,y2_dP_kPa_target,y3_eta_pct_target
+100% design,12500,105,76.0
+80% Q,10000,92,74.5
+60% Q,7500,75,70.0
+110% Q overload,13800,115,73.5
+min flow (surge margin),6000,65,65.0

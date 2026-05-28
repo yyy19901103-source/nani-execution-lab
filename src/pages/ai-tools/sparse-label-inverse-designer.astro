@@ -107,8 +107,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   <div style="max-width:1300px;margin:0 auto;padding:2rem 1rem 5rem;">
 
+    <!-- ===== 3 フェーズタブナビ ===== -->
+    <div id="phase-tabs" style="display:flex;gap:0.4rem;margin-bottom:1.5rem;border-bottom:1px solid rgba(200,169,110,0.25);padding-bottom:0.5rem;flex-wrap:wrap;">
+      <button data-phase="A" class="phase-tab" style="background:#c8a96e;color:#0c0c0e;border:none;padding:0.6rem 1.1rem;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;font-weight:600;">Phase A · 事前モデル訓練</button>
+      <button data-phase="B" class="phase-tab" style="background:rgba(200,169,110,0.15);color:#c8a96e;border:1px solid rgba(200,169,110,0.4);padding:0.6rem 1.1rem;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">Phase B · バルブ開度予測</button>
+      <button data-phase="C" class="phase-tab" style="background:rgba(200,169,110,0.15);color:#c8a96e;border:1px solid rgba(200,169,110,0.4);padding:0.6rem 1.1rem;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">Phase C · 予実差確認</button>
+      <button data-phase="ALL" class="phase-tab" style="background:transparent;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.15);padding:0.6rem 1.1rem;font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;">全表示</button>
+      <div style="margin-left:auto;display:flex;gap:0.5rem;align-items:center;">
+        <a href="/sample-data/compressor-commissioning/README.md" target="_blank" style="color:#6ec897;font-size:0.72rem;text-decoration:none;border:1px solid rgba(110,200,151,0.4);padding:0.5rem 0.9rem;letter-spacing:0.05em;">📦 完璧サンプルデータ</a>
+      </div>
+    </div>
+    <div id="phase-desc" style="background:rgba(200,169,110,0.05);border-left:3px solid #c8a96e;padding:0.7rem 1rem;margin-bottom:1.5rem;font-size:0.78rem;color:rgba(237,237,232,0.85);line-height:1.7;">
+      <strong style="color:#c8a96e;">Phase A · 事前モデル訓練</strong> — 過去の試運転①データを使って GP+物理モデルを訓練。試運転当日の前に経験者が一度だけ実行。
+    </div>
+
     <!-- ===== STEP 1: データ取込 ===== -->
-    <section id="step1" style="margin-bottom:2rem;">
+    <section id="step1" class="phase-A" style="margin-bottom:2rem;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 1</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">データ取込・列マッピング・整合性チェック</h2>
@@ -145,7 +159,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             🧬 外部埋め込みCSV（TimesFM等・任意）
             <input type="file" id="csv-embed" accept=".csv" style="display:none;" />
           </label>
-          <span class="help-tip" data-tip="L2 表現学習層との連携用。ローカル（家PC等）で時系列基盤モデル（TimesFM 2.0-500m 等）が出力した操作点ごとの埋め込みベクトルを取り込みます。形式: 時刻 + emb_1, emb_2, ..., emb_K の数値列。操作メモの各時刻に近いストリーム位置の埋め込みを使います。提供すれば AE と併用または置換が可能。任意（提供しなくても動作）。">?</span>
+          <span class="help-tip" data-tip="L2 表現学習層との連携用。ローカル（家PC等）で時系列基盤モデル（TimesFM 2.5-200m (2025-10 公開・最新) / 2.0-500m 等）が出力した操作点ごとの埋め込みベクトルを取り込みます。形式: 時刻 + emb_1, emb_2, ..., emb_K の数値列。操作メモの各時刻に近いストリーム位置の埋め込みを使います。提供すれば AE と併用または置換が可能。任意（提供しなくても動作）。">?</span>
           <button id="btn-template" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(237,237,232,0.7);padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📥 テンプレートDL</button>
           <span class="help-tip" data-tip="操作メモCSV と センサーストリームCSV の見本ファイルをダウンロードします。実データを用意する際の列構成・時刻形式の参考にできます。">?</span>
           <button id="btn-reset" style="background:transparent;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;margin-left:auto;">🗑 リセット</button>
@@ -177,7 +191,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 2: 物理モデル ===== -->
-    <section id="step2" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step2" class="phase-A" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 2</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">物理モデル設定（オプション）</h2>
@@ -199,7 +213,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 3: AE 事前学習 ===== -->
-    <section id="step3" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step3" class="phase-A" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 3</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">AE 事前学習（dense センサー全活用）</h2>
@@ -232,7 +246,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 4: GP訓練 + LOO-CV ===== -->
-    <section id="step4" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step4" class="phase-A" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 4</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">時間窓集約 + GP（残差/直接）訓練 + LOO-CV</h2>
@@ -258,7 +272,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 5: サージ線 ===== -->
-    <section id="step5" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step5" class="phase-B" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 5</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">設計サージ線</h2>
@@ -283,7 +297,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 6: 評価点 ===== -->
-    <section id="step6" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step6" class="phase-B" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 6</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">性能評価点テーブル（PTC10/API617）</h2>
@@ -301,7 +315,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 7: 逆推定 ===== -->
-    <section id="step7" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step7" class="phase-B" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 7</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">バルブ操作推奨（逆推定 + 感度 + シーケンス）</h2>
@@ -330,7 +344,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 8: 性能マップ + 曲線/曲面可視化 ===== -->
-    <section id="step8" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step8" class="phase-B" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 8</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">可視化（性能マップ + 物理曲線 + GP曲面 + 時系列）</h2>
@@ -401,7 +415,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 9: レポート/エクスポート ===== -->
-    <section id="step9" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step9" class="phase-B" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 9</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">レポート出力（PTC10適合性・CSV）</h2>
@@ -420,7 +434,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ===== STEP 10: モデル管理 ===== -->
-    <section id="step10" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+    <section id="step10" class="phase-A" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 10</span>
         <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">モデル管理（保存・読込）</h2>
@@ -432,6 +446,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <button id="btn-load-list" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📂 保存済みモデル一覧</button>
         </div>
         <div id="model-list" style="font-size:0.74rem;color:rgba(237,237,232,0.85);"></div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 11: 予実差確認 (Phase C) ===== -->
+    <section id="step11" class="phase-C" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
+        <span style="background:#ff8c5a;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 11</span>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">試運転② 実機データ取込 → 予実差ビュー</h2>
+        <span class="help-tip" data-tip="試運転②で実際に達成された (Q, ΔP, η) の CSV を読み込み、STEP 7 の逆推定 + GP 予測との差を散布図と残差プロットで可視化します。バイアス（系統誤差）と RMSE（バラつき）を自動算出。次回試運転のためのモデル校正に使います。">?</span>
+      </div>
+      <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+        <div style="font-size:0.78rem;color:rgba(237,237,232,0.85);line-height:1.7;margin-bottom:1rem;">
+          試運転②終了後、実機で実測した <code>(eval_name, rpm, u1, u2, u3, y1_actual, y2_actual, y3_actual)</code> の CSV をここに投入してください。
+          STEP 7 で推定したバルブ開度・GP 予測 <code>y</code> との誤差を散布図と残差プロットで表示し、バイアス・RMSE を算出します。
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem;">
+          <input type="file" id="actual-csv" accept=".csv" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.5rem;font-size:0.78rem;" />
+          <button id="btn-actual-load" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📥 実機データ取込</button>
+          <button id="btn-diff-plot" disabled style="background:transparent;border:1px solid rgba(255,140,90,0.4);color:#ff8c5a;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;opacity:0.5;">📊 予実差プロット描画</button>
+          <span id="actual-status" style="color:rgba(237,237,232,0.5);font-size:0.74rem;"></span>
+        </div>
+        <div id="diff-table-wrap" style="margin-bottom:1rem;"></div>
+        <canvas id="diff-canvas" width="1000" height="540" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.08);max-width:100%;display:block;"></canvas>
+        <div id="diff-metrics" style="margin-top:0.75rem;font-size:0.78rem;color:rgba(237,237,232,0.85);line-height:1.7;"></div>
       </div>
     </section>
 
@@ -560,7 +598,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <details>
         <summary>外部埋め込み連携（TimesFM 等・L2層）</summary>
-        <p>本ツールは <strong>3層設計（L1物理 + L2表現学習 + L3逆問題）</strong> の <strong>L2層</strong> に外部埋め込みベクトルを取り込めます。代表的な連携対象は <strong>TimesFM 2.0-500m</strong> 等の時系列基盤モデル。</p>
+        <p>本ツールは <strong>3層設計（L1物理 + L2表現学習 + L3逆問題）</strong> の <strong>L2層</strong> に外部埋め込みベクトルを取り込めます。代表的な連携対象は <strong>TimesFM 2.5-200m</strong>（2025-10-02 公開、200M params, context 1024）または旧 <strong>TimesFM 2.0-500m</strong> 等の時系列基盤モデル。</p>
         <p><strong>運用フロー（家PC + HP）</strong></p>
         <ol>
           <li>家PC（Python 3.11 venv）で TimesFM 等の事前学習済モデルをロード</li>
@@ -570,7 +608,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <li>各操作時刻に最も近い行を最近傍マッチ → GP特徴量に追加</li>
         </ol>
         <p><strong>AEとの関係</strong>: 自前 AE と外部埋め込みは<strong>併用可能</strong>。両方ONなら両方が GP の特徴量に追加され、どちらが効くかを LOO-CV で比較できます。</p>
-        <p><strong>なぜ家PCで処理する？</strong> TimesFM 2.0-500m は約 4GB あり、ブラウザ Pyodide には載りません。重い表現抽出はローカル、軽い GP は HP（Pyodide）で分業する設計。</p>
+        <p><strong>なぜ家PCで処理する？</strong> TimesFM 2.5-200m でも 200M パラメータあり、ブラウザ Pyodide では実行不可。重い表現抽出はローカル PC（家・社内）、軽い GP 推論は HP（Pyodide）で分業する設計。<br/><strong>本ツールでの活用法:</strong> ローカルで TimesFM の各操作時刻周辺のセンサーストリームを context として与え、最終層の隠れ状態（16〜128 次元に PCA 圧縮）を <code>embeddings_timesfm25.csv</code> として書き出し、STEP 1 の「外部埋め込みCSV」に投入。GP 訓練時の特徴量として AE と併用 or 置換できます。</p>
         <p><strong>導入時の注意</strong>（社用PCで TimesFM を構築する場合の典型障害と回避法）:</p>
         <ul>
           <li>Anaconda 商用ライセンス 403 → conda を捨て <strong>uv + PyPI</strong></li>
@@ -3267,6 +3305,269 @@ th { background: #f5f0e6; color: #6c5a3a; }
         audit('one_shot_mode_enabled', {});
       }
     });
+
+    // ============================================================
+    // 3 フェーズタブ切替
+    // ============================================================
+    const phaseDescs = {
+      A: '<strong style="color:#c8a96e;">Phase A · 事前モデル訓練</strong> — 過去の試運転①データを使って GP+物理モデルを訓練。試運転当日の前に経験者が一度だけ実行。',
+      B: '<strong style="color:#c8a96e;">Phase B · バルブ開度予測</strong> — 訓練済みモデルで性能評価点 → バルブ開度を推定。試運転当日に初心者が実行。',
+      C: '<strong style="color:#ff8c5a;">Phase C · 予実差確認</strong> — 試運転②の実機計測値を取込み、GP予測との誤差を可視化。次回モデル校正に使用。',
+      ALL: '<strong style="color:rgba(255,255,255,0.6);">全表示</strong> — 全 STEP を一括表示（デバッグ・全体俯瞰用）。',
+    };
+    function setPhase(ph) {
+      document.querySelectorAll('.phase-tab').forEach(b => {
+        const active = b.dataset.phase === ph;
+        b.style.background = active ? '#c8a96e' : 'rgba(200,169,110,0.15)';
+        b.style.color = active ? '#0c0c0e' : '#c8a96e';
+        b.style.fontWeight = active ? '600' : '400';
+        b.style.border = active ? 'none' : '1px solid rgba(200,169,110,0.4)';
+      });
+      const showA = (ph === 'A' || ph === 'ALL');
+      const showB = (ph === 'B' || ph === 'ALL');
+      const showC = (ph === 'C' || ph === 'ALL');
+      document.querySelectorAll('.phase-A').forEach(s => s.style.display = showA ? '' : 'none');
+      document.querySelectorAll('.phase-B').forEach(s => s.style.display = showB ? '' : 'none');
+      document.querySelectorAll('.phase-C').forEach(s => s.style.display = showC ? '' : 'none');
+      const desc = $('phase-desc'); if (desc) desc.innerHTML = phaseDescs[ph] || '';
+      try { localStorage.setItem('compressor_phase', ph); } catch (_) {}
+    }
+    document.querySelectorAll('.phase-tab').forEach(b => {
+      b.addEventListener('click', () => setPhase(b.dataset.phase));
+    });
+    try { setPhase(localStorage.getItem('compressor_phase') || 'A'); } catch (_) { setPhase('A'); }
+
+    // ============================================================
+    // STEP 11: 試運転②実機データ → 予実差ビュー
+    // ============================================================
+    state.actualRun2 = null;  // {rows: [{eval_name,rpm,u1,u2,u3,y1,y2,y3}, ...]}
+
+    $('btn-actual-load')?.addEventListener('click', async () => {
+      const f = $('actual-csv')?.files?.[0];
+      if (!f) { alert('CSVファイルを選択してください'); return; }
+      try {
+        const buf = await f.arrayBuffer();
+        const text = decodeAuto(new Uint8Array(buf));
+        const lines = text.split(/\r?\n/).filter(l => l.trim());
+        const header = lines[0].split(',').map(s => s.trim());
+        const rows = lines.slice(1).map(line => {
+          const cells = line.split(',').map(s => s.trim());
+          const obj = {};
+          header.forEach((h, i) => obj[h] = cells[i]);
+          return obj;
+        });
+        // 必須列チェック
+        const need = ['eval_name'];
+        for (const k of need) {
+          if (!header.includes(k)) throw new Error(`必須列 ${k} がありません`);
+        }
+        state.actualRun2 = { header, rows };
+        $('actual-status').textContent = `✓ ${rows.length} 行取込`;
+        $('actual-status').style.color = '#6ec897';
+        $('btn-diff-plot').disabled = false;
+        $('btn-diff-plot').style.opacity = '1';
+        audit('actual_run2_loaded', { n: rows.length });
+      } catch (e) {
+        $('actual-status').textContent = '❌ ' + e.message;
+        $('actual-status').style.color = '#ff6b6b';
+      }
+    });
+
+    $('btn-diff-plot')?.addEventListener('click', async () => {
+      if (!state.actualRun2) { alert('先に実機データを取込んでください'); return; }
+      if (!state.trained) { alert('Phase A で GP を訓練してください'); return; }
+      if (state.evalPoints.length === 0) { alert('Phase B で評価点を登録してください'); return; }
+      const btn = $('btn-diff-plot'); btn.disabled = true; btn.textContent = '⏳ 計算中...';
+      try {
+        // 各実機行について GP で再予測し、差分を計算
+        const actual = state.actualRun2.rows;
+        // y 列の自動検出
+        const hdr = state.actualRun2.header;
+        const yCols = hdr.filter(h => /^(y\d+|.*actual.*|.*Q.*|.*dP.*|.*eta.*)/i.test(h) && h !== 'eval_name');
+        // u 列
+        const uCols = hdr.filter(h => /^u\d+|.*valve.*|.*pct.*|rpm/i.test(h));
+
+        state.pyodide.globals.set('actual_rows', actual.map(r => {
+          const o = {};
+          for (const k in r) o[k] = isFinite(parseFloat(r[k])) ? parseFloat(r[k]) : r[k];
+          return o;
+        }));
+        state.pyodide.globals.set('eval_pts', state.evalPoints);
+        state.pyodide.globals.set('y_cols', yCols);
+        state.pyodide.globals.set('u_cols', uCols);
+
+        const code = `
+import numpy as np, json
+actual = actual_rows.to_py()
+yc = y_cols.to_py()
+uc = u_cols.to_py()
+# u 列 → _valve_names と一致するものを抽出
+n_u = len(_valve_names) + (1 if _use_rpm else 0)
+u_full_names = _valve_names + (['rpm'] if _use_rpm else [])
+results = []
+for r in actual:
+    name = r.get('eval_name','?')
+    # u を構築
+    u = np.zeros(n_u)
+    for i, un in enumerate(u_full_names):
+        # 列名にバルブ名 or rpm を含むもの
+        match = None
+        for k in r:
+            if un.lower() in str(k).lower() or (un=='rpm' and 'rpm' in str(k).lower()):
+                if isinstance(r[k], (int,float)): match = float(r[k]); break
+        if match is not None: u[i] = match
+    # X 構築
+    parts = [u, np.array(_pre_default)]
+    if len(_ae_default)>0: parts.append(np.array(_ae_default))
+    if len(_embed_default)>0: parts.append(np.array(_embed_default))
+    X = np.concatenate(parts).reshape(1,-1)
+    Xs = _scaler.transform(X)
+    y_pred = []
+    y_std = []
+    for m in _models:
+        mu, sd = m.predict(Xs, return_std=True)
+        y_pred.append(float(mu[0])); y_std.append(float(sd[0]))
+    # actual y 抽出（数値かつ y1/y2/y3 や *actual* を含む列）
+    y_act = []
+    for yn in _y_names:
+        v = None
+        for k in r:
+            if yn.lower() in str(k).lower() and isinstance(r[k], (int,float)):
+                v = float(r[k]); break
+        y_act.append(v)
+    results.append({
+        'name': str(name),
+        'y_pred': y_pred, 'y_std': y_std,
+        'y_actual': y_act,
+        'y_names': list(_y_names),
+    })
+out = {'rows': results, 'y_names': list(_y_names)}
+json.dumps(out)
+`;
+        const resStr = await state.pyodide.runPythonAsync(code);
+        const d = JSON.parse(resStr);
+
+        // 表
+        let tbl = '<table style="width:100%;border-collapse:collapse;font-size:0.74rem;color:rgba(237,237,232,0.85);"><thead><tr style="border-bottom:1px solid rgba(255,255,255,0.15);color:#c8a96e;">';
+        tbl += '<th style="text-align:left;padding:0.4rem;">評価点</th>';
+        d.y_names.forEach(yn => {
+          tbl += `<th style="padding:0.4rem;">${yn} 予測</th><th style="padding:0.4rem;">${yn} 実測</th><th style="padding:0.4rem;">残差</th><th style="padding:0.4rem;">±σ</th>`;
+        });
+        tbl += '</tr></thead><tbody>';
+        const allResiduals = d.y_names.map(() => []);
+        d.rows.forEach(r => {
+          tbl += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:0.4rem;">${r.name}</td>`;
+          r.y_pred.forEach((yp, i) => {
+            const ya = r.y_actual[i];
+            const resid = (ya != null) ? ya - yp : null;
+            if (resid !== null) allResiduals[i].push(resid);
+            const within = (resid != null && Math.abs(resid) < 2 * r.y_std[i]);
+            const color = within ? '#6ec897' : (resid == null ? 'rgba(255,255,255,0.4)' : '#ff8c5a');
+            tbl += `<td style="padding:0.4rem;color:rgba(255,255,255,0.7);">${yp.toFixed(2)}</td>`;
+            tbl += `<td style="padding:0.4rem;color:rgba(255,255,255,0.7);">${ya != null ? ya.toFixed(2) : '—'}</td>`;
+            tbl += `<td style="padding:0.4rem;color:${color};font-weight:600;">${resid != null ? (resid>=0?'+':'')+resid.toFixed(2) : '—'}</td>`;
+            tbl += `<td style="padding:0.4rem;color:rgba(255,255,255,0.5);">±${r.y_std[i].toFixed(2)}</td>`;
+          });
+          tbl += '</tr>';
+        });
+        tbl += '</tbody></table>';
+        $('diff-table-wrap').innerHTML = tbl;
+
+        // メトリクス
+        let metrics = '<div style="display:flex;gap:1.5rem;flex-wrap:wrap;">';
+        d.y_names.forEach((yn, i) => {
+          const arr = allResiduals[i];
+          if (arr.length === 0) return;
+          const bias = arr.reduce((a, b) => a + b, 0) / arr.length;
+          const rmse = Math.sqrt(arr.reduce((a, b) => a + b * b, 0) / arr.length);
+          const within2sd = d.rows.filter(r => r.y_actual[i] != null && Math.abs(r.y_actual[i] - r.y_pred[i]) < 2 * r.y_std[i]).length;
+          metrics += `<div style="background:rgba(200,169,110,0.05);border-left:3px solid #c8a96e;padding:0.6rem 0.9rem;">
+            <div style="color:#c8a96e;font-size:0.65rem;letter-spacing:0.2em;">${yn}</div>
+            <div style="margin-top:0.3rem;">バイアス: <strong style="color:${Math.abs(bias) < rmse / 2 ? '#6ec897' : '#ff8c5a'};">${bias >= 0 ? '+' : ''}${bias.toFixed(3)}</strong></div>
+            <div>RMSE: <strong>${rmse.toFixed(3)}</strong></div>
+            <div>2σ内: <strong style="color:${within2sd / arr.length > 0.8 ? '#6ec897' : '#ff8c5a'};">${within2sd}/${arr.length}</strong></div>
+          </div>`;
+        });
+        metrics += '</div>';
+        metrics += '<div style="margin-top:0.8rem;color:rgba(255,255,255,0.5);font-size:0.72rem;">※ バイアス: 系統誤差（モデルが平均的にずれている方向）／ RMSE: バラつきの大きさ／ 2σ内: GP の予測区間に実測が入った割合（0.95 以上が理想）</div>';
+        $('diff-metrics').innerHTML = metrics;
+
+        // 散布図（予測 vs 実測）
+        const cv = $('diff-canvas'); const ctx = cv.getContext('2d');
+        const W = cv.width, H = cv.height;
+        ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, W, H);
+        const nY = d.y_names.length;
+        const sw = W / nY;
+        const PT = 30, PB = 50, PL = 50, PR = 20;
+        d.y_names.forEach((yn, i) => {
+          const x0 = i * sw + PL;
+          const y0 = PT;
+          const pW = sw - PL - PR;
+          const pH = H - PT - PB;
+          // データ範囲
+          const vals = d.rows.flatMap(r => [r.y_pred[i], r.y_actual[i]]).filter(v => v != null);
+          if (vals.length === 0) return;
+          const vmin = Math.min(...vals), vmax = Math.max(...vals);
+          const pad = (vmax - vmin) * 0.1 || 1;
+          const lo = vmin - pad, hi = vmax + pad;
+          // 軸
+          ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = 1;
+          ctx.strokeRect(x0, y0, pW, pH);
+          // y=x 線
+          ctx.strokeStyle = 'rgba(200,169,110,0.5)'; ctx.setLineDash([4, 4]);
+          ctx.beginPath(); ctx.moveTo(x0, y0 + pH); ctx.lineTo(x0 + pW, y0); ctx.stroke();
+          ctx.setLineDash([]);
+          // 点
+          d.rows.forEach(r => {
+            const ya = r.y_actual[i]; const yp = r.y_pred[i];
+            if (ya == null) return;
+            const px = x0 + (yp - lo) / (hi - lo) * pW;
+            const py = y0 + pH - (ya - lo) / (hi - lo) * pH;
+            // ±2σ エラーバー（横方向）
+            const sd = r.y_std[i];
+            const sxl = x0 + (yp - 2 * sd - lo) / (hi - lo) * pW;
+            const sxr = x0 + (yp + 2 * sd - lo) / (hi - lo) * pW;
+            ctx.strokeStyle = 'rgba(110,200,151,0.4)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(sxl, py); ctx.lineTo(sxr, py); ctx.stroke();
+            const within = Math.abs(ya - yp) < 2 * sd;
+            ctx.fillStyle = within ? '#6ec897' : '#ff8c5a';
+            ctx.beginPath(); ctx.arc(px, py, 5, 0, 2 * Math.PI); ctx.fill();
+            ctx.strokeStyle = '#000'; ctx.lineWidth = 1; ctx.stroke();
+          });
+          // ラベル
+          ctx.fillStyle = '#c8a96e'; ctx.font = 'bold 12px sans-serif';
+          ctx.fillText(yn, x0 + pW / 2 - 15, y0 - 8);
+          ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '10px sans-serif';
+          ctx.fillText('予測 →', x0 + pW - 40, y0 + pH + 16);
+          ctx.save(); ctx.translate(x0 - 30, y0 + pH / 2 + 20); ctx.rotate(-Math.PI / 2);
+          ctx.fillText('実測', 0, 0); ctx.restore();
+          // 目盛
+          ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '9px monospace';
+          for (let k = 0; k <= 4; k++) {
+            const v = lo + (hi - lo) * k / 4;
+            ctx.fillText(v.toFixed(1), x0 - 30, y0 + pH - pH * k / 4 + 3);
+            ctx.fillText(v.toFixed(1), x0 + pW * k / 4 - 10, y0 + pH + 30);
+          }
+        });
+        ctx.fillStyle = '#c8a96e'; ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('予実差散布図 (予測 vs 実測, 緑=2σ内, 橙=外れ, 点線=y=x)', 12, 18);
+        audit('diff_plot_drawn', { rows: d.rows.length });
+      } catch (e) {
+        alert('予実差計算失敗: ' + e);
+        console.error(e);
+      } finally {
+        btn.disabled = false; btn.textContent = '📊 予実差プロット描画';
+      }
+    });
+
+    // STEP 4 完了時に STEP 11 もアンロック
+    const _origSetStep = setStep;
+    setStep = function(n, on) {
+      _origSetStep(n, on);
+      if (n === 7 && on) {
+        const s11 = $('step11'); if (s11) { s11.style.opacity = '1'; s11.style.pointerEvents = 'auto'; }
+      }
+    };
 
     // 初期表示
     updateDataStatus();

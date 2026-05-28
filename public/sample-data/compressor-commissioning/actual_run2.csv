@@ -1,0 +1,6 @@
+eval_name,rpm,u1_suction_pct,u2_circ_pct,u3_inlet_pct,y1_Q_Nm3h_actual,y2_dP_kPa_actual,y3_eta_pct_actual
+100% design,7800,90,5,85,12206.6,100.193,40.43
+80% Q,7800,75,5,65,10218.4,101.263,38.25
+60% Q,7800,45,5,85,7908.7,104.790,62.00
+110% Q overload,7800,95,5,90,13195.4,102.149,39.80
+min flow (surge margin),7800,35,10,80,6331.6,105.651,70.26
