@@ -143,8 +143,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <!-- 取込ボタン -->
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem;">
-          <button id="btn-sample" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📦 物理ベース合成（HH:MM:SS形式）</button>
-          <span class="help-tip" data-tip="物理モデル（Ψ=a−b·Φ²の放物線特性・断熱圧縮・Greitzer一次遅れ整定）で合成データを生成します。12点の操作メモ（時刻 + Nバルブ）と 3660秒（=61分）の1秒間隔センサーストリーム（流量・圧力・温度）を作成。実データの形式・規模感を学ぶための練習データとしても使えます。">?</span>
+          <button id="btn-load-dummy" style="background:#ffb454;color:#0c0c0e;border:none;padding:0.55rem 1.1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;font-weight:600;letter-spacing:0.05em;">⚡ ダミーデータ一括投入（ワンクリック）</button>
+          <span class="help-tip" data-tip="public/sample-data/compressor-commissioning/ の DUMMY サンプル CSV 3 本 (operations.csv / stream.csv / embeddings_timesfm25.csv) を取込み、列マッピングまで自動で確定します。マッピングを編集する必要なし、その場で STEP 2 以降に進めます。すべて物理モデルから合成した架空データです。">?</span>
+          <button id="btn-sample" style="background:transparent;border:1px solid rgba(110,200,151,0.4);color:#6ec897;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">🧪 旧・簡易物理合成（12点デモ）</button>
+          <span class="help-tip" data-tip="ツール内蔵の簡易物理モデルで 12 操作 × 3660 秒のミニサンプルを直接合成します（過去バージョン互換）。本格デモは ⚡ ダミーデータ一括投入 を推奨。">?</span>
           <label style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.5rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">
             📂 操作メモCSV
             <input type="file" id="csv-ops" accept=".csv" style="display:none;" />
@@ -929,8 +931,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
 
       return {
-        ops: { header: opsHeader, rows: opsRows, encoding: 'UTF-8 (合成)' },
-        stream: { header: streamHeader, rows: streamRows, encoding: 'UTF-8 (合成)' },
+        ops: { header: opsHeader, rows: opsRows, encoding: 'DUMMY (in-tool合成)'},
+        stream: { header: streamHeader, rows: streamRows, encoding: 'DUMMY (in-tool合成)'},
       };
     }
 
@@ -1186,6 +1188,71 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       audit('sample_data_loaded', { N: state.physicsParams.N, useRPM: state.physicsParams.useRPM });
       updateDataStatus();
       renderPhysicsSliders();
+    });
+
+    // ⚡ ワンクリック DUMMY 一括投入
+    $('btn-load-dummy')?.addEventListener('click', async () => {
+      const btn = $('btn-load-dummy');
+      const orig = btn.textContent;
+      btn.disabled = true; btn.textContent = '⏳ ダミーデータ取込中...';
+      try {
+        const base = (document.querySelector('base')?.getAttribute('href') || '/').replace(/\/$/, '');
+        const baseDir = base + '/sample-data/compressor-commissioning';
+        const [opsTxt, streamTxt, embTxt] = await Promise.all([
+          fetch(baseDir + '/operations.csv').then(r => { if (!r.ok) throw new Error('operations.csv ' + r.status); return r.text(); }),
+          fetch(baseDir + '/stream.csv').then(r => { if (!r.ok) throw new Error('stream.csv ' + r.status); return r.text(); }),
+          fetch(baseDir + '/embeddings_timesfm25.csv').then(r => r.ok ? r.text() : null).catch(() => null),
+        ]);
+        const ops = parseCSV(opsTxt);
+        const stream = parseCSV(streamTxt);
+        state.opsRaw = { ...ops, encoding: 'UTF-8 (DUMMY)' };
+        state.streamRaw = { ...stream, encoding: 'UTF-8 (DUMMY)' };
+        if (embTxt) {
+          const emb = parseCSV(embTxt);
+          state.embedRaw = { ...emb, encoding: 'UTF-8 (DUMMY)' };
+        }
+        state.isSampleData = true;
+        audit('dummy_csv_bulk_loaded', { ops: ops.rows.length, stream: stream.rows.length, emb: !!embTxt });
+        updateDataStatus();
+
+        // 列マッピング自動セット（生成 CSV の列名は既知）
+        await new Promise(r => setTimeout(r, 50));  // mapping UI 描画待ち
+        const setSel = (id, val) => { const el = $(id); if (el) el.value = val; };
+        const setMulti = (id, vals) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          Array.from(el.options).forEach(o => o.selected = vals.includes(o.value));
+        };
+        setSel('map-op-time', 'timestamp_s');
+        setMulti('map-op-u', ['rpm', 'u1_suction_pct', 'u2_circ_pct', 'u3_inlet_pct']);
+        setSel('map-st-time', 't_s');
+        setMulti('map-st-y', ['Q_Nm3h', 'p_disch_kPa', 'T_disch_C']);
+        // 物理モデルマッピング
+        const usePhys = $('use-physics');
+        if (usePhys) usePhys.checked = true;
+        if (typeof updatePhysYMapping === 'function') updatePhysYMapping();
+        await new Promise(r => setTimeout(r, 50));
+        setSel('map-phys-flow', 'Q_Nm3h');
+        setSel('map-phys-press', 'p_disch_kPa');
+        setSel('map-phys-temp', 'T_disch_C');
+
+        // マッピング確定
+        confirmMapping();
+        // 物理スライダー描画
+        if (typeof renderPhysicsSliders === 'function') renderPhysicsSliders();
+
+        // バナー表示
+        const status = $('data-status');
+        if (status) {
+          status.innerHTML = '<span style="color:#ffb454;font-weight:600;">⚠️ DUMMY データ取込済</span> / 操作 ' + ops.rows.length + ' 行 / ストリーム ' + stream.rows.length + ' 行' + (embTxt ? ' / 埋め込み込み' : '');
+        }
+        btn.textContent = '✅ ダミー取込完了';
+        setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2000);
+      } catch (e) {
+        alert('ダミーデータ取込失敗: ' + e.message + '\n\nGitHub Pages のデプロイ完了を待つか、ブラウザを強リロード (Ctrl+Shift+R) してください。');
+        console.error(e);
+        btn.textContent = orig; btn.disabled = false;
+      }
     });
     $('csv-ops').addEventListener('change', async e => {
       const f = e.target.files[0]; if (!f) return;
