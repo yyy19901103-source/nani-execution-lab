@@ -329,16 +329,74 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
     </section>
 
-    <!-- ===== STEP 8: 性能マップ ===== -->
+    <!-- ===== STEP 8: 性能マップ + 曲線/曲面可視化 ===== -->
     <section id="step8" style="margin-bottom:2rem;opacity:0.4;pointer-events:none;">
       <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;">
         <span style="background:#c8a96e;color:#0c0c0e;padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;">STEP 8</span>
-        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">性能マップ（流量-圧力面）</h2>
+        <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;letter-spacing:0.1em;margin:0;">可視化（性能マップ + 物理曲線 + GP曲面 + 時系列）</h2>
       </div>
       <div style="background:#111114;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
-        <button id="btn-plot" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;margin-bottom:1rem;">📊 性能マップ更新</button>
-        <canvas id="perfmap" width="1100" height="600" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);width:100%;height:auto;display:block;"></canvas>
-        <div style="margin-top:0.6rem;font-size:0.7rem;color:rgba(255,255,255,0.5);">★訓練データ ●評価点(緑/黄/赤) ■推奨u→GP予測 ◆物理真値 ↗操作シーケンス ━サージ線</div>
+
+        <!-- 可視化タブ -->
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.6rem;">
+          <button class="viz-tab" data-target="viz-perfmap" style="background:#c8a96e;color:#0c0c0e;border:none;padding:0.4rem 0.9rem;font-size:0.75rem;cursor:pointer;font-family:inherit;font-weight:600;">① 性能マップ</button>
+          <button class="viz-tab" data-target="viz-psiphi" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 0.9rem;font-size:0.75rem;cursor:pointer;font-family:inherit;">② 物理特性曲線 (Ψ-Φ)</button>
+          <button class="viz-tab" data-target="viz-contour" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 0.9rem;font-size:0.75rem;cursor:pointer;font-family:inherit;">③ GP予測等高線</button>
+          <button class="viz-tab" data-target="viz-timeseries" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 0.9rem;font-size:0.75rem;cursor:pointer;font-family:inherit;">④ センサー時系列</button>
+        </div>
+
+        <!-- ① 性能マップ -->
+        <div id="viz-perfmap" class="viz-panel">
+          <button id="btn-plot" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;margin-bottom:1rem;">📊 性能マップ更新</button>
+          <canvas id="perfmap" width="1100" height="600" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);width:100%;height:auto;display:block;"></canvas>
+          <div style="margin-top:0.6rem;font-size:0.7rem;color:rgba(255,255,255,0.5);">★訓練データ ●評価点(緑/黄/赤) ■推奨u→GP予測 ◆物理真値 ↗操作シーケンス ━サージ線</div>
+        </div>
+
+        <!-- ② 物理特性曲線 -->
+        <div id="viz-psiphi" class="viz-panel" style="display:none;">
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:1rem;">
+            <button id="btn-psiphi" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">📈 Ψ-Φ 曲線描画</button>
+            <span style="font-size:0.7rem;color:rgba(255,255,255,0.5);">物理: Ψ = a − b·Φ²　の放物線特性を訓練データと並べて比較</span>
+          </div>
+          <canvas id="psiphi-canvas" width="1100" height="600" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);width:100%;height:auto;display:block;"></canvas>
+          <div style="margin-top:0.6rem;font-size:0.7rem;color:rgba(255,255,255,0.5);">━物理放物線 Ψ=a−b·Φ² ★訓練データを (Φ, Ψ) 平面に変換 ◇サージ点 ⬡ストンウォール点</div>
+        </div>
+
+        <!-- ③ GP予測等高線 -->
+        <div id="viz-contour" class="viz-panel" style="display:none;">
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:1rem;">
+            <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">横軸 (u):
+              <select id="contour-vx" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.3rem;margin-left:0.3rem;font-family:inherit;font-size:0.78rem;"></select>
+            </label>
+            <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">縦軸 (u):
+              <select id="contour-vy" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.3rem;margin-left:0.3rem;font-family:inherit;font-size:0.78rem;"></select>
+            </label>
+            <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">出力 (y):
+              <select id="contour-y" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.3rem;margin-left:0.3rem;font-family:inherit;font-size:0.78rem;"></select>
+            </label>
+            <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">グリッド:
+              <input type="number" id="contour-grid" value="25" min="10" max="50" style="width:3.5rem;background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;margin-left:0.3rem;font-family:inherit;font-size:0.75rem;" />
+            </label>
+            <button id="btn-contour" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">🎨 GP予測等高線描画</button>
+            <span id="contour-elapsed" style="color:rgba(255,255,255,0.4);font-size:0.72rem;"></span>
+          </div>
+          <canvas id="contour-canvas" width="1100" height="600" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);width:100%;height:auto;display:block;"></canvas>
+          <div style="margin-top:0.6rem;font-size:0.7rem;color:rgba(255,255,255,0.5);">2バルブ平面に GP予測値を等高線描画。他のバルブは訓練データ中央値で固定。★訓練データ ●評価点(目標y)</div>
+        </div>
+
+        <!-- ④ センサー時系列 -->
+        <div id="viz-timeseries" class="viz-panel" style="display:none;">
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:1rem;">
+            <button id="btn-timeseries" style="background:transparent;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;padding:0.4rem 1rem;font-size:0.78rem;cursor:pointer;font-family:inherit;">⏱ センサー時系列描画</button>
+            <label style="font-size:0.75rem;color:rgba(237,237,232,0.7);">表示 y:
+              <select id="ts-y" multiple size="3" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.15);color:#edede8;padding:0.25rem;font-family:inherit;font-size:0.74rem;width:11rem;"></select>
+            </label>
+            <span style="font-size:0.7rem;color:rgba(255,255,255,0.5);">縦線=操作時刻・薄い網掛け=整定窓・濃い網掛け=事前窓</span>
+          </div>
+          <canvas id="timeseries-canvas" width="1100" height="600" style="background:#0a0a0c;border:1px solid rgba(255,255,255,0.06);width:100%;height:auto;display:block;"></canvas>
+          <div style="margin-top:0.6rem;font-size:0.7rem;color:rgba(255,255,255,0.5);">時系列センサー値 + 操作タイムライン。物理モデル予測の整定値（点線）も重ね描き</div>
+        </div>
+
       </div>
     </section>
 
@@ -1709,6 +1767,9 @@ json.dumps(result)
 
         // 次STEPへ
         setStep(5, true); setStep(6, true); setStep(7, true); setStep(8, true); setStep(9, true); setStep(10, true);
+        // 可視化タブ用セレクタ初期化
+        if (typeof initContourSelectors === 'function') initContourSelectors();
+        if (typeof initTimeseriesSelectors === 'function') initTimeseriesSelectors();
         // サンプルデータの場合、サージ・評価点を自動投入
         if (state.surge.length === 0) state.surge = generateSampleSurge();
         renderSurgeTable();
@@ -2529,6 +2590,465 @@ json.dumps(out)
       }).catch(e => console.error(e));
     }
     $('btn-plot').addEventListener('click', drawPerfMap);
+
+    // ============================================================
+    // 可視化タブ切替
+    // ============================================================
+    document.querySelectorAll('.viz-tab').forEach(b => b.addEventListener('click', e => {
+      document.querySelectorAll('.viz-tab').forEach(x => {
+        x.style.background = 'transparent';
+        x.style.color = '#c8a96e';
+        x.style.border = '1px solid rgba(200,169,110,0.4)';
+        x.style.fontWeight = '400';
+      });
+      e.target.style.background = '#c8a96e';
+      e.target.style.color = '#0c0c0e';
+      e.target.style.border = 'none';
+      e.target.style.fontWeight = '600';
+      document.querySelectorAll('.viz-panel').forEach(p => p.style.display = 'none');
+      $(e.target.dataset.target).style.display = 'block';
+    }));
+
+    // ============================================================
+    // ② 物理特性曲線 Ψ-Φ
+    // ============================================================
+    function drawPsiPhi() {
+      if (!state.physicsParams || !state.trained) { alert('物理モデル・GP訓練の両方が必要です'); return; }
+      const p = state.physicsParams;
+      const cv = $('psiphi-canvas'); const ctx = cv.getContext('2d');
+      const W = cv.width, H = cv.height;
+      ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, W, H);
+      // 訓練データを (Φ, Ψ) に変換
+      state.pyodide.runPythonAsync(`
+import json, numpy as np
+out = {"X_train": _X_train.tolist(), "Y_train": _Y_train.tolist()}
+json.dumps(out)
+`).then(s => {
+        const d = JSON.parse(s);
+        // 各 (u, y) → Φ, Ψ 計算
+        // q を u から再計算（実値）、y[0] = flow が実流量
+        const trainPts = [];
+        for (let i = 0; i < d.X_train.length; i++) {
+          const u = d.X_train[i];
+          const yFlow = d.Y_train[i][0];  // 流量
+          const yPress = d.Y_train[i][1]; // ヘッド (圧力)
+          const Phi = yFlow / p.Phi_norm;
+          const Psi = yPress / p.H_norm;
+          trainPts.push({ Phi, Psi, u });
+        }
+        // 物理放物線 Ψ = a - b·Φ²
+        const PhiMin = 0, PhiMax = 2.2;
+        const physCurve = [];
+        for (let i = 0; i <= 200; i++) {
+          const Phi = PhiMin + (PhiMax - PhiMin) * i / 200;
+          const Psi = p.a_psi - p.b_psi * Phi * Phi;
+          if (Psi > 0) physCurve.push({ Phi, Psi });
+        }
+        // サージ点・ストンウォール点
+        const surgePhi = p.surge_q_at_full / p.Phi_norm;
+        const surgePsi = p.a_psi - p.b_psi * surgePhi * surgePhi;
+        const stonewallPhi = PhiMax * 0.9;
+        const stonewallPsi = Math.max(0.05, p.a_psi - p.b_psi * stonewallPhi * stonewallPhi);
+
+        // 範囲
+        const allPhi = [...physCurve.map(c => c.Phi), ...trainPts.map(t => t.Phi), surgePhi, stonewallPhi];
+        const allPsi = [...physCurve.map(c => c.Psi), ...trainPts.map(t => t.Psi), surgePsi, stonewallPsi];
+        let xMin = Math.min(...allPhi), xMax = Math.max(...allPhi);
+        let yMin = Math.min(...allPsi, 0), yMax = Math.max(...allPsi, p.a_psi);
+        xMin -= (xMax-xMin)*0.05; xMax += (xMax-xMin)*0.05;
+        yMin -= (yMax-yMin)*0.05; yMax += (yMax-yMin)*0.05;
+
+        const PL=80, PR=30, PT=40, PB=60;
+        const pW = W-PL-PR, pH = H-PT-PB;
+        const sx = v => PL + (v-xMin)/(xMax-xMin)*pW;
+        const sy = v => PT + (1-(v-yMin)/(yMax-yMin))*pH;
+
+        // 軸
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 1;
+        ctx.strokeRect(PL, PT, pW, pH);
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.font = '11px monospace'; ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        for (let i = 0; i <= 5; i++) {
+          const x = PL+pW*i/5; const v1 = xMin+(xMax-xMin)*i/5;
+          ctx.beginPath(); ctx.moveTo(x, PT); ctx.lineTo(x, PT+pH); ctx.stroke();
+          ctx.fillText(v1.toFixed(2), x-18, PT+pH+16);
+          const y = PT+pH*i/5; const v2 = yMax-(yMax-yMin)*i/5;
+          ctx.beginPath(); ctx.moveTo(PL, y); ctx.lineTo(PL+pW, y); ctx.stroke();
+          ctx.fillText(v2.toFixed(2), 6, y+4);
+        }
+        ctx.fillStyle = '#c8a96e'; ctx.font = '13px sans-serif';
+        ctx.fillText('Φ (流量係数)', W/2-40, H-15);
+        ctx.save(); ctx.translate(20, H/2+40); ctx.rotate(-Math.PI/2); ctx.fillText('Ψ (ヘッド係数)', 0, 0); ctx.restore();
+
+        // 物理放物線（金色の線）
+        ctx.strokeStyle = '#c8a96e'; ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        physCurve.forEach((pt, i) => { if (i===0) ctx.moveTo(sx(pt.Phi), sy(pt.Psi)); else ctx.lineTo(sx(pt.Phi), sy(pt.Psi)); });
+        ctx.stroke();
+
+        // サージ点
+        ctx.fillStyle = '#ff6b6b'; ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 2;
+        const spx = sx(surgePhi), spy = sy(surgePsi);
+        ctx.beginPath(); ctx.moveTo(spx-7, spy); ctx.lineTo(spx, spy-7); ctx.lineTo(spx+7, spy); ctx.lineTo(spx, spy+7); ctx.closePath(); ctx.stroke();
+        ctx.fillText('サージ', spx+10, spy-4);
+        // ストンウォール点
+        const wpx = sx(stonewallPhi), wpy = sy(stonewallPsi);
+        ctx.beginPath();
+        for (let k = 0; k < 6; k++) {
+          const a = k * Math.PI / 3;
+          ctx.lineTo(wpx + Math.cos(a)*7, wpy + Math.sin(a)*7);
+        }
+        ctx.closePath(); ctx.stroke();
+        ctx.fillStyle = '#ff6b6b'; ctx.fillText('ストンウォール', wpx+10, wpy-4);
+
+        // 訓練データ点（金色の星）
+        ctx.fillStyle = 'rgba(110,200,151,0.85)';
+        trainPts.forEach(pt => {
+          const px = sx(pt.Phi), py = sy(pt.Psi);
+          ctx.beginPath();
+          for (let k = 0; k < 5; k++) {
+            const a1 = (k*2*Math.PI/5)-Math.PI/2; const a2 = ((k+0.5)*2*Math.PI/5)-Math.PI/2;
+            ctx.lineTo(px + Math.cos(a1)*6, py + Math.sin(a1)*6);
+            ctx.lineTo(px + Math.cos(a2)*2.5, py + Math.sin(a2)*2.5);
+          }
+          ctx.closePath(); ctx.fill();
+        });
+
+        // 凡例
+        ctx.font = '11px sans-serif';
+        ctx.strokeStyle = '#c8a96e'; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.moveTo(PL+10, PT+15); ctx.lineTo(PL+40, PT+15); ctx.stroke();
+        ctx.fillStyle = '#c8a96e'; ctx.fillText(`物理: Ψ = ${p.a_psi} − ${p.b_psi}·Φ²`, PL+48, PT+19);
+        ctx.fillStyle = 'rgba(110,200,151,0.85)';
+        ctx.beginPath();
+        for (let k = 0; k < 5; k++) {
+          const a1 = (k*2*Math.PI/5)-Math.PI/2; const a2 = ((k+0.5)*2*Math.PI/5)-Math.PI/2;
+          ctx.lineTo(PL+240 + Math.cos(a1)*5, PT+15 + Math.sin(a1)*5);
+          ctx.lineTo(PL+240 + Math.cos(a2)*2, PT+15 + Math.sin(a2)*2);
+        }
+        ctx.closePath(); ctx.fill();
+        ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('訓練データを (Φ,Ψ) 変換', PL+252, PT+19);
+      });
+    }
+    $('btn-psiphi').addEventListener('click', drawPsiPhi);
+
+    // ============================================================
+    // ③ GP予測等高線
+    // ============================================================
+    function initContourSelectors() {
+      if (!state.mapping) return;
+      const vx = $('contour-vx'), vy = $('contour-vy'), yc = $('contour-y');
+      vx.innerHTML = ''; vy.innerHTML = ''; yc.innerHTML = '';
+      state.mapping.valveNames.forEach((n, i) => {
+        const o1 = document.createElement('option'); o1.value = i; o1.textContent = n; vx.appendChild(o1);
+        const o2 = document.createElement('option'); o2.value = i; o2.textContent = n; vy.appendChild(o2);
+      });
+      if (state.mapping.valveNames.length >= 2) vy.value = '1';
+      state.mapping.yNames.forEach((n, i) => {
+        const o = document.createElement('option'); o.value = i; o.textContent = n; yc.appendChild(o);
+      });
+    }
+    async function drawContour() {
+      if (!state.trained) { alert('先に GP を訓練してください'); return; }
+      const btn = $('btn-contour'); btn.disabled = true; btn.style.opacity = '0.5'; btn.textContent = '⏳ 描画中...';
+      const t0 = performance.now();
+      try {
+        const vxi = parseInt($('contour-vx').value);
+        const vyi = parseInt($('contour-vy').value);
+        const yi = parseInt($('contour-y').value);
+        const grid = parseInt($('contour-grid').value) || 25;
+        if (vxi === vyi) { alert('横軸と縦軸に同じバルブは選べません'); return; }
+
+        state.pyodide.globals.set('vx_idx', vxi);
+        state.pyodide.globals.set('vy_idx', vyi);
+        state.pyodide.globals.set('target_y', yi);
+        state.pyodide.globals.set('grid_n', grid);
+
+        const code = `
+import numpy as np, json
+vxi = int(vx_idx); vyi = int(vy_idx); ti = int(target_y); gn = int(grid_n)
+u_lo = np.array(_X_train.min(axis=0))
+u_hi = np.array(_X_train.max(axis=0))
+u_center = (u_lo + u_hi) / 2
+xs = np.linspace(u_lo[vxi], u_hi[vxi], gn)
+ys = np.linspace(u_lo[vyi], u_hi[vyi], gn)
+pre_default = np.array(_pre_default)
+ae_default = np.array(_ae_default) if len(_ae_default) > 0 else None
+embed_default = np.array(_embed_default) if len(_embed_default) > 0 else None
+def make_X(u_full):
+    parts = [u_full, pre_default]
+    if ae_default is not None: parts.append(ae_default)
+    if embed_default is not None: parts.append(embed_default)
+    return np.concatenate(parts).reshape(1, -1)
+def physics_at(u_full):
+    try:
+        return None
+    except: return None
+Z_gp = np.zeros((gn, gn))
+Z_std = np.zeros((gn, gn))
+for ix, vx in enumerate(xs):
+    for iy, vy in enumerate(ys):
+        u = u_center.copy(); u[vxi] = vx; u[vyi] = vy
+        X = make_X(u)
+        Xs = _scaler.transform(X)
+        m = _models[ti]
+        mu, sd = m.predict(Xs, return_std=True)
+        Z_gp[iy, ix] = float(mu[0])
+        Z_std[iy, ix] = float(sd[0])
+out = {
+    "xs": xs.tolist(), "ys": ys.tolist(),
+    "Z": Z_gp.tolist(), "Zstd": Z_std.tolist(),
+    "X_train": _X_train[:, [vxi, vyi]].tolist(),
+    "Y_train": _Y_train[:, ti].tolist(),
+    "y_name": _y_names[ti] if ti < len(_y_names) else f'y_{ti+1}',
+    "vx_name": _valve_names[vxi] if vxi < len(_valve_names) else f'u_{vxi+1}',
+    "vy_name": _valve_names[vyi] if vyi < len(_valve_names) else f'u_{vyi+1}',
+}
+json.dumps(out)
+`;
+        const resStr = await state.pyodide.runPythonAsync(code);
+        const d = JSON.parse(resStr);
+        // 描画
+        const cv = $('contour-canvas'); const ctx = cv.getContext('2d');
+        const W = cv.width, H = cv.height;
+        ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, W, H);
+        const PL=80, PR=80, PT=40, PB=60;
+        const pW = W-PL-PR, pH = H-PT-PB;
+        let zMin = Infinity, zMax = -Infinity;
+        d.Z.forEach(row => row.forEach(v => { if (v < zMin) zMin = v; if (v > zMax) zMax = v; }));
+        const gn = d.xs.length;
+        const cw = pW / gn, ch = pH / gn;
+        // ヒートマップ＋等高線
+        for (let iy = 0; iy < gn; iy++) {
+          for (let ix = 0; ix < gn; ix++) {
+            const v = d.Z[iy][ix];
+            const t = (v - zMin) / (zMax - zMin || 1);
+            // viridis風 colormap
+            const r = Math.floor(68 + (253-68)*t);
+            const g = Math.floor(1 + (231-1)*t);
+            const b = Math.floor(84 + (37-84)*t);
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            const px = PL + ix * cw;
+            const py = PT + (gn - 1 - iy) * ch;
+            ctx.fillRect(px, py, cw+1, ch+1);
+          }
+        }
+        // 等高線（10本）
+        const nLevels = 10;
+        for (let k = 1; k < nLevels; k++) {
+          const level = zMin + (zMax - zMin) * k / nLevels;
+          ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1;
+          // marching squares 風（簡易）
+          for (let iy = 0; iy < gn - 1; iy++) {
+            for (let ix = 0; ix < gn - 1; ix++) {
+              const v0 = d.Z[iy][ix], v1 = d.Z[iy][ix+1], v2 = d.Z[iy+1][ix+1], v3 = d.Z[iy+1][ix];
+              const above = [v0 > level, v1 > level, v2 > level, v3 > level];
+              const upCount = above.filter(Boolean).length;
+              if (upCount === 0 || upCount === 4) continue;
+              // セル位置
+              const x0 = PL + ix*cw + cw/2;
+              const x1 = PL + (ix+1)*cw + cw/2;
+              const y0 = PT + (gn - 1 - iy)*ch + ch/2;
+              const y1 = PT + (gn - 2 - iy)*ch + ch/2;
+              const interpX = (vA, vB) => x0 + (x1 - x0) * (level - vA) / (vB - vA + 1e-9);
+              const interpY = (vA, vB) => y0 + (y1 - y0) * (level - vA) / (vB - vA + 1e-9);
+              // セル境界の交点を求めて線を引く（簡易: 隣接面の交点を結ぶ）
+              const edges = [];
+              if (above[0] !== above[1]) edges.push([interpX(v0, v1), y0]);
+              if (above[1] !== above[2]) edges.push([x1, interpY(v1, v2)]);
+              if (above[2] !== above[3]) edges.push([interpX(v3, v2), y1]);
+              if (above[3] !== above[0]) edges.push([x0, interpY(v0, v3)]);
+              if (edges.length >= 2) {
+                ctx.beginPath();
+                ctx.moveTo(edges[0][0], edges[0][1]);
+                ctx.lineTo(edges[1][0], edges[1][1]);
+                ctx.stroke();
+                if (edges.length === 4) {
+                  ctx.beginPath();
+                  ctx.moveTo(edges[2][0], edges[2][1]);
+                  ctx.lineTo(edges[3][0], edges[3][1]);
+                  ctx.stroke();
+                }
+              }
+            }
+          }
+        }
+        // 訓練データ点
+        const sx = v => PL + (v - d.xs[0])/(d.xs[gn-1]-d.xs[0]) * pW;
+        const sy = v => PT + (1 - (v - d.ys[0])/(d.ys[gn-1]-d.ys[0])) * pH;
+        ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#000'; ctx.lineWidth = 1;
+        for (let i = 0; i < d.X_train.length; i++) {
+          const px = sx(d.X_train[i][0]), py = sy(d.X_train[i][1]);
+          ctx.beginPath();
+          for (let k = 0; k < 5; k++) {
+            const a1 = (k*2*Math.PI/5)-Math.PI/2; const a2 = ((k+0.5)*2*Math.PI/5)-Math.PI/2;
+            ctx.lineTo(px + Math.cos(a1)*6, py + Math.sin(a1)*6);
+            ctx.lineTo(px + Math.cos(a2)*2.5, py + Math.sin(a2)*2.5);
+          }
+          ctx.closePath(); ctx.fill(); ctx.stroke();
+        }
+        // 軸ラベル
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1;
+        ctx.strokeRect(PL, PT, pW, pH);
+        ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '11px monospace';
+        for (let i = 0; i <= 5; i++) {
+          const x = PL + pW*i/5; const v = d.xs[0] + (d.xs[gn-1]-d.xs[0])*i/5;
+          ctx.fillText(v.toFixed(1), x-12, PT+pH+16);
+          const y = PT + pH*i/5; const v2 = d.ys[gn-1] - (d.ys[gn-1]-d.ys[0])*i/5;
+          ctx.fillText(v2.toFixed(1), 6, y+4);
+        }
+        ctx.fillStyle = '#c8a96e'; ctx.font = '13px sans-serif';
+        ctx.fillText(d.vx_name, W/2-50, H-15);
+        ctx.save(); ctx.translate(20, H/2+40); ctx.rotate(-Math.PI/2); ctx.fillText(d.vy_name, 0, 0); ctx.restore();
+        // カラーバー
+        const cbX = W - PR + 20, cbY = PT, cbW = 20, cbH = pH;
+        for (let i = 0; i < cbH; i++) {
+          const t = 1 - i / cbH;
+          const r = Math.floor(68 + (253-68)*t);
+          const g = Math.floor(1 + (231-1)*t);
+          const b = Math.floor(84 + (37-84)*t);
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          ctx.fillRect(cbX, cbY + i, cbW, 1);
+        }
+        ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.font = '10px monospace';
+        ctx.fillText(zMax.toFixed(2), cbX + cbW + 4, cbY + 10);
+        ctx.fillText(zMin.toFixed(2), cbX + cbW + 4, cbY + cbH);
+        ctx.fillStyle = '#c8a96e'; ctx.font = '11px sans-serif';
+        ctx.fillText(d.y_name, cbX, cbY - 8);
+
+        $('contour-elapsed').textContent = `${((performance.now()-t0)/1000).toFixed(1)} 秒`;
+      } catch (e) {
+        alert('描画失敗: ' + e);
+        console.error(e);
+      } finally {
+        btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '🎨 GP予測等高線描画';
+      }
+    }
+    $('btn-contour').addEventListener('click', drawContour);
+
+    // ============================================================
+    // ④ センサー時系列
+    // ============================================================
+    function initTimeseriesSelectors() {
+      if (!state.mapping) return;
+      const sel = $('ts-y'); sel.innerHTML = '';
+      state.mapping.yNames.forEach((n, i) => {
+        const o = document.createElement('option'); o.value = i; o.textContent = n; o.selected = true; sel.appendChild(o);
+      });
+    }
+    function drawTimeseries() {
+      if (!state.streamRaw || !state.mapping) { alert('STEP 1 を先に完了してください'); return; }
+      const m = state.mapping;
+      const selY = Array.from($('ts-y').selectedOptions).map(o => parseInt(o.value));
+      if (selY.length === 0) { alert('表示する y を選んでください'); return; }
+      const cv = $('timeseries-canvas'); const ctx = cv.getContext('2d');
+      const W = cv.width, H = cv.height;
+      ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, W, H);
+      const settle = parseInt($('opt-settle').value) || 60;
+      const wait = parseInt($('opt-settle-wait').value) || 20;
+      const pre = parseInt($('opt-pre').value) || 30;
+
+      // データ抽出
+      const stTimes = state.streamRaw.rows.map(r => parseTimestamp(r[m.stTimeIdx]));
+      const series = selY.map(yi => state.streamRaw.rows.map(r => parseFloat(r[m.yIdx[yi]])));
+      const yNames = selY.map(yi => m.yNames[yi]);
+      const opTimes = state.opsRaw.rows.map(r => parseTimestamp(r[m.opTimeIdx])).filter(t => !isNaN(t));
+
+      const tMin = Math.min(...stTimes.filter(t => !isNaN(t)));
+      const tMax = Math.max(...stTimes.filter(t => !isNaN(t)));
+
+      // サブパネルレイアウト
+      const PL=80, PR=40, PT=30, PB=50;
+      const totalH = H - PT - PB;
+      const panelH = totalH / selY.length;
+
+      selY.forEach((yi, k) => {
+        const vals = series[k].filter(v => !isNaN(v));
+        let yMin = Math.min(...vals), yMax = Math.max(...vals);
+        const yPad = (yMax - yMin) * 0.1 || 1;
+        yMin -= yPad; yMax += yPad;
+        const panelTop = PT + panelH * k;
+        const panelBot = panelTop + panelH - 10;
+        const pW = W - PL - PR;
+        const sx = t => PL + (t - tMin) / (tMax - tMin) * pW;
+        const sy = v => panelTop + (1 - (v - yMin)/(yMax - yMin)) * (panelBot - panelTop);
+
+        // パネル枠
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth = 1;
+        ctx.strokeRect(PL, panelTop, pW, panelBot - panelTop);
+
+        // 整定窓・事前窓 網掛け
+        opTimes.forEach(t_op => {
+          // 整定窓
+          ctx.fillStyle = 'rgba(110,200,151,0.10)';
+          ctx.fillRect(sx(t_op + wait), panelTop, sx(t_op + wait + settle) - sx(t_op + wait), panelBot - panelTop);
+          // 事前窓
+          ctx.fillStyle = 'rgba(200,169,110,0.15)';
+          ctx.fillRect(sx(t_op - pre), panelTop, sx(t_op) - sx(t_op - pre), panelBot - panelTop);
+        });
+
+        // データ線
+        ctx.strokeStyle = ['#6ec897', '#c8a96e', '#b89bff'][k % 3]; ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        let first = true;
+        for (let i = 0; i < stTimes.length; i++) {
+          const t = stTimes[i]; const v = series[k][i];
+          if (isNaN(t) || isNaN(v)) continue;
+          if (first) { ctx.moveTo(sx(t), sy(v)); first = false; }
+          else ctx.lineTo(sx(t), sy(v));
+        }
+        ctx.stroke();
+
+        // 操作時刻 縦線
+        ctx.strokeStyle = 'rgba(255,107,107,0.6)'; ctx.lineWidth = 1; ctx.setLineDash([4,3]);
+        opTimes.forEach(t_op => {
+          ctx.beginPath(); ctx.moveTo(sx(t_op), panelTop); ctx.lineTo(sx(t_op), panelBot); ctx.stroke();
+        });
+        ctx.setLineDash([]);
+
+        // パネルラベル
+        ctx.fillStyle = '#c8a96e'; ctx.font = '12px sans-serif';
+        ctx.fillText(yNames[k], PL + 8, panelTop + 14);
+        // y軸目盛
+        ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '10px monospace';
+        for (let j = 0; j <= 3; j++) {
+          const v = yMin + (yMax - yMin) * j / 3;
+          const yp = panelBot - (panelBot - panelTop) * j / 3;
+          ctx.fillText(v.toFixed(2), 6, yp + 3);
+        }
+      });
+
+      // x軸 (最下部のみ)
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '10px monospace';
+      for (let i = 0; i <= 8; i++) {
+        const t = tMin + (tMax - tMin) * i / 8;
+        const x = PL + (W - PL - PR) * i / 8;
+        ctx.fillText(formatTimestamp(t), x - 22, H - PB + 18);
+      }
+      ctx.fillStyle = '#c8a96e'; ctx.font = '12px sans-serif';
+      ctx.fillText('時刻', W/2 - 15, H - 15);
+      // 凡例
+      ctx.fillStyle = 'rgba(200,169,110,0.4)'; ctx.fillRect(PL+8, PT-22, 12, 8);
+      ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('事前窓', PL+24, PT-15);
+      ctx.fillStyle = 'rgba(110,200,151,0.3)'; ctx.fillRect(PL+85, PT-22, 12, 8);
+      ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('整定窓', PL+101, PT-15);
+      ctx.strokeStyle = 'rgba(255,107,107,0.6)'; ctx.setLineDash([4,3]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(PL+155, PT-18); ctx.lineTo(PL+175, PT-18); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(237,237,232,0.7)'; ctx.fillText('操作時刻', PL+180, PT-15);
+    }
+    $('btn-timeseries').addEventListener('click', drawTimeseries);
+
+    // 訓練完了時に等高線・時系列セレクタを初期化
+    const _origTrainGP = trainGP;
+    // (trainGP 内で呼び出されるパターンなのでここでは登録のみ)
+    // STEP 4 完了時のセレクタ初期化は既存の setStep(8, true) のタイミングで個別呼び出し
+
+    // 初期表示時に確認できるよう、確認マッピング時にもセレクタを初期化
+    const origConfirmMapping = confirmMapping;
+    window.confirmMapping = function() {
+      origConfirmMapping();
+      initContourSelectors();
+      initTimeseriesSelectors();
+    };
 
     // ============================================================
     // STEP 9: エクスポート (F8, F16)
