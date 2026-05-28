@@ -1,17 +1,1166 @@
 {
-  "generated_at": "2026-05-28 23:05",
+  "generated_at": "2026-05-29 05:44",
   "summary": {
     "evaluable_count": 30,
-    "hits": 14,
-    "misses": 16,
-    "hit_rate": 0.467,
+    "hits": 18,
+    "misses": 12,
+    "hit_rate": 0.6,
     "threshold": 0.55
   },
   "recent_results": [
     {
+      "ticker": "MSFT",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d_predicted": 0.546,
+      "actual_return_pct": 1.628,
+      "expected_return_pct": 1.37,
+      "magnitude_error_pct": 0.26,
+      "hit": false,
+      "verdict": "❌ 外れ（下落/中立予測が上昇）",
+      "culprits": [
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        },
+        {
+          "agent": "downside_risk",
+          "agent_jp": "下落リスク",
+          "category": "prediction",
+          "score": 36.0,
+          "judgment": "HOLD",
+          "reason": "3%下落確率=65% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 83.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当(86.0%) / 高利益率(47%) / ROE高(34%)"
+        },
+        {
+          "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
+          "category": "sector",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
+        },
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "sector_cloud_saas",
+          "agent_jp": "クラウド/SaaS",
+          "category": "sector",
+          "score": 75.0,
+          "judgment": "STRONG_BUY",
+          "reason": "Rule of 40超え(64)"
+        },
+        {
+          "agent": "growth_invest",
+          "agent_jp": "グロース投資",
+          "category": "trade_style",
+          "score": 72.0,
+          "judgment": "BUY",
+          "reason": "売上高成長(17%) / EPS急成長(60%)"
+        }
+      ],
+      "suggestions": [
+        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "下落予測のエージェントが過剰反応 → 中立評価を再検討"
+      ]
+    },
+    {
+      "ticker": "META",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 53,
+      "prob_up_5d_predicted": 0.567,
+      "actual_return_pct": 4.996,
+      "expected_return_pct": 1.54,
+      "magnitude_error_pct": 3.46,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "downside_risk",
+          "agent_jp": "下落リスク",
+          "category": "prediction",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "3%下落確率=53% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
+        },
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        },
+        {
+          "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
+          "category": "market_monitor",
+          "score": 30.0,
+          "judgment": "REDUCE",
+          "reason": "中期・長期MA下向き / 200MA下 / MACD負"
+        },
+        {
+          "agent": "swing_trade",
+          "agent_jp": "スイングトレード",
+          "category": "trade_style",
+          "score": 30.0,
+          "judgment": "REDUCE",
+          "reason": "MACDデッドクロス域 / BB下限タッチ狙い未達"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 83.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当(31.0%) / 高利益率(41%) / ROE高(30%)"
+        },
+        {
+          "agent": "sector_social_media",
+          "agent_jp": "ソーシャルメディア",
+          "category": "sector",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "広告収益高成長(24%)"
+        },
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
+          "category": "sector",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
+        },
+        {
+          "agent": "fundamental",
+          "agent_jp": "ファンダメンタル",
+          "category": "analysis",
+          "score": 73.0,
+          "judgment": "BUY",
+          "reason": "高利益率(41%) / 高成長(24%)"
+        }
+      ],
+      "suggestions": [
+        "dividend_income が的確に判定 → 重み引き上げ候補"
+      ]
+    },
+    {
+      "ticker": "GOOGL",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "weak_buy",
+      "score": 55,
+      "prob_up_5d_predicted": 0.563,
+      "actual_return_pct": 0.314,
+      "expected_return_pct": 1.5,
+      "magnitude_error_pct": 1.19,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "momentum",
+          "agent_jp": "モメンタム",
+          "category": "trade_style",
+          "score": 85.0,
+          "judgment": "STRONG_BUY",
+          "reason": "52週高値近傍(-3.7%) / 60日リターン強(24.5%) / ADXトレンド強(=74) / 200MA大幅上回り"
+        },
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 83.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当(24.0%) / 高利益率(32%) / ROE高(36%)"
+        },
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
+          "category": "sector",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当24.0% / ROE良好35.7% / 利益率安定31.6%"
+        },
+        {
+          "agent": "long_term_prob",
+          "agent_jp": "長期確率",
+          "category": "prediction",
+          "score": 75.0,
+          "judgment": "STRONG_BUY",
+          "reason": "12m上昇確率=75% / ROIC=15% / PER=29x"
+        }
+      ],
+      "suggestions": [
+        "momentum が的確に判定 → 重み引き上げ候補"
+      ]
+    },
+    {
+      "ticker": "AAPL",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d_predicted": 0.547,
+      "actual_return_pct": 3.395,
+      "expected_return_pct": 1.38,
+      "magnitude_error_pct": 2.02,
+      "hit": false,
+      "verdict": "❌ 外れ（下落/中立予測が上昇）",
+      "culprits": [
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        },
+        {
+          "agent": "contrarian",
+          "agent_jp": "逆張り",
+          "category": "trade_style",
+          "score": 38.0,
+          "judgment": "HOLD",
+          "reason": "RSI買われ過ぎ(84)"
+        },
+        {
+          "agent": "valuation",
+          "agent_jp": "バリュエーション",
+          "category": "analysis",
+          "score": 35.0,
+          "judgment": "HOLD",
+          "reason": "PER高め(34.4x) / PBR割高(45.2x)"
+        },
+        {
+          "agent": "downside_risk",
+          "agent_jp": "下落リスク",
+          "category": "prediction",
+          "score": 34.0,
+          "judgment": "REDUCE",
+          "reason": "3%下落確率=70% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 83.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当(38.0%) / 高利益率(35%) / ROE高(152%)"
+        },
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
+          "category": "sector",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当38.0% / ROE良好152.0% / 利益率安定35.4%"
+        },
+        {
+          "agent": "long_term_prob",
+          "agent_jp": "長期確率",
+          "category": "prediction",
+          "score": 75.0,
+          "judgment": "STRONG_BUY",
+          "reason": "12m上昇確率=75% / ROIC=24% / PER=34x"
+        },
+        {
+          "agent": "momentum",
+          "agent_jp": "モメンタム",
+          "category": "trade_style",
+          "score": 75.0,
+          "judgment": "STRONG_BUY",
+          "reason": "52週高値近傍(-0.4%) / ADXトレンド強(=51) / 200MA大幅上回り"
+        }
+      ],
+      "suggestions": [
+        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "下落予測のエージェントが過剰反応 → 中立評価を再検討"
+      ]
+    },
+    {
+      "ticker": "VOO",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d_predicted": 0.59,
+      "actual_return_pct": 1.811,
+      "expected_return_pct": 1.72,
+      "magnitude_error_pct": 0.09,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
+          "category": "market_monitor",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "ネガティブニュース検知"
+        },
+        {
+          "agent": "news_impact",
+          "agent_jp": "ニュース影響",
+          "category": "analysis",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "重大ネガティブニュース"
+        },
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 40.0,
+          "judgment": "WATCH",
+          "reason": "決算前ルール違反: 決算まで0日"
+        },
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "momentum",
+          "agent_jp": "モメンタム",
+          "category": "trade_style",
+          "score": 75.0,
+          "judgment": "STRONG_BUY",
+          "reason": "52週高値近傍(-1.9%) / ADXトレンド強(=36) / 200MA大幅上回り"
+        },
+        {
+          "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
+          "category": "market_monitor",
+          "score": 70.0,
+          "judgment": "BUY",
+          "reason": "流動性良好"
+        },
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 70.0,
+          "judgment": "BUY",
+          "reason": "高配当(119.0%)"
+        },
+        {
+          "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
+          "category": "analysis",
+          "score": 69.0,
+          "judgment": "BUY",
+          "reason": "テクニカル総合買いシグナル / 強弱比=3.3:1.5"
+        },
+        {
+          "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
+          "category": "sector",
+          "score": 68.0,
+          "judgment": "BUY",
+          "reason": "高配当119.0%"
+        }
+      ],
+      "suggestions": [
+        "momentum が的確に判定 → 重み引き上げ候補"
+      ]
+    },
+    {
+      "ticker": "AMZN",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d_predicted": 0.528,
+      "actual_return_pct": 3.392,
+      "expected_return_pct": 1.22,
+      "magnitude_error_pct": 2.17,
+      "hit": false,
+      "verdict": "❌ 外れ（下落/中立予測が上昇）",
+      "culprits": [
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        },
+        {
+          "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
+          "category": "prediction",
+          "score": 38.0,
+          "judgment": "HOLD",
+          "reason": "MC 20日後: 中央値-0.1% / 上昇確率36% / P10=-0.7% P90=+0.4%"
+        },
+        {
+          "agent": "downside_risk",
+          "agent_jp": "下落リスク",
+          "category": "prediction",
+          "score": 34.0,
+          "judgment": "REDUCE",
+          "reason": "3%下落確率=70% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "momentum",
+          "agent_jp": "モメンタム",
+          "category": "trade_style",
+          "score": 77.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高値圏 / 60日リターン強(26.3%) / ADXトレンド強(=42) / 200MA大幅上回り"
+        },
+        {
+          "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
+          "category": "market_monitor",
+          "score": 70.0,
+          "judgment": "BUY",
+          "reason": "流動性良好"
+        },
+        {
+          "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
+          "category": "analysis",
+          "score": 68.0,
+          "judgment": "BUY",
+          "reason": "テクニカル総合買いシグナル / 強弱比=5.3:2.5"
+        },
+        {
+          "agent": "risk_assessment",
+          "agent_jp": "リスク評価",
+          "category": "analysis",
+          "score": 65.0,
+          "judgment": "BUY",
+          "reason": "リスク許容範囲内"
+        }
+      ],
+      "suggestions": [
+        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "下落予測のエージェントが過剰反応 → 中立評価を再検討"
+      ]
+    },
+    {
+      "ticker": "JPM",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d_predicted": 0.558,
+      "actual_return_pct": -1.739,
+      "expected_return_pct": 1.47,
+      "magnitude_error_pct": 3.21,
+      "hit": false,
+      "verdict": "❌ 外れ（上昇予測が下落）",
+      "culprits": [
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 88.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当(194.0%) / 高利益率(43%) / ROE高(16%) / PER適正圏"
+        },
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "japan_dividend",
+          "agent_jp": "日本高配当",
+          "category": "sector",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高配当194.0% / ROE良好16.5% / 利益率安定43.1%"
+        },
+        {
+          "agent": "value_invest",
+          "agent_jp": "バリュー投資",
+          "category": "trade_style",
+          "score": 75.0,
+          "judgment": "STRONG_BUY",
+          "reason": "PER割安(15.0x) / ROE高(16%) / 配当利回り194.0%"
+        },
+        {
+          "agent": "fundamental",
+          "agent_jp": "ファンダメンタル",
+          "category": "analysis",
+          "score": 71.0,
+          "judgment": "BUY",
+          "reason": "高利益率(43%) / PER割安(15x)"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
+          "category": "market_monitor",
+          "score": 25.0,
+          "judgment": "REDUCE",
+          "reason": "中期・長期MA下向き / 200MA下 / MACD負"
+        },
+        {
+          "agent": "supply_demand",
+          "agent_jp": "需給分析",
+          "category": "analysis",
+          "score": 29.0,
+          "judgment": "REDUCE",
+          "reason": "MFI売り圧力(39) / OBV下降（分散） / VWAP下方（売り圧）"
+        },
+        {
+          "agent": "swing_trade",
+          "agent_jp": "スイングトレード",
+          "category": "trade_style",
+          "score": 30.0,
+          "judgment": "REDUCE",
+          "reason": "MACDデッドクロス域 / BB下限タッチ狙い未達"
+        },
+        {
+          "agent": "downside_risk",
+          "agent_jp": "下落リスク",
+          "category": "prediction",
+          "score": 34.0,
+          "judgment": "REDUCE",
+          "reason": "3%下落確率=70% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
+        },
+        {
+          "agent": "monte_carlo",
+          "agent_jp": "モンテカルロ",
+          "category": "prediction",
+          "score": 38.0,
+          "judgment": "HOLD",
+          "reason": "MC 20日後: 中央値-0.1% / 上昇確率36% / P10=-0.6% P90=+0.3%"
+        }
+      ],
+      "suggestions": [
+        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
+      ]
+    },
+    {
+      "ticker": "TSLA",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d_predicted": 0.431,
+      "actual_return_pct": 5.953,
+      "expected_return_pct": 0.45,
+      "magnitude_error_pct": 5.5,
+      "hit": false,
+      "verdict": "❌ 外れ（下落/中立予測が上昇）",
+      "culprits": [
+        {
+          "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
+          "category": "market_monitor",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "S&P500比 直近弱い(-6.1%)"
+        },
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "無配当"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        },
+        {
+          "agent": "value_invest",
+          "agent_jp": "バリュー投資",
+          "category": "trade_style",
+          "score": 35.0,
+          "judgment": "HOLD",
+          "reason": "PER割高(353.4x) / PBR高い(17.4x)"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 80.0,
+          "judgment": "STRONG_BUY",
+          "reason": "全ルール遵守"
+        },
+        {
+          "agent": "supply_demand",
+          "agent_jp": "需給分析",
+          "category": "analysis",
+          "score": 71.0,
+          "judgment": "BUY",
+          "reason": "MFI買い圧力(73) / OBV上昇（蓄積） / VWAP上方"
+        },
+        {
+          "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
+          "category": "market_monitor",
+          "score": 70.0,
+          "judgment": "BUY",
+          "reason": "流動性良好"
+        },
+        {
+          "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
+          "category": "analysis",
+          "score": 69.0,
+          "judgment": "BUY",
+          "reason": "テクニカル総合買いシグナル / 強弱比=3.3:1.5"
+        },
+        {
+          "agent": "expected_value",
+          "agent_jp": "期待値",
+          "category": "prediction",
+          "score": 68.0,
+          "judgment": "BUY",
+          "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+        }
+      ],
+      "suggestions": [
+        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "下落予測のエージェントが過剰反応 → 中立評価を再検討"
+      ]
+    },
+    {
+      "ticker": "AI",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 49,
+      "prob_up_5d_predicted": 0.569,
+      "actual_return_pct": 10.129,
+      "expected_return_pct": 1.55,
+      "magnitude_error_pct": 8.58,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "news_impact",
+          "agent_jp": "ニュース影響",
+          "category": "analysis",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "重大ネガティブニュース"
+        },
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "無配当"
+        },
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "money_management",
+          "agent_jp": "資金管理",
+          "category": "personal",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "過大ポジション(30.1%>推奨10.0%) / 高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
+        },
+        {
+          "agent": "momentum",
+          "agent_jp": "モメンタム",
+          "category": "trade_style",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "60日リターン弱(-18.5%)"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
+          "category": "market_monitor",
+          "score": 70.0,
+          "judgment": "BUY",
+          "reason": "流動性良好"
+        },
+        {
+          "agent": "expected_value",
+          "agent_jp": "期待値",
+          "category": "prediction",
+          "score": 68.0,
+          "judgment": "BUY",
+          "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+        },
+        {
+          "agent": "failure_pattern",
+          "agent_jp": "失敗パターン",
+          "category": "personal",
+          "score": 65.0,
+          "judgment": "BUY",
+          "reason": "失敗パターンなし"
+        },
+        {
+          "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
+          "category": "analysis",
+          "score": 63.0,
+          "judgment": "BUY",
+          "reason": "テクニカル中立 / 強弱比=4.5:3.3"
+        },
+        {
+          "agent": "reflection_learning",
+          "agent_jp": "振り返り学習",
+          "category": "personal",
+          "score": 60.0,
+          "judgment": "HOLD",
+          "reason": "取引履歴なし（学習データ蓄積中）"
+        }
+      ],
+      "suggestions": [
+        "liquidity_risk が的確に判定 → 重み引き上げ候補"
+      ]
+    },
+    {
+      "ticker": "SOUN",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d_predicted": 0.627,
+      "actual_return_pct": 1.302,
+      "expected_return_pct": 2.02,
+      "magnitude_error_pct": 0.72,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 40.0,
+          "judgment": "WATCH",
+          "reason": "集中度ルール違反: 13%"
+        },
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "無配当"
+        },
+        {
+          "agent": "market_sentiment",
+          "agent_jp": "市場センチメント",
+          "category": "market_monitor",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "ネガティブニュース検知"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "expected_value",
+          "agent_jp": "期待値",
+          "category": "prediction",
+          "score": 68.0,
+          "judgment": "BUY",
+          "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+        },
+        {
+          "agent": "sector_rotation",
+          "agent_jp": "セクターローテーション",
+          "category": "market_monitor",
+          "score": 68.0,
+          "judgment": "BUY",
+          "reason": "S&P500比 直近強い(+3.3%) / S&P500比 月次強い(+29.6%)"
+        },
+        {
+          "agent": "lgbm_prob",
+          "agent_jp": "LightGBM確率",
+          "category": "prediction",
+          "score": 67.0,
+          "judgment": "BUY",
+          "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
+        },
+        {
+          "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
+          "category": "analysis",
+          "score": 67.0,
+          "judgment": "BUY",
+          "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
+        },
+        {
+          "agent": "failure_pattern",
+          "agent_jp": "失敗パターン",
+          "category": "personal",
+          "score": 65.0,
+          "judgment": "BUY",
+          "reason": "失敗パターンなし"
+        }
+      ],
+      "suggestions": [
+        "expected_value が的確に判定 → 重み引き上げ候補"
+      ]
+    },
+    {
+      "ticker": "PATH",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d_predicted": 0.569,
+      "actual_return_pct": 7.521,
+      "expected_return_pct": 1.55,
+      "magnitude_error_pct": 5.97,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 40.0,
+          "judgment": "WATCH",
+          "reason": "集中度ルール違反: 57%"
+        },
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        },
+        {
+          "agent": "dividend_income",
+          "agent_jp": "配当インカム",
+          "category": "trade_style",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "無配当"
+        },
+        {
+          "agent": "momentum",
+          "agent_jp": "モメンタム",
+          "category": "trade_style",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "60日リターン弱(-16.1%)"
+        },
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "liquidity_risk",
+          "agent_jp": "流動性リスク",
+          "category": "market_monitor",
+          "score": 70.0,
+          "judgment": "BUY",
+          "reason": "流動性良好"
+        },
+        {
+          "agent": "expected_value",
+          "agent_jp": "期待値",
+          "category": "prediction",
+          "score": 68.0,
+          "judgment": "BUY",
+          "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+        },
+        {
+          "agent": "failure_pattern",
+          "agent_jp": "失敗パターン",
+          "category": "personal",
+          "score": 65.0,
+          "judgment": "BUY",
+          "reason": "失敗パターンなし"
+        },
+        {
+          "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
+          "category": "analysis",
+          "score": 63.0,
+          "judgment": "BUY",
+          "reason": "テクニカル中立 / 強弱比=4.5:3.3"
+        },
+        {
+          "agent": "trend_direction",
+          "agent_jp": "トレンド方向",
+          "category": "market_monitor",
+          "score": 62.0,
+          "judgment": "BUY",
+          "reason": "短期・中期MA上向き / 200MA下 / MACD正"
+        }
+      ],
+      "suggestions": [
+        "liquidity_risk が的確に判定 → 重み引き上げ候補"
+      ]
+    },
+    {
+      "ticker": "NVDA",
+      "prediction_date": "2026-05-20",
+      "evaluated_date": "2026-05-29",
+      "rank": "watch",
+      "score": 56,
+      "prob_up_5d_predicted": 0.525,
+      "actual_return_pct": -4.126,
+      "expected_return_pct": 1.2,
+      "magnitude_error_pct": 5.33,
+      "hit": true,
+      "verdict": "✅ 当たり",
+      "culprits": [
+        {
+          "agent": "sector_semiconductor",
+          "agent_jp": "半導体",
+          "category": "sector",
+          "score": 88.0,
+          "judgment": "STRONG_BUY",
+          "reason": "半導体専門: 売上成長=73% OPM=65%"
+        },
+        {
+          "agent": "growth_invest",
+          "agent_jp": "グロース投資",
+          "category": "trade_style",
+          "score": 88.0,
+          "judgment": "STRONG_BUY",
+          "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
+        },
+        {
+          "agent": "technical_summary",
+          "agent_jp": "テクニカル総合",
+          "category": "analysis",
+          "score": 85.0,
+          "judgment": "STRONG_BUY",
+          "reason": "テクニカル総合買いシグナル / 強弱比=5.3:0.0"
+        },
+        {
+          "agent": "fundamental",
+          "agent_jp": "ファンダメンタル",
+          "category": "analysis",
+          "score": 78.0,
+          "judgment": "STRONG_BUY",
+          "reason": "ROIC優秀(51%) / 高利益率(65%) / 高成長(73%)"
+        },
+        {
+          "agent": "momentum",
+          "agent_jp": "モメンタム",
+          "category": "trade_style",
+          "score": 77.0,
+          "judgment": "STRONG_BUY",
+          "reason": "高値圏 / 60日リターン強(15.2%) / ADXトレンド強(=29) / 200MA大幅上回り"
+        }
+      ],
+      "heroes": [
+        {
+          "agent": "macro_environment",
+          "agent_jp": "マクロ環境",
+          "category": "analysis",
+          "score": 39.0,
+          "judgment": "HOLD",
+          "reason": "長期金利高(4.6%) / 金利上昇中"
+        },
+        {
+          "agent": "rule_compliance",
+          "agent_jp": "ルール遵守",
+          "category": "personal",
+          "score": 40.0,
+          "judgment": "WATCH",
+          "reason": "決算前ルール違反: 決算まで1日"
+        },
+        {
+          "agent": "valuation",
+          "agent_jp": "バリュエーション",
+          "category": "analysis",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "PER高め(40.7x) / PBR割高(30.8x) / EV/EBITDA割高(36.0x) / 売上高成長73%"
+        },
+        {
+          "agent": "monthly_report",
+          "agent_jp": "月次レポート",
+          "category": "integration",
+          "score": 40.0,
+          "judgment": "HOLD",
+          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
+        }
+      ],
+      "suggestions": [
+        "macro_environment が的確に判定 → 重み引き上げ候補"
+      ]
+    },
+    {
       "ticker": "NVDA",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 56,
       "prob_up_5d_predicted": 0.54,
@@ -111,7 +1260,7 @@
     {
       "ticker": "MSFT",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.546,
@@ -195,7 +1344,7 @@
     {
       "ticker": "META",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.567,
@@ -295,7 +1444,7 @@
     {
       "ticker": "GOOGL",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.563,
@@ -395,7 +1544,7 @@
     {
       "ticker": "AAPL",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.547,
@@ -496,7 +1645,7 @@
     {
       "ticker": "VOO",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.59,
@@ -596,7 +1745,7 @@
     {
       "ticker": "AMZN",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.549,
@@ -682,14 +1831,14 @@
         }
       ],
       "suggestions": [
-        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "market_monitor カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "JPM",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.553,
@@ -789,7 +1938,7 @@
     {
       "ticker": "TSLA",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.432,
@@ -883,14 +2032,14 @@
         }
       ],
       "suggestions": [
-        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "market_monitor カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "SOUN",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.627,
@@ -991,7 +2140,7 @@
     {
       "ticker": "AI",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 49,
       "prob_up_5d_predicted": 0.569,
@@ -1091,7 +2240,7 @@
     {
       "ticker": "PATH",
       "prediction_date": "2026-05-19",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.569,
@@ -1191,7 +2340,7 @@
     {
       "ticker": "AAPL",
       "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 54,
       "prob_up_5d_predicted": 0.547,
@@ -1292,7 +2441,7 @@
     {
       "ticker": "VOO",
       "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.59,
@@ -1393,7 +2542,7 @@
     {
       "ticker": "AMZN",
       "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 53,
       "prob_up_5d_predicted": 0.571,
@@ -1477,7 +2626,7 @@
     {
       "ticker": "JPM",
       "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 52,
       "prob_up_5d_predicted": 0.549,
@@ -1571,14 +2720,14 @@
         }
       ],
       "suggestions": [
-        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
+        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
         "下落予測のエージェントが過剰反応 → 中立評価を再検討"
       ]
     },
     {
       "ticker": "TSLA",
       "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.432,
@@ -1678,7 +2827,7 @@
     {
       "ticker": "PATH",
       "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
+      "evaluated_date": "2026-05-29",
       "rank": "watch",
       "score": 51,
       "prob_up_5d_predicted": 0.569,
@@ -1773,1167 +2922,6 @@
       ],
       "suggestions": [
         "liquidity_risk が的確に判定 → 重み引き上げ候補"
-      ]
-    },
-    {
-      "ticker": "AI",
-      "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 49,
-      "prob_up_5d_predicted": 0.569,
-      "actual_return_pct": 3.322,
-      "expected_return_pct": 1.55,
-      "magnitude_error_pct": 1.77,
-      "hit": true,
-      "verdict": "✅ 当たり",
-      "culprits": [
-        {
-          "agent": "news_impact",
-          "agent_jp": "ニュース影響",
-          "category": "analysis",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "重大ネガティブニュース"
-        },
-        {
-          "agent": "money_management",
-          "agent_jp": "資金管理",
-          "category": "personal",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "過大ポジション(30.1%>推奨10.0%) / 高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
-        },
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        },
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "無配当"
-        },
-        {
-          "agent": "momentum",
-          "agent_jp": "モメンタム",
-          "category": "trade_style",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "60日リターン弱(-18.5%)"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "liquidity_risk",
-          "agent_jp": "流動性リスク",
-          "category": "market_monitor",
-          "score": 70.0,
-          "judgment": "BUY",
-          "reason": "流動性良好"
-        },
-        {
-          "agent": "expected_value",
-          "agent_jp": "期待値",
-          "category": "prediction",
-          "score": 68.0,
-          "judgment": "BUY",
-          "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
-        },
-        {
-          "agent": "failure_pattern",
-          "agent_jp": "失敗パターン",
-          "category": "personal",
-          "score": 65.0,
-          "judgment": "BUY",
-          "reason": "失敗パターンなし"
-        },
-        {
-          "agent": "technical_summary",
-          "agent_jp": "テクニカル総合",
-          "category": "analysis",
-          "score": 63.0,
-          "judgment": "BUY",
-          "reason": "テクニカル中立 / 強弱比=4.5:3.3"
-        },
-        {
-          "agent": "reflection_learning",
-          "agent_jp": "振り返り学習",
-          "category": "personal",
-          "score": 60.0,
-          "judgment": "HOLD",
-          "reason": "取引履歴なし（学習データ蓄積中）"
-        }
-      ],
-      "suggestions": [
-        "liquidity_risk が的確に判定 → 重み引き上げ候補"
-      ]
-    },
-    {
-      "ticker": "SOUN",
-      "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 52,
-      "prob_up_5d_predicted": 0.627,
-      "actual_return_pct": -2.347,
-      "expected_return_pct": 2.02,
-      "magnitude_error_pct": 4.37,
-      "hit": false,
-      "verdict": "❌ 外れ（上昇予測が下落）",
-      "culprits": [
-        {
-          "agent": "expected_value",
-          "agent_jp": "期待値",
-          "category": "prediction",
-          "score": 68.0,
-          "judgment": "BUY",
-          "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
-        },
-        {
-          "agent": "lgbm_prob",
-          "agent_jp": "LightGBM確率",
-          "category": "prediction",
-          "score": 67.0,
-          "judgment": "BUY",
-          "reason": "5d上昇確率=63% / 20d=62% / 3m=60% / 期待値=+2.02%"
-        },
-        {
-          "agent": "technical_summary",
-          "agent_jp": "テクニカル総合",
-          "category": "analysis",
-          "score": 67.0,
-          "judgment": "BUY",
-          "reason": "テクニカル総合買いシグナル / 強弱比=4.8:2.5"
-        },
-        {
-          "agent": "failure_pattern",
-          "agent_jp": "失敗パターン",
-          "category": "personal",
-          "score": 65.0,
-          "judgment": "BUY",
-          "reason": "失敗パターンなし"
-        },
-        {
-          "agent": "liquidity_risk",
-          "agent_jp": "流動性リスク",
-          "category": "market_monitor",
-          "score": 62.0,
-          "judgment": "BUY",
-          "reason": "高ボラ流動性リスク(5.2%)"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "volatility_env",
-          "agent_jp": "ボラティリティ環境",
-          "category": "market_monitor",
-          "score": 35.0,
-          "judgment": "HOLD",
-          "reason": "高ボラ(5.2%) / BBバンド拡大"
-        },
-        {
-          "agent": "macro_environment",
-          "agent_jp": "マクロ環境",
-          "category": "analysis",
-          "score": 39.0,
-          "judgment": "HOLD",
-          "reason": "長期金利高(4.5%) / 金利上昇中"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 40.0,
-          "judgment": "WATCH",
-          "reason": "集中度ルール違反: 13%"
-        },
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        },
-        {
-          "agent": "market_sentiment",
-          "agent_jp": "市場センチメント",
-          "category": "market_monitor",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "ネガティブニュース検知"
-        }
-      ],
-      "suggestions": [
-        "prediction カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
-      ]
-    },
-    {
-      "ticker": "NVDA",
-      "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 57,
-      "prob_up_5d_predicted": 0.54,
-      "actual_return_pct": -6.885,
-      "expected_return_pct": 1.32,
-      "magnitude_error_pct": 8.21,
-      "hit": true,
-      "verdict": "✅ 当たり",
-      "culprits": [
-        {
-          "agent": "sector_semiconductor",
-          "agent_jp": "半導体",
-          "category": "sector",
-          "score": 88.0,
-          "judgment": "STRONG_BUY",
-          "reason": "半導体専門: 売上成長=73% OPM=65%"
-        },
-        {
-          "agent": "growth_invest",
-          "agent_jp": "グロース投資",
-          "category": "trade_style",
-          "score": 88.0,
-          "judgment": "STRONG_BUY",
-          "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
-        },
-        {
-          "agent": "momentum",
-          "agent_jp": "モメンタム",
-          "category": "trade_style",
-          "score": 85.0,
-          "judgment": "STRONG_BUY",
-          "reason": "52週高値近傍(0.0%) / 60日リターン強(22.1%) / ADXトレンド強(=43) / 200MA大幅上回り"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "long_term_prob",
-          "agent_jp": "長期確率",
-          "category": "prediction",
-          "score": 79.0,
-          "judgment": "STRONG_BUY",
-          "reason": "12m上昇確率=79% / ROIC=51% / PER=41x"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "day_trade",
-          "agent_jp": "デイトレード",
-          "category": "trade_style",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "ストキャスOver買(94) / ストキャスKD買い / RSI7買われ過ぎ"
-        },
-        {
-          "agent": "macro_environment",
-          "agent_jp": "マクロ環境",
-          "category": "analysis",
-          "score": 39.0,
-          "judgment": "HOLD",
-          "reason": "長期金利高(4.5%) / 金利上昇中"
-        },
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        },
-        {
-          "agent": "valuation",
-          "agent_jp": "バリュエーション",
-          "category": "analysis",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "PER高め(40.7x) / PBR割高(30.8x) / EV/EBITDA割高(36.0x) / 売上高成長73%"
-        }
-      ],
-      "suggestions": [
-        "day_trade が的確に判定 → 重み引き上げ候補"
-      ]
-    },
-    {
-      "ticker": "MSFT",
-      "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 53,
-      "prob_up_5d_predicted": 0.546,
-      "actual_return_pct": 2.359,
-      "expected_return_pct": 1.37,
-      "magnitude_error_pct": 0.99,
-      "hit": false,
-      "verdict": "❌ 外れ（下落/中立予測が上昇）",
-      "culprits": [
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        },
-        {
-          "agent": "macro_environment",
-          "agent_jp": "マクロ環境",
-          "category": "analysis",
-          "score": 39.0,
-          "judgment": "HOLD",
-          "reason": "長期金利高(4.5%) / 金利上昇中"
-        },
-        {
-          "agent": "trend_direction",
-          "agent_jp": "トレンド方向",
-          "category": "market_monitor",
-          "score": 38.0,
-          "judgment": "HOLD",
-          "reason": "200MA下 / MACD負"
-        },
-        {
-          "agent": "supply_demand",
-          "agent_jp": "需給分析",
-          "category": "analysis",
-          "score": 37.0,
-          "judgment": "HOLD",
-          "reason": "OBV下降（分散） / VWAP下方（売り圧）"
-        },
-        {
-          "agent": "downside_risk",
-          "agent_jp": "下落リスク",
-          "category": "prediction",
-          "score": 35.0,
-          "judgment": "HOLD",
-          "reason": "3%下落確率=67% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 83.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当(86.0%) / 高利益率(47%) / ROE高(34%)"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
-        },
-        {
-          "agent": "sector_cloud_saas",
-          "agent_jp": "クラウド/SaaS",
-          "category": "sector",
-          "score": 75.0,
-          "judgment": "STRONG_BUY",
-          "reason": "Rule of 40超え(64)"
-        },
-        {
-          "agent": "growth_invest",
-          "agent_jp": "グロース投資",
-          "category": "trade_style",
-          "score": 72.0,
-          "judgment": "BUY",
-          "reason": "売上高成長(17%) / EPS急成長(60%)"
-        }
-      ],
-      "suggestions": [
-        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "下落予測のエージェントが過剰反応 → 中立評価を再検討"
-      ]
-    },
-    {
-      "ticker": "META",
-      "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 53,
-      "prob_up_5d_predicted": 0.567,
-      "actual_return_pct": -1.787,
-      "expected_return_pct": 1.54,
-      "magnitude_error_pct": 3.33,
-      "hit": false,
-      "verdict": "❌ 外れ（上昇予測が下落）",
-      "culprits": [
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 83.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当(31.0%) / 高利益率(41%) / ROE高(30%)"
-        },
-        {
-          "agent": "sector_social_media",
-          "agent_jp": "ソーシャルメディア",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "広告収益高成長(24%)"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "long_term_prob",
-          "agent_jp": "長期確率",
-          "category": "prediction",
-          "score": 74.0,
-          "judgment": "BUY",
-          "reason": "12m上昇確率=74% / ROIC=16% / PER=22x"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "supply_demand",
-          "agent_jp": "需給分析",
-          "category": "analysis",
-          "score": 29.0,
-          "judgment": "REDUCE",
-          "reason": "MFI売り圧力(38) / OBV下降（分散） / VWAP下方（売り圧）"
-        },
-        {
-          "agent": "trend_direction",
-          "agent_jp": "トレンド方向",
-          "category": "market_monitor",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "中期・長期MA下向き / 200MA下 / MACD負"
-        },
-        {
-          "agent": "swing_trade",
-          "agent_jp": "スイングトレード",
-          "category": "trade_style",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "MACDデッドクロス域 / BB下限タッチ狙い未達"
-        },
-        {
-          "agent": "technical_summary",
-          "agent_jp": "テクニカル総合",
-          "category": "analysis",
-          "score": 35.0,
-          "judgment": "HOLD",
-          "reason": "テクニカル総合売りシグナル / 強弱比=0.0:4.8"
-        },
-        {
-          "agent": "macro_environment",
-          "agent_jp": "マクロ環境",
-          "category": "analysis",
-          "score": 39.0,
-          "judgment": "HOLD",
-          "reason": "長期金利高(4.5%) / 金利上昇中"
-        }
-      ],
-      "suggestions": [
-        "sector カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
-      ]
-    },
-    {
-      "ticker": "GOOGL",
-      "prediction_date": "2026-05-14",
-      "evaluated_date": "2026-05-28",
-      "rank": "weak_buy",
-      "score": 55,
-      "prob_up_5d_predicted": 0.563,
-      "actual_return_pct": -3.344,
-      "expected_return_pct": 1.5,
-      "magnitude_error_pct": 4.84,
-      "hit": false,
-      "verdict": "❌ 外れ（上昇予測が下落）",
-      "culprits": [
-        {
-          "agent": "momentum",
-          "agent_jp": "モメンタム",
-          "category": "trade_style",
-          "score": 85.0,
-          "judgment": "STRONG_BUY",
-          "reason": "52週高値近傍(0.0%) / 60日リターン強(33.4%) / ADXトレンド強(=76) / 200MA大幅上回り"
-        },
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 83.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当(24.0%) / 高利益率(32%) / ROE高(36%)"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当24.0% / ROE良好35.7% / 利益率安定31.6%"
-        },
-        {
-          "agent": "long_term_prob",
-          "agent_jp": "長期確率",
-          "category": "prediction",
-          "score": 79.0,
-          "judgment": "STRONG_BUY",
-          "reason": "12m上昇確率=79% / ROIC=15% / PER=29x"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "day_trade",
-          "agent_jp": "デイトレード",
-          "category": "trade_style",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "ストキャスOver買(98) / ストキャスKD買い / RSI7買われ過ぎ"
-        },
-        {
-          "agent": "downside_risk",
-          "agent_jp": "下落リスク",
-          "category": "prediction",
-          "score": 36.0,
-          "judgment": "HOLD",
-          "reason": "3%下落確率=64% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
-        },
-        {
-          "agent": "contrarian",
-          "agent_jp": "逆張り",
-          "category": "trade_style",
-          "score": 38.0,
-          "judgment": "HOLD",
-          "reason": "RSI買われ過ぎ(83)"
-        },
-        {
-          "agent": "macro_environment",
-          "agent_jp": "マクロ環境",
-          "category": "analysis",
-          "score": 39.0,
-          "judgment": "HOLD",
-          "reason": "長期金利高(4.5%) / 金利上昇中"
-        },
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        }
-      ],
-      "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
-      ]
-    },
-    {
-      "ticker": "NVDA",
-      "prediction_date": "2026-05-13",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 57,
-      "prob_up_5d_predicted": 0.54,
-      "actual_return_pct": -1.045,
-      "expected_return_pct": 1.32,
-      "magnitude_error_pct": 2.37,
-      "hit": true,
-      "verdict": "✅ 当たり",
-      "culprits": [
-        {
-          "agent": "sector_semiconductor",
-          "agent_jp": "半導体",
-          "category": "sector",
-          "score": 88.0,
-          "judgment": "STRONG_BUY",
-          "reason": "半導体専門: 売上成長=73% OPM=65%"
-        },
-        {
-          "agent": "growth_invest",
-          "agent_jp": "グロース投資",
-          "category": "trade_style",
-          "score": 88.0,
-          "judgment": "STRONG_BUY",
-          "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
-        },
-        {
-          "agent": "momentum",
-          "agent_jp": "モメンタム",
-          "category": "trade_style",
-          "score": 85.0,
-          "judgment": "STRONG_BUY",
-          "reason": "52週高値近傍(0.0%) / 60日リターン強(20.8%) / ADXトレンド強(=44) / 200MA大幅上回り"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "long_term_prob",
-          "agent_jp": "長期確率",
-          "category": "prediction",
-          "score": 79.0,
-          "judgment": "STRONG_BUY",
-          "reason": "12m上昇確率=79% / ROIC=51% / PER=41x"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "day_trade",
-          "agent_jp": "デイトレード",
-          "category": "trade_style",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "ストキャスOver買(90) / ストキャスKD買い / RSI7買われ過ぎ"
-        },
-        {
-          "agent": "downside_risk",
-          "agent_jp": "下落リスク",
-          "category": "prediction",
-          "score": 37.0,
-          "judgment": "HOLD",
-          "reason": "3%下落確率=60% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
-        },
-        {
-          "agent": "valuation",
-          "agent_jp": "バリュエーション",
-          "category": "analysis",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "PER高め(40.7x) / PBR割高(30.8x) / EV/EBITDA割高(36.0x) / 売上高成長73%"
-        },
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        }
-      ],
-      "suggestions": [
-        "day_trade が的確に判定 → 重み引き上げ候補"
-      ]
-    },
-    {
-      "ticker": "MSFT",
-      "prediction_date": "2026-05-13",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 53,
-      "prob_up_5d_predicted": 0.537,
-      "actual_return_pct": 3.687,
-      "expected_return_pct": 1.3,
-      "magnitude_error_pct": 2.39,
-      "hit": false,
-      "verdict": "❌ 外れ（下落/中立予測が上昇）",
-      "culprits": [
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        },
-        {
-          "agent": "downside_risk",
-          "agent_jp": "下落リスク",
-          "category": "prediction",
-          "score": 38.0,
-          "judgment": "HOLD",
-          "reason": "3%下落確率=58% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
-        },
-        {
-          "agent": "trend_direction",
-          "agent_jp": "トレンド方向",
-          "category": "market_monitor",
-          "score": 38.0,
-          "judgment": "HOLD",
-          "reason": "200MA下 / MACD負"
-        },
-        {
-          "agent": "supply_demand",
-          "agent_jp": "需給分析",
-          "category": "analysis",
-          "score": 37.0,
-          "judgment": "HOLD",
-          "reason": "OBV下降（分散） / VWAP下方（売り圧）"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 83.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当(86.0%) / 高利益率(47%) / ROE高(34%)"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
-        },
-        {
-          "agent": "sector_cloud_saas",
-          "agent_jp": "クラウド/SaaS",
-          "category": "sector",
-          "score": 75.0,
-          "judgment": "STRONG_BUY",
-          "reason": "Rule of 40超え(64)"
-        },
-        {
-          "agent": "growth_invest",
-          "agent_jp": "グロース投資",
-          "category": "trade_style",
-          "score": 72.0,
-          "judgment": "BUY",
-          "reason": "売上高成長(17%) / EPS急成長(60%)"
-        }
-      ],
-      "suggestions": [
-        "analysis カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "下落予測のエージェントが過剰反応 → 中立評価を再検討"
-      ]
-    },
-    {
-      "ticker": "META",
-      "prediction_date": "2026-05-13",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 54,
-      "prob_up_5d_predicted": 0.567,
-      "actual_return_pct": -1.876,
-      "expected_return_pct": 1.54,
-      "magnitude_error_pct": 3.42,
-      "hit": false,
-      "verdict": "❌ 外れ（上昇予測が下落）",
-      "culprits": [
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 83.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当(31.0%) / 高利益率(41%) / ROE高(30%)"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
-        },
-        {
-          "agent": "sector_social_media",
-          "agent_jp": "ソーシャルメディア",
-          "category": "sector",
-          "score": 75.0,
-          "judgment": "STRONG_BUY",
-          "reason": "広告収益高成長(24%)"
-        },
-        {
-          "agent": "fundamental",
-          "agent_jp": "ファンダメンタル",
-          "category": "analysis",
-          "score": 73.0,
-          "judgment": "BUY",
-          "reason": "高利益率(41%) / 高成長(24%)"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "supply_demand",
-          "agent_jp": "需給分析",
-          "category": "analysis",
-          "score": 29.0,
-          "judgment": "REDUCE",
-          "reason": "MFI売り圧力(33) / OBV下降（分散） / VWAP下方（売り圧）"
-        },
-        {
-          "agent": "trend_direction",
-          "agent_jp": "トレンド方向",
-          "category": "market_monitor",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "中期・長期MA下向き / 200MA下 / MACD負"
-        },
-        {
-          "agent": "swing_trade",
-          "agent_jp": "スイングトレード",
-          "category": "trade_style",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "MACDデッドクロス域 / BB下限タッチ狙い未達"
-        },
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        }
-      ],
-      "suggestions": [
-        "sector カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
-      ]
-    },
-    {
-      "ticker": "GOOGL",
-      "prediction_date": "2026-05-13",
-      "evaluated_date": "2026-05-28",
-      "rank": "weak_buy",
-      "score": 56,
-      "prob_up_5d_predicted": 0.563,
-      "actual_return_pct": -3.405,
-      "expected_return_pct": 1.5,
-      "magnitude_error_pct": 4.9,
-      "hit": false,
-      "verdict": "❌ 外れ（上昇予測が下落）",
-      "culprits": [
-        {
-          "agent": "momentum",
-          "agent_jp": "モメンタム",
-          "category": "trade_style",
-          "score": 85.0,
-          "judgment": "STRONG_BUY",
-          "reason": "52週高値近傍(-3.4%) / 60日リターン強(26.8%) / ADXトレンド強(=76) / 200MA大幅上回り"
-        },
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 83.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当(24.0%) / 高利益率(32%) / ROE高(36%)"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当24.0% / ROE良好35.7% / 利益率安定31.6%"
-        },
-        {
-          "agent": "long_term_prob",
-          "agent_jp": "長期確率",
-          "category": "prediction",
-          "score": 79.0,
-          "judgment": "STRONG_BUY",
-          "reason": "12m上昇確率=79% / ROIC=15% / PER=29x"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "downside_risk",
-          "agent_jp": "下落リスク",
-          "category": "prediction",
-          "score": 35.0,
-          "judgment": "HOLD",
-          "reason": "3%下落確率=66% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
-        },
-        {
-          "agent": "contrarian",
-          "agent_jp": "逆張り",
-          "category": "trade_style",
-          "score": 38.0,
-          "judgment": "HOLD",
-          "reason": "RSI買われ過ぎ(79)"
-        },
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        }
-      ],
-      "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
-      ]
-    },
-    {
-      "ticker": "AAPL",
-      "prediction_date": "2026-05-13",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 55,
-      "prob_up_5d_predicted": 0.547,
-      "actual_return_pct": 1.131,
-      "expected_return_pct": 1.38,
-      "magnitude_error_pct": 0.25,
-      "hit": false,
-      "verdict": "❌ 外れ（下落/中立予測が上昇）",
-      "culprits": [
-        {
-          "agent": "monthly_report",
-          "agent_jp": "月次レポート",
-          "category": "integration",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "月次: 取引0件 勝率=0% 平均+0.0%"
-        },
-        {
-          "agent": "contrarian",
-          "agent_jp": "逆張り",
-          "category": "trade_style",
-          "score": 38.0,
-          "judgment": "HOLD",
-          "reason": "RSI買われ過ぎ(76)"
-        },
-        {
-          "agent": "valuation",
-          "agent_jp": "バリュエーション",
-          "category": "analysis",
-          "score": 35.0,
-          "judgment": "HOLD",
-          "reason": "PER高め(34.4x) / PBR割高(45.2x)"
-        },
-        {
-          "agent": "downside_risk",
-          "agent_jp": "下落リスク",
-          "category": "prediction",
-          "score": 34.0,
-          "judgment": "REDUCE",
-          "reason": "3%下落確率=70% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
-        },
-        {
-          "agent": "day_trade",
-          "agent_jp": "デイトレード",
-          "category": "trade_style",
-          "score": 30.0,
-          "judgment": "REDUCE",
-          "reason": "ストキャスOver買(98) / ストキャスKD買い / RSI7買われ過ぎ"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "momentum",
-          "agent_jp": "モメンタム",
-          "category": "trade_style",
-          "score": 85.0,
-          "judgment": "STRONG_BUY",
-          "reason": "52週高値近傍(0.0%) / 60日リターン強(15.3%) / ADXトレンド強(=34) / 200MA大幅上回り"
-        },
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 83.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当(38.0%) / 高利益率(35%) / ROE高(152%)"
-        },
-        {
-          "agent": "rule_compliance",
-          "agent_jp": "ルール遵守",
-          "category": "personal",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "全ルール遵守"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 80.0,
-          "judgment": "STRONG_BUY",
-          "reason": "高配当38.0% / ROE良好152.0% / 利益率安定35.4%"
-        },
-        {
-          "agent": "long_term_prob",
-          "agent_jp": "長期確率",
-          "category": "prediction",
-          "score": 79.0,
-          "judgment": "STRONG_BUY",
-          "reason": "12m上昇確率=79% / ROIC=24% / PER=34x"
-        }
-      ],
-      "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "下落予測のエージェントが過剰反応 → 中立評価を再検討"
-      ]
-    },
-    {
-      "ticker": "VOO",
-      "prediction_date": "2026-05-13",
-      "evaluated_date": "2026-05-28",
-      "rank": "watch",
-      "score": 52,
-      "prob_up_5d_predicted": 0.59,
-      "actual_return_pct": -0.123,
-      "expected_return_pct": 1.72,
-      "magnitude_error_pct": 1.84,
-      "hit": false,
-      "verdict": "❌ 外れ（上昇予測が下落）",
-      "culprits": [
-        {
-          "agent": "momentum",
-          "agent_jp": "モメンタム",
-          "category": "trade_style",
-          "score": 75.0,
-          "judgment": "STRONG_BUY",
-          "reason": "52週高値近傍(-0.1%) / ADXトレンド強(=43) / 200MA大幅上回り"
-        },
-        {
-          "agent": "supply_demand",
-          "agent_jp": "需給分析",
-          "category": "analysis",
-          "score": 71.0,
-          "judgment": "BUY",
-          "reason": "MFI買い圧力(62) / OBV上昇（蓄積） / VWAP上方"
-        },
-        {
-          "agent": "dividend_income",
-          "agent_jp": "配当インカム",
-          "category": "trade_style",
-          "score": 70.0,
-          "judgment": "BUY",
-          "reason": "高配当(119.0%)"
-        },
-        {
-          "agent": "liquidity_risk",
-          "agent_jp": "流動性リスク",
-          "category": "market_monitor",
-          "score": 70.0,
-          "judgment": "BUY",
-          "reason": "流動性良好"
-        },
-        {
-          "agent": "japan_dividend",
-          "agent_jp": "日本高配当",
-          "category": "sector",
-          "score": 68.0,
-          "judgment": "BUY",
-          "reason": "高配当119.0%"
-        }
-      ],
-      "heroes": [
-        {
-          "agent": "day_trade",
-          "agent_jp": "デイトレード",
-          "category": "trade_style",
-          "score": 20.0,
-          "judgment": "SELL",
-          "reason": "ストキャスOver買(93) / ストキャスKD売り / RSI7買われ過ぎ"
-        },
-        {
-          "agent": "market_sentiment",
-          "agent_jp": "市場センチメント",
-          "category": "market_monitor",
-          "score": 28.0,
-          "judgment": "REDUCE",
-          "reason": "RSI買われ過ぎ(76) / ネガティブニュース検知"
-        },
-        {
-          "agent": "downside_risk",
-          "agent_jp": "下落リスク",
-          "category": "prediction",
-          "score": 34.0,
-          "judgment": "REDUCE",
-          "reason": "3%下落確率=70% / 5%下落確率=70% / 10%下落確率=70% / ⚠下落リスク高"
-        },
-        {
-          "agent": "contrarian",
-          "agent_jp": "逆張り",
-          "category": "trade_style",
-          "score": 38.0,
-          "judgment": "HOLD",
-          "reason": "RSI買われ過ぎ(76)"
-        },
-        {
-          "agent": "news_impact",
-          "agent_jp": "ニュース影響",
-          "category": "analysis",
-          "score": 40.0,
-          "judgment": "HOLD",
-          "reason": "重大ネガティブニュース"
-        }
-      ],
-      "suggestions": [
-        "trade_style カテゴリのエージェントが過剰反応 → 重み引き下げ候補",
-        "上昇シグナルを出した上位エージェント全体の重みを 0.95 倍に"
       ]
     }
   ],

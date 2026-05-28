@@ -1,40 +1,40 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-28 23:05",
+  "generated_at": "2026-05-29 05:44",
   "summary": {
     "rank": "watch",
     "score": 55,
-    "prob_up_5d": 0.541,
-    "prob_down_5pct": 0.239,
-    "expected_return": 1.33,
-    "risk_reward": 1.11,
-    "max_loss_est": -1.2,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.11\n判定時刻: 2026-05-28 23:05",
-    "prediction_date": "2026-05-28"
+    "prob_up_5d": 0.528,
+    "prob_down_5pct": 0.234,
+    "expected_return": 1.22,
+    "risk_reward": 1.04,
+    "max_loss_est": -1.17,
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=55% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=23% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.04\n判定時刻: 2026-05-29 05:44",
+    "prediction_date": "2026-05-29"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 6,
-      "BUY": 15,
+      "STRONG_BUY": 7,
+      "BUY": 14,
       "HOLD": 9,
-      "WATCH": 37,
-      "REDUCE": 2
+      "WATCH": 38,
+      "REDUCE": 1
     },
     "category_stats": {
-      "sector": {
-        "count": 19,
-        "buy": 3,
-        "sell": 0,
-        "hold": 16,
-        "avg_score": 53.8
-      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
         "avg_score": 60.7
+      },
+      "sector": {
+        "count": 19,
+        "buy": 3,
+        "sell": 0,
+        "hold": 16,
+        "avg_score": 53.8
       },
       "personal": {
         "count": 10,
@@ -48,41 +48,32 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 54.1
+        "avg_score": 55.3
       },
       "analysis": {
         "count": 10,
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 54.8
-      },
-      "market_monitor": {
-        "count": 7,
-        "buy": 3,
-        "sell": 2,
-        "hold": 2,
-        "avg_score": 50.1
+        "avg_score": 55.0
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 54.2
+        "avg_score": 55.5
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 3,
+        "sell": 1,
+        "hold": 3,
+        "avg_score": 51.3
       }
     }
   },
   "top_buys": [
-    {
-      "agent": "sector_semiconductor",
-      "agent_jp": "半導体",
-      "category": "sector",
-      "score": 88.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "半導体専門: 売上成長=73% OPM=65%"
-    },
     {
       "agent": "growth_invest",
       "agent_jp": "グロース投資",
@@ -91,6 +82,15 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
+    },
+    {
+      "agent": "sector_semiconductor",
+      "agent_jp": "半導体",
+      "category": "sector",
+      "score": 88.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "半導体専門: 売上成長=73% OPM=65%"
     },
     {
       "agent": "rule_compliance",
@@ -126,7 +126,16 @@
       "score": 77.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "高値圏 / 60日リターン強(16.5%) / ADXトレンド強(=34) / 200MA大幅上回り"
+      "reason": "高値圏 / 60日リターン強(19.0%) / ADXトレンド強(=33) / 200MA大幅上回り"
+    },
+    {
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 76.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 3/10位"
     },
     {
       "agent": "sector_ai_datacenter",
@@ -147,22 +156,13 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
+      "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
+      "category": "analysis",
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 4/10位"
-    },
-    {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
+      "reason": "テクニカル総合買いシグナル / 強弱比=5.3:2.5"
     }
   ],
   "top_risks": [
@@ -176,13 +176,13 @@
       "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -194,13 +194,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
     },
     {
       "agent": "score_integration",
@@ -212,31 +212,31 @@
       "reason": "全エージェント統合スコア=55"
     },
     {
-      "agent": "macro_environment",
-      "agent_jp": "マクロ環境",
-      "category": "analysis",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "長期金利高(4.5%) / 金利低下中(株にプラス) / S&P500上昇中"
-    },
-    {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=54% / 20d=61% / 3m=64% / 期待値=+1.33%"
-    },
-    {
       "agent": "ensemble",
       "agent_jp": "アンサンブル",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=55% / LGBM=54% / ルール=37% / ファンダ=80%"
+      "reason": "アンサンブル=54% / LGBM=53% / ルール=37% / ファンダ=80%"
+    },
+    {
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=53% / 20d=55% / 3m=64% / 期待値=+1.22%"
+    },
+    {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率53% / P10=-0.9% P90=+1.0%"
     },
     {
       "agent": "final_judgment",
@@ -245,16 +245,16 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.11\n判定時刻: 2026-05-28 23:05"
+      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=55% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=23% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.04\n判定時刻: 2026-05-29 05:44"
     },
     {
-      "agent": "earnings_momentum",
-      "agent_jp": "決算モメンタム",
-      "category": "analysis",
-      "score": 50.0,
+      "agent": "short_term_prob",
+      "agent_jp": "短期確率",
+      "category": "prediction",
+      "score": 51.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "決算特記事項なし"
+      "reason": "1d/5d上昇確率=51% / RSI=53 / MACD負"
     }
   ],
   "fundamentals": {
@@ -267,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "1999-01-22",
-    "total_days": 6878,
+    "total_days": 6879,
     "approx_years": 27.3,
     "data_span_label": "IPO以降 約27.3年（1999-01-22〜）",
     "all_time_high": 235.74,
-    "current_close": 212.6,
-    "current_drawdown_pct": -9.8,
+    "current_close": 214.25,
+    "current_drawdown_pct": -9.1,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
     "pct_time_below_30pct": 53.8,
-    "current_pct_of_ath": 90.2
+    "current_pct_of_ath": 90.9
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_NVDA",
@@ -299,31 +299,31 @@
       "source": "yahoo"
     },
     {
-      "headline": "Jim Cramer Wants NVIDIA (NVDA) to be More Like Apple",
-      "sentiment": 0.64,
+      "headline": "Musk Wants to Merge SpaceX and Tesla. If He Does, He’ll Control a $3.4 Trillion Empire",
+      "sentiment": -0.2,
       "importance": 2,
-      "published_at": "2026-05-28 22:39:38",
+      "published_at": "2026-05-29 05:35:51",
       "source": "yahoo"
     },
     {
-      "headline": "Jim Cramer Shares Why Infleqtion (INFQ) CEO Left Him Stunned About Crypto",
-      "sentiment": 0.66,
+      "headline": "How Much Bitcoin Do You Need To Become A Millionaire By 2030?",
+      "sentiment": 0.83,
       "importance": 2,
-      "published_at": "2026-05-28 22:38:32",
+      "published_at": "2026-05-29 05:35:24",
       "source": "yahoo"
     },
     {
-      "headline": "Prediction: Palantir Stock Will Trade at This Price Next Year",
-      "sentiment": 0.59,
+      "headline": "‘Automation Is a Lie,’ Says AI Founder Whose Company Doubled Headcount Despite Heavy AI Use",
+      "sentiment": -0.1,
       "importance": 2,
-      "published_at": "2026-05-28 22:38:06",
+      "published_at": "2026-05-29 05:34:42",
       "source": "yahoo"
     },
     {
-      "headline": "I Used to Think Running Out of Money Was the Biggest Retirement Risk. Here's the Flipside.",
-      "sentiment": 0.05,
+      "headline": "UNG Holds Front Month Natural Gas Futures, And Contango Has Cost Holders 90 Percent Over a Decade Without a Single Price Drop",
+      "sentiment": 0.84,
       "importance": 2,
-      "published_at": "2026-05-28 22:38:00",
+      "published_at": "2026-05-29 05:34:34",
       "source": "yahoo"
     }
   ],
