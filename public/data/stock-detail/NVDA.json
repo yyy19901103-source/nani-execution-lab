@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-30 10:50",
+  "generated_at": "2026-05-30 10:58",
   "summary": {
     "rank": "watch",
     "score": 55,
@@ -9,7 +9,7 @@
     "expected_return": 1.22,
     "risk_reward": 1.02,
     "max_loss_est": -1.2,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.02\n判定時刻: 2026-05-30 10:47",
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.02\n判定時刻: 2026-05-30 10:57",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -17,8 +17,8 @@
     "signal_distribution": {
       "STRONG_BUY": 7,
       "BUY": 14,
-      "HOLD": 12,
-      "WATCH": 36
+      "HOLD": 11,
+      "WATCH": 37
     },
     "category_stats": {
       "sector": {
@@ -47,7 +47,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.9
+        "avg_score": 54.1
       },
       "analysis": {
         "count": 10,
@@ -175,15 +175,6 @@
       "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "alert",
       "agent_jp": "アラート",
       "category": "integration",
@@ -191,6 +182,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "score_integration",
@@ -235,7 +235,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.02\n判定時刻: 2026-05-30 10:47"
+      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.02\n判定時刻: 2026-05-30 10:57"
     },
     {
       "agent": "earnings_momentum",
