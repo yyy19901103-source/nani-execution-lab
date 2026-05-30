@@ -1,33 +1,26 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-30 10:43",
+  "generated_at": "2026-05-30 10:47",
   "summary": {
     "rank": "watch",
     "score": 55,
     "prob_up_5d": 0.528,
-    "prob_down_5pct": 0.234,
+    "prob_down_5pct": 0.239,
     "expected_return": 1.22,
-    "risk_reward": 1.04,
-    "max_loss_est": -1.17,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=58% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=30% / 5%=23% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.04\n判定時刻: 2026-05-30 10:43",
+    "risk_reward": 1.02,
+    "max_loss_est": -1.2,
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.02\n判定時刻: 2026-05-30 10:47",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 7,
-      "BUY": 13,
-      "HOLD": 9,
-      "WATCH": 40
+      "BUY": 14,
+      "HOLD": 12,
+      "WATCH": 36
     },
     "category_stats": {
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 57.8
-      },
       "sector": {
         "count": 19,
         "buy": 3,
@@ -37,10 +30,10 @@
       },
       "trade_style": {
         "count": 7,
-        "buy": 3,
+        "buy": 4,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 61.4
+        "hold": 3,
+        "avg_score": 62.9
       },
       "personal": {
         "count": 10,
@@ -54,34 +47,32 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 56.0
+        "avg_score": 53.9
       },
       "analysis": {
         "count": 10,
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 55.2
+        "avg_score": 54.5
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 55.5
       },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 51.9
+        "avg_score": 49.7
       }
     }
   },
   "top_buys": [
-    {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
-      "score": 90.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 1/10位"
-    },
     {
       "agent": "sector_semiconductor",
       "agent_jp": "半導体",
@@ -134,7 +125,16 @@
       "score": 77.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "高値圏 / 60日リターン強(18.1%) / ADXトレンド強(=30) / 200MA大幅上回り"
+      "reason": "高値圏 / 60日リターン強(15.4%) / ADXトレンド強(=30) / 200MA大幅上回り"
+    },
+    {
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 76.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 3/10位"
     },
     {
       "agent": "sector_ai_datacenter",
@@ -146,22 +146,22 @@
       "reason": "semiconductor: 売上成長=73%"
     },
     {
-      "agent": "mid_term_prob",
-      "agent_jp": "中期確率",
-      "category": "prediction",
-      "score": 71.0,
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+0.2% / 売上成長=73%"
+      "reason": "ストキャスOver売(9) / ストキャスKD売り / RSI7売られ過ぎ"
     },
     {
       "agent": "technical_summary",
       "agent_jp": "テクニカル総合",
       "category": "analysis",
-      "score": 70.0,
+      "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "テクニカル総合買いシグナル / 強弱比=3.8:1.5"
+      "reason": "テクニカル総合買いシグナル / 強弱比=5.3:2.5"
     }
   ],
   "top_risks": [
@@ -172,25 +172,7 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
-    },
-    {
-      "agent": "trend_direction",
-      "agent_jp": "トレンド方向",
-      "category": "market_monitor",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "短期・中期MA上向き / 200MA上抜け / MACD負"
-    },
-    {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
-      "category": "prediction",
-      "score": 57.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=58% / LGBM=53% / ルール=47% / ファンダ=80%"
+      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
       "agent": "investor_profile",
@@ -211,15 +193,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
-    },
-    {
       "agent": "score_integration",
       "agent_jp": "スコア統合",
       "category": "integration",
@@ -229,22 +202,13 @@
       "reason": "全エージェント統合スコア=55"
     },
     {
-      "agent": "bayesian",
-      "agent_jp": "ベイズ更新",
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "過去勝率=50% / 事後確率=55%"
-    },
-    {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 53.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率55% / P10=-0.8% P90=+1.0%"
+      "reason": "アンサンブル=54% / LGBM=53% / ルール=37% / ファンダ=80%"
     },
     {
       "agent": "market_sentiment",
@@ -254,6 +218,42 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "RSI中立ゾーン"
+    },
+    {
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=53% / 20d=61% / 3m=64% / 期待値=+1.22%"
+    },
+    {
+      "agent": "final_judgment",
+      "agent_jp": "最終判定",
+      "category": "integration",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=29% / 5%=24% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.02\n判定時刻: 2026-05-30 10:47"
+    },
+    {
+      "agent": "earnings_momentum",
+      "agent_jp": "決算モメンタム",
+      "category": "analysis",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "決算特記事項なし"
+    },
+    {
+      "agent": "institutional_flow",
+      "agent_jp": "機関投資家動向",
+      "category": "analysis",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "機関動向不明瞭"
     }
   ],
   "fundamentals": {
@@ -270,12 +270,12 @@
     "approx_years": 27.3,
     "data_span_label": "IPO以降 約27.3年（1999-01-22〜）",
     "all_time_high": 235.74,
-    "current_close": 216.21,
-    "current_drawdown_pct": -8.3,
+    "current_close": 211.14,
+    "current_drawdown_pct": -10.4,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
     "pct_time_below_30pct": 53.8,
-    "current_pct_of_ath": 91.7
+    "current_pct_of_ath": 89.6
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_NVDA",

@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-30 10:43",
+  "generated_at": "2026-05-30 10:47",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 1.73,
     "risk_reward": 2.54,
     "max_loss_est": -0.68,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=71% / 12ヶ月=59%\n下落確率: 3%=17% / 5%=14% / 10%=33%\n期待値: +1.73% / リスクリワード: 2.54\n判定時刻: 2026-05-30 10:43",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=71% / 12ヶ月=59%\n下落確率: 3%=17% / 5%=14% / 10%=20%\n期待値: +1.73% / リスクリワード: 2.54\n判定時刻: 2026-05-30 10:47",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -19,7 +19,8 @@
       "BUY": 11,
       "HOLD": 6,
       "WATCH": 49,
-      "REDUCE": 2
+      "REDUCE": 1,
+      "SELL": 1
     },
     "category_stats": {
       "trade_style": {
@@ -27,7 +28,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 4,
-        "avg_score": 53.1
+        "avg_score": 51.7
       },
       "sector": {
         "count": 19,
@@ -62,7 +63,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 52.1
+        "avg_score": 52.2
       },
       "integration": {
         "count": 6,
@@ -191,16 +192,7 @@
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=55% / MA20=+2.4% / 売上成長=0%"
-    },
-    {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "配当利回り119.0%"
+      "reason": "20d/3m上昇確率=55% / MA20=+2.3% / 売上成長=0%"
     },
     {
       "agent": "investor_profile",
@@ -219,6 +211,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
     },
     {
       "agent": "volatility_env",
@@ -270,8 +271,8 @@
     "total_days": 3954,
     "approx_years": 15.7,
     "data_span_label": "IPO以降 約15.7年（2010-09-09〜）",
-    "all_time_high": 696.02,
-    "current_close": 696.02,
+    "all_time_high": 695.49,
+    "current_close": 695.49,
     "current_drawdown_pct": 0.0,
     "max_drawdown_pct": -34.0,
     "days_below_30pct_dd": 2,

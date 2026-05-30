@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-05-30 10:43",
+  "generated_at": "2026-05-30 10:47",
   "summary": {
     "rank": "watch",
     "score": 50,
@@ -9,7 +9,7 @@
     "expected_return": 1.24,
     "risk_reward": 4.96,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-30 10:43",
+    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-30 10:47",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -57,19 +57,19 @@
         "hold": 5,
         "avg_score": 46.7
       },
-      "sector": {
-        "count": 19,
-        "buy": 0,
-        "sell": 0,
-        "hold": 19,
-        "avg_score": 50.0
-      },
       "trade_style": {
         "count": 7,
         "buy": 0,
         "sell": 0,
         "hold": 7,
         "avg_score": 46.7
+      },
+      "sector": {
+        "count": 19,
+        "buy": 0,
+        "sell": 0,
+        "hold": 19,
+        "avg_score": 50.0
       }
     }
   },
@@ -81,7 +81,7 @@
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "S&P500比 直近強い(+6.1%) / S&P500比 月次強い(+7.6%)"
+      "reason": "S&P500比 直近強い(+6.2%) / S&P500比 月次強い(+7.7%)"
     },
     {
       "agent": "failure_pattern",
@@ -146,7 +146,7 @@
       "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.3% / 上昇確率59% / P10=-1.7% P90=+2.3%"
+      "reason": "MC 20日後: 中央値+0.3% / 上昇確率58% / P10=-1.5% P90=+2.4%"
     },
     {
       "agent": "mid_term_prob",
@@ -203,13 +203,13 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "trend_direction",
-      "agent_jp": "トレンド方向",
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
       "category": "market_monitor",
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "短期・中期MA上向き / 200MA下 / MACD負"
+      "reason": "RSI中立ゾーン"
     }
   ],
   "fundamentals": null,
