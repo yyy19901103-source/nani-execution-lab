@@ -1,6 +1,6 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-05-30 10:47",
+  "generated_at": "2026-05-30 10:50",
   "summary": {
     "rank": "watch",
     "score": 50,
@@ -258,12 +258,6 @@
   "earnings_recent": [
     {
       "date": "2026-06-04",
-      "estimated_eps": -0.37274,
-      "actual_eps": null,
-      "surprise_pct": null
-    },
-    {
-      "date": "2026-05-28",
       "estimated_eps": -0.37274,
       "actual_eps": null,
       "surprise_pct": null
