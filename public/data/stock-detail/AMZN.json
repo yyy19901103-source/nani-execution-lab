@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 1.65,
     "risk_reward": 1.35,
     "max_loss_est": -1.22,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=58% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=29% / 5%=24% / 10%=11%\n期待値: +1.65% / リスクリワード: 1.35\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=58% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=29% / 5%=24% / 10%=11%\n期待値: +1.65% / リスクリワード: 1.35\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -17,8 +17,8 @@
     "signal_distribution": {
       "STRONG_BUY": 2,
       "BUY": 9,
-      "HOLD": 8,
-      "WATCH": 48,
+      "HOLD": 7,
+      "WATCH": 49,
       "REDUCE": 1,
       "SELL": 1
     },
@@ -56,7 +56,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 51.2
+        "avg_score": 51.5
       },
       "sector": {
         "count": 19,
@@ -148,6 +148,15 @@
       "reason": "12m上昇確率=64% / ROIC=7% / PER=32x"
     },
     {
+      "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
+      "category": "market_monitor",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "出来高低下中"
+    },
+    {
       "agent": "emotion_bias",
       "agent_jp": "感情バイアス",
       "category": "personal",
@@ -155,15 +164,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "感情バイアスなし"
-    },
-    {
-      "agent": "money_management",
-      "agent_jp": "資金管理",
-      "category": "personal",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "ケリー推奨=10.0%"
     }
   ],
   "top_risks": [
@@ -231,15 +231,6 @@
       "reason": "アンサンブル=55% / LGBM=58% / ルール=53% / ファンダ=55%"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "低ボラ環境"
-    },
-    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -247,6 +238,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "プロファイル適合"
+    },
+    {
+      "agent": "alert",
+      "agent_jp": "アラート",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "異常なし"
     },
     {
       "agent": "fundamental",

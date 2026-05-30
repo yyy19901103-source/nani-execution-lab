@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
     "score": 50,
@@ -9,7 +9,7 @@
     "expected_return": 1.24,
     "risk_reward": 4.96,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -41,7 +41,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 53.9
+        "avg_score": 53.7
       },
       "analysis": {
         "count": 10,
@@ -122,15 +122,6 @@
   ],
   "top_risks": [
     {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.5% / 上昇確率61% / P10=-1.6% P90=+2.7%"
-    },
-    {
       "agent": "expected_value",
       "agent_jp": "期待値",
       "category": "prediction",
@@ -147,6 +138,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "高ボラ(5.7%)"
+    },
+    {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 57.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.3% / 上昇確率59% / P10=-1.7% P90=+2.3%"
     },
     {
       "agent": "mid_term_prob",

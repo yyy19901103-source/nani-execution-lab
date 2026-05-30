@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 1.53,
     "risk_reward": 1.76,
     "max_loss_est": -0.87,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=57% / 20日=60% / 3ヶ月=61% / 12ヶ月=72%\n下落確率: 3%=25% / 5%=17% / 10%=8%\n期待値: +1.53% / リスクリワード: 1.76\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=57% / 20日=60% / 3ヶ月=61% / 12ヶ月=72%\n下落確率: 3%=25% / 5%=17% / 10%=8%\n期待値: +1.53% / リスクリワード: 1.76\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -120,13 +120,13 @@
       "reason": "高利益率(43%) / PER割安(15x)"
     },
     {
-      "agent": "portfolio_fit",
-      "agent_jp": "ポートフォリオ適合",
-      "category": "personal",
+      "agent": "risk_assessment",
+      "agent_jp": "リスク評価",
+      "category": "analysis",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "未保有・新規可能"
+      "reason": "リスク許容範囲内"
     },
     {
       "agent": "failure_pattern",
@@ -138,13 +138,13 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
-      "category": "analysis",
+      "agent": "portfolio_fit",
+      "agent_jp": "ポートフォリオ適合",
+      "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "リスク許容範囲内"
+      "reason": "未保有・新規可能"
     },
     {
       "agent": "long_term_prob",
@@ -156,25 +156,16 @@
       "reason": "12m上昇確率=64% / ROIC=1% / PER=15x"
     },
     {
-      "agent": "sector_banking",
-      "agent_jp": "金融/銀行",
-      "category": "sector",
+      "agent": "momentum",
+      "agent_jp": "モメンタム",
+      "category": "trade_style",
       "score": 62.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "高金利恩恵(10Y=4.5%)"
+      "reason": "高値圏 / ADXトレンド強(=43)"
     }
   ],
   "top_risks": [
-    {
-      "agent": "contrarian",
-      "agent_jp": "逆張り",
-      "category": "trade_style",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "CCI売られ(-105)"
-    },
     {
       "agent": "expected_value",
       "agent_jp": "期待値",
@@ -183,6 +174,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
+    },
+    {
+      "agent": "contrarian",
+      "agent_jp": "逆張り",
+      "category": "trade_style",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "CCI売られ(-105)"
     },
     {
       "agent": "technical_summary",

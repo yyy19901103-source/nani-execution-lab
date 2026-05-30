@@ -1,6 +1,6 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -9,7 +9,7 @@
     "expected_return": 0.39,
     "risk_reward": 0.23,
     "max_loss_est": -1.72,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=42% / 20日=51% / 3ヶ月=38% / 12ヶ月=40%\n下落確率: 3%=40% / 5%=34% / 10%=26%\n期待値: +0.39% / リスクリワード: 0.23\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=42% / 20日=51% / 3ヶ月=38% / 12ヶ月=40%\n下落確率: 3%=40% / 5%=34% / 10%=26%\n期待値: +0.39% / リスクリワード: 0.23\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -41,7 +41,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 53.4
+        "avg_score": 53.6
       },
       "market_monitor": {
         "count": 7,
@@ -156,13 +156,13 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "market_regime",
-      "agent_jp": "市場レジーム",
-      "category": "market_monitor",
+      "agent": "portfolio_fit",
+      "agent_jp": "ポートフォリオ適合",
+      "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "強気レジーム"
+      "reason": "未保有・新規可能"
     }
   ],
   "top_risks": [

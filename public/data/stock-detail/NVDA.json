@@ -1,24 +1,24 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
-    "score": 56,
+    "score": 55,
     "prob_up_5d": 0.528,
     "prob_down_5pct": 0.234,
     "expected_return": 1.22,
     "risk_reward": 1.04,
     "max_loss_est": -1.17,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=58% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=30% / 5%=23% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.04\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=53% / 20日=58% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=30% / 5%=23% / 10%=18%\n期待値: +1.22% / リスクリワード: 1.04\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 7,
-      "BUY": 14,
+      "BUY": 13,
       "HOLD": 9,
-      "WATCH": 39
+      "WATCH": 40
     },
     "category_stats": {
       "integration": {
@@ -26,7 +26,7 @@
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 58.0
+        "avg_score": 57.8
       },
       "sector": {
         "count": 19,
@@ -54,21 +54,21 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 55.9
+        "avg_score": 56.0
       },
       "analysis": {
         "count": 10,
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 55.8
+        "avg_score": 55.2
       },
       "market_monitor": {
         "count": 7,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 53.0
+        "hold": 5,
+        "avg_score": 51.9
       }
     }
   },
@@ -193,13 +193,13 @@
       "reason": "アンサンブル=58% / LGBM=53% / ルール=47% / ファンダ=80%"
     },
     {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
-      "category": "integration",
-      "score": 56.0,
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=56"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -211,15 +211,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "day_trade",
       "agent_jp": "デイトレード",
       "category": "trade_style",
@@ -227,6 +218,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "score_integration",
+      "agent_jp": "スコア統合",
+      "category": "integration",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=55"
     },
     {
       "agent": "bayesian",
@@ -238,22 +238,22 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 52.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=53% / 20d=58% / 3m=64% / 期待値=+1.22%"
-    },
-    {
       "agent": "monte_carlo",
       "agent_jp": "モンテカルロ",
       "category": "prediction",
-      "score": 52.0,
+      "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率53% / P10=-0.7% P90=+0.9%"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率55% / P10=-0.8% P90=+1.0%"
+    },
+    {
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
+      "category": "market_monitor",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "RSI中立ゾーン"
     }
   ],
   "fundamentals": {
@@ -291,6 +291,27 @@
   },
   "news": [
     {
+      "headline": "Higher-for-Longer Interest Rates Are Turning Berkshire Hathaway's Cash Hoard Into an Earnings Engine.",
+      "sentiment": -0.83,
+      "importance": 5,
+      "published_at": "2026-05-30 07:35:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Wall Street Thinks Intuitive Surgical Stock Can Soar Over 30%. Here's Why Analysts are Right.",
+      "sentiment": 0.49,
+      "importance": 4,
+      "published_at": "2026-05-30 09:35:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Nvidia Continues to Be the Core Engine of AI, Says Analyst. Plus, Walmart and 4 More Stocks.",
+      "sentiment": null,
+      "importance": 4,
+      "published_at": "2026-05-30 07:25:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "20+ Analysts Back Snowflake and Here’s Why We Agree",
       "sentiment": 0.89,
       "importance": 4,
@@ -302,27 +323,6 @@
       "sentiment": 0.27,
       "importance": 3,
       "published_at": "2026-05-29 23:31:42",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Down 30% From Its Highs, SoFi Is Speeding Toward Aggressive Long-Term Profits",
-      "sentiment": 0.74,
-      "importance": 2,
-      "published_at": "2026-05-29 23:56:57",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Will Meta Stock Hit $800 This Year?",
-      "sentiment": 0.69,
-      "importance": 2,
-      "published_at": "2026-05-29 23:44:26",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Wall Street is Bullish on Dell Stock And Here’s Why We Agree",
-      "sentiment": 0.81,
-      "importance": 2,
-      "published_at": "2026-05-29 23:39:02",
       "source": "yahoo"
     }
   ],

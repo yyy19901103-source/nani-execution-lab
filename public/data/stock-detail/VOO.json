@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
     "score": 52,
@@ -9,7 +9,7 @@
     "expected_return": 1.73,
     "risk_reward": 2.54,
     "max_loss_est": -0.68,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=71% / 12ヶ月=59%\n下落確率: 3%=17% / 5%=14% / 10%=33%\n期待値: +1.73% / リスクリワード: 2.54\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=59% / 20日=67% / 3ヶ月=71% / 12ヶ月=59%\n下落確率: 3%=17% / 5%=14% / 10%=33%\n期待値: +1.73% / リスクリワード: 2.54\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -62,7 +62,7 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 52.5
+        "avg_score": 52.1
       },
       "integration": {
         "count": 6,
@@ -185,15 +185,6 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.0% / 上昇確率58% / P10=-0.2% P90=+0.3%"
-    },
-    {
       "agent": "mid_term_prob",
       "agent_jp": "中期確率",
       "category": "prediction",
@@ -201,6 +192,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "20d/3m上昇確率=55% / MA20=+2.4% / 売上成長=0%"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "配当利回り119.0%"
     },
     {
       "agent": "investor_profile",
@@ -230,13 +230,22 @@
       "reason": "低ボラ環境"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
-      "score": 55.0,
+      "agent": "bayesian",
+      "agent_jp": "ベイズ更新",
+      "category": "prediction",
+      "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "配当利回り119.0%"
+      "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=55% / LGBM=59% / ルール=53% / ファンダ=50%"
     },
     {
       "agent": "technical_summary",
@@ -246,15 +255,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "テクニカル総合売りシグナル / 強弱比=3.3:5.0"
-    },
-    {
-      "agent": "bayesian",
-      "agent_jp": "ベイズ更新",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "過去勝率=50% / 事後確率=55%"
     }
   ],
   "fundamentals": {

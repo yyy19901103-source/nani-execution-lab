@@ -1,6 +1,6 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
     "score": 50,
@@ -9,7 +9,7 @@
     "expected_return": 2.02,
     "risk_reward": 8.08,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -41,7 +41,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 56.3
+        "avg_score": 56.4
       },
       "personal": {
         "count": 10,
@@ -132,10 +132,10 @@
       "agent": "monte_carlo",
       "agent_jp": "モンテカルロ",
       "category": "prediction",
-      "score": 61.0,
+      "score": 62.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.4% / 上昇確率64% / P10=-0.9% P90=+1.7%"
+      "reason": "MC 20日後: 中央値+0.4% / 上昇確率65% / P10=-0.8% P90=+1.6%"
     },
     {
       "agent": "momentum",
@@ -185,15 +185,6 @@
       "reason": "20d/3m上昇確率=56% / MA20=+14.5% / 売上成長=0%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "volume_anomaly",
       "agent_jp": "出来高異常",
       "category": "market_monitor",
@@ -203,13 +194,13 @@
       "reason": "OBV上昇トレンド"
     },
     {
-      "agent": "long_term_prob",
-      "agent_jp": "長期確率",
-      "category": "prediction",
-      "score": 54.0,
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "bayesian",
@@ -219,6 +210,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "long_term_prob",
+      "agent_jp": "長期確率",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=54% / ROIC=0% / PERなし"
     },
     {
       "agent": "technical_summary",
@@ -236,7 +236,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-30 00:12"
+      "reason": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-05-30 10:43"
     }
   ],
   "fundamentals": null,

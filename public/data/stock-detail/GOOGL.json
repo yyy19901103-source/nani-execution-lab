@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-05-30 00:12",
+  "generated_at": "2026-05-30 10:43",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -9,7 +9,7 @@
     "expected_return": 1.58,
     "risk_reward": 1.9,
     "max_loss_est": -0.83,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=64% / 3ヶ月=62% / 12ヶ月=74%\n下落確率: 3%=20% / 5%=17% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.90\n判定時刻: 2026-05-30 00:12",
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=64% / 3ヶ月=62% / 12ヶ月=74%\n下落確率: 3%=20% / 5%=17% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.90\n判定時刻: 2026-05-30 10:43",
     "prediction_date": "2026-05-30"
   },
   "agent_summary": {
@@ -29,19 +29,19 @@
         "hold": 4,
         "avg_score": 62.9
       },
-      "sector": {
-        "count": 19,
-        "buy": 2,
-        "sell": 0,
-        "hold": 17,
-        "avg_score": 52.2
-      },
       "personal": {
         "count": 10,
         "buy": 5,
         "sell": 0,
         "hold": 5,
         "avg_score": 59.5
+      },
+      "sector": {
+        "count": 19,
+        "buy": 2,
+        "sell": 0,
+        "hold": 17,
+        "avg_score": 52.2
       },
       "prediction": {
         "count": 10,
@@ -93,15 +93,6 @@
       "reason": "高配当(24.0%) / 高利益率(32%) / ROE高(36%)"
     },
     {
-      "agent": "japan_dividend",
-      "agent_jp": "日本高配当",
-      "category": "sector",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "高配当24.0% / ROE良好35.7% / 利益率安定31.6%"
-    },
-    {
       "agent": "rule_compliance",
       "agent_jp": "ルール遵守",
       "category": "personal",
@@ -109,6 +100,15 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "全ルール遵守"
+    },
+    {
+      "agent": "japan_dividend",
+      "agent_jp": "日本高配当",
+      "category": "sector",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "高配当24.0% / ROE良好35.7% / 利益率安定31.6%"
     },
     {
       "agent": "long_term_prob",
@@ -156,13 +156,13 @@
       "reason": "高利益率(32%)"
     },
     {
-      "agent": "market_regime",
-      "agent_jp": "市場レジーム",
-      "category": "market_monitor",
+      "agent": "risk_assessment",
+      "agent_jp": "リスク評価",
+      "category": "analysis",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "強気レジーム"
+      "reason": "リスク許容範囲内"
     }
   ],
   "top_risks": [
@@ -194,15 +194,6 @@
       "reason": "5d上昇確率=57% / 20d=64% / 3m=62% / 期待値=+1.58%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
       "agent": "value_invest",
       "agent_jp": "バリュー投資",
       "category": "trade_style",
@@ -210,6 +201,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "PBR高い(11.2x) / ROE高(36%) / 配当利回り24.0%"
+    },
+    {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -236,16 +236,16 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=64% / 3ヶ月=62% / 12ヶ月=74%\n下落確率: 3%=20% / 5%=17% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.90\n判定時刻: 2026-05-30 00:12"
+      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=64% / 3ヶ月=62% / 12ヶ月=74%\n下落確率: 3%=20% / 5%=17% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.90\n判定時刻: 2026-05-30 10:43"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
+      "agent": "earnings_momentum",
+      "agent_jp": "決算モメンタム",
+      "category": "analysis",
       "score": 50.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ボラ環境正常"
+      "reason": "決算特記事項なし"
     },
     {
       "agent": "news_impact",
