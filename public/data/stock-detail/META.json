@@ -1,48 +1,33 @@
 {
   "ticker": "META",
-  "generated_at": "2026-05-30 10:58",
+  "generated_at": "2026-06-03 22:24",
   "summary": {
-    "rank": "weak_buy",
-    "score": 56,
-    "prob_up_5d": 0.558,
-    "prob_down_5pct": 0.205,
-    "expected_return": 1.47,
-    "risk_reward": 1.44,
-    "max_loss_est": -1.02,
-    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=56% / 20日=43% / 3ヶ月=34% / 12ヶ月=10%\n下落確率: 3%=25% / 5%=20% / 10%=9%\n期待値: +1.47% / リスクリワード: 1.44\n判定時刻: 2026-05-30 10:47",
-    "prediction_date": "2026-05-30"
+    "rank": "watch",
+    "score": 53,
+    "prob_up_5d": 0.567,
+    "prob_down_5pct": 0.235,
+    "expected_return": 1.54,
+    "risk_reward": 1.32,
+    "max_loss_est": -1.17,
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=13% / 3ヶ月=29% / 12ヶ月=22%\n下落確率: 3%=69% / 5%=23% / 10%=9%\n期待値: +1.54% / リスクリワード: 1.32\n判定時刻: 2026-06-03 22:24",
+    "prediction_date": "2026-06-03"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
-      "BUY": 15,
-      "WEAK BUY": 1,
-      "HOLD": 5,
-      "WATCH": 42,
-      "REDUCE": 1
+      "STRONG_BUY": 4,
+      "BUY": 11,
+      "HOLD": 6,
+      "WATCH": 44,
+      "REDUCE": 4
     },
     "category_stats": {
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 58.7
-      },
       "trade_style": {
         "count": 7,
         "buy": 3,
-        "sell": 0,
-        "hold": 4,
-        "avg_score": 57.3
-      },
-      "sector": {
-        "count": 19,
-        "buy": 2,
-        "sell": 0,
-        "hold": 17,
-        "avg_score": 53.2
+        "sell": 1,
+        "hold": 3,
+        "avg_score": 56.6
       },
       "personal": {
         "count": 10,
@@ -51,39 +36,44 @@
         "hold": 5,
         "avg_score": 59.5
       },
+      "sector": {
+        "count": 19,
+        "buy": 2,
+        "sell": 0,
+        "hold": 17,
+        "avg_score": 52.9
+      },
       "prediction": {
         "count": 10,
-        "buy": 3,
+        "buy": 1,
         "sell": 1,
-        "hold": 6,
-        "avg_score": 56.4
+        "hold": 8,
+        "avg_score": 51.9
       },
       "analysis": {
         "count": 10,
-        "buy": 4,
+        "buy": 2,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 57.1
+        "hold": 8,
+        "avg_score": 54.2
       },
       "market_monitor": {
         "count": 7,
-        "buy": 2,
+        "buy": 1,
+        "sell": 2,
+        "hold": 4,
+        "avg_score": 46.9
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 54.6
+        "avg_score": 52.5
       }
     }
   },
   "top_buys": [
-    {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
-      "score": 84.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 2/10位"
-    },
     {
       "agent": "dividend_income",
       "agent_jp": "配当インカム",
@@ -92,15 +82,6 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "高配当(31.0%) / 高利益率(41%) / ROE高(30%)"
-    },
-    {
-      "agent": "sector_social_media",
-      "agent_jp": "ソーシャルメディア",
-      "category": "sector",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "広告収益高成長(24%)"
     },
     {
       "agent": "rule_compliance",
@@ -121,6 +102,15 @@
       "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
     },
     {
+      "agent": "sector_social_media",
+      "agent_jp": "ソーシャルメディア",
+      "category": "sector",
+      "score": 75.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "広告収益高成長(24%)"
+    },
+    {
       "agent": "long_term_prob",
       "agent_jp": "長期確率",
       "category": "prediction",
@@ -139,22 +129,13 @@
       "reason": "高利益率(41%) / 高成長(24%)"
     },
     {
-      "agent": "expected_value",
-      "agent_jp": "期待値",
-      "category": "prediction",
-      "score": 68.0,
+      "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
+      "category": "market_monitor",
+      "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
-    },
-    {
-      "agent": "mid_term_prob",
-      "agent_jp": "中期確率",
-      "category": "prediction",
-      "score": 66.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "20d/3m上昇確率=66% / MA20=+3.1% / 売上成長=24%"
+      "reason": "流動性良好"
     },
     {
       "agent": "risk_assessment",
@@ -164,18 +145,27 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "failure_pattern",
+      "agent_jp": "失敗パターン",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "portfolio_fit",
+      "agent_jp": "ポートフォリオ適合",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
     }
   ],
   "top_risks": [
-    {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=59% / LGBM=56% / ルール=63% / ファンダ=60%"
-    },
     {
       "agent": "valuation",
       "agent_jp": "バリュエーション",
@@ -186,40 +176,49 @@
       "reason": "売上高成長24%"
     },
     {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
-      "category": "integration",
-      "score": 56.0,
+      "agent": "contrarian",
+      "agent_jp": "逆張り",
+      "category": "trade_style",
+      "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=56"
+      "reason": "CCI売られ(-101)"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
-      "score": 55.0,
+      "agent": "expected_value",
+      "agent_jp": "期待値",
+      "category": "prediction",
+      "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "低ボラ環境"
+      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
+    },
+    {
+      "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
+      "category": "analysis",
+      "score": 57.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "テクニカル中立 / 強弱比=4.0:4.8"
     },
     {
       "agent": "lgbm_prob",
       "agent_jp": "LightGBM確率",
       "category": "prediction",
-      "score": 55.0,
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=56% / 20d=43% / 3m=34% / 期待値=+1.47%"
+      "reason": "5d上昇確率=57% / 20d=13% / 3m=29% / 期待値=+1.54%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "momentum",
+      "agent_jp": "モメンタム",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "ADXトレンド強(=25)"
     },
     {
       "agent": "alert",
@@ -231,31 +230,31 @@
       "reason": "異常なし"
     },
     {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ADXトレンド強(=34)"
+      "reason": "プロファイル適合"
     },
     {
-      "agent": "short_term_prob",
-      "agent_jp": "短期確率",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
       "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "1d/5d上昇確率=54% / RSI=64 / MACD正"
-    },
-    {
-      "agent": "bayesian",
-      "agent_jp": "ベイズ更新",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "過去勝率=50% / 事後確率=55%"
+      "reason": "20d/3m上昇確率=54% / MA20=-2.4% / 売上成長=24%"
     }
   ],
   "fundamentals": {
@@ -268,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "2012-05-18",
-    "total_days": 3527,
+    "total_days": 3529,
     "approx_years": 14.0,
     "data_span_label": "IPO以降 約14.0年（2012-05-18〜）",
     "all_time_high": 788.15,
-    "current_close": 632.51,
-    "current_drawdown_pct": -19.7,
+    "current_close": 597.63,
+    "current_drawdown_pct": -24.2,
     "max_drawdown_pct": -76.7,
     "days_below_30pct_dd": 585,
     "pct_time_below_30pct": 16.6,
-    "current_pct_of_ath": 80.3
+    "current_pct_of_ath": 75.8
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_META",
@@ -293,38 +292,38 @@
   },
   "news": [
     {
-      "headline": "Meta Reaffirms Shareholder Returns With Stable Dividend",
-      "sentiment": 0.3,
-      "importance": 4,
-      "published_at": "2026-05-29 22:40:04",
+      "headline": "Meta vs. Netflix: Which One Deserves Your Retirement Capital Today?",
+      "sentiment": 0.36,
+      "importance": 2,
+      "published_at": "2026-06-03 22:00:47",
       "source": "yahoo"
     },
     {
-      "headline": "Meta (META) Quietly Launches A New Social App",
-      "sentiment": 0.9,
-      "importance": 3,
-      "published_at": "2026-05-28 22:14:35",
+      "headline": "AMD CFO Says Agentic AI Is Driving 'Tremendous' CPU Demand, Reaffirms $120B Market Opportunity",
+      "sentiment": 0.59,
+      "importance": 2,
+      "published_at": "2026-06-03 21:44:14",
       "source": "yahoo"
     },
     {
-      "headline": "Gary Vaynerchuk and District Announce Strategic Partnership",
-      "sentiment": null,
-      "importance": 3,
-      "published_at": "2026-05-28 22:00:00",
+      "headline": "Andrew Left says he was 'convicted on manipulating Nvidia Facebook and Tesla for telling the truth and making a profit'",
+      "sentiment": 0.03,
+      "importance": 2,
+      "published_at": "2026-06-03 21:20:00",
       "source": "yahoo"
     },
     {
-      "headline": "Meta launches subscription push to ease investor concerns over soaring AI costs",
-      "sentiment": 0.53,
-      "importance": 3,
-      "published_at": "2026-05-28 20:58:43",
+      "headline": "Meta, Microsoft, Amazon, and Alphabet are about to spend a shocking amount of money to dominate the AI era",
+      "sentiment": -0.36,
+      "importance": 2,
+      "published_at": "2026-06-03 20:53:59",
       "source": "yahoo"
     },
     {
-      "headline": "Meta launches paid subscriptions for Instagram, Facebook, WhatsApp",
-      "sentiment": null,
-      "importance": 3,
-      "published_at": "2026-05-28 20:09:13",
+      "headline": "Meta Fails to Overturn EU Gatekeeper Status for Messenger as Court Delivers Mixed Ruling (META)",
+      "sentiment": -0.62,
+      "importance": 2,
+      "published_at": "2026-06-03 19:28:49",
       "source": "yahoo"
     }
   ],
@@ -332,12 +331,6 @@
     {
       "date": "2026-07-30",
       "estimated_eps": 7.50889,
-      "actual_eps": null,
-      "surprise_pct": null
-    },
-    {
-      "date": "2026-04-30",
-      "estimated_eps": 6.819,
       "actual_eps": null,
       "surprise_pct": null
     }
