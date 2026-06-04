@@ -1,25 +1,24 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-06-03 22:24",
+  "generated_at": "2026-06-04 15:02",
   "summary": {
     "rank": "watch",
     "score": 55,
-    "prob_up_5d": 0.523,
-    "prob_down_5pct": 0.181,
-    "expected_return": 1.18,
-    "risk_reward": 1.31,
-    "max_loss_est": -0.9,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=52% / 20日=58% / 3ヶ月=65% / 12ヶ月=72%\n下落確率: 3%=29% / 5%=18% / 10%=6%\n期待値: +1.18% / リスクリワード: 1.31\n判定時刻: 2026-06-03 22:24",
-    "prediction_date": "2026-06-03"
+    "prob_up_5d": 0.52,
+    "prob_down_5pct": 0.183,
+    "expected_return": 1.16,
+    "risk_reward": 1.26,
+    "max_loss_est": -0.92,
+    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=52% / 20日=51% / 3ヶ月=65% / 12ヶ月=72%\n下落確率: 3%=27% / 5%=18% / 10%=6%\n期待値: +1.16% / リスクリワード: 1.26\n判定時刻: 2026-06-04 15:02",
+    "prediction_date": "2026-06-04"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 5,
-      "BUY": 16,
-      "HOLD": 5,
-      "WATCH": 42,
-      "REDUCE": 1
+      "BUY": 14,
+      "HOLD": 6,
+      "WATCH": 44
     },
     "category_stats": {
       "integration": {
@@ -50,26 +49,26 @@
         "hold": 17,
         "avg_score": 52.9
       },
-      "analysis": {
-        "count": 10,
-        "buy": 5,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 58.4
-      },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 55.3
+        "avg_score": 54.3
+      },
+      "analysis": {
+        "count": 10,
+        "buy": 3,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 56.4
       },
       "prediction": {
         "count": 10,
         "buy": 3,
-        "sell": 1,
-        "hold": 6,
-        "avg_score": 53.6
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 54.2
       }
     }
   },
@@ -129,15 +128,6 @@
       "reason": "売上高成長(17%) / EPS急成長(60%)"
     },
     {
-      "agent": "supply_demand",
-      "agent_jp": "需給分析",
-      "category": "analysis",
-      "score": 71.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "MFI買い圧力(63) / OBV上昇（蓄積） / VWAP上方"
-    },
-    {
       "agent": "liquidity_risk",
       "agent_jp": "流動性リスク",
       "category": "market_monitor",
@@ -147,6 +137,24 @@
       "reason": "流動性良好"
     },
     {
+      "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
+      "category": "analysis",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル総合買いシグナル / 強弱比=3.8:1.5"
+    },
+    {
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
+      "category": "prediction",
+      "score": 68.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=68% / MA20=+1.3% / 売上成長=17%"
+    },
+    {
       "agent": "expected_value",
       "agent_jp": "期待値",
       "category": "prediction",
@@ -154,15 +162,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
-    },
-    {
-      "agent": "fundamental",
-      "agent_jp": "ファンダメンタル",
-      "category": "analysis",
-      "score": 68.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高利益率(47%)"
     }
   ],
   "top_risks": [
@@ -194,6 +193,15 @@
       "reason": "200MA下 / MACD正"
     },
     {
+      "agent": "supply_demand",
+      "agent_jp": "需給分析",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MFI買い圧力(61) / OBV下降（分散） / VWAP上方"
+    },
+    {
       "agent": "institutional_flow",
       "agent_jp": "機関投資家動向",
       "category": "analysis",
@@ -201,15 +209,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "静かな蓄積パターン"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "investor_profile",
@@ -254,7 +253,7 @@
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "1d/5d上昇確率=54% / RSI=66 / MACD正"
+      "reason": "1d/5d上昇確率=54% / RSI=60 / MACD正"
     }
   ],
   "fundamentals": {
@@ -267,16 +266,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9171,
+    "total_days": 9172,
     "approx_years": 36.4,
     "data_span_label": "IPO以降 約36.4年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 441.31,
-    "current_drawdown_pct": -18.2,
+    "current_close": 427.34,
+    "current_drawdown_pct": -20.8,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3311,
     "pct_time_below_30pct": 36.1,
-    "current_pct_of_ath": 81.8
+    "current_pct_of_ath": 79.2
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -292,38 +291,38 @@
   },
   "news": [
     {
-      "headline": "Vectra AI Delivers Unified Network Observability Across All Major Cloud Platforms to Stop Hybrid Threats Faster",
-      "sentiment": 0.05,
-      "importance": 2,
-      "published_at": "2026-06-03 22:00:00",
+      "headline": "Qualcomm stock under pressure as Nvidia unveils new product",
+      "sentiment": 0.03,
+      "importance": 3,
+      "published_at": "2026-06-04 11:47:00",
       "source": "yahoo"
     },
     {
-      "headline": "Arpio Raises $15 Million to Advance AI-Native Automated Recovery Platform for Cloud Environments",
-      "sentiment": null,
+      "headline": "BB Or NOK: Which Fallen Phone Giant’s Stock Is The Better AI Bet Right Now?",
+      "sentiment": 0.72,
       "importance": 2,
-      "published_at": "2026-06-03 22:00:00",
+      "published_at": "2026-06-04 12:43:17",
       "source": "yahoo"
     },
     {
-      "headline": "OPAQUE Names Creator of Microsoft's Agent Governance Toolkit as Chief Platform Officer",
-      "sentiment": 0.3,
+      "headline": "Big Tech's AI Spending Is on Track to Top $700 Billion This Year. Here's Who May Cash In Next.",
+      "sentiment": 0.48,
       "importance": 2,
-      "published_at": "2026-06-03 22:00:00",
+      "published_at": "2026-06-04 11:31:00",
       "source": "yahoo"
     },
     {
-      "headline": "TeamViewer brings Windows AI API to Assist AR for clearer, smarter remote assistance to frontline workers",
-      "sentiment": 0.54,
+      "headline": "Stock Market Today, June 3: Markets End Winning Streak on Middle East Escalation Fears",
+      "sentiment": -0.23,
       "importance": 2,
-      "published_at": "2026-06-03 22:00:00",
+      "published_at": "2026-06-04 06:36:15",
       "source": "yahoo"
     },
     {
-      "headline": "Qumulo Announces Expanded Collaboration with Microsoft to Deliver Cloud-Native Storage Relief for the Enterprise Hardware Crisis",
-      "sentiment": 0.15,
+      "headline": "Stock Market Today, June 3: Alphabet Falls After $84.75 Billion AI Infrastructure Equity Raise",
+      "sentiment": 0.27,
       "importance": 2,
-      "published_at": "2026-06-03 22:00:00",
+      "published_at": "2026-06-04 06:07:41",
       "source": "yahoo"
     }
   ],
