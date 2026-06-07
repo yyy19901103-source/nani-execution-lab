@@ -1,25 +1,25 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-06-04 15:02",
+  "generated_at": "2026-06-07 15:19",
   "summary": {
     "rank": "watch",
-    "score": 51,
-    "prob_up_5d": 0.452,
+    "score": 49,
+    "prob_up_5d": 0.526,
     "prob_down_5pct": 0.343,
-    "expected_return": 0.61,
-    "risk_reward": 0.35,
+    "expected_return": 1.21,
+    "risk_reward": 0.7,
     "max_loss_est": -1.72,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=45% / 20日=51% / 3ヶ月=37% / 12ヶ月=40%\n下落確率: 3%=41% / 5%=34% / 10%=26%\n期待値: +0.61% / リスクリワード: 0.35\n判定時刻: 2026-06-04 15:02",
-    "prediction_date": "2026-06-04"
+    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=53% / 20日=47% / 3ヶ月=42% / 12ヶ月=48%\n下落確率: 3%=41% / 5%=34% / 10%=23%\n期待値: +1.21% / リスクリワード: 0.70\n判定時刻: 2026-06-07 15:19",
+    "prediction_date": "2026-06-07"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 1,
-      "BUY": 10,
-      "HOLD": 12,
-      "WATCH": 43,
-      "REDUCE": 2,
+      "BUY": 6,
+      "HOLD": 11,
+      "WATCH": 46,
+      "REDUCE": 4,
       "SELL": 1
     },
     "category_stats": {
@@ -33,30 +33,30 @@
       "market_monitor": {
         "count": 7,
         "buy": 1,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 49.4
+        "sell": 2,
+        "hold": 4,
+        "avg_score": 44.3
       },
       "analysis": {
         "count": 10,
-        "buy": 3,
+        "buy": 1,
         "sell": 1,
-        "hold": 6,
-        "avg_score": 49.9
+        "hold": 8,
+        "avg_score": 45.2
       },
       "trade_style": {
         "count": 7,
-        "buy": 1,
+        "buy": 0,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 48.4
+        "hold": 7,
+        "avg_score": 49.0
       },
       "prediction": {
         "count": 10,
-        "buy": 1,
-        "sell": 0,
+        "buy": 0,
+        "sell": 1,
         "hold": 9,
-        "avg_score": 50.5
+        "avg_score": 49.1
       },
       "sector": {
         "count": 19,
@@ -70,7 +70,7 @@
         "buy": 0,
         "sell": 1,
         "hold": 5,
-        "avg_score": 47.8
+        "avg_score": 45.0
       }
     }
   },
@@ -92,15 +92,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
-    },
-    {
-      "agent": "supply_demand",
-      "agent_jp": "需給分析",
-      "category": "analysis",
-      "score": 66.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "MFI買い圧力(65) / OBV上昇（蓄積）"
     },
     {
       "agent": "risk_assessment",
@@ -130,22 +121,13 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 62.0,
+      "agent": "emotion_bias",
+      "agent_jp": "感情バイアス",
+      "category": "personal",
+      "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "高値圏 / ADXトレンド強(=28)"
-    },
-    {
-      "agent": "technical_summary",
-      "agent_jp": "テクニカル総合",
-      "category": "analysis",
-      "score": 61.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "テクニカル中立 / 強弱比=2.8:2.5"
+      "reason": "感情バイアスなし"
     },
     {
       "agent": "money_management",
@@ -155,18 +137,18 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "ケリー推奨=10.0%"
-    },
-    {
-      "agent": "emotion_bias",
-      "agent_jp": "感情バイアス",
-      "category": "personal",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "感情バイアスなし"
     }
   ],
   "top_risks": [
+    {
+      "agent": "contrarian",
+      "agent_jp": "逆張り",
+      "category": "trade_style",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "CCI売られ(-163)"
+    },
     {
       "agent": "expected_value",
       "agent_jp": "期待値",
@@ -184,6 +166,24 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "12m上昇確率=57% / ROIC=2% / PER=353x"
+    },
+    {
+      "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
+      "category": "analysis",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "テクニカル中立 / 強弱比=3.5:4.8"
+    },
+    {
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=55% / MA20=-8.2% / 売上成長=16%"
     },
     {
       "agent": "sector_ev",
@@ -204,15 +204,6 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "alert",
-      "agent_jp": "アラート",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
-    },
-    {
       "agent": "growth_invest",
       "agent_jp": "グロース投資",
       "category": "trade_style",
@@ -228,34 +219,16 @@
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
     },
     {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "market_sentiment",
-      "agent_jp": "市場センチメント",
-      "category": "market_monitor",
-      "score": 53.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "RSI中立ゾーン"
-    },
-    {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
       "category": "prediction",
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.0% / 上昇確率52% / P10=-0.9% P90=+1.1%"
+      "reason": "5d上昇確率=53% / 20d=47% / 3m=42% / 期待値=+1.21%"
     }
   ],
   "fundamentals": {
@@ -268,16 +241,16 @@
   },
   "historical": {
     "first_data_date": "2010-06-29",
-    "total_days": 4007,
+    "total_days": 4009,
     "approx_years": 15.9,
     "data_span_label": "IPO以降 約15.9年（2010-06-29〜）",
     "all_time_high": 489.88,
-    "current_close": 423.7,
-    "current_drawdown_pct": -13.5,
+    "current_close": 391.0,
+    "current_drawdown_pct": -20.2,
     "max_drawdown_pct": -73.6,
     "days_below_30pct_dd": 1128,
-    "pct_time_below_30pct": 28.2,
-    "current_pct_of_ath": 86.5
+    "pct_time_below_30pct": 28.1,
+    "current_pct_of_ath": 79.8
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_TSLA",
@@ -295,7 +268,7 @@
   "earnings_recent": [
     {
       "date": "2026-07-23",
-      "estimated_eps": 0.45396,
+      "estimated_eps": 0.45432,
       "actual_eps": null,
       "surprise_pct": null
     }

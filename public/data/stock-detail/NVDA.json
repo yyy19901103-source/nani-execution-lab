@@ -1,26 +1,34 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-06-04 15:02",
+  "generated_at": "2026-06-07 15:19",
   "summary": {
     "rank": "watch",
     "score": 54,
     "prob_up_5d": 0.541,
-    "prob_down_5pct": 0.234,
+    "prob_down_5pct": 0.205,
     "expected_return": 1.33,
-    "risk_reward": 1.14,
-    "max_loss_est": -1.17,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=23% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.14\n判定時刻: 2026-06-04 15:02",
-    "prediction_date": "2026-06-04"
+    "risk_reward": 1.3,
+    "max_loss_est": -1.02,
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=30% / 5%=20% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.30\n判定時刻: 2026-06-07 15:19",
+    "prediction_date": "2026-06-07"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
-      "BUY": 15,
-      "HOLD": 10,
-      "WATCH": 39
+      "STRONG_BUY": 6,
+      "BUY": 14,
+      "HOLD": 7,
+      "WATCH": 40,
+      "REDUCE": 2
     },
     "category_stats": {
+      "trade_style": {
+        "count": 7,
+        "buy": 4,
+        "sell": 0,
+        "hold": 3,
+        "avg_score": 60.9
+      },
       "sector": {
         "count": 19,
         "buy": 3,
@@ -28,12 +36,12 @@
         "hold": 16,
         "avg_score": 53.8
       },
-      "trade_style": {
-        "count": 7,
-        "buy": 3,
+      "integration": {
+        "count": 6,
+        "buy": 1,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 58.6
+        "hold": 5,
+        "avg_score": 54.2
       },
       "personal": {
         "count": 10,
@@ -45,34 +53,36 @@
       "analysis": {
         "count": 10,
         "buy": 4,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 53.8
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 52.5
       },
       "prediction": {
         "count": 10,
         "buy": 2,
-        "sell": 0,
-        "hold": 8,
-        "avg_score": 52.8
+        "sell": 1,
+        "hold": 7,
+        "avg_score": 52.9
       },
       "market_monitor": {
         "count": 7,
-        "buy": 2,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 53.9
-      },
-      "integration": {
-        "count": 6,
         "buy": 1,
         "sell": 0,
-        "hold": 5,
-        "avg_score": 52.7
+        "hold": 6,
+        "avg_score": 51.3
       }
     }
   },
   "top_buys": [
+    {
+      "agent": "growth_invest",
+      "agent_jp": "グロース投資",
+      "category": "trade_style",
+      "score": 88.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
+    },
     {
       "agent": "sector_semiconductor",
       "agent_jp": "半導体",
@@ -83,13 +93,13 @@
       "reason": "半導体専門: 売上成長=73% OPM=65%"
     },
     {
-      "agent": "growth_invest",
-      "agent_jp": "グロース投資",
-      "category": "trade_style",
-      "score": 88.0,
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 84.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "売上急成長(73%) / EPS急成長(96%) / ROIC優秀(51%)"
+      "reason": "ウォッチリスト内 2/10位"
     },
     {
       "agent": "rule_compliance",
@@ -128,15 +138,6 @@
       "reason": "semiconductor: 売上成長=73%"
     },
     {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 72.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高値圏 / 60日リターン強(17.6%) / 200MA大幅上回り"
-    },
-    {
       "agent": "liquidity_risk",
       "agent_jp": "流動性リスク",
       "category": "market_monitor",
@@ -146,22 +147,22 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
+      "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
       "category": "analysis",
-      "score": 65.0,
+      "score": 69.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "リスク許容範囲内"
+      "reason": "テクニカル総合買いシグナル / 強弱比=5.8:2.5"
     },
     {
-      "agent": "portfolio_fit",
-      "agent_jp": "ポートフォリオ適合",
-      "category": "personal",
-      "score": 65.0,
+      "agent": "contrarian",
+      "agent_jp": "逆張り",
+      "category": "trade_style",
+      "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "未保有・新規可能"
+      "reason": "RSI売られ過ぎ(34) / CCI売られ(-161)"
     }
   ],
   "top_risks": [
@@ -175,22 +176,13 @@
       "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
-      "agent": "sector_rotation",
-      "agent_jp": "セクターローテーション",
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
       "category": "market_monitor",
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+5.2%)"
-    },
-    {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
-      "category": "prediction",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "アンサンブル=57% / LGBM=54% / ルール=43% / ファンダ=80%"
+      "reason": "直近ニュース良好(0.47)"
     },
     {
       "agent": "investor_profile",
@@ -202,15 +194,6 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "alert",
-      "agent_jp": "アラート",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
-    },
-    {
       "agent": "lgbm_prob",
       "agent_jp": "LightGBM確率",
       "category": "prediction",
@@ -218,6 +201,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "5d上昇確率=54% / 20d=61% / 3m=64% / 期待値=+1.33%"
+    },
+    {
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=55% / LGBM=54% / ルール=37% / ファンダ=80%"
     },
     {
       "agent": "score_integration",
@@ -235,7 +227,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=23% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.14\n判定時刻: 2026-06-04 15:02"
+      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=54% / 20日=61% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=30% / 5%=20% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.30\n判定時刻: 2026-06-07 15:19"
     },
     {
       "agent": "earnings_momentum",
@@ -254,6 +246,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "機関動向不明瞭"
+    },
+    {
+      "agent": "calibration",
+      "agent_jp": "キャリブレーション",
+      "category": "prediction",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "確率精度許容範囲(Brier=0.250)"
     }
   ],
   "fundamentals": {
@@ -266,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "1999-01-22",
-    "total_days": 6883,
+    "total_days": 6885,
     "approx_years": 27.3,
     "data_span_label": "IPO以降 約27.3年（1999-01-22〜）",
     "all_time_high": 235.74,
-    "current_close": 214.75,
-    "current_drawdown_pct": -8.9,
+    "current_close": 205.1,
+    "current_drawdown_pct": -13.0,
     "max_drawdown_pct": -89.7,
     "days_below_30pct_dd": 3699,
     "pct_time_below_30pct": 53.7,
-    "current_pct_of_ath": 91.1
+    "current_pct_of_ath": 87.0
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_NVDA",
@@ -291,38 +292,38 @@
   },
   "news": [
     {
-      "headline": "Dow Jones Futures: Broadcom, CrowdStrike Dive On Earnings; SpaceX IPO Price Target Set",
-      "sentiment": null,
-      "importance": 5,
-      "published_at": "2026-06-04 12:09:51",
+      "headline": "3 Dividend Stocks to Buy Hand Over Fist in June",
+      "sentiment": 0.49,
+      "importance": 4,
+      "published_at": "2026-06-07 14:50:00",
       "source": "yahoo"
     },
     {
-      "headline": "Assessing Fluence Energy (FLNC) Valuation After Nvidia And Siemens AI Data Center Partnership",
-      "sentiment": 0.94,
-      "importance": 3,
-      "published_at": "2026-06-04 13:31:03",
-      "source": "yahoo"
-    },
-    {
-      "headline": "3 Top Bargain Artificial Intelligence (AI) Stocks to Buy Right Now",
+      "headline": "Prediction: SpaceX Will Be 19% of This Low-Cost Vanguard ETF Before the End of 2026",
       "sentiment": 0.81,
       "importance": 2,
-      "published_at": "2026-06-04 14:38:00",
+      "published_at": "2026-06-07 14:20:00",
       "source": "yahoo"
     },
     {
-      "headline": "Should You Buy D-Wave Quantum Stock While It's Under $35?",
-      "sentiment": 0.32,
+      "headline": "Prediction: XRP (Ripple) Will Be Worth This Much in 5 Years",
+      "sentiment": -0.4,
       "importance": 2,
-      "published_at": "2026-06-04 13:50:00",
+      "published_at": "2026-06-07 13:50:00",
       "source": "yahoo"
     },
     {
-      "headline": "3 Ways to Buy SpaceX Stock Before Its Blockbuster IPO",
-      "sentiment": 0.6,
+      "headline": "Here is Why Nvidia (NVDA) is One of the Best Quality Growth Stocks to Buy",
+      "sentiment": 0.95,
       "importance": 2,
-      "published_at": "2026-06-04 13:20:00",
+      "published_at": "2026-06-07 13:39:42",
+      "source": "yahoo"
+    },
+    {
+      "headline": "The Single Biggest Cannabis Catalyst in Years Is Rapidly Approaching: 2 Marijuana Stocks to Buy Now",
+      "sentiment": 0.72,
+      "importance": 2,
+      "published_at": "2026-06-07 13:35:00",
       "source": "yahoo"
     }
   ],
