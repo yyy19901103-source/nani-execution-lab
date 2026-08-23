@@ -1,0 +1,178 @@
+---
+import '../../../styles/pmp-mobile.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import manifest from '../../../data/pmp/materials-manifest.json';
+import TrademarkFooter from '../../../components/pmp/TrademarkFooter.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const mf = manifest as { version: string; iterations: number; salt: string; iv: string; ct: string; fileCount: number; totalSize: number };
+---
+
+<BaseLayout
+  title="教材原文 (パスワード保護) - PMP学習アプリ"
+  description="PMI公式教材17ファイルの原文閲覧。パスワード必須。"
+>
+  <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
+    <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+      <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;">← ダッシュボード</a>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;">🔐 教材原文</h1>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:0 auto;padding:2rem 1.2rem 4rem;">
+
+    <div id="gate" style="max-width:420px;margin:2rem auto;background:#111114;border:1px solid rgba(200,169,110,0.2);padding:2rem 1.5rem;">
+      <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.2em;margin:0 0 0.4rem;text-align:center;">🔐 PASSWORD REQUIRED</p>
+      <h2 style="color:#edede8;font-size:1.05rem;font-weight:400;margin:0 0 1.2rem;text-align:center;">教材原文 {mf.fileCount}ファイル ({(mf.totalSize/1024/1024).toFixed(0)}MB)</h2>
+      <p style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.7;margin:0 0 1.5rem;">
+        PMI公式教材はコピーライト保護対象。個人閲覧目的でパスワードゲートを設置。ファイルURLは暗号化されており、パスワードなしで一覧・アクセス不可。
+      </p>
+      <input id="pw" type="password" placeholder="パスワード" autocomplete="current-password"
+        style="width:100%;background:#0a0a0c;color:#edede8;border:1px solid rgba(255,255,255,0.15);padding:0.7rem;font-size:0.9rem;font-family:inherit;box-sizing:border-box;letter-spacing:0.15em;" />
+      <button id="unlock"
+        style="width:100%;margin-top:0.8rem;background:#c8a96e;color:#0a0a0c;border:none;padding:0.8rem;font-size:0.8rem;letter-spacing:0.2em;font-weight:600;cursor:pointer;font-family:inherit;">
+        UNLOCK →
+      </button>
+      <p id="err" style="color:#e66;font-size:0.72rem;margin:0.8rem 0 0;display:none;text-align:center;"></p>
+    </div>
+
+    <div id="content" style="display:none;">
+      <div style="background:#111114;border:1px solid rgba(110,200,151,0.25);padding:0.9rem 1.1rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;">
+        <div>
+          <p style="color:#6ec897;font-size:0.7rem;letter-spacing:0.15em;margin:0 0 0.2rem;">✓ UNLOCKED</p>
+          <p style="color:rgba(237,237,232,0.75);font-size:0.75rem;margin:0;">
+            <span id="unlock-count">0</span> ファイル / <span id="unlock-size">0</span> MB
+          </p>
+        </div>
+        <button id="relock" style="background:transparent;color:#e8b46e;border:1px solid rgba(232,180,110,0.4);padding:0.45rem 0.9rem;font-size:0.7rem;letter-spacing:0.15em;cursor:pointer;font-family:inherit;">
+          RE-LOCK
+        </button>
+      </div>
+
+      <div id="file-list" style="background:#111114;border:1px solid rgba(255,255,255,0.05);"></div>
+
+      <div style="margin-top:2rem;padding:1rem;background:rgba(232,180,110,0.06);border-left:3px solid #e8b46e;">
+        <p style="color:#e8b46e;font-size:0.7rem;letter-spacing:0.15em;margin:0 0 0.3rem;">⚠️ 著作権注意</p>
+        <p style="color:rgba(237,237,232,0.7);font-size:0.72rem;line-height:1.7;margin:0;">
+          収録PDFは全て <strong>Copyright © 2026 Project Management Institute, Inc.</strong> の著作物。
+          個人学習目的の閲覧のみ。第三者への再配布・共有・SNS投稿は禁止。
+          Handout p.2 に「AI学習利用禁止」明記あり。
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <TrademarkFooter />
+
+  <script define:vars={{ mf, base }}>
+    const SESSION_KEY = 'pmp-materials-unlocked-v1';
+
+    function b64d(s) {
+      const bin = atob(s);
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return arr;
+    }
+
+    async function deriveKey(password, salt, iterations) {
+      const enc = new TextEncoder();
+      const km = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+        km,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
+    }
+
+    async function tryDecrypt(password) {
+      const salt = b64d(mf.salt);
+      const iv   = b64d(mf.iv);
+      const ct   = b64d(mf.ct);
+      const key = await deriveKey(password, salt, mf.iterations);
+      const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+      return JSON.parse(new TextDecoder().decode(pt));
+    }
+
+    function bytesToLabel(b) {
+      const mb = b / 1024 / 1024;
+      return mb >= 1 ? mb.toFixed(1) + ' MB' : (b / 1024).toFixed(0) + ' KB';
+    }
+
+    function iconOf(name) {
+      const n = name.toLowerCase();
+      if (n.includes('レッスン')) return '📘';
+      if (n.includes('用語集') || n.includes('glossary')) return '📖';
+      if (n.includes('blueprint') || n.includes('eco')) return '🗺️';
+      if (n.includes('問題')) return '📝';
+      if (n.includes('handout')) return '📚';
+      return '📄';
+    }
+
+    function render(files) {
+      const list = document.getElementById('file-list');
+      list.innerHTML = '';
+      files.forEach((f, i) => {
+        const url = `${base}/${f.url}`;
+        const item = document.createElement('div');
+        item.style.cssText = 'padding:0.9rem 1.1rem;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:0.9rem;align-items:center;';
+        item.innerHTML = `
+          <span style="font-size:1.4rem;flex-shrink:0;">${iconOf(f.name)}</span>
+          <div style="flex:1;min-width:0;">
+            <p style="color:#edede8;font-size:0.85rem;margin:0 0 0.2rem;font-weight:500;">${f.name}</p>
+            <p style="color:rgba(237,237,232,0.4);font-size:0.68rem;margin:0;letter-spacing:0.05em;">${bytesToLabel(f.size)} · PDF</p>
+          </div>
+          <a href="${url}" target="_blank" rel="noopener" style="background:transparent;color:#c8a96e;border:1px solid rgba(200,169,110,0.4);padding:0.4rem 0.8rem;font-size:0.7rem;letter-spacing:0.15em;text-decoration:none;">開く →</a>
+          <a href="${url}" download="${f.originalName}" style="background:transparent;color:rgba(237,237,232,0.55);border:1px solid rgba(255,255,255,0.15);padding:0.4rem 0.8rem;font-size:0.7rem;letter-spacing:0.15em;text-decoration:none;">DL</a>
+        `;
+        list.appendChild(item);
+      });
+      const totalMb = files.reduce((s, f) => s + f.size, 0) / 1024 / 1024;
+      document.getElementById('unlock-count').textContent = String(files.length);
+      document.getElementById('unlock-size').textContent = totalMb.toFixed(0);
+    }
+
+    async function unlock(password) {
+      const err = document.getElementById('err');
+      err.style.display = 'none';
+      const btn = document.getElementById('unlock');
+      btn.textContent = 'UNLOCKING…';
+      btn.disabled = true;
+      try {
+        const data = await tryDecrypt(password);
+        sessionStorage.setItem(SESSION_KEY, password);
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        render(data.files);
+      } catch (e) {
+        err.textContent = '✗ パスワードが違います';
+        err.style.display = 'block';
+        btn.textContent = 'UNLOCK →';
+        btn.disabled = false;
+      }
+    }
+
+    document.getElementById('unlock').addEventListener('click', () => {
+      const pw = (document.getElementById('pw') as HTMLInputElement).value;
+      if (pw) unlock(pw);
+    });
+    document.getElementById('pw').addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter') {
+        const pw = (document.getElementById('pw') as HTMLInputElement).value;
+        if (pw) unlock(pw);
+      }
+    });
+    document.getElementById('relock').addEventListener('click', () => {
+      sessionStorage.removeItem(SESSION_KEY);
+      document.getElementById('gate').style.display = 'block';
+      document.getElementById('content').style.display = 'none';
+      (document.getElementById('pw') as HTMLInputElement).value = '';
+    });
+
+    // セッション自動復帰
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    if (saved) unlock(saved);
+    else (document.getElementById('pw') as HTMLInputElement).focus();
+  </script>
+</BaseLayout>
