@@ -1,33 +1,39 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-06-07 15:19",
+  "generated_at": "2026-08-23 17:24",
   "summary": {
     "rank": "watch",
-    "score": 52,
-    "prob_up_5d": 0.524,
-    "prob_down_5pct": 0.183,
-    "expected_return": 1.19,
-    "risk_reward": 1.29,
-    "max_loss_est": -0.92,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=52% / 20日=53% / 3ヶ月=60% / 12ヶ月=72%\n下落確率: 3%=30% / 5%=18% / 10%=6%\n期待値: +1.19% / リスクリワード: 1.29\n判定時刻: 2026-06-07 15:19",
-    "prediction_date": "2026-06-07"
+    "score": 56,
+    "prob_up_5d": 0.536,
+    "prob_down_5pct": 0.206,
+    "expected_return": 1.29,
+    "risk_reward": 1.25,
+    "max_loss_est": -1.03,
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=53% / 3ヶ月=65% / 12ヶ月=72%\n下落確率: 3%=33% / 5%=21% / 10%=6%\n期待値: +1.29% / リスクリワード: 1.25\n判定時刻: 2026-08-23 17:23",
+    "prediction_date": "2026-08-23"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 4,
+      "STRONG_BUY": 7,
       "BUY": 12,
-      "HOLD": 11,
-      "WATCH": 41,
-      "SELL": 1
+      "HOLD": 5,
+      "WATCH": 45
     },
     "category_stats": {
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 58.0
+      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
-        "avg_score": 57.4
+        "avg_score": 61.3
       },
       "personal": {
         "count": 10,
@@ -43,37 +49,39 @@
         "hold": 17,
         "avg_score": 52.9
       },
-      "market_monitor": {
-        "count": 7,
-        "buy": 1,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 45.3
-      },
       "analysis": {
         "count": 10,
-        "buy": 2,
+        "buy": 4,
         "sell": 0,
-        "hold": 8,
-        "avg_score": 52.3
+        "hold": 6,
+        "avg_score": 57.1
       },
       "prediction": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 51.1
+        "avg_score": 56.0
       },
-      "integration": {
-        "count": 6,
-        "buy": 1,
+      "market_monitor": {
+        "count": 7,
+        "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 52.3
+        "avg_score": 55.3
       }
     }
   },
   "top_buys": [
+    {
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 90.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 1/10位"
+    },
     {
       "agent": "dividend_income",
       "agent_jp": "配当インカム",
@@ -81,7 +89,7 @@
       "score": 83.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "高配当(86.0%) / 高利益率(47%) / ROE高(34%)"
+      "reason": "高配当(75.0%) / 高利益率(45%) / ROE高(34%)"
     },
     {
       "agent": "rule_compliance",
@@ -99,7 +107,25 @@
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "高配当86.0% / ROE良好34.4% / 利益率安定47.1%"
+      "reason": "高配当75.0% / ROE良好34.0% / 利益率安定45.1%"
+    },
+    {
+      "agent": "momentum",
+      "agent_jp": "モメンタム",
+      "category": "trade_style",
+      "score": 77.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "高値圏 / 60日リターン強(17.1%) / ADXトレンド強(=61) / 200MA大幅上回り"
+    },
+    {
+      "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
+      "category": "analysis",
+      "score": 75.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "テクニカル総合買いシグナル / 強弱比=6.3:1.5"
     },
     {
       "agent": "sector_cloud_saas",
@@ -108,7 +134,7 @@
       "score": 75.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "Rule of 40超え(64)"
+      "reason": "Rule of 40超え(63)"
     },
     {
       "agent": "growth_invest",
@@ -117,7 +143,16 @@
       "score": 72.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "売上高成長(17%) / EPS急成長(60%)"
+      "reason": "売上高成長(18%) / EPS急成長(32%)"
+    },
+    {
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
+      "category": "prediction",
+      "score": 71.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "20d/3m上昇確率=71% / MA20=+2.3% / 売上成長=18%"
     },
     {
       "agent": "liquidity_risk",
@@ -127,53 +162,17 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
-    },
-    {
-      "agent": "fundamental",
-      "agent_jp": "ファンダメンタル",
-      "category": "analysis",
-      "score": 68.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高利益率(47%)"
-    },
-    {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
-    },
-    {
-      "agent": "portfolio_fit",
-      "agent_jp": "ポートフォリオ適合",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "未保有・新規可能"
-    },
-    {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
     {
-      "agent": "technical_summary",
-      "agent_jp": "テクニカル総合",
-      "category": "analysis",
-      "score": 59.0,
+      "agent": "sector_rotation",
+      "agent_jp": "セクターローテーション",
+      "category": "market_monitor",
+      "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "テクニカル中立 / 強弱比=3.8:4.0"
+      "reason": "S&P500比 月次強い(+23.3%)"
     },
     {
       "agent": "expected_value",
@@ -182,16 +181,25 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
+      "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "valuation",
-      "agent_jp": "バリュエーション",
+      "agent": "news_impact",
+      "agent_jp": "ニュース影響",
       "category": "analysis",
-      "score": 55.0,
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "バリュエーション中立"
+      "reason": "ニュース中立"
+    },
+    {
+      "agent": "score_integration",
+      "agent_jp": "スコア統合",
+      "category": "integration",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=56"
     },
     {
       "agent": "investor_profile",
@@ -212,71 +220,62 @@
       "reason": "異常なし"
     },
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
-      "score": 52.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "5d上昇確率=52% / 20d=53% / 3m=60% / 期待値=+1.19%"
-    },
-    {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
-      "category": "integration",
-      "score": 52.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "全エージェント統合スコア=52"
-    },
-    {
-      "agent": "final_judgment",
-      "agent_jp": "最終判定",
-      "category": "integration",
-      "score": 52.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=52% / 20日=53% / 3ヶ月=60% / 12ヶ月=72%\n下落確率: 3%=30% / 5%=18% / 10%=6%\n期待値: +1.19% / リスクリワード: 1.29\n判定時刻: 2026-06-07 15:19"
-    },
-    {
-      "agent": "news_impact",
-      "agent_jp": "ニュース影響",
+      "agent": "valuation",
+      "agent_jp": "バリュエーション",
       "category": "analysis",
-      "score": 51.0,
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "重大ネガティブニュース / 高関心・ポジティブ"
+      "reason": "バリュエーション中立"
     },
     {
-      "agent": "market_sentiment",
-      "agent_jp": "市場センチメント",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
       "category": "market_monitor",
-      "score": 51.0,
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "RSI中立ゾーン / 直近ニュース良好(0.32) / ネガティブニュース検知"
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(8.1x) / ROE高(34%) / 配当利回り75.0%"
+    },
+    {
+      "agent": "downside_risk",
+      "agent_jp": "下落リスク",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "3%下落確率=32% / 5%下落確率=53% / 10%下落確率=70% / ⚠下落リスク高"
     }
   ],
   "fundamentals": {
-    "PER": 25.6,
-    "PBR": 7.8,
-    "ROE": 0.344,
-    "operating_margin": 0.471,
-    "revenue_growth": 0.167,
-    "eps_growth": 0.598
+    "PER": 27.0,
+    "PBR": 8.1,
+    "ROE": 0.34,
+    "operating_margin": 0.451,
+    "revenue_growth": 0.177,
+    "eps_growth": 0.317
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9174,
-    "approx_years": 36.4,
-    "data_span_label": "IPO以降 約36.4年（1990-01-02〜）",
+    "total_days": 9227,
+    "approx_years": 36.6,
+    "data_span_label": "IPO以降 約36.6年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 416.67,
-    "current_drawdown_pct": -22.8,
+    "current_close": 483.24,
+    "current_drawdown_pct": -10.5,
     "max_drawdown_pct": -69.4,
-    "days_below_30pct_dd": 3311,
-    "pct_time_below_30pct": 36.1,
-    "current_pct_of_ath": 77.2
+    "days_below_30pct_dd": 3318,
+    "pct_time_below_30pct": 36.0,
+    "current_pct_of_ath": 89.5
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -292,42 +291,48 @@
   },
   "news": [
     {
-      "headline": "DocuSign (DOCU) Is Down 10.0% After AI-Focused Q1 Results And Guidance Update - What's Changed",
-      "sentiment": 0.2,
-      "importance": 5,
-      "published_at": "2026-06-07 07:10:18",
+      "headline": "Jim Cramer Was Left Impressed By Microsoft Corporation (NASDAQ:MSFT)’s Conference Call",
+      "sentiment": 0.92,
+      "importance": 2,
+      "published_at": "2026-08-23 08:54:26",
       "source": "yahoo"
     },
     {
-      "headline": "The 4 Best \"Magnificent Seven\" Stocks to Buy Now",
-      "sentiment": 0.87,
+      "headline": "Has Wall Street Entered the \"Show Me\" Phase of AI?",
+      "sentiment": null,
       "importance": 2,
-      "published_at": "2026-06-07 12:42:00",
+      "published_at": "2026-08-23 08:41:00",
       "source": "yahoo"
     },
     {
-      "headline": "$10,000 Invested in XLK on New Year’s Eve Is Worth $13,434 Today",
-      "sentiment": 0.82,
+      "headline": "Nvidia customers face over 15% server price hikes as memory costs soar - report",
+      "sentiment": 0.49,
       "importance": 2,
-      "published_at": "2026-06-07 09:15:52",
+      "published_at": "2026-08-23 06:17:44",
       "source": "yahoo"
     },
     {
-      "headline": "$10,000 in FNGU Became $8,392 in One Session as Tech Leverage Cut Both Ways",
-      "sentiment": -0.87,
+      "headline": "Nvidia customers notified about AI-related price hikes above 15%, Bloomberg News reports",
+      "sentiment": 0.42,
       "importance": 2,
-      "published_at": "2026-06-07 06:15:16",
+      "published_at": "2026-08-23 04:20:53",
       "source": "yahoo"
     },
     {
-      "headline": "Trump AI Policy Adviser Krishnan Is Giving Up White House Role",
-      "sentiment": 0.25,
+      "headline": "I've Held Microsoft for 10 Years. Here's Why I'm Not Selling a Single Share.",
+      "sentiment": 0.3,
       "importance": 2,
-      "published_at": "2026-06-07 04:10:09",
+      "published_at": "2026-08-23 03:33:00",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
+    {
+      "date": "2026-10-29",
+      "estimated_eps": 4.72092,
+      "actual_eps": null,
+      "surprise_pct": null
+    },
     {
       "date": "2026-07-30",
       "estimated_eps": 4.23745,

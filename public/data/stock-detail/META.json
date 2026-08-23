@@ -1,33 +1,33 @@
 {
   "ticker": "META",
-  "generated_at": "2026-06-07 15:19",
+  "generated_at": "2026-08-23 17:24",
   "summary": {
     "rank": "watch",
     "score": 53,
     "prob_up_5d": 0.567,
-    "prob_down_5pct": 0.238,
+    "prob_down_5pct": 0.219,
     "expected_return": 1.54,
-    "risk_reward": 1.29,
-    "max_loss_est": -1.19,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=32% / 3ヶ月=59% / 12ヶ月=23%\n下落確率: 3%=64% / 5%=24% / 10%=9%\n期待値: +1.54% / リスクリワード: 1.29\n判定時刻: 2026-06-07 15:19",
-    "prediction_date": "2026-06-07"
+    "risk_reward": 1.4,
+    "max_loss_est": -1.1,
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=57% / 20日=60% / 3ヶ月=66% / 12ヶ月=79%\n下落確率: 3%=46% / 5%=22% / 10%=8%\n期待値: +1.54% / リスクリワード: 1.40\n判定時刻: 2026-08-23 17:23",
+    "prediction_date": "2026-08-23"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 4,
-      "BUY": 11,
-      "HOLD": 8,
+      "BUY": 12,
+      "HOLD": 7,
       "WATCH": 43,
       "REDUCE": 3
     },
     "category_stats": {
       "trade_style": {
         "count": 7,
-        "buy": 3,
+        "buy": 5,
         "sell": 1,
-        "hold": 3,
-        "avg_score": 56.1
+        "hold": 1,
+        "avg_score": 60.6
       },
       "sector": {
         "count": 19,
@@ -48,28 +48,28 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 54.3
+        "avg_score": 53.0
       },
       "market_monitor": {
         "count": 7,
         "buy": 1,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 48.9
+        "sell": 2,
+        "hold": 4,
+        "avg_score": 47.6
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 51.3
+        "avg_score": 52.5
       },
       "prediction": {
         "count": 10,
-        "buy": 1,
-        "sell": 1,
-        "hold": 8,
-        "avg_score": 49.6
+        "buy": 0,
+        "sell": 0,
+        "hold": 10,
+        "avg_score": 52.0
       }
     }
   },
@@ -81,7 +81,7 @@
       "score": 83.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "高配当(31.0%) / 高利益率(41%) / ROE高(30%)"
+      "reason": "高配当(38.0%) / 高利益率(35%) / ROE高(30%)"
     },
     {
       "agent": "sector_social_media",
@@ -90,7 +90,7 @@
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "広告収益高成長(24%)"
+      "reason": "広告収益高成長(28%)"
     },
     {
       "agent": "rule_compliance",
@@ -108,7 +108,7 @@
       "score": 80.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "高配当31.0% / ROE良好30.2% / 利益率安定41.3%"
+      "reason": "高配当38.0% / ROE良好29.8% / 利益率安定34.8%"
     },
     {
       "agent": "fundamental",
@@ -117,7 +117,16 @@
       "score": 73.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "高利益率(41%) / 高成長(24%)"
+      "reason": "高利益率(35%) / 高成長(28%)"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 73.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "PER適正(20.7x) / EV/EBITDA割安(13.0x) / ROE高(30%) / 配当利回り38.0%"
     },
     {
       "agent": "liquidity_risk",
@@ -129,13 +138,22 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ストキャスOver売(17) / ストキャスKD買い"
+    },
+    {
+      "agent": "contrarian",
+      "agent_jp": "逆張り",
+      "category": "trade_style",
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 4/10位"
+      "reason": "RSI売られ過ぎ(31) / 52週安値近傍"
     },
     {
       "agent": "risk_assessment",
@@ -145,24 +163,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "リスク許容範囲内"
-    },
-    {
-      "agent": "portfolio_fit",
-      "agent_jp": "ポートフォリオ適合",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "未保有・新規可能"
-    },
-    {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
@@ -182,16 +182,34 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "売上高成長24%"
+      "reason": "売上高成長28%"
+    },
+    {
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "直近ニュース良好(0.43)"
+    },
+    {
+      "agent": "long_term_prob",
+      "agent_jp": "長期確率",
+      "category": "prediction",
+      "score": 57.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=57% / ROIC=15% / PER=21x"
     },
     {
       "agent": "news_impact",
       "agent_jp": "ニュース影響",
       "category": "analysis",
-      "score": 57.0,
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "直近ニュース強ポジ(0.55) / 重大ネガティブニュース / 高関心・ポジティブ"
+      "reason": "ニュース中立"
     },
     {
       "agent": "lgbm_prob",
@@ -200,16 +218,16 @@
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=57% / 20d=32% / 3m=59% / 期待値=+1.54%"
+      "reason": "5d上昇確率=57% / 20d=60% / 3m=66% / 期待値=+1.54%"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
+      "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD売り / RSI7売られ過ぎ"
+      "reason": "20d/3m上昇確率=55% / MA20=-4.6% / 売上成長=28%"
     },
     {
       "agent": "investor_profile",
@@ -221,31 +239,13 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
+      "agent": "alert",
+      "agent_jp": "アラート",
+      "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "technical_summary",
-      "agent_jp": "テクニカル総合",
-      "category": "analysis",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "テクニカル総合売りシグナル / 強弱比=3.0:4.8"
-    },
-    {
-      "agent": "supply_demand",
-      "agent_jp": "需給分析",
-      "category": "analysis",
-      "score": 53.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇（蓄積） / VWAP下方（売り圧）"
+      "reason": "異常なし"
     },
     {
       "agent": "score_integration",
@@ -258,25 +258,25 @@
     }
   ],
   "fundamentals": {
-    "PER": 22.3,
-    "PBR": 7.1,
-    "ROE": 0.302,
-    "operating_margin": 0.413,
-    "revenue_growth": 0.238,
-    "eps_growth": 0.107
+    "PER": 20.7,
+    "PBR": 5.4,
+    "ROE": 0.298,
+    "operating_margin": 0.348,
+    "revenue_growth": 0.28,
+    "eps_growth": -0.134
   },
   "historical": {
     "first_data_date": "2012-05-18",
-    "total_days": 3532,
-    "approx_years": 14.0,
-    "data_span_label": "IPO以降 約14.0年（2012-05-18〜）",
+    "total_days": 3585,
+    "approx_years": 14.2,
+    "data_span_label": "IPO以降 約14.2年（2012-05-18〜）",
     "all_time_high": 788.15,
-    "current_close": 593.0,
-    "current_drawdown_pct": -24.8,
+    "current_close": 549.9,
+    "current_drawdown_pct": -30.2,
     "max_drawdown_pct": -76.7,
-    "days_below_30pct_dd": 585,
-    "pct_time_below_30pct": 16.6,
-    "current_pct_of_ath": 75.2
+    "days_below_30pct_dd": 592,
+    "pct_time_below_30pct": 16.5,
+    "current_pct_of_ath": 69.8
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_META",
@@ -292,42 +292,48 @@
   },
   "news": [
     {
-      "headline": "Morgan Stanley flags four emerging products to turn Meta into an ’AI winner’",
-      "sentiment": 0.13,
-      "importance": 3,
-      "published_at": "2026-06-07 01:52:57",
+      "headline": "Morgan Stanley resets Nvidia stock forecast ahead of earnings",
+      "sentiment": null,
+      "importance": 5,
+      "published_at": "2026-08-22 07:17:00",
       "source": "yahoo"
     },
     {
-      "headline": "Meta’s Potential Mega Equity Raise Puts AI Ambitions And Dilution In Focus",
-      "sentiment": 0.66,
+      "headline": "Mark Zuckerberg Published a 6,500-Word AI Manifesto This Week Defending Meta's Unrestricted AI Buildout. Here's Why Investors Should Care.",
+      "sentiment": 0.49,
       "importance": 2,
-      "published_at": "2026-06-07 13:20:42",
+      "published_at": "2026-08-23 13:20:00",
       "source": "yahoo"
     },
     {
-      "headline": "The 4 Best \"Magnificent Seven\" Stocks to Buy Now",
-      "sentiment": 0.87,
+      "headline": "Jim Cramer Was Left Impressed By Microsoft Corporation (NASDAQ:MSFT)’s Conference Call",
+      "sentiment": 0.92,
       "importance": 2,
-      "published_at": "2026-06-07 12:42:00",
+      "published_at": "2026-08-23 08:54:26",
       "source": "yahoo"
     },
     {
-      "headline": "$10,000 in FNGU Became $8,392 in One Session as Tech Leverage Cut Both Ways",
-      "sentiment": -0.87,
+      "headline": "Apple vs. Meta Platforms: Which \"Magnificent Seven\" Giant Has the Stronger Artificial Intelligence (AI) Growth Engine?",
+      "sentiment": 0.9,
       "importance": 2,
-      "published_at": "2026-06-07 06:15:16",
+      "published_at": "2026-08-23 04:59:00",
       "source": "yahoo"
     },
     {
-      "headline": "The Conundrum of Investing in AI Today",
-      "sentiment": 0.38,
+      "headline": "Alphabet, Meta, and Microsoft Are Hiding $3 Trillion in Debt On the AI Boom’s Hidden Ledger",
+      "sentiment": -0.48,
       "importance": 2,
-      "published_at": "2026-06-07 06:07:37",
+      "published_at": "2026-08-23 00:52:40",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
+    {
+      "date": "2026-10-29",
+      "estimated_eps": 6.9675,
+      "actual_eps": null,
+      "surprise_pct": null
+    },
     {
       "date": "2026-07-30",
       "estimated_eps": 7.50889,
