@@ -154,12 +154,12 @@ const mf = manifest as { version: string; iterations: number; salt: string; iv: 
     }
 
     document.getElementById('unlock').addEventListener('click', () => {
-      const pw = (document.getElementById('pw') as HTMLInputElement).value;
+      const pw = document.getElementById('pw').value;
       if (pw) unlock(pw);
     });
     document.getElementById('pw').addEventListener('keydown', (e) => {
-      if ((e as KeyboardEvent).key === 'Enter') {
-        const pw = (document.getElementById('pw') as HTMLInputElement).value;
+      if (e.key === 'Enter') {
+        const pw = document.getElementById('pw').value;
         if (pw) unlock(pw);
       }
     });
@@ -167,12 +167,12 @@ const mf = manifest as { version: string; iterations: number; salt: string; iv: 
       sessionStorage.removeItem(SESSION_KEY);
       document.getElementById('gate').style.display = 'block';
       document.getElementById('content').style.display = 'none';
-      (document.getElementById('pw') as HTMLInputElement).value = '';
+      document.getElementById('pw').value = '';
     });
 
     // セッション自動復帰
     const saved = sessionStorage.getItem(SESSION_KEY);
     if (saved) unlock(saved);
-    else (document.getElementById('pw') as HTMLInputElement).focus();
+    else document.getElementById('pw').focus();
   </script>
 </BaseLayout>
