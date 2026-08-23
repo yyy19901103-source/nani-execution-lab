@@ -2,18 +2,23 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>まほうの庭 ✿ Magic Garden</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700&family=DotGothic16&family=Klee+One:wght@600&family=Noto+Sans+JP:wght@500;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Press+Start+2P&family=Shippori+Mincho+B1:wght@500;700;900&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=55">
+  <link rel="stylesheet" href="css/pixel-theme.css?v=55">
+  <link rel="stylesheet" href="css/pixel-sprites.css?v=55">
 </head>
 <body>
 
 <!-- ═══════════════════════════════════ ローディング画面 ═══ -->
 <div id="screen-loading" class="screen active">
   <div class="loading-wrap">
-    <div class="loading-sprite">🌸</div>
+    <div class="loading-sprite"><img src="assets/ui-icons/idle_welcome.webp?v=80" alt="" style="width:120px;height:120px;border-radius:50%;object-fit:cover;object-position:center 25%;box-shadow:0 0 18px rgba(255,215,0,.45);border:2px solid rgba(255,215,0,.55);" onerror="this.outerHTML='<span>🌸</span>';"></div>
     <h1 class="loading-title">まほうの庭</h1>
-    <p class="loading-sub">✿ Magic Garden ✿</p>
+    <p class="loading-sub">Magic Garden</p>
     <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
     <p class="loading-text">読み込んでいます…</p>
   </div>
@@ -25,24 +30,78 @@
   <!-- ヘッダー -->
   <header class="game-header">
     <div class="hd-resources">
-      <span class="res-coins">🪙 <span id="coins">0</span></span>
-      <span class="res-crystals">💎 <span id="crystals">0</span></span>
-      <span class="res-stamina" id="stamina-display">⚡ 30/30</span>
+      <span class="res-coins"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/res_coin.webp?v=79" alt="🪙"> <span id="coins">0</span></span>
+      <span class="res-crystals"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/res_gem.webp?v=79" alt="💎"> <span id="crystals">0</span></span>
+      <span class="res-stamina" id="stamina-display"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/res_stamina.webp?v=79" alt="⚡"> 30/30</span>
+      <span id="stamina-timer" class="stamina-timer hidden"></span>
     </div>
-    <div class="hd-player" id="player-name">まほうつかい</div>
+    <div class="hd-player">
+      <span id="player-name">まほうつかい</span>
+      <button id="btn-edit-name" class="btn-edit-name" title="名前を変更" aria-label="名前を変更">✏️</button>
+    </div>
     <div class="hd-icons">
-      <button id="btn-bgm" class="btn-icon" title="BGM">🔊</button>
-      <button id="btn-cloud-settings" class="btn-cloud-icon" title="クラウド設定">☁️</button>
+      <button id="btn-bgm" class="btn-icon" title="BGM" aria-label="BGM切替">🔊</button>
+      <button id="btn-settings" class="btn-icon" title="設定" aria-label="設定を開く">⚙️</button>
+      <button id="btn-cloud-settings" class="btn-cloud-icon" title="クラウド設定" aria-label="クラウド設定">☁️</button>
     </div>
   </header>
 
-  <!-- タブナビ -->
-  <nav class="tab-nav">
-    <button class="tab-btn active" data-tab="home">🏠<br>ホーム</button>
-    <button class="tab-btn" data-tab="adventure">⚔️<br>冒険</button>
-    <button class="tab-btn" data-tab="generals">👥<br>副将</button>
-    <button class="tab-btn" data-tab="gacha">🎲<br>召喚</button>
-    <button class="tab-btn" data-tab="zukan">📖<br>図鑑</button>
+  <!-- 設定モーダル -->
+  <div id="settings-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="settings-heading">
+    <div class="settings-panel">
+      <h2 id="settings-heading" class="settings-title">⚙ 設定</h2>
+      <div class="settings-row">
+        <label class="settings-label">スキャンライン (CRT効果)</label>
+        <button id="opt-scanline" class="settings-toggle" data-on="true">ON</button>
+      </div>
+      <div class="settings-row">
+        <label class="settings-label">バトル開始演出 (VS画面)</label>
+        <button id="opt-vs-intro" class="settings-toggle" data-on="true">ON</button>
+      </div>
+      <div class="settings-row">
+        <label class="settings-label">勝利時の紙吹雪</label>
+        <button id="opt-confetti" class="settings-toggle" data-on="true">ON</button>
+      </div>
+      <div class="settings-row">
+        <label class="settings-label">勝利後ボタンのフォーカス強調</label>
+        <button id="opt-autofocus-next" class="settings-toggle" data-on="true">ON</button>
+      </div>
+      <div class="settings-row">
+        <label class="settings-label">自動連戦 (勝利時に同ステージを再戦)</label>
+        <button id="opt-auto-replay" class="settings-toggle" data-on="false">OFF</button>
+      </div>
+      <div class="settings-row">
+        <label class="settings-label">演出を抑える (アクセシビリティ)</label>
+        <button id="opt-reduced-motion" class="settings-toggle" data-on="false">OFF</button>
+      </div>
+      <div class="settings-actions">
+        <button id="settings-close" class="btn btn-primary">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- タブナビ（PNG アイコン版・木目テクスチャ背景） -->
+  <nav class="tab-nav tab-nav-png">
+    <button class="tab-btn active" data-tab="home">
+      <img class="tab-icon" src="assets/nav-icons/home.webp?v=79" alt="ホーム">
+      <span class="tab-label">ホーム</span>
+    </button>
+    <button class="tab-btn" data-tab="adventure">
+      <img class="tab-icon" src="assets/nav-icons/adventure.webp?v=79" alt="冒険">
+      <span class="tab-label">冒険</span>
+    </button>
+    <button class="tab-btn" data-tab="generals">
+      <img class="tab-icon" src="assets/nav-icons/generals.webp?v=79" alt="副将">
+      <span class="tab-label">副将</span>
+    </button>
+    <button class="tab-btn" data-tab="gacha">
+      <img class="tab-icon" src="assets/nav-icons/gacha.webp?v=79" alt="召喚">
+      <span class="tab-label">召喚</span>
+    </button>
+    <button class="tab-btn" data-tab="zukan">
+      <img class="tab-icon" src="assets/nav-icons/codex.webp?v=79" alt="図鑑">
+      <span class="tab-label">図鑑</span>
+    </button>
   </nav>
 
   <!-- タブコンテンツ -->
@@ -52,10 +111,10 @@
     <div id="tab-home" class="tab-panel active">
 
       <!-- 放置報酬ポップアップ -->
-      <div id="idle-reward" class="overlay hidden">
+      <div id="idle-reward" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="idle-reward-heading">
         <div class="popup-card">
-          <span class="popup-icon">🌸</span>
-          <h3 class="popup-title">おかえり！</h3>
+          <img class="popup-hero-img" src="assets/ui-icons/idle_welcome.webp?v=79" alt="おかえり" onerror="this.outerHTML='<span class=&quot;popup-icon&quot;>🌸</span>'">
+          <h3 id="idle-reward-heading" class="popup-title">おかえり！</h3>
           <p id="idle-reward-text" class="popup-text">コインを集めておいたよ！</p>
           <button id="collect-btn" class="btn btn-primary">受け取る ✓</button>
         </div>
@@ -64,20 +123,38 @@
       <!-- ダッシュボード -->
       <div id="home-dashboard" class="home-dashboard"></div>
 
+      <!-- クラウドセーブ未設定バナー -->
+      <div id="cloud-save-banner" class="cloud-save-banner hidden">
+        <span class="banner-icon">☁️</span>
+        <span class="banner-text">クラウドセーブ未設定 — データ消失リスクあり</span>
+        <button id="cloud-banner-setup" class="btn-banner-setup">設定する</button>
+        <button id="cloud-banner-dismiss" class="btn-banner-close">✕</button>
+      </div>
+
       <!-- 現在の編成 -->
       <section class="home-section">
-        <h3 class="section-label">⚔️ 現在の編成</h3>
+        <h3 class="section-label"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/equip_weapon.webp?v=79" alt="⚔️"> 現在の編成</h3>
         <div id="formation-display" class="formation-display"></div>
+      </section>
+
+      <!-- 実績 -->
+      <section class="home-section">
+        <h3 class="section-label">🏅 実績</h3>
+        <div id="achievement-panel" class="achievement-panel"></div>
       </section>
 
       <!-- 今日の任務 -->
       <section class="home-section">
-        <h3 class="section-label">📋 今日の任務</h3>
+        <h3 class="section-label">📋 今日の任務 <span id="daily-badge" class="daily-badge"></span></h3>
         <div id="daily-tasks" class="daily-tasks-list"></div>
       </section>
 
-      <!-- 保存 -->
-      <button id="save-btn" class="btn btn-save">💾 保存する</button>
+      <!-- 週間ミッション -->
+      <section class="home-section">
+        <h3 class="section-label">📅 週間ミッション <span id="weekly-reset-label" class="weekly-reset-label"></span></h3>
+        <div id="weekly-tasks" class="daily-tasks-list"></div>
+      </section>
+
       <div id="save-confirm" class="toast hidden">✓ 保存しました！</div>
 
     </div><!-- /tab-home -->
@@ -85,15 +162,39 @@
     <!-- ══════════════ 冒険タブ ══════════════ -->
     <div id="tab-adventure" class="tab-panel">
 
+      <!-- バトル開始VS演出 -->
+      <div id="battle-intro" class="battle-intro hidden">
+        <div class="intro-flash"></div>
+        <div class="intro-rays"></div>
+        <div class="intro-team intro-team-left"></div>
+        <div class="intro-vs">
+          <div class="intro-vs-text">VS</div>
+          <div class="intro-vs-sub"></div>
+        </div>
+        <div class="intro-team intro-team-right"></div>
+        <div class="intro-warn hidden"><span class="intro-warn-icon">⚠️</span><span class="intro-warn-text">強敵出現！</span></div>
+      </div>
+
       <!-- バトル結果オーバーレイ -->
-      <div id="battle-result" class="overlay hidden">
+      <div id="battle-result" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="result-banner">
+        <div id="confetti-container" class="confetti-container"></div>
+        <div class="victory-rays"></div>
+        <div class="defeat-vignette"></div>
         <div class="result-panel">
           <div id="result-banner" class="result-banner">勝利！</div>
+          <div id="result-stats"  class="result-stats"></div>
           <div id="result-loot"   class="result-loot"></div>
           <div id="result-log"    class="result-log"></div>
+          <button id="result-log-toggle" class="btn-log-toggle hidden">📜 全ログを見る ▼</button>
           <div class="result-btns">
-            <button id="result-retry" class="btn btn-retry hidden">🔄 再挑戦</button>
+            <button id="result-retry" class="btn btn-retry hidden"><span class="picon picon-play"></span> 再挑戦</button>
+            <button id="result-next" class="btn btn-next hidden"><span class="picon picon-play"></span> 次のステージ</button>
             <button id="result-close" class="btn btn-primary">閉じる</button>
+          </div>
+          <!-- 自動連戦中バー (autoReplay=ON 時のみ表示) -->
+          <div id="auto-replay-bar" class="auto-replay-bar hidden">
+            <span id="auto-replay-counter" class="ar-counter"></span>
+            <button id="auto-replay-stop-btn" class="btn-ar-stop">⏹ 停止</button>
           </div>
         </div>
       </div>
@@ -105,7 +206,9 @@
         <button class="chapter-tab"        data-chapter="2">三章</button>
         <button class="chapter-tab"        data-chapter="3">四章</button>
         <button class="chapter-tab"        data-chapter="4">五章</button>
+        <button class="chapter-tab"        data-chapter="5">六章✨</button>
         <button class="chapter-tab"        data-boss="true">👹日課</button>
+        <button class="chapter-tab hidden"  id="tower-tab-btn" data-tower="true">🗼無限塔</button>
       </div>
 
       <!-- ステージリスト -->
@@ -119,28 +222,49 @@
         <div id="boss-cards" class="boss-cards"></div>
       </div>
 
+      <!-- 無限塔セクション -->
+      <div id="tower-section" class="tower-section hidden"></div>
+
     </div><!-- /tab-adventure -->
 
     <!-- ══════════════ 副将タブ ══════════════ -->
     <div id="tab-generals" class="tab-panel">
 
-      <!-- 副将詳細オーバーレイ -->
-      <div id="general-detail" class="detail-overlay hidden">
-        <div class="detail-panel">
-          <button id="detail-close" class="detail-close">✕</button>
-          <div id="detail-body" class="detail-body"></div>
-        </div>
-      </div>
-
       <!-- 編成スロット -->
       <section class="home-section">
-        <h3 class="section-label">⚔️ 編成（最大3体）</h3>
+        <h3 class="section-label"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/equip_weapon.webp?v=79" alt="⚔️"> 編成（最大3体）</h3>
         <div id="formation-editor" class="formation-editor"></div>
       </section>
 
       <!-- 所持副将 -->
       <section class="home-section">
         <h3 class="section-label">👥 所持副将 <span id="generals-count"></span></h3>
+        <div class="generals-filter-bar" id="generals-filter-bar">
+          <input id="generals-search" class="generals-search" type="search" placeholder="🔍 名前で検索">
+          <div class="filter-row" id="rarity-filter-row">
+            <button class="rarity-filter-btn active" data-rarity="all">全部</button>
+            <button class="rarity-filter-btn" data-rarity="LR"  style="color:var(--lr)">LR</button>
+            <button class="rarity-filter-btn" data-rarity="MR"  style="color:var(--mr)">MR</button>
+            <button class="rarity-filter-btn" data-rarity="UR"  style="color:var(--ur)">UR</button>
+            <button class="rarity-filter-btn" data-rarity="SSR" style="color:var(--ssr)">SSR</button>
+            <button class="rarity-filter-btn" data-rarity="SR"  style="color:var(--sr)">SR</button>
+            <button class="rarity-filter-btn" data-rarity="R">R</button>
+          </div>
+          <div class="filter-row" id="elem-filter-row"><!-- 属性フィルターをJSで動的生成 --></div>
+          <div class="filter-row">
+            <label class="filter-label">並び替え:</label>
+            <select id="generals-sort" class="generals-sort-sel">
+              <option value="rarity">レア度順</option>
+              <option value="level">レベル高順</option>
+              <option value="power">戦力高順</option>
+              <option value="atk">攻撃力高順</option>
+              <option value="spd">速度高順</option>
+            </select>
+          </div>
+          <div class="filter-row">
+            <button id="bulk-awaken-btn" class="bulk-awaken-btn">✨ 一括覚醒</button>
+          </div>
+        </div>
         <div id="generals-grid" class="generals-grid"></div>
       </section>
 
@@ -149,43 +273,81 @@
     <!-- ══════════════ ガチャタブ ══════════════ -->
     <div id="tab-gacha" class="tab-panel">
 
-      <!-- ガチャ結果オーバーレイ -->
-      <div id="gacha-result" class="overlay hidden">
-        <div class="gacha-result-panel">
-          <h3 class="gacha-result-title">✨ 召喚結果！</h3>
-          <div id="gacha-result-cards" class="gacha-result-grid"></div>
-          <button id="gacha-result-close" class="btn btn-primary">閉じる</button>
-        </div>
-      </div>
-
       <!-- バナー -->
       <div class="gacha-banner">
-        <div class="banner-title">🌟 副将召喚 🌟</div>
+        <div class="banner-title">
+          <img class="ui-icon ui-icon-md" src="assets/ui-icons/summon_banner_star.webp?v=80" alt="">
+          副将召喚
+          <img class="ui-icon ui-icon-md" src="assets/ui-icons/summon_banner_star.webp?v=80" alt="">
+        </div>
         <div class="banner-rates">
-          <span class="rate-ssr">SSR 15%</span>
-          <span class="rate-sr">SR  45%</span>
-          <span class="rate-r">R   40%</span>
+          <span class="rate-ssr" style="color:var(--lr)">LR 0.6%</span>
+          <span class="rate-ssr" style="color:var(--mr)">MR 1.1%</span>
+          <span class="rate-ssr" style="color:var(--ur)">UR 1.7%</span>
+          <span class="rate-ssr">SSR 14.6%</span>
+          <span class="rate-sr">SR  31.5%</span>
+          <span class="rate-r">R   50.5%</span>
         </div>
         <div class="gacha-btns">
           <button id="draw-1-btn" class="btn btn-draw1">
-            1回召喚<br><small>💎 30</small>
+            1回召喚<br><small><span class="picon picon-gem"></span> 30</small>
           </button>
           <button id="draw-10-btn" class="btn btn-draw10">
-            10回召喚<br><small>💎 280</small>
+            10回召喚<br><small><span class="picon picon-gem"></span> 280</small>
           </button>
         </div>
-        <p id="pity-count" class="pity-text">天井まで: 90回</p>
+        <!-- 天井ゲージ -->
+        <div class="pity-gauge">
+          <div class="pity-gauge-header">
+            <span class="pity-label"><span class="picon picon-target"></span> 天井ゲージ</span>
+            <span id="pity-count" class="pity-count-num">残り90回</span>
+          </div>
+          <div class="pity-bar-wrap">
+            <div id="pity-bar" class="pity-bar" style="width:0%"></div>
+          </div>
+          <div class="pity-footer">
+            <span class="pity-hint">90回でUR以上確定</span>
+            <span id="pity-drawn" class="pity-drawn">0回消化</span>
+          </div>
+        </div>
       </div>
 
       <!-- 装備倉庫 -->
       <section class="home-section">
         <h3 class="section-label">🎒 装備倉庫</h3>
+        <div class="equip-filter-bar" id="equip-filter-bar">
+          <button class="equip-filter-btn active" data-type="all">全部</button>
+          <button class="equip-filter-btn" data-type="weapon"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/equip_weapon.webp?v=79" alt="⚔️">武器</button>
+          <button class="equip-filter-btn" data-type="armor"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/equip_armor.webp?v=79" alt="🛡️">防具</button>
+          <button class="equip-filter-btn" data-type="accessory"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/equip_accessory.webp?v=79" alt="💍">装飾</button>
+          <select id="equip-sort-sel" class="equip-sort-sel">
+            <option value="rarity">レア度順</option>
+            <option value="enhance">強化順</option>
+            <option value="new">新着順</option>
+          </select>
+        </div>
         <div id="equip-inventory" class="equip-list"></div>
       </section>
 
       <!-- ショップ -->
       <section class="home-section">
-        <h3 class="section-label">🛒 装備ショップ <span class="shop-refresh-label">毎日更新</span></h3>
+        <div class="shop-header-row">
+          <h3 class="section-label">🛒 装備ショップ</h3>
+          <button id="shop-refresh-btn" class="btn-shop-refresh" title="ショップを更新">
+            🔄 <span id="shop-refresh-label">無料更新</span>
+          </button>
+        </div>
+        <!-- スタミナポーション（特別販売） -->
+        <div id="shop-special" class="shop-special">
+          <div class="shop-special-item">
+            <span class="shop-special-icon"><img class="ui-icon ui-icon-md" src="assets/ui-icons/res_stamina.webp?v=79" alt="⚡"></span>
+            <div class="shop-special-info">
+              <div class="shop-special-name">スタミナポーション</div>
+              <div class="shop-special-desc">スタミナ+10回復</div>
+            </div>
+            <button id="buy-stamina-btn" class="btn-shop-buy-special"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/res_coin.webp?v=79" alt="🪙"> 1,000</button>
+          </div>
+        </div>
         <div id="shop-list" class="shop-list"></div>
       </section>
 
@@ -214,7 +376,7 @@
 
       <!-- 装備図鑑 -->
       <section class="home-section">
-        <h3 class="section-label">⚔️ 装備図鑑</h3>
+        <h3 class="section-label"><img class="ui-icon ui-icon-sm" src="assets/ui-icons/equip_weapon.webp?v=79" alt="⚔️"> 装備図鑑</h3>
         <div id="zukan-equips" class="zukan-equips"></div>
       </section>
 
@@ -223,51 +385,137 @@
   </main>
 </div><!-- /screen-game -->
 
-<!-- ═══ クラウド設定モーダル ═══ -->
-<div id="cloud-modal" class="overlay hidden">
+<!-- ═══ クラウドセーブモーダル ═══ -->
+<div id="cloud-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-label="クラウドセーブ設定">
   <div class="popup-card cloud-modal-card">
-    <h3 class="popup-title">☁️ クラウド設定</h3>
-    <p class="cloud-modal-desc">Google Sheets でセーブを共有します。<br>2人で同じシートに繋いでね！</p>
 
-    <label class="cloud-label">GAS エンドポイント URL</label>
-    <input id="cloud-endpoint" class="cloud-input" type="url"
-           placeholder="https://script.google.com/macros/s/.../exec">
+    <!-- ════ 状態A: 未接続（初回） ════ -->
+    <div id="cs-setup" class="cs-panel">
+      <div class="cs-hero">
+        <div class="cs-hero-icon">☁️</div>
+        <div class="cs-hero-title">クラウドセーブ</div>
+        <div class="cs-hero-sub">データを自動保存してスマホを変えても安心！</div>
+      </div>
+      <button id="cs-autostart-btn" class="btn btn-primary cs-big-btn">
+        ✨ ワンタップで自動セーブを始める
+      </button>
+      <p class="cs-note">※ 設定不要。ボタン1つで完了します。</p>
 
-    <label class="cloud-label">プレイヤーID <small>（例: player1 / player2）</small></label>
-    <input id="cloud-playerid" class="cloud-input" type="text"
-           placeholder="player1" maxlength="32">
-
-    <div class="cloud-btns">
-      <button id="cloud-test-btn"  class="btn btn-outline">🔌 接続テスト</button>
-      <button id="cloud-pull-btn"  class="btn btn-outline">📥 クラウドから読込</button>
+      <!-- 上級者向け（折りたたみ） -->
+      <div class="cs-advanced-wrap">
+        <button id="cs-advanced-toggle" class="cs-alt-link">▸ 自分のFirebase/GASを使う（上級者向け）</button>
+        <div id="cs-advanced-form" class="hidden" style="margin-top:10px">
+          <p class="cs-adv-note">Firebase設定コード（JSON）を貼り付け</p>
+          <textarea id="firebase-config-json" class="cloud-input cloud-textarea"
+                    placeholder='{"apiKey":"AIza...","databaseURL":"https://xxx.firebaseio.com","projectId":"xxx"}'
+                    rows="3"></textarea>
+          <button id="firebase-config-apply" class="btn btn-outline" style="margin-top:8px;width:100%">🔥 Firebase で接続</button>
+          <div style="margin-top:10px">
+            <label class="cloud-label">または GAS エンドポイント URL</label>
+            <input id="cloud-endpoint" class="cloud-input" type="url"
+                   placeholder="https://script.google.com/macros/s/.../exec">
+            <label class="cloud-label" style="margin-top:6px">プレイヤーID</label>
+            <input id="cloud-playerid" class="cloud-input" type="text" placeholder="player1" maxlength="32">
+            <button id="cloud-save-btn" class="btn btn-outline" style="margin-top:8px;width:100%">⚙️ GAS設定を保存</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- ════ 状態B: 自動セーブ接続済み ════ -->
+    <div id="cs-connected" class="cs-panel hidden">
+      <div class="cs-status-badge cs-status-ok">✅ 自動セーブ有効</div>
+
+      <div class="cs-code-box">
+        <div class="cs-code-label">📋 引き継ぎコード（メモしておくと別端末でも復元できます）</div>
+        <div class="cs-code-display" id="cs-player-code">----</div>
+        <button id="cs-copy-code" class="btn-copy-code">コピー 📋</button>
+      </div>
+
+      <!-- 現在の設定からプル（コード入力不要） -->
+      <button id="cloud-pull-btn" class="btn btn-outline" style="width:100%;margin-bottom:8px">
+        ☁️ クラウドから今すぐ読込
+      </button>
+
+      <div class="cs-restore-wrap">
+        <button id="cs-restore-toggle" class="cs-alt-link">▸ 別の端末のデータを読み込む</button>
+        <div id="cs-restore-form" class="hidden" style="margin-top:8px">
+          <input id="cs-restore-input" class="cloud-input" type="text"
+                 placeholder="引き継ぎコードを入力（例: abc123de）" maxlength="48">
+          <button id="cs-restore-btn" class="btn btn-outline" style="margin-top:8px;width:100%">
+            📥 このコードで読み込む
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 共通ステータス -->
     <div id="cloud-status" class="cloud-status"></div>
 
-    <div class="cloud-btns" style="margin-top:8px">
-      <button id="cloud-save-btn"  class="btn btn-primary">保存</button>
-      <button id="cloud-close-btn" class="btn btn-secondary">閉じる</button>
-    </div>
+    <button id="cloud-close-btn" class="btn btn-secondary cs-close-btn">閉じる</button>
+  </div>
+</div>
+
+<!-- ══ 全タブ共通オーバーレイ群 (iOS overflow バグ回避のため tab-content の外に配置) ══ -->
+
+<!-- 副将詳細オーバーレイ -->
+<div id="general-detail" class="detail-overlay hidden" role="dialog" aria-modal="true" aria-label="副将詳細">
+  <div class="detail-panel">
+    <button id="detail-back-home" class="detail-back-home" title="ホームに戻る" aria-label="ホームに戻る">
+      <span class="picon picon-home"></span> ホーム
+    </button>
+    <button id="detail-close" class="detail-close" aria-label="閉じる">✕</button>
+    <div id="detail-body" class="detail-body"></div>
+  </div>
+</div>
+
+<!-- キャライラスト全画面表示 (Lightbox) -->
+<div id="char-lightbox" class="char-lightbox hidden" role="dialog" aria-modal="true" aria-label="キャラクターイラスト拡大表示">
+  <button id="char-lightbox-close" class="char-lightbox-close" title="閉じる" aria-label="閉じる">✕</button>
+  <img id="char-lightbox-img" class="char-lightbox-img" alt="">
+  <div id="char-lightbox-name" class="char-lightbox-name"></div>
+</div>
+
+<!-- ガチャ結果オーバーレイ -->
+<div id="gacha-result" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gacha-result-heading">
+  <div class="gacha-result-panel">
+    <h3 id="gacha-result-heading" class="gacha-result-title">✨ 召喚結果！</h3>
+    <div id="gacha-result-cards" class="gacha-result-grid"></div>
+    <button id="gacha-result-close" class="btn btn-primary">閉じる</button>
   </div>
 </div>
 
 <!-- 装備ピッカーオーバーレイ（全タブ共通） -->
-<div id="equip-picker" class="detail-overlay hidden">
+<div id="equip-picker" class="detail-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="equip-picker-title">
   <div class="detail-panel equip-picker-panel">
-    <button id="equip-picker-close" class="detail-close">✕</button>
+    <button id="equip-picker-close" class="detail-close" aria-label="閉じる">✕</button>
     <h3 id="equip-picker-title" class="equip-picker-title">装備を選ぶ</h3>
     <div id="equip-picker-list" class="equip-picker-list"></div>
   </div>
 </div>
 
 <!-- JS 読み込み順序は依存関係を考慮 -->
-<script src="js/generals_data.js"></script>
-<script src="js/stages_data.js"></script>
-<script src="js/battle_engine.js"></script>
-<script src="js/bgm.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/idle.js"></script>
-<script src="js/game.js"></script>
-<script src="js/main.js"></script>
+<script src="js/generals_data.js?v=67"></script>
+<script src="js/stages_data.js?v=66"></script>
+<script src="js/battle_engine.js?v=63"></script>
+<script src="js/bgm.js?v=55"></script>
+<script src="js/firebase_auth.js?v=55"></script>
+<script src="js/storage.js?v=59"></script>
+<script src="js/idle.js?v=55"></script>
+<script src="js/image_loader.js?v=73"></script>
+<script src="js/game.js?v=72"></script>
+<script src="js/main.js?v=82"></script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

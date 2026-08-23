@@ -1,0 +1,837 @@
+/* ════════════════════════════════════════════════════════════════
+   まほうの庭 — Pixel Theme v1 (HD-2D Hybrid)
+   方針: 高精細キャラ × ピクセルUI/フォント/枠 (Octopath Traveler方式)
+   - 角丸禁止 / シャープエッジ
+   - 9-slice 風ピクセルボーダー (box-shadow積層)
+   - 配色: 深紺×金×アクセントカラー (商業RPG準拠)
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── HD-2D カラーパレット (ファイナルファンタジー/オクトラ風) ─── */
+  --p-bg-deep:    #0a0d1a;   /* 最暗 */
+  --p-bg:         #131829;   /* 通常背景 */
+  --p-bg-soft:    #1d2440;   /* パネル背景 */
+  --p-bg-hi:      #2a3358;   /* ハイライト */
+  --p-border:     #4a5a8a;   /* 枠線 */
+  --p-border-hi:  #8da0d4;   /* 強調枠 */
+  --p-gold:       #ffcc4a;   /* 金 (装飾/通貨) */
+  --p-gold-deep:  #c08a1a;
+  --p-text:       #e8ecf5;
+  --p-text-dim:   #9aa3c0;
+  --p-accent:     #6cd3ff;   /* 水/魔法 */
+  --p-danger:     #ff5555;
+  --p-success:    #66dd66;
+  --p-rare:       #c89aff;   /* SR */
+  --p-legend:     #ffaa44;   /* SSR */
+
+  /* ─── フォント ─── */
+  --p-font-main: "DotGothic16", "Hiragino Kaku Gothic ProN", sans-serif;
+  --p-font-num:  "Press Start 2P", "DotGothic16", monospace;
+
+  /* ─── ピクセル単位 (8px グリッド) ─── */
+  --px: 2px;  /* 1 pixel-art unit */
+}
+
+/* ─── ベース上書き (style.css の角丸・グラデを潰す) ─── */
+html, body {
+  background: var(--p-bg-deep);
+  color: var(--p-text);
+  font-family: var(--p-font-main);
+  font-size: 15px;
+  letter-spacing: .02em;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* グローバル: 角丸を全廃 (HD-2D は直線美) */
+button, input, select, textarea,
+.card, .panel, .tab-panel, .modal,
+.btn, .stat-box, .dash-chip, .loot-chip,
+.equip-item, .general-card, .stage-card,
+.boss-card, .formation-slot, .toast,
+#battle-result .result-panel,
+.result-banner, .reward-chip,
+.detail-portrait-wrap, .zukan-portrait,
+.portrait, .portrait-md, .portrait-lg {
+  border-radius: 0 !important;
+}
+
+/* ─── 9-slice 風ピクセルパネル (汎用) ─── */
+.pixel-panel,
+.tab-panel > .card,
+.result-panel,
+.modal-content,
+.general-card,
+.stage-card,
+.boss-card {
+  background: var(--p-bg-soft) !important;
+  border: var(--px) solid var(--p-border) !important;
+  box-shadow:
+    0 0 0 var(--px) var(--p-bg-deep),
+    inset 0 0 0 var(--px) var(--p-bg-hi),
+    0 calc(var(--px)*2) 0 var(--p-bg-deep) !important;
+  position: relative;
+}
+/* コーナー装飾 (4角に小ドット) */
+.pixel-panel::before,
+.pixel-panel::after,
+.general-card::before,
+.general-card::after,
+.stage-card::before,
+.stage-card::after {
+  content: '';
+  position: absolute;
+  width: var(--px); height: var(--px);
+  background: var(--p-gold);
+  pointer-events: none;
+}
+.pixel-panel::before, .general-card::before, .stage-card::before { top: var(--px); left: var(--px); }
+.pixel-panel::after,  .general-card::after,  .stage-card::after  { top: var(--px); right: var(--px); }
+
+/* ─── ボタン (FF/オクトラ風 凹凸ピクセル) ─── */
+.btn,
+button:not(.tab-btn):not(.chapter-tab):not(.btn-log-toggle):not(.btn-icon):not(.btn-cloud-icon):not(.btn-edit-name):not(.icon-btn) {
+  background: linear-gradient(180deg, var(--p-bg-hi) 0%, var(--p-bg-soft) 50%, var(--p-bg) 100%) !important;
+  color: var(--p-text) !important;
+  font-family: var(--p-font-main) !important;
+  font-weight: 400 !important;
+  border: var(--px) solid var(--p-border) !important;
+  border-radius: 0 !important;
+  box-shadow:
+    inset 0 var(--px) 0 rgba(255,255,255,.18),
+    inset 0 calc(var(--px)*-1) 0 rgba(0,0,0,.5),
+    0 var(--px) 0 var(--p-bg-deep) !important;
+  text-shadow: 0 var(--px) 0 #000;
+  letter-spacing: .05em;
+  transition: transform .04s linear, filter .12s;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.btn:hover, button:not(.tab-btn):not(.chapter-tab):not(.btn-icon):not(.btn-cloud-icon):not(.btn-edit-name):not(.icon-btn):hover {
+  filter: brightness(1.15);
+  border-color: var(--p-border-hi) !important;
+}
+.btn:active, button:not(.tab-btn):not(.chapter-tab):not(.btn-icon):not(.btn-cloud-icon):not(.btn-edit-name):not(.icon-btn):active {
+  transform: translateY(var(--px));
+  box-shadow:
+    inset 0 var(--px) 0 rgba(0,0,0,.4),
+    inset 0 calc(var(--px)*-1) 0 rgba(255,255,255,.08),
+    0 0 0 var(--p-bg-deep) !important;
+}
+.btn-primary {
+  background: linear-gradient(180deg, #ffd86b 0%, #e8a82a 50%, #b07414 100%) !important;
+  color: #1a1100 !important;
+  text-shadow: 0 var(--px) 0 rgba(255,255,255,.4) !important;
+  border-color: var(--p-gold-deep) !important;
+}
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-danger { background: linear-gradient(180deg, #ff7777 0%, #cc3333 50%, #7a1818 100%) !important; }
+.btn-next   { background: linear-gradient(180deg, #99ff99 0%, #44cc44 50%, #1a7a1a 100%) !important; color: #0a200a !important; text-shadow: 0 var(--px) 0 rgba(255,255,255,.4) !important; border-color: #2a8a2a !important; }
+.btn-next:hover { filter: brightness(1.12); }
+.btn-retry { background: linear-gradient(180deg, #aac8ee 0%, #5588cc 50%, #2a4a80 100%) !important; }
+
+/* ─── タブ (上タブ・章タブ) ─── */
+.tab-btn, .chapter-tab {
+  background: var(--p-bg) !important;
+  color: var(--p-text-dim) !important;
+  border: var(--px) solid var(--p-border) !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  font-family: var(--p-font-main) !important;
+  font-size: 13px !important;
+  padding: 10px 14px !important;
+  letter-spacing: .08em;
+  text-shadow: 0 var(--px) 0 #000;
+  position: relative;
+  top: var(--px);
+}
+.tab-btn.active, .chapter-tab.active {
+  background: var(--p-bg-soft) !important;
+  color: var(--p-gold) !important;
+  border-color: var(--p-gold) !important;
+  box-shadow: inset 0 calc(var(--px)*2) 0 var(--p-gold) !important;
+  top: 0;
+}
+
+/* ─── ポートレート枠 (キャラPNGをHD-2D風に額装) ─── */
+.portrait, .portrait-md, .portrait-lg,
+.detail-portrait-wrap,
+.formation-slot .portrait {
+  border: var(--px) solid var(--p-border) !important;
+  border-radius: 0 !important;
+  box-shadow:
+    0 0 0 var(--px) var(--p-bg-deep),
+    inset 0 0 0 var(--px) rgba(255,255,255,.15),
+    0 calc(var(--px)*2) 0 var(--p-bg-deep);
+  position: relative;
+  overflow: hidden;
+}
+/* レアリティ別の額装色 */
+/* 一覧用 (控えめ) */
+.portrait.rarity-LR,  .rarity-LR  .portrait  { border-color: #ff00cc !important; box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 10px rgba(255,0,200,.7), 0 0 20px rgba(255,215,0,.3), inset 0 0 0 var(--px) rgba(255,100,200,.4); animation: lrGlow 2s ease-in-out infinite alternate; }
+.portrait.rarity-MR,  .rarity-MR  .portrait  { border-color: #cc00ff !important; box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 8px rgba(204,0,255,.6), inset 0 0 0 var(--px) rgba(200,100,255,.3); }
+.portrait.rarity-UR,  .rarity-UR  .portrait  { border-color: #ff6600 !important; box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 7px rgba(255,102,0,.55), inset 0 0 0 var(--px) rgba(255,150,50,.3); }
+.portrait.rarity-SSR, .rarity-SSR .portrait { border-color: var(--p-legend) !important; box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 6px rgba(255,170,68,.5), inset 0 0 0 var(--px) rgba(255,200,100,.25); }
+.portrait.rarity-SR,  .rarity-SR  .portrait { border-color: var(--p-rare)   !important; box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 4px rgba(200,154,255,.4), inset 0 0 0 var(--px) rgba(220,180,255,.2); }
+.portrait.rarity-R,   .rarity-R   .portrait { border-color: var(--p-accent) !important; box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 3px rgba(108,211,255,.3), inset 0 0 0 var(--px) rgba(150,220,255,.15); }
+/* 詳細画面 (主役) は強めにグロー */
+.portrait-lg.rarity-LR, .rarity-LR .portrait-lg { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 24px rgba(255,0,200,.8), 0 0 40px rgba(255,215,0,.4), inset 0 0 0 var(--px) rgba(255,100,200,.5) !important; animation: lrGlow 2s ease-in-out infinite alternate; }
+.portrait-lg.rarity-MR, .rarity-MR .portrait-lg { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 18px rgba(204,0,255,.7), inset 0 0 0 var(--px) rgba(200,100,255,.4) !important; }
+.portrait-lg.rarity-UR, .rarity-UR .portrait-lg { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 16px rgba(255,102,0,.65), inset 0 0 0 var(--px) rgba(255,150,50,.4) !important; }
+.portrait-lg.rarity-SSR, .rarity-SSR .portrait-lg { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 14px rgba(255,170,68,.7), inset 0 0 0 var(--px) rgba(255,200,100,.35) !important; }
+.portrait-lg.rarity-SR,  .rarity-SR  .portrait-lg { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 10px rgba(200,154,255,.6), inset 0 0 0 var(--px) rgba(220,180,255,.3) !important; }
+.portrait-lg.rarity-R,   .rarity-R   .portrait-lg { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 0 8px rgba(108,211,255,.5),  inset 0 0 0 var(--px) rgba(150,220,255,.25) !important; }
+
+/* ポートレート画像はピクセルでなく滑らかに（HD部分） */
+.portrait img, .detail-portrait-wrap img {
+  image-rendering: auto !important;
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+/* ─── HP/ステータスバー (ピクセル風) ─── */
+.stat-bar-track, .hp-bar, .progress-bar {
+  background: var(--p-bg-deep) !important;
+  border: var(--px) solid var(--p-border) !important;
+  border-radius: 0 !important;
+  height: 14px !important;
+  position: relative;
+  box-shadow: inset 0 var(--px) 0 rgba(0,0,0,.6);
+  overflow: hidden;
+}
+.stat-bar-fill, .hp-bar-fill, .progress-bar-fill {
+  height: 100% !important;
+  border-radius: 0 !important;
+  background: linear-gradient(180deg, var(--p-success) 0%, #339933 100%) !important;
+  box-shadow: inset 0 var(--px) 0 rgba(255,255,255,.4);
+  transition: width .3s ease;
+}
+.hp-bar-fill.low    { background: linear-gradient(180deg, #ffaa44, #cc6611) !important; }
+.hp-bar-fill.critical { background: linear-gradient(180deg, var(--p-danger), #882222) !important; }
+
+/* ─── チップ枠 (本文は通常フォント、数値だけピクセルフォント) ─── */
+.dash-chip, .loot-chip, .reward-chip, .boss-reward-chip,
+.stat-value, .hp-text, .resource-value {
+  font-family: var(--p-font-main) !important;
+  font-size: 13px !important;
+  letter-spacing: .02em;
+  background: var(--p-bg-deep) !important;
+  border: var(--px) solid var(--p-border) !important;
+  color: var(--p-text) !important;
+  text-shadow: 0 var(--px) 0 #000;
+  padding: 6px 10px !important;
+  border-radius: 0 !important;
+}
+/* 数値部分だけピクセルフォント＋金色 */
+.dash-chip strong, .loot-chip strong, .reward-chip strong, .boss-reward-chip strong,
+.dash-val, .reward-num, .resource-value-num,
+.dash-chip-num, .loot-num {
+  font-family: var(--p-font-num) !important;
+  color: var(--p-gold) !important;
+  font-size: 11px;
+}
+
+/* ─── トースト通知 ─── */
+#game-toast, .toast {
+  font-family: var(--p-font-main) !important;
+  background: var(--p-bg-soft) !important;
+  border: var(--px) solid var(--p-gold) !important;
+  border-radius: 0 !important;
+  color: var(--p-text) !important;
+  text-shadow: 0 var(--px) 0 #000;
+  box-shadow: 0 calc(var(--px)*2) 0 var(--p-bg-deep), 0 0 20px rgba(255,204,74,.3);
+  padding: 12px 18px !important;
+}
+
+/* ─── バトル結果バナー ─── */
+.result-banner {
+  font-family: var(--p-font-num) !important;
+  font-size: 36px !important;
+  letter-spacing: .04em !important;
+  /* 8方向ピクセル縁取り＋落下影で立体感 */
+  text-shadow:
+    var(--px) var(--px) 0 #000,
+    calc(var(--px)*-1) var(--px) 0 #000,
+    var(--px) calc(var(--px)*-1) 0 #000,
+    calc(var(--px)*-1) calc(var(--px)*-1) 0 #000,
+    0 var(--px) 0 #000,
+    var(--px) 0 0 #000,
+    0 calc(var(--px)*-1) 0 #000,
+    calc(var(--px)*-1) 0 0 #000,
+    0 calc(var(--px)*4) 0 rgba(0,0,0,.7),
+    0 calc(var(--px)*6) 0 rgba(0,0,0,.4) !important;
+  padding: 8px 0;
+}
+.result-banner.win {
+  background: linear-gradient(180deg, #fff7c7 0%, #ffd86b 35%, #ffaa44 70%, #c08a1a 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent !important;
+  filter: drop-shadow(0 var(--px) 0 #000) drop-shadow(0 0 20px rgba(255,180,80,.6));
+}
+.result-banner.lose {
+  background: linear-gradient(180deg, #ff9999 0%, #cc3333 50%, #882222 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent !important;
+  filter: drop-shadow(0 var(--px) 0 #000) drop-shadow(0 0 12px rgba(204,51,51,.5));
+}
+
+/* ─── ローディング画面リフレッシュ ─── */
+#screen-loading {
+  background:
+    radial-gradient(ellipse at center, var(--p-bg-soft) 0%, var(--p-bg-deep) 100%),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,.02) 3px, rgba(255,255,255,.02) 4px);
+}
+.loading-title {
+  font-family: var(--p-font-num) !important;
+  font-size: 28px !important;
+  color: var(--p-gold) !important;
+  letter-spacing: .1em;
+  text-shadow: 0 calc(var(--px)*2) 0 var(--p-gold-deep), 0 calc(var(--px)*4) 0 #000;
+}
+
+/* ─── ピクセルアイコン (絵文字置換用 SVG クラス) ─── */
+.picon {
+  display: inline-block;
+  width: 16px; height: 16px;
+  vertical-align: -3px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  image-rendering: pixelated;
+}
+.picon-coin   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='5' y='1' width='6' height='1' fill='%23ffd86b'/><rect x='3' y='2' width='10' height='1' fill='%23ffd86b'/><rect x='2' y='3' width='12' height='10' fill='%23ffd86b'/><rect x='3' y='13' width='10' height='1' fill='%23ffd86b'/><rect x='5' y='14' width='6' height='1' fill='%23ffd86b'/><rect x='4' y='4' width='2' height='8' fill='%23c08a1a'/><rect x='10' y='4' width='2' height='8' fill='%23c08a1a'/><rect x='6' y='4' width='4' height='1' fill='%23c08a1a'/><rect x='6' y='11' width='4' height='1' fill='%23c08a1a'/><rect x='7' y='6' width='2' height='4' fill='%23c08a1a'/></svg>"); }
+.picon-gem    { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='5' y='2' width='6' height='1' fill='%23c89aff'/><rect x='3' y='3' width='10' height='1' fill='%23c89aff'/><rect x='2' y='4' width='12' height='1' fill='%23c89aff'/><rect x='3' y='5' width='10' height='1' fill='%23a674ff'/><rect x='4' y='6' width='8' height='2' fill='%238a4dff'/><rect x='5' y='8' width='6' height='2' fill='%23703add'/><rect x='6' y='10' width='4' height='2' fill='%23582bb0'/><rect x='7' y='12' width='2' height='2' fill='%23401d80'/><rect x='6' y='5' width='1' height='3' fill='%23e8d4ff'/></svg>"); }
+.picon-exp    { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='7' y='1' width='2' height='3' fill='%236cd3ff'/><rect x='12' y='3' width='3' height='2' fill='%236cd3ff'/><rect x='1' y='3' width='3' height='2' fill='%236cd3ff'/><rect x='7' y='12' width='2' height='3' fill='%236cd3ff'/><rect x='6' y='5' width='4' height='1' fill='%23ffd86b'/><rect x='5' y='6' width='6' height='4' fill='%23ffd86b'/><rect x='6' y='10' width='4' height='1' fill='%23ffd86b'/><rect x='7' y='7' width='2' height='2' fill='%23fff'/></svg>"); }
+.picon-stam   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='8' y='1' width='2' height='2' fill='%23ffeb47'/><rect x='6' y='3' width='4' height='2' fill='%23ffeb47'/><rect x='4' y='5' width='6' height='2' fill='%23ffd000'/><rect x='3' y='7' width='8' height='1' fill='%23ffaa00'/><rect x='5' y='8' width='5' height='2' fill='%23ffd000'/><rect x='6' y='10' width='3' height='2' fill='%23ffeb47'/><rect x='7' y='12' width='2' height='2' fill='%23fff'/></svg>"); }
+.picon-sword  { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='12' y='1' width='2' height='1' fill='%23e8ecf5'/><rect x='11' y='2' width='3' height='1' fill='%23e8ecf5'/><rect x='10' y='3' width='3' height='1' fill='%23c8d0e0'/><rect x='9' y='4' width='3' height='1' fill='%23c8d0e0'/><rect x='8' y='5' width='3' height='1' fill='%23a0aac0'/><rect x='7' y='6' width='3' height='1' fill='%23a0aac0'/><rect x='6' y='7' width='3' height='1' fill='%23a0aac0'/><rect x='5' y='8' width='3' height='1' fill='%23808a9a'/><rect x='2' y='9' width='6' height='2' fill='%23c08a1a'/><rect x='3' y='11' width='3' height='2' fill='%237a4a10'/></svg>"); }
+.picon-shield { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='3' y='2' width='10' height='1' fill='%23a0aac0'/><rect x='2' y='3' width='12' height='2' fill='%23c8d0e0'/><rect x='2' y='5' width='12' height='4' fill='%236cd3ff'/><rect x='3' y='9' width='10' height='2' fill='%234a9ad0'/><rect x='4' y='11' width='8' height='2' fill='%23358aaa'/><rect x='6' y='13' width='4' height='1' fill='%23358aaa'/><rect x='7' y='6' width='2' height='4' fill='%23ffd86b'/></svg>"); }
+.picon-heart  { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='2' y='3' width='4' height='1' fill='%23ff5577'/><rect x='10' y='3' width='4' height='1' fill='%23ff5577'/><rect x='1' y='4' width='6' height='3' fill='%23ff5577'/><rect x='9' y='4' width='6' height='3' fill='%23ff5577'/><rect x='2' y='7' width='12' height='2' fill='%23ff5577'/><rect x='3' y='9' width='10' height='2' fill='%23dd3355'/><rect x='4' y='11' width='8' height='1' fill='%23dd3355'/><rect x='5' y='12' width='6' height='1' fill='%23bb1133'/><rect x='6' y='13' width='4' height='1' fill='%23bb1133'/><rect x='7' y='14' width='2' height='1' fill='%23990022'/><rect x='2' y='5' width='2' height='1' fill='%23ffaabb'/></svg>"); }
+.picon-ring   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='6' y='2' width='4' height='1' fill='%2300ddff'/><rect x='5' y='3' width='6' height='1' fill='%2300ddff'/><rect x='6' y='4' width='4' height='1' fill='%2300ddff'/><rect x='5' y='6' width='6' height='1' fill='%23ffd86b'/><rect x='4' y='7' width='8' height='1' fill='%23ffd86b'/><rect x='3' y='8' width='2' height='6' fill='%23ffd86b'/><rect x='11' y='8' width='2' height='6' fill='%23ffd86b'/><rect x='4' y='14' width='8' height='1' fill='%23ffd86b'/><rect x='5' y='15' width='6' height='1' fill='%23c08a1a'/><rect x='4' y='9' width='8' height='5' fill='%23c08a1a'/></svg>"); }
+.picon-hammer { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='1' y='1' width='8' height='4' fill='%23a0aac0'/><rect x='2' y='2' width='6' height='2' fill='%23c8d0e0'/><rect x='9' y='3' width='1' height='1' fill='%237a4a10'/><rect x='10' y='4' width='1' height='1' fill='%237a4a10'/><rect x='11' y='5' width='1' height='1' fill='%237a4a10'/><rect x='12' y='6' width='1' height='1' fill='%237a4a10'/><rect x='13' y='7' width='1' height='1' fill='%237a4a10'/><rect x='14' y='8' width='1' height='1' fill='%237a4a10'/><rect x='13' y='9' width='2' height='2' fill='%23a06030'/><rect x='12' y='11' width='3' height='2' fill='%23a06030'/><rect x='11' y='13' width='3' height='2' fill='%23a06030'/></svg>"); }
+.picon-star   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='7' y='1' width='2' height='3' fill='%23ffeb47'/><rect x='6' y='4' width='4' height='2' fill='%23ffeb47'/><rect x='1' y='5' width='14' height='2' fill='%23ffd86b'/><rect x='3' y='7' width='10' height='2' fill='%23ffd86b'/><rect x='4' y='9' width='8' height='2' fill='%23ffaa44'/><rect x='3' y='11' width='3' height='2' fill='%23ffaa44'/><rect x='10' y='11' width='3' height='2' fill='%23ffaa44'/><rect x='2' y='13' width='3' height='2' fill='%23c08a1a'/><rect x='11' y='13' width='3' height='2' fill='%23c08a1a'/></svg>"); }
+.picon-lock   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='5' y='2' width='6' height='1' fill='%23808080'/><rect x='4' y='3' width='1' height='5' fill='%23808080'/><rect x='11' y='3' width='1' height='5' fill='%23808080'/><rect x='5' y='3' width='1' height='1' fill='%23808080'/><rect x='10' y='3' width='1' height='1' fill='%23808080'/><rect x='3' y='8' width='10' height='6' fill='%23ffd86b'/><rect x='4' y='9' width='8' height='4' fill='%23ffaa44'/><rect x='7' y='10' width='2' height='3' fill='%23704020'/></svg>"); }
+.picon-fire   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='7' y='1' width='2' height='2' fill='%23ffeb47'/><rect x='6' y='3' width='4' height='1' fill='%23ffaa44'/><rect x='5' y='4' width='2' height='2' fill='%23ff6622'/><rect x='9' y='4' width='2' height='2' fill='%23ff6622'/><rect x='4' y='6' width='8' height='3' fill='%23ff4400'/><rect x='3' y='9' width='10' height='3' fill='%23dd2200'/><rect x='4' y='12' width='8' height='2' fill='%23aa1100'/><rect x='6' y='14' width='4' height='1' fill='%23770000'/><rect x='6' y='6' width='1' height='1' fill='%23ffeb47'/><rect x='9' y='6' width='1' height='1' fill='%23ffeb47'/><rect x='7' y='8' width='2' height='2' fill='%23ffeb47'/></svg>"); }
+.picon-target { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='5' y='1' width='6' height='1' fill='%23ff5577'/><rect x='3' y='2' width='10' height='1' fill='%23ff5577'/><rect x='2' y='3' width='12' height='2' fill='%23ff5577'/><rect x='1' y='5' width='14' height='6' fill='%23fff'/><rect x='3' y='6' width='10' height='4' fill='%23ff5577'/><rect x='5' y='7' width='6' height='2' fill='%23fff'/><rect x='6' y='7' width='4' height='2' fill='%23ff5577'/><rect x='2' y='11' width='12' height='2' fill='%23ff5577'/><rect x='3' y='13' width='10' height='1' fill='%23ff5577'/><rect x='5' y='14' width='6' height='1' fill='%23ff5577'/></svg>"); }
+.picon-trophy { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='4' y='1' width='8' height='1' fill='%23ffd86b'/><rect x='3' y='2' width='10' height='4' fill='%23ffd86b'/><rect x='4' y='6' width='8' height='2' fill='%23ffaa44'/><rect x='1' y='2' width='2' height='4' fill='%23ffd86b'/><rect x='13' y='2' width='2' height='4' fill='%23ffd86b'/><rect x='5' y='8' width='6' height='2' fill='%23c08a1a'/><rect x='6' y='10' width='4' height='3' fill='%23704020'/><rect x='4' y='13' width='8' height='2' fill='%23704020'/><rect x='3' y='15' width='10' height='1' fill='%23502010'/></svg>"); }
+.picon-people { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='4' y='2' width='3' height='3' fill='%23ffd8a0'/><rect x='9' y='2' width='3' height='3' fill='%23ffd8a0'/><rect x='3' y='5' width='5' height='5' fill='%236cd3ff'/><rect x='8' y='5' width='5' height='5' fill='%23ff99cc'/><rect x='2' y='10' width='6' height='4' fill='%234a9ad0'/><rect x='8' y='10' width='6' height='4' fill='%23dd6699'/><rect x='3' y='14' width='2' height='1' fill='%232a6090'/><rect x='5' y='14' width='2' height='1' fill='%232a6090'/><rect x='9' y='14' width='2' height='1' fill='%23882244'/><rect x='11' y='14' width='2' height='1' fill='%23882244'/></svg>"); }
+.picon-play   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='4' y='2' width='1' height='12' fill='%2366dd66'/><rect x='5' y='3' width='1' height='10' fill='%2366dd66'/><rect x='6' y='4' width='1' height='8' fill='%2366dd66'/><rect x='7' y='5' width='1' height='6' fill='%2366dd66'/><rect x='8' y='6' width='1' height='4' fill='%2366dd66'/><rect x='9' y='7' width='1' height='2' fill='%2366dd66'/><rect x='4' y='2' width='1' height='2' fill='%2399ff99'/><rect x='5' y='3' width='1' height='2' fill='%2399ff99'/></svg>"); }
+.picon-home   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='7' y='1' width='2' height='1' fill='%23dd5544'/><rect x='6' y='2' width='4' height='1' fill='%23dd5544'/><rect x='5' y='3' width='6' height='1' fill='%23dd5544'/><rect x='4' y='4' width='8' height='1' fill='%23dd5544'/><rect x='3' y='5' width='10' height='1' fill='%23dd5544'/><rect x='2' y='6' width='12' height='1' fill='%23dd5544'/><rect x='3' y='7' width='10' height='7' fill='%23ffd8a0'/><rect x='4' y='8' width='8' height='5' fill='%23ffe8c0'/><rect x='6' y='10' width='4' height='4' fill='%23704020'/><rect x='7' y='11' width='1' height='1' fill='%23ffd86b'/></svg>"); }
+.picon-dice   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='2' y='2' width='12' height='12' fill='%23ffeb47'/><rect x='3' y='3' width='10' height='10' fill='%23fff5d8'/><rect x='2' y='2' width='12' height='1' fill='%23ffd86b'/><rect x='2' y='13' width='12' height='1' fill='%23c08a1a'/><rect x='2' y='2' width='1' height='12' fill='%23ffd86b'/><rect x='13' y='2' width='1' height='12' fill='%23c08a1a'/><rect x='4' y='4' width='2' height='2' fill='%23dd2222'/><rect x='10' y='4' width='2' height='2' fill='%23dd2222'/><rect x='7' y='7' width='2' height='2' fill='%23dd2222'/><rect x='4' y='10' width='2' height='2' fill='%23dd2222'/><rect x='10' y='10' width='2' height='2' fill='%23dd2222'/></svg>"); }
+.picon-book   { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='2' y='2' width='6' height='12' fill='%234a6090'/><rect x='8' y='2' width='6' height='12' fill='%234a6090'/><rect x='3' y='3' width='4' height='10' fill='%23e8d8a0'/><rect x='9' y='3' width='4' height='10' fill='%23e8d8a0'/><rect x='4' y='4' width='2' height='1' fill='%234a6090'/><rect x='10' y='4' width='2' height='1' fill='%234a6090'/><rect x='4' y='6' width='2' height='1' fill='%234a6090'/><rect x='10' y='6' width='2' height='1' fill='%234a6090'/><rect x='4' y='8' width='2' height='1' fill='%234a6090'/><rect x='10' y='8' width='2' height='1' fill='%234a6090'/><rect x='7' y='2' width='2' height='12' fill='%23ffd86b'/><rect x='7' y='5' width='2' height='1' fill='%23c08a1a'/></svg>"); }
+/* タブアイコンは大きめ表示 */
+.tab-btn .picon { width: 22px; height: 22px; vertical-align: middle; }
+
+/* ─── 設定モーダル ─── */
+#settings-modal { display: flex; align-items: center; justify-content: center; background: rgba(8,8,18,.85); }
+#settings-modal.hidden { display: none; }
+.settings-panel {
+  background: var(--p-bg-soft);
+  border: var(--px) solid var(--p-gold);
+  box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 calc(var(--px)*4) 0 var(--p-bg-deep), 0 0 30px rgba(255,204,74,.3);
+  padding: 24px;
+  min-width: 320px;
+  max-width: 90vw;
+  font-family: var(--p-font-main);
+}
+.settings-title {
+  font-family: var(--p-font-num);
+  color: var(--p-gold);
+  font-size: 18px;
+  margin: 0 0 20px;
+  text-align: center;
+  letter-spacing: .1em;
+  text-shadow: 0 var(--px) 0 #000;
+}
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0;
+  border-top: var(--px) solid var(--p-border);
+  gap: 16px;
+}
+.settings-row:first-of-type { border-top: none; }
+.settings-label { color: var(--p-text); font-size: 13px; flex: 1; }
+.settings-toggle {
+  font-family: var(--p-font-num);
+  font-size: 11px;
+  width: 64px;
+  padding: 8px 0 !important;
+  text-align: center;
+  background: linear-gradient(180deg, #555 0%, #333 50%, #222 100%) !important;
+  color: #888 !important;
+  border: var(--px) solid #444 !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+}
+.settings-toggle--on {
+  background: linear-gradient(180deg, #99ff99 0%, #44cc44 50%, #1a7a1a 100%) !important;
+  color: #0a200a !important;
+  border-color: #2a8a2a !important;
+  text-shadow: 0 var(--px) 0 rgba(255,255,255,.4);
+}
+.settings-actions { margin-top: 18px; text-align: center; }
+
+/* スキャンライン OFF (設定で切替) */
+body.opt-no-scanline::before { display: none !important; }
+
+/* ─── 戦闘ログ可読性向上 (色分け) ─── */
+.log-entry {
+  padding: 4px 8px;
+  margin: 2px 0;
+  border-left: var(--px) solid transparent;
+  font-family: var(--p-font-main);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--p-text);
+}
+.log-crit     { color: #ffeb47; border-left-color: #ffaa00; font-weight: 700; text-shadow: 0 0 6px rgba(255,170,0,.6); }
+.log-weakness { color: #ff99cc; border-left-color: #ee44aa; font-weight: 700; }
+.log-heal     { color: #99ff99; border-left-color: #44cc44; }
+.log-kill     { color: #ff6655; border-left-color: #cc2222; font-weight: 700; }
+.log-dmg      { color: #ffaaaa; border-left-color: #aa4444; }
+.log-buff     { color: #aaccff; border-left-color: #4477cc; }
+.log-debuff   { color: #cc88cc; border-left-color: #884488; }
+.log-miss     { color: #888; border-left-color: #555; font-style: italic; }
+.log-skill    { color: #ffd86b; border-left-color: var(--p-gold); font-weight: 600; }
+.log-result   { color: var(--p-gold); border-left-color: var(--p-gold); font-weight: 700; padding: 6px 8px; margin-top: 6px; background: rgba(255,204,74,.08); }
+.log-turn     { color: #aaa; font-size: 11px; opacity: .8; padding-left: 12px; }
+/* 複合 (暴撃+弱点) は両方発光 */
+.log-crit.log-weakness { color: #ffaaff; text-shadow: 0 0 8px rgba(255,170,255,.8); }
+
+/* ─── スタミナ低下警告 (残り5以下で赤パルス＋振動) ─── */
+#stamina-display.stamina-low {
+  animation: staminaWarn 1.6s ease-in-out infinite;
+  position: relative;
+}
+#stamina-display.stamina-low .st-label {
+  color: #ff6655 !important;
+  text-shadow: 0 0 8px rgba(255,102,85,.8), 0 var(--px) 0 #000 !important;
+}
+#stamina-display.stamina-low .st-fill,
+#stamina-display.stamina-low .progress-bar-fill,
+#stamina-display.stamina-low .stat-bar-fill {
+  background: linear-gradient(180deg, #ff8855 0%, #cc3322 50%, #881111 100%) !important;
+}
+#stamina-display.stamina-low::after {
+  content: '!';
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ff2222;
+  font-family: var(--p-font-num);
+  font-size: 14px;
+  font-weight: 900;
+  text-shadow: 0 0 8px rgba(255,40,40,1), 0 var(--px) 0 #000;
+  animation: staminaWarnBang .5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes staminaWarn {
+  0%,100% { box-shadow: 0 0 0 transparent; }
+  50%     { box-shadow: 0 0 12px rgba(255,68,68,.7); }
+}
+@keyframes staminaWarnBang {
+  from { transform: translateY(-50%) scale(1);   opacity: .7; }
+  to   { transform: translateY(-50%) scale(1.4); opacity: 1; }
+}
+
+/* ─── ガチャ SSR 出現時の虹色バースト ─── */
+.ssr-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+.ssr-burst-play {
+  animation: ssrBurstFade 3.2s ease-out forwards;
+}
+.ssr-burst::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      #ff5577 0deg 18deg,
+      #ffaa44 18deg 36deg,
+      #ffeb47 36deg 54deg,
+      #99ff99 54deg 72deg,
+      #6cd3ff 72deg 90deg,
+      #c89aff 90deg 108deg);
+  filter: blur(3px);
+  opacity: .55;
+  animation: ssrBurstSpin 4s linear infinite;
+}
+.ssr-burst::after {
+  content: '';
+  position: absolute;
+  inset: 30%;
+  background: radial-gradient(circle at center, rgba(255,255,255,.95), rgba(255,230,120,.5) 40%, transparent 70%);
+  animation: ssrBurstFlash .8s ease-out;
+}
+@keyframes ssrBurstFade {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes ssrBurstSpin {
+  to { transform: rotate(360deg); }
+}
+@keyframes ssrBurstFlash {
+  0%   { opacity: 0; transform: scale(.2); }
+  60%  { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+/* SSR時はガチャモーダル背景も金色寄りに */
+#gacha-result.has-ssr {
+  background: radial-gradient(ellipse at center, rgba(80,30,10,.8) 0%, rgba(0,0,0,.95) 80%) !important;
+}
+
+/* ─── アクセシビリティ: 動きを抑える ─── */
+/* OS設定 prefers-reduced-motion or 手動トグル body.opt-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  body { /* OS設定検出時もトグル相当として強制適用するため、以下と共通ルールセットを活かす */ }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ssr-burst, .ssr-burst::before, .ssr-burst::after,
+  .victory-rays, .defeat-vignette,
+  .battle-intro .intro-rays, .battle-intro .intro-flash,
+  .intro-fighter, .intro-vs-text, .intro-warn,
+  #auto-replay-badge,
+  #stamina-display.stamina-low, #stamina-display.stamina-low::after,
+  .dash-chip--streak,
+  .confetti-piece,
+  .intro-portrait-boss {
+    animation: none !important;
+  }
+}
+body.opt-reduced-motion .ssr-burst,
+body.opt-reduced-motion .ssr-burst::before,
+body.opt-reduced-motion .ssr-burst::after,
+body.opt-reduced-motion .victory-rays,
+body.opt-reduced-motion .defeat-vignette,
+body.opt-reduced-motion .battle-intro .intro-rays,
+body.opt-reduced-motion .battle-intro .intro-flash,
+body.opt-reduced-motion .intro-fighter,
+body.opt-reduced-motion .intro-vs-text,
+body.opt-reduced-motion .intro-warn,
+body.opt-reduced-motion #auto-replay-badge,
+body.opt-reduced-motion #stamina-display.stamina-low,
+body.opt-reduced-motion #stamina-display.stamina-low::after,
+body.opt-reduced-motion .dash-chip--streak,
+body.opt-reduced-motion .confetti-piece,
+body.opt-reduced-motion .intro-portrait-boss {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* 必須の状態変化トランジションは残す (HPバー等) */
+  .stat-bar-fill, .hp-bar-fill, .progress-bar-fill, .card-exp-fill {
+    transition: none !important;
+  }
+  /* スキャンライン無効化 */
+  body::before { display: none !important; }
+  /* バナーズームも控えめに */
+  #result-banner.win, #result-banner.lose,
+  #battle-result.finish-win .victory-rays,
+  #battle-result.finish-lose .defeat-vignette {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* 紙吹雪・SSR放射などはそもそも非表示 */
+  .confetti-container, .ssr-burst, .victory-rays { display: none !important; }
+}
+/* 手動トグル時の追加抑制 */
+body.opt-reduced-motion .stat-bar-fill,
+body.opt-reduced-motion .hp-bar-fill,
+body.opt-reduced-motion .progress-bar-fill,
+body.opt-reduced-motion .card-exp-fill { transition: none !important; }
+body.opt-reduced-motion::before { display: none !important; }
+body.opt-reduced-motion #result-banner.win,
+body.opt-reduced-motion #result-banner.lose { animation: none !important; opacity: 1 !important; transform: none !important; }
+body.opt-reduced-motion .confetti-container,
+body.opt-reduced-motion .ssr-burst,
+body.opt-reduced-motion .victory-rays { display: none !important; }
+
+/* ─── 副将詳細: ボタン共通 z-index (portrait-wrap/portrait-lg より確実に上へ) ─── */
+/* 原因: .detail-portrait-wrap は position:relative で DOM順が後なため z-index:auto だと上に来る */
+/* .detail-close (style.css) は z-index 未指定のため portrait-wrap に隠れる → ここで上書き */
+.detail-close {
+  z-index: 50 !important;
+  position: absolute !important;
+}
+
+/* ─── 副将詳細: ホーム戻るボタン ─── */
+.detail-back-home {
+  position: absolute;
+  top: 8px; left: 8px;
+  z-index: 50;
+  background: linear-gradient(180deg, var(--p-bg-hi) 0%, var(--p-bg-soft) 50%, var(--p-bg) 100%) !important;
+  color: var(--p-gold) !important;
+  font-family: var(--p-font-main) !important;
+  font-size: 13px !important;
+  padding: 8px 14px !important;
+  border: var(--px) solid var(--p-gold) !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+  text-shadow: 0 var(--px) 0 #000;
+  box-shadow:
+    inset 0 var(--px) 0 rgba(255,255,255,.18),
+    0 var(--px) 0 var(--p-bg-deep);
+}
+.detail-back-home:hover { filter: brightness(1.15); }
+.detail-back-home .picon { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
+
+/* detail-body の上端に余白を確保してボタンとコンテンツが重ならないように */
+.detail-body { padding-top: 44px; }
+
+/* ─── 詳細画面のキャラポートレートにタップヒント ─── */
+.detail-portrait-wrap {
+  cursor: zoom-in;
+  position: relative;
+  transition: transform .15s ease;
+}
+.detail-portrait-wrap:hover { transform: scale(1.02); }
+.detail-portrait-zoom-hint {
+  position: absolute;
+  bottom: 4px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.7);
+  color: var(--p-gold);
+  font-family: var(--p-font-main);
+  font-size: 10px;
+  padding: 2px 6px;
+  pointer-events: none;
+  border: var(--px) solid var(--p-gold);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.detail-portrait-wrap:hover .detail-portrait-zoom-hint { opacity: 1; }
+
+/* ─── キャライラスト全画面 Lightbox ─── */
+.char-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: radial-gradient(ellipse at center, rgba(20,10,30,.95) 0%, rgba(0,0,0,.99) 80%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 20px;
+  animation: lightboxFadeIn .25s ease-out;
+}
+.char-lightbox.hidden { display: none; }
+@keyframes lightboxFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.char-lightbox-img {
+  max-width: min(95vw, 1100px);
+  max-height: 90vh;
+  object-fit: contain;
+  border: calc(var(--px)*2) solid var(--p-gold);
+  box-shadow:
+    0 0 0 var(--px) var(--p-bg-deep),
+    0 0 40px rgba(255,204,74,.4),
+    0 calc(var(--px)*4) 0 var(--p-bg-deep);
+  background: var(--p-bg-deep);
+  image-rendering: auto;
+  animation: lightboxImgZoom .3s cubic-bezier(.2,1.2,.3,1);
+}
+@keyframes lightboxImgZoom {
+  from { transform: scale(.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+.char-lightbox-name {
+  margin-top: 16px;
+  font-family: var(--p-font-num);
+  font-size: 18px;
+  color: var(--p-gold);
+  text-shadow: 0 var(--px) 0 #000, 0 0 12px rgba(255,204,74,.5);
+  letter-spacing: .1em;
+}
+.char-lightbox-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 44px; height: 44px;
+  background: linear-gradient(180deg, #ff7777 0%, #cc3333 50%, #7a1818 100%) !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  font-weight: 900;
+  border: var(--px) solid #aa1111 !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+  text-shadow: 0 var(--px) 0 #000;
+  box-shadow:
+    inset 0 var(--px) 0 rgba(255,255,255,.2),
+    0 var(--px) 0 var(--p-bg-deep),
+    0 0 16px rgba(255,68,68,.5);
+}
+.char-lightbox-close:hover { filter: brightness(1.15); }
+
+/* ─── キャラカード EXP 進捗バー ─── */
+.card-exp-bar {
+  width: 100%;
+  height: 5px;
+  background: var(--p-bg-deep);
+  border: var(--px) solid var(--p-border);
+  margin: 4px 0 2px;
+  box-shadow: inset 0 var(--px) 0 rgba(0,0,0,.5);
+  overflow: hidden;
+}
+.card-exp-fill {
+  height: 100%;
+  background: linear-gradient(180deg, #6cd3ff 0%, #4a9ad0 50%, #2a6ea0 100%);
+  box-shadow: inset 0 var(--px) 0 rgba(255,255,255,.3);
+  transition: width .4s ease;
+}
+
+/* 自動連戦インジケータ (画面右下に固定表示) */
+#auto-replay-badge {
+  position: fixed;
+  right: 12px;
+  bottom: 78px;
+  z-index: 9000;
+  background: linear-gradient(180deg, #99ff99 0%, #44cc44 50%, #1a7a1a 100%);
+  color: #0a200a;
+  font-family: var(--p-font-num);
+  font-size: 11px;
+  letter-spacing: .05em;
+  padding: 8px 12px;
+  border: var(--px) solid #2a8a2a;
+  box-shadow:
+    0 0 0 var(--px) var(--p-bg-deep),
+    0 calc(var(--px)*2) 0 var(--p-bg-deep),
+    0 0 16px rgba(68,204,68,.5);
+  cursor: pointer;
+  user-select: none;
+  text-shadow: 0 var(--px) 0 rgba(255,255,255,.4);
+  animation: autoReplayPulse 1.4s ease-in-out infinite;
+}
+#auto-replay-badge .picon { width: 14px; height: 14px; vertical-align: -3px; }
+#auto-replay-badge:hover { filter: brightness(1.1); }
+@keyframes autoReplayPulse {
+  0%,100% { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 calc(var(--px)*2) 0 var(--p-bg-deep), 0 0 16px rgba(68,204,68,.5); }
+  50%     { box-shadow: 0 0 0 var(--px) var(--p-bg-deep), 0 calc(var(--px)*2) 0 var(--p-bg-deep), 0 0 28px rgba(102,221,102,1); }
+}
+
+/* 自動連戦バー (リザルト内 bottom) */
+.auto-replay-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(90deg, #1a3a1a, #2a6a2a);
+  border: var(--px) solid #3a8a3a;
+  padding: 7px 10px;
+  margin-top: 8px;
+  gap: 8px;
+}
+.ar-counter {
+  font-family: var(--p-font-num);
+  font-size: 11px;
+  color: #aaffaa;
+  letter-spacing: .05em;
+}
+.btn-ar-stop {
+  background: linear-gradient(180deg, #ff6666 0%, #cc2222 100%);
+  color: #fff;
+  border: var(--px) solid #ff4444;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-family: var(--p-font);
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: .05em;
+}
+.btn-ar-stop:hover { filter: brightness(1.15); }
+.btn-ar-stop:active { transform: translateY(var(--px)); }
+
+/* ─── 副将一覧: 属性フィルターボタン & カード属性バッジ ─── */
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.elem-filter-btn {
+  font-family: var(--p-font-main) !important;
+  font-size: 11px !important;
+  padding: 5px 10px !important;
+  border: var(--px) solid rgba(255,255,255,.18) !important;
+  background: var(--p-bg) !important;
+  color: var(--p-text-dim) !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+  transition: filter .1s;
+}
+.elem-filter-btn.active {
+  border-color: var(--ec, var(--p-gold)) !important;
+  color: var(--ec, var(--p-gold)) !important;
+  background: var(--p-bg-hi) !important;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--ec, var(--p-gold)) 50%, transparent);
+}
+.elem-filter-btn:hover { filter: brightness(1.2); }
+
+/* カード上部左端に属性バッジ (絶対配置、formation-badge は右上なので左上) */
+.card-elem-badge {
+  position: absolute;
+  top: 4px; left: 4px;
+  font-family: var(--p-font-main);
+  font-size: 9px;
+  padding: 2px 5px;
+  background: rgba(10,10,20,.8);
+  color: var(--ec, #fff);
+  border: var(--px) solid var(--ec, #888);
+  border-radius: 0;
+  line-height: 1.2;
+  pointer-events: none;
+  z-index: 3;
+  text-shadow: 0 var(--px) 0 #000;
+}
+
+/* ─── 材料アイコン (絵文字を統一ピクセル枠で囲んでアセット感を出す) ─── */
+.mat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: var(--px) solid var(--p-border);
+  box-shadow:
+    0 0 0 var(--px) var(--p-bg-deep),
+    inset 0 0 0 var(--px) rgba(255,255,255,.15),
+    0 var(--px) 0 var(--p-bg-deep);
+  font-size: 14px;
+  line-height: 1;
+  vertical-align: middle;
+  text-shadow: 0 var(--px) 0 rgba(0,0,0,.6);
+  margin-right: 2px;
+}
+
+/* ─── 既存スタイルの「フリー感」要因を除去 ─── */
+.confetti-piece { border-radius: 0 !important; }    /* 紙吹雪も四角ピクセルに */
+.intro-portrait { border-radius: 0 !important; }    /* VS画面ポートレートも四角額装 */
+.intro-vs-text  { font-family: var(--p-font-num) !important; letter-spacing: 0 !important; }
+.intro-name     { font-family: var(--p-font-main) !important; }
+.intro-warn     { font-family: var(--p-font-num) !important; font-size: 28px !important; }
+
+/* ─── スキャンライン (CRT風オプション) ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0) 0px,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,.05) 2px,
+    rgba(0,0,0,.05) 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: .15;
+}
+
+/* ─── 絵文字に薄い影をかけて統一感UP（PNG置換までの暫定） ─── */
+.picon-emoji-fallback,
+.boss-emoji, .stage-boss-img + .stage-boss-emoji {
+  filter: drop-shadow(0 var(--px) 0 #000) drop-shadow(0 0 4px rgba(0,0,0,.5));
+}
