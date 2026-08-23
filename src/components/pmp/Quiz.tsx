@@ -434,7 +434,7 @@ function DeepDive({ question }: { question: Question }) {
   const base = typeof window !== 'undefined' ? (location.pathname.includes('/nani-execution-lab') ? '/nani-execution-lab' : '') : '';
   const ch = (chaptersData.chapters as any[]).find((c) => c.id === question.chapter);
 
-  // 関連用語の自動抽出（既存126語 + 公式追加202語 = 328語 / CODEX 緊急対応）
+  // 関連用語の自動抽出（既存126語 + 公式追加202語 = 817語 / CODEX 緊急対応）
   const matchedTerms = (() => {
     const found: any[] = [];
     const v1Extras: any[] = (officialExtras as any).extras ?? [];

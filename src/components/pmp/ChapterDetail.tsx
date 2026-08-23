@@ -142,7 +142,7 @@ export default function ChapterDetail({ chapterId, base }: { chapterId: string; 
     return <div style={{ padding: '2rem', color: '#e86e6e' }}>章 {chapterId} が見つかりません</div>;
   }
 
-  // 用語集の全用語マップ（既存126 + 公式追加202 = 328語 / CODEX 緊急対応）
+  // 用語集の全用語マップ（既存126 + 公式追加202 = 817語 / CODEX 緊急対応）
   const termsByTerm = new Map<string, any>();
   for (const t of glossaryData.terms as any[]) {
     termsByTerm.set(t.term.toLowerCase(), t);

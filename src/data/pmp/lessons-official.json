@@ -1,0 +1,386 @@
+[
+  {
+    "id": "L01",
+    "no": 1,
+    "title_ja": "基礎",
+    "title_en": "Foundation",
+    "objectives": "",
+    "outline": "成功するプロジェクトはすべて、強固な基盤から\n始まります。これを、以降のすべての設計図を構\n築するようなものだと考えてください。\n• はじめに\n• 基礎",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "1A",
+        "title": "基礎"
+      },
+      {
+        "code": "1B",
+        "title": "戦略の整合"
+      },
+      {
+        "code": "1C",
+        "title": "プロジェクトのベネフィットと価値"
+      },
+      {
+        "code": "1D",
+        "title": "組織の文化とチェンジマネジメント"
+      },
+      {
+        "code": "1E",
+        "title": "プロジェクト・ガバナンス"
+      },
+      {
+        "code": "1F",
+        "title": "プロジェクト・コンプライアンス"
+      }
+    ]
+  },
+  {
+    "id": "L02",
+    "no": 2,
+    "title_ja": "基礎を築く",
+    "title_en": "Laying the Foundation",
+    "objectives": "",
+    "outline": "このレッスンでは、プロジェクトマネジメント・\nプロフェッショナル（PMP）®資格認定の試験内容の概要\nに記載されている以下のタスクについて説明します。 \n• 共通のビジョンを策定する（ECO 1.1） \n• ステークホルダーを関与させる（ECO 1.4）\n• ステークホルダーの期待を整合させる（ECO 1.5）\n• ガバナンスを定義し、確立する（ECO 3.1）",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "2A",
+        "title": "ステークホルダーを特定し関与させる"
+      },
+      {
+        "code": "2B",
+        "title": "チーム形成"
+      },
+      {
+        "code": "2C",
+        "title": "共通の理解を構築する"
+      },
+      {
+        "code": "2D",
+        "title": "プロジェクトのアプローチ/方法論を決定する"
+      }
+    ]
+  },
+  {
+    "id": "L03",
+    "no": 3,
+    "title_ja": "スコープ・価値・成功基準の定義",
+    "title_en": "Defining Scope, Value and Success Criteria",
+    "objectives": "",
+    "outline": "このレッスンでは、プロジェクトマネジメント・プロフェッ\nショナル（PMP）®資格認定の試験内容の概要に記載\nされている以下のタスクについて説明します。\n• プロジェクト・スコープの作成と管理（ECO 2.2）\n• 価値ベースのデリバリーの支援（ECO 2.3）\n• プロジェクト・コンプライアンスの計画と管理（ECO 3.2）",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "2A",
+        "title": "ステークホルダーを特定し関与させる"
+      },
+      {
+        "code": "2B",
+        "title": "チーム形成"
+      },
+      {
+        "code": "2C",
+        "title": "共通の理解を構築する"
+      },
+      {
+        "code": "2D",
+        "title": "プロジェクトのアプローチ/方法論を決定する"
+      }
+    ]
+  },
+  {
+    "id": "L04",
+    "no": 4,
+    "title_ja": "計画書の策定 — 統合・資源・財務",
+    "title_en": "Building the Plan",
+    "objectives": "",
+    "outline": "このレッスンでは、プロジェクトマネジメント・\nプロフェッショナル（PMP）®資格認定の試験\n内容の概要に記載されている以下のタスク\nについて説明します。",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "3A",
+        "title": "プロジェクトの計画"
+      },
+      {
+        "code": "3B",
+        "title": "スコープ"
+      },
+      {
+        "code": "3C",
+        "title": "スケジュール"
+      },
+      {
+        "code": "3D",
+        "title": "資源"
+      },
+      {
+        "code": "3E",
+        "title": "予算"
+      },
+      {
+        "code": "3F",
+        "title": "リスク"
+      },
+      {
+        "code": "3G",
+        "title": "品質"
+      },
+      {
+        "code": "3H",
+        "title": "計画を統合する"
+      }
+    ]
+  },
+  {
+    "id": "L05",
+    "no": 5,
+    "title_ja": "調達・品質・スケジューリング",
+    "title_en": "Procurement, Quality and Scheduling",
+    "objectives": "",
+    "outline": "このレッスンでは、プロジェクトマネジメント・プロフェッ\nショナル（PMP）®資格認定の試験内容の概要に記載さ\nれている以下のタスクについて説明します。 \n• 調達の計画とマネジメント（ECO 2.5）\n• 品質プロダクト/成果物の計画と最適化（ECO 2.7）\n• スケジュールの計画とマネジメント（ECO 2.8）",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "3A",
+        "title": "プロジェクトの計画"
+      },
+      {
+        "code": "3B",
+        "title": "スコープ"
+      },
+      {
+        "code": "3C",
+        "title": "スケジュール"
+      },
+      {
+        "code": "3D",
+        "title": "資源"
+      },
+      {
+        "code": "3E",
+        "title": "予算"
+      },
+      {
+        "code": "3F",
+        "title": "リスク"
+      },
+      {
+        "code": "3G",
+        "title": "品質"
+      },
+      {
+        "code": "3H",
+        "title": "計画を統合する"
+      }
+    ]
+  },
+  {
+    "id": "L06",
+    "no": 6,
+    "title_ja": "知識の伝達・転嫁 (コミュニケーション)",
+    "title_en": "Communication and Knowledge Transfer",
+    "objectives": "",
+    "outline": "2\nこのレッスンでは、プロジェクトマネジメント・\nプロフェッショナル（PMP）®資格認定の試験内容の概要\nに記載されている以下のタスクについて説明します。 \n•\n知識の転嫁を確実にするための支援（ECO 1.7）\n•\nコミュニケーションの計画と管理（ECO 1.8）。\n\n知識の転嫁を\n確実にする\nための支援\nECOタスク1.7\nPMP®\n\nプロジェクトにおける\n重要な知識の特定\nECO 1.7.1",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "2A",
+        "title": "ステークホルダーを特定し関与させる"
+      },
+      {
+        "code": "2B",
+        "title": "チーム形成"
+      },
+      {
+        "code": "2C",
+        "title": "共通の理解を構築する"
+      },
+      {
+        "code": "2D",
+        "title": "プロジェクトのアプローチ/方法論を決定する"
+      }
+    ]
+  },
+  {
+    "id": "L07",
+    "no": 7,
+    "title_ja": "チームの指揮・エンパワーメント",
+    "title_en": "Leading and Empowering the Team",
+    "objectives": "",
+    "outline": "このレッスンでは、プロジェクトマネジメント・プロフェッ\nショナル（PMP）®資格認定の試験内容の概要に記載\nされている以下のタスクについて説明します。 \n• コンフリクトマネジメント（ECO 1.2）\n• プロジェクト・チームを率いる（ECO 1.3）",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "4A",
+        "title": "リーダーシップ・スタイルを構築する"
+      },
+      {
+        "code": "4B",
+        "title": "協働的なプロジェクト・チーム環境を構築する"
+      },
+      {
+        "code": "4C",
+        "title": "チームに権限を与える"
+      },
+      {
+        "code": "4D",
+        "title": "チーム・メンバーのパフォーマンスをサポートする"
+      },
+      {
+        "code": "4E",
+        "title": "ステークホルダーとコミュニケーションをとり、協力する"
+      },
+      {
+        "code": "4F",
+        "title": "チーム・メンバーとステークホルダーをトレーニングする"
+      },
+      {
+        "code": "4G",
+        "title": "コンフリクトをマネジメントする"
+      }
+    ]
+  },
+  {
+    "id": "L08",
+    "no": 8,
+    "title_ja": "リスク・変更・課題の管理",
+    "title_en": "Managing Risk, Change and Issues",
+    "objectives": "",
+    "outline": "このレッスンでは、プロジェクトマネジメント・プロフェッ\nショナル（PMP）®資格認定の試験内容の概要に記\n載されている以下のタスクについて説明します。 \n• リスクの計画と管理（ECO 3.5）\n• 変更の管理とコントロール（ECO 3.3）\n• 障害の除去と課題の管理（ECO 3.4）",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "5A",
+        "title": "継続的な改善を実施する"
+      },
+      {
+        "code": "5B",
+        "title": "パフォーマンスをサポートする"
+      },
+      {
+        "code": "5C",
+        "title": "プロジェクトの進捗状況を評価する"
+      },
+      {
+        "code": "5D",
+        "title": "課題や障害事項をマネジメントする"
+      },
+      {
+        "code": "5E",
+        "title": "変更をマネジメントする"
+      }
+    ]
+  },
+  {
+    "id": "L09",
+    "no": 9,
+    "title_ja": "進捗の監視と整合性の維持",
+    "title_en": "Monitoring Progress and Maintaining Alignment",
+    "objectives": "",
+    "outline": "このレッスンでは、プロジェクトマネジメント・プロフェッ\nショナル（PMP）®資格認定の試験内容の概要に記載\nされている以下のタスクについて説明します。\n• ステークホルダーの期待のマネジメント（ECO 1.6）\n• プロジェクト状況の評価（ECO 2.9）",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "5A",
+        "title": "継続的な改善を実施する"
+      },
+      {
+        "code": "5B",
+        "title": "パフォーマンスをサポートする"
+      },
+      {
+        "code": "5C",
+        "title": "プロジェクトの進捗状況を評価する"
+      },
+      {
+        "code": "5D",
+        "title": "課題や障害事項をマネジメントする"
+      },
+      {
+        "code": "5E",
+        "title": "変更をマネジメントする"
+      }
+    ]
+  },
+  {
+    "id": "L10",
+    "no": 10,
+    "title_ja": "プロジェクトの円滑な終結",
+    "title_en": "Closing the Project Successfully",
+    "objectives": "",
+    "outline": "",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "6A",
+        "title": "プロジェクト/フェーズの終結"
+      },
+      {
+        "code": "6B",
+        "title": "ベネフィットの実現"
+      },
+      {
+        "code": "6C",
+        "title": "知識の移転"
+      }
+    ]
+  },
+  {
+    "id": "L11",
+    "no": 11,
+    "title_ja": "組織的・継続的改善の促進",
+    "title_en": "Driving Organizational Continuous Improvement",
+    "objectives": "",
+    "outline": "組織は常に変化しています。その変化は、内部要因によるものも\nあれば、外部の市場要因によるものもありますが、いずれの場合\nにおいても、組織は新たな情報に適応するため、継続的に変化し\nていく必要があります。\nこのレッスンでは、環境の変化をどのように評価し、それを踏まえ\nて改善を行っていくかについて探っていきます。\n•\n継続的改善（ECO 3.6）\n•\n組織変革の支援（ECO 3.7）\n•\n外部ビジネス環境の変化の評価（ECO 3.8）",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "1A",
+        "title": "基礎"
+      },
+      {
+        "code": "1B",
+        "title": "戦略の整合"
+      },
+      {
+        "code": "1C",
+        "title": "プロジェクトのベネフィットと価値"
+      },
+      {
+        "code": "1D",
+        "title": "組織の文化とチェンジマネジメント"
+      },
+      {
+        "code": "1E",
+        "title": "プロジェクト・ガバナンス"
+      },
+      {
+        "code": "1F",
+        "title": "プロジェクト・コンプライアンス"
+      }
+    ]
+  },
+  {
+    "id": "L12",
+    "no": 12,
+    "title_ja": "次のステップ",
+    "title_en": "Next Steps",
+    "objectives": "",
+    "outline": "",
+    "source": "PE-C v4.0 (2026)",
+    "blueprint_submodules": [
+      {
+        "code": "6A",
+        "title": "プロジェクト/フェーズの終結"
+      },
+      {
+        "code": "6B",
+        "title": "ベネフィットの実現"
+      },
+      {
+        "code": "6C",
+        "title": "知識の移転"
+      }
+    ]
+  }
+]

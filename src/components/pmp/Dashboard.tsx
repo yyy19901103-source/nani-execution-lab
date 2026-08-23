@@ -193,7 +193,7 @@ export default function Dashboard({ base }: { base: string }) {
       {/* ナビカード */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
         <NavCard href={`${base}/ai-tools/pmp-study/quiz`} icon="📝" label="問題演習" desc={`${store.questions.length}問プール`} />
-        <NavCard href={`${base}/ai-tools/pmp-study/study`} icon="📚" label="体系学習" desc={`${store.chapters.length}章（要検証）`} />
+        <NavCard href={`${base}/ai-tools/pmp-study/study`} icon="📚" label="体系学習 (PE-C 12レッスン)" desc="PMI公式コース準拠12レッスン" />
         <NavCard href={`${base}/ai-tools/pmp-study/exam`} icon="🎯" label="模試モード" desc="180問 / 230分" />
         <NavCard href={`${base}/ai-tools/pmp-study/eco`} icon="📋" label="PMI公式 ECO" desc="35タスク 142イネーブラ" highlight />
         <NavCard href={`${base}/ai-tools/pmp-study/mindset`} icon="🧭" label="PMBOK 7 原則" desc="12公式+Mindset 8" />

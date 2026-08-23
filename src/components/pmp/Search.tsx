@@ -44,7 +44,7 @@ export default function Search({ base }: { base: string }) {
       });
     }
 
-    // 用語 (既存 126語 + 公式追加 v1: 64語 + v2: 138語 = 328語 / CODEX 緊急対応)
+    // 用語 (既存 126語 + 公式追加 v1: 64語 + v2: 138語 = 817語 / CODEX 緊急対応)
     for (const t of glossaryData.terms) {
       items.push({
         type: 'term',

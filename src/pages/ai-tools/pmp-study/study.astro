@@ -1,109 +1,114 @@
 ---
 import '../../../styles/pmp-mobile.css';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import lessonsData from '../../../data/pmp/lessons-official.json';
 import chaptersData from '../../../data/pmp/chapters.json';
 import TrademarkFooter from '../../../components/pmp/TrademarkFooter.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const chapters = chaptersData.chapters;
-
-const domainGroups = [
-  { id: 'People', label: 'People · 人', weight: '42%', accent: '#c8a96e', items: chapters.filter(c => c.domain === 'People') },
-  { id: 'Process', label: 'Process · プロセス', weight: '50%', accent: '#6ec897', items: chapters.filter(c => c.domain === 'Process') },
-  { id: 'Business Environment', label: 'Business Environment · ビジネス環境', weight: '8%', accent: '#9ecbe8', items: chapters.filter(c => c.domain === 'Business Environment') },
-];
+const lessons = lessonsData as Array<{ id: string; no: number; title_ja: string; title_en: string; objectives: string; outline: string; source: string; blueprint_submodules: Array<{code: string; title: string}> }>;
+const chapters = (chaptersData as any).chapters ?? [];
 ---
 
 <BaseLayout
-  title="体系学習 - PMP学習アプリ"
-  description="PMP試験範囲を35章で体系的に学習。ECO 3ドメイン (People 42% / Process 50% / Business Environment 8%) の全タスクをカバー。"
+  title="体系学習 (PE-C 12レッスン順) - PMP学習アプリ"
+  description="PMI PE-C v4.0 (2026年公認コース) の12レッスン構造で体系学習。PMI公式Handout・Slide・Blueprint ECO準拠。"
 >
   <div style="background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,0.07);padding:0.7rem 1rem;">
     <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
       <a href={`${base}/ai-tools/pmp-study/`} style="color:rgba(237,237,232,0.6);font-size:0.75rem;text-decoration:none;letter-spacing:0.05em;">← ダッシュボード</a>
-      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;flex:1;">体系学習 · 35章</h1>
-      <span id="completion-summary" style="color:#c8a96e;font-size:0.75rem;letter-spacing:0.05em;">0 / 35 章 完了</span>
+      <h1 style="color:#edede8;font-size:0.95rem;font-weight:300;letter-spacing:0.15em;margin:0;flex:1;">体系学習 · PE-C 12レッスン</h1>
+      <span id="completion-summary" style="color:#c8a96e;font-size:0.75rem;letter-spacing:0.05em;">0 / 12 レッスン 完了</span>
     </div>
   </div>
 
   <div style="max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem;">
+    <div style="background:#111114;border:1px solid rgba(200,169,110,0.2);padding:1rem 1.2rem;margin-bottom:2rem;">
+      <p style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.15em;margin:0 0 0.4rem;">SOURCE OF TRUTH</p>
+      <p style="color:rgba(237,237,232,0.85);font-size:0.85rem;line-height:1.6;margin:0 0 0.5rem;">
+        <strong>PMI公式 PMP® Exam Prep Course (PE-C v4.0, 2026)</strong> の12レッスン順で学習します。
+      </p>
+      <p style="color:rgba(237,237,232,0.55);font-size:0.72rem;line-height:1.6;margin:0;">
+        Learner Handout (335ページ) + Slide (12冊, 990ページ) + Blueprint ECO (v3.0) + 公式Glossary 2026 (691語) を直接反映。
+        旧35章構造は <a href={`${base}/ai-tools/pmp-study/study-chapters`} style="color:#c8a96e;">こちら</a> から (参照用)。
+      </p>
+    </div>
 
-    {domainGroups.map(group => (
-      <div style="margin-bottom:2rem;">
-        <div style={`background:${group.accent}14;border-left:3px solid ${group.accent};padding:0.85rem 1.1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.5rem;`}>
-          <p style={`color:${group.accent};font-size:0.65rem;letter-spacing:0.3em;margin:0;`}>{group.label.toUpperCase()}</p>
-          <span style="color:rgba(237,237,232,0.5);font-size:0.72rem;">{group.weight} · {group.items.length}章</span>
-        </div>
-        <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);">
-          {group.items.map(ch => (
-            <details style="border-bottom:1px solid rgba(255,255,255,0.04);">
-              <summary style="padding:0.8rem 1rem;cursor:pointer;list-style:none;display:flex;gap:0.85rem;align-items:flex-start;">
-                <input
-                  type="checkbox"
-                  data-chapter={ch.id}
-                  onclick="event.stopPropagation()"
-                  style="margin-top:4px;cursor:pointer;accent-color:#c8a96e;"
-                />
-                <span style="color:#c8a96e;font-size:0.7rem;letter-spacing:0.1em;min-width:38px;font-weight:600;padding-top:2px;">{ch.id}</span>
-                <span style="flex:1;">
-                  <span style="color:#edede8;font-size:0.85rem;font-weight:500;">{ch.titleJa}</span>
-                  <span style="color:rgba(237,237,232,0.4);font-size:0.7rem;margin-left:0.5rem;">{ch.title}</span>
-                </span>
-                <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;white-space:nowrap;padding-top:2px;">{ch.estimatedMinutes}分</span>
-              </summary>
-              <div style="padding:0 1rem 1rem 4rem;">
-                <p style="color:rgba(237,237,232,0.7);font-size:0.78rem;line-height:1.7;margin-bottom:0.6rem;">{ch.summary}</p>
-                <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
-                  {ch.keyConcepts.map(c => (
-                    <span style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.15);color:rgba(200,169,110,0.85);padding:0.15rem 0.5rem;font-size:0.65rem;">{c}</span>
-                  ))}
-                </div>
-                <div style="margin-top:0.85rem;display:flex;gap:1rem;flex-wrap:wrap;">
-                  <a
-                    href={`${base}/ai-tools/pmp-study/study/${ch.id}`}
-                    style="color:#6ec897;font-size:0.72rem;text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid rgba(110,200,151,0.3);"
-                  >📖 本文・関連用語・ミニチェック ▶</a>
-                  <a
-                    href={`${base}/ai-tools/pmp-study/quiz?chapter=${ch.id}`}
-                    style="color:#c8a96e;font-size:0.72rem;text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid rgba(200,169,110,0.3);"
-                  >📝 この章の問題を演習 ▶</a>
-                </div>
+    <div style="background:#111114;border:1px solid rgba(255,255,255,0.05);">
+      {lessons.map(L => (
+        <details style="border-bottom:1px solid rgba(255,255,255,0.06);">
+          <summary style="padding:1rem 1.1rem;cursor:pointer;list-style:none;display:flex;gap:0.9rem;align-items:flex-start;">
+            <input type="checkbox" data-lesson={L.id} onclick="event.stopPropagation()" style="margin-top:5px;cursor:pointer;accent-color:#c8a96e;" />
+            <span style="color:#c8a96e;font-size:0.75rem;letter-spacing:0.1em;min-width:50px;font-weight:600;padding-top:3px;">L{String(L.no).padStart(2,'0')}</span>
+            <span style="flex:1;">
+              <span style="color:#edede8;font-size:0.92rem;font-weight:500;">{L.title_ja}</span>
+              <span style="color:rgba(237,237,232,0.4);font-size:0.72rem;margin-left:0.6rem;">{L.title_en}</span>
+              <div style="color:rgba(237,237,232,0.5);font-size:0.72rem;margin-top:0.35rem;line-height:1.5;">{L.outline.slice(0, 140)}{L.outline.length > 140 ? '…' : ''}</div>
+              <div style="margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                {L.blueprint_submodules.map((sm) => (
+                  <span style="background:rgba(200,169,110,0.1);color:#c8a96e;font-size:0.62rem;padding:0.15rem 0.5rem;letter-spacing:0.08em;">{sm.code}</span>
+                ))}
               </div>
-            </details>
-          ))}
-        </div>
-      </div>
-    ))}
+            </span>
+            <span style="color:rgba(237,237,232,0.3);font-size:0.7rem;padding-top:3px;">▼</span>
+          </summary>
+          <div style="padding:0.6rem 1.1rem 1rem 3.4rem;background:rgba(0,0,0,0.15);">
+            {L.objectives && (
+              <div style="margin-bottom:0.8rem;">
+                <p style="color:rgba(237,237,232,0.6);font-size:0.68rem;letter-spacing:0.15em;margin:0 0 0.3rem;">学習目的</p>
+                <p style="color:rgba(237,237,232,0.8);font-size:0.78rem;line-height:1.7;margin:0;">{L.objectives.slice(0, 300)}</p>
+              </div>
+            )}
+            {L.blueprint_submodules.length > 0 && (
+              <div style="margin-bottom:0.8rem;">
+                <p style="color:rgba(237,237,232,0.6);font-size:0.68rem;letter-spacing:0.15em;margin:0 0 0.3rem;">サブモジュール ({L.blueprint_submodules.length})</p>
+                <ul style="list-style:none;padding:0;margin:0;">
+                  {L.blueprint_submodules.map((sm) => (
+                    <li style="color:rgba(237,237,232,0.75);font-size:0.75rem;line-height:1.6;padding:0.1rem 0;">
+                      <span style="color:#c8a96e;font-weight:600;margin-right:0.5rem;">{sm.code}</span>{sm.title}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div style="display:flex;gap:0.6rem;margin-top:0.6rem;">
+              <a href={`${base}/ai-tools/pmp-study/study/lesson/${L.id}`} style="background:#c8a96e;color:#0a0a0c;font-size:0.72rem;letter-spacing:0.15em;padding:0.55rem 1rem;text-decoration:none;font-weight:600;">全文を読む →</a>
+              <a href={`${base}/ai-tools/pmp-study/quiz?lesson=${L.id}`} style="background:transparent;color:#c8a96e;font-size:0.72rem;letter-spacing:0.15em;padding:0.55rem 1rem;text-decoration:none;border:1px solid rgba(200,169,110,0.4);">このレッスンで練習</a>
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
 
+    {chapters.length > 0 && (
+      <div style="margin-top:2.5rem;padding:1rem;border:1px dashed rgba(255,255,255,0.08);">
+        <p style="color:rgba(237,237,232,0.5);font-size:0.7rem;letter-spacing:0.1em;margin:0 0 0.3rem;">参考: 旧35章構造 ({chapters.length}章)</p>
+        <p style="color:rgba(237,237,232,0.4);font-size:0.7rem;margin:0;">
+          過去バージョンの学習資産。<a href={`${base}/ai-tools/pmp-study/study-chapters`} style="color:#c8a96e;">章別ビュー</a>で確認可。新規学習はPE-C 12レッスン順を推奨。
+        </p>
+      </div>
+    )}
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const checks = document.querySelectorAll<HTMLInputElement>('input[data-chapter]');
-      const stored: string[] = JSON.parse(localStorage.getItem('pmp-completed-chapters') || '[]');
-      const summaryEl = document.getElementById('completion-summary');
-
-      const update = () => {
-        const cur: string[] = JSON.parse(localStorage.getItem('pmp-completed-chapters') || '[]');
-        if (summaryEl) summaryEl.textContent = `${cur.length} / 35 章 完了`;
-      };
-
-      checks.forEach(cb => {
-        const id = cb.dataset.chapter!;
-        cb.checked = stored.includes(id);
-        cb.addEventListener('change', () => {
-          const cur: string[] = JSON.parse(localStorage.getItem('pmp-completed-chapters') || '[]');
-          if (cb.checked && !cur.includes(id)) cur.push(id);
-          if (!cb.checked) {
-            const i = cur.indexOf(id);
-            if (i >= 0) cur.splice(i, 1);
-          }
-          localStorage.setItem('pmp-completed-chapters', JSON.stringify(cur));
-          update();
-        });
-      });
-      update();
-    });
-  </script>
-
   <TrademarkFooter />
+
+  <script>
+    const KEY = 'pmp_lesson_completion';
+    const state = JSON.parse(localStorage.getItem(KEY) || '{}');
+    document.querySelectorAll('input[data-lesson]').forEach((cb) => {
+      const el = cb as HTMLInputElement;
+      const id = el.dataset.lesson!;
+      if (state[id]) el.checked = true;
+      el.addEventListener('change', () => {
+        state[id] = el.checked;
+        localStorage.setItem(KEY, JSON.stringify(state));
+        updateSummary();
+      });
+    });
+    function updateSummary() {
+      const done = Object.values(state).filter(v => v).length;
+      const el = document.getElementById('completion-summary');
+      if (el) el.textContent = `${done} / 12 レッスン 完了`;
+    }
+    updateSummary();
+  </script>
 </BaseLayout>
