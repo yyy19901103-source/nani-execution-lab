@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { usePmpStore, daysUntilExam, todayTargetMinutes, evaluateAchievements } from './store';
+import { usePmpStore, daysUntilExam, todayTargetMinutes, evaluateAchievements, computeAutoPlan } from './store';
 import { getDb, getSettings } from './db';
 import { generateRecommendations, type Recommendation } from './curriculum';
 import questionsData from '../../data/pmp/questions.json';
@@ -107,7 +107,8 @@ export default function Dashboard({ base }: { base: string }) {
             onClick={async () => {
               if (!examDateInput) return;
               const today = new Date().toISOString().slice(0, 10);
-              const next = { ...store.settings, examDate: examDateInput, startDate: today };
+              const plan = computeAutoPlan(examDateInput, store.settings.dailyTargetMinutes);
+              const next = { ...store.settings, examDate: examDateInput, startDate: today, ...plan };
               const { saveSettings } = await import('./db');
               await saveSettings(next);
               store.setSettings(next);

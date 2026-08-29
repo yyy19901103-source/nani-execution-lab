@@ -137,6 +137,22 @@ export function daysUntilExam(examDate: string | null): number | null {
   return Math.ceil((exam.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 }
 
+// 試験日 + 1日の学習時間 から他の目標値を自動算出
+// 週1日は休養日と想定し、実績値(185h/3000問 ≈ 16問/h)を単価として使用
+export function computeAutoPlan(
+  examDate: string | null,
+  dailyTargetMinutes: number,
+): { totalTargetDays: number; totalTargetHours: number; totalTargetQuestions: number } {
+  const days = daysUntilExam(examDate);
+  if (days === null || days <= 0) {
+    return { totalTargetDays: 80, totalTargetHours: 185, totalTargetQuestions: 3000 };
+  }
+  const studyDays = Math.max(1, Math.round((days * 6) / 7));
+  const totalTargetHours = Math.max(1, Math.round((studyDays * dailyTargetMinutes) / 60));
+  const totalTargetQuestions = Math.max(50, Math.round(totalTargetHours * 16));
+  return { totalTargetDays: studyDays, totalTargetHours, totalTargetQuestions };
+}
+
 // 今日の必要学習量
 export function todayTargetMinutes(
   examDate: string | null,

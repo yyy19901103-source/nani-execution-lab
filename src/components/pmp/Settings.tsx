@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getSettings, saveSettings, exportAll, importAll, getDb } from './db';
+import { computeAutoPlan, daysUntilExam } from './store';
 import type { UserSettings } from '../../data/pmp/types';
 
 export default function Settings() {
@@ -20,6 +21,12 @@ export default function Settings() {
     setSettings(next);
     setStatus('✓ 保存しました');
     setTimeout(() => setStatus(''), 2000);
+  }
+
+  // 試験日 or 1日の学習時間が変わったら、他3項目を自動再計算して保存
+  async function saveWithAutoPlan(examDate: string | null, dailyTargetMinutes: number) {
+    const plan = computeAutoPlan(examDate, dailyTargetMinutes);
+    await save({ ...settings!, examDate, dailyTargetMinutes, ...plan });
   }
 
   async function handleExport() {
@@ -67,12 +74,15 @@ export default function Settings() {
   return (
     <div style={{ maxWidth: 700, margin: '0 auto', padding: '1.5rem 1rem 4rem' }}>
       <Section title="試験日と目標">
+        <p style={{ color: 'rgba(237,237,232,0.5)', fontSize: '0.75rem', lineHeight: 1.7, marginBottom: '1.1rem' }}>
+          試験予定日を入れるだけで、残り日数から学習計画を自動算出します（週1日休養想定）。
+        </p>
         <FieldRow label="試験予定日">
           <input
             type="date"
             value={settings.examDate ?? ''}
             min={new Date().toISOString().slice(0, 10)}
-            onChange={(e) => save({ ...settings, examDate: e.target.value || null })}
+            onChange={(e) => saveWithAutoPlan(e.target.value || null, settings.dailyTargetMinutes)}
             style={input}
           />
         </FieldRow>
@@ -82,40 +92,20 @@ export default function Settings() {
             min={30}
             max={480}
             value={settings.dailyTargetMinutes}
-            onChange={(e) => save({ ...settings, dailyTargetMinutes: Number(e.target.value) })}
+            onChange={(e) => saveWithAutoPlan(settings.examDate, Number(e.target.value))}
             style={input}
           />
         </FieldRow>
-        <FieldRow label="総学習時間目標（時間）">
-          <input
-            type="number"
-            min={50}
-            max={500}
-            value={settings.totalTargetHours}
-            onChange={(e) => save({ ...settings, totalTargetHours: Number(e.target.value) })}
-            style={input}
-          />
-        </FieldRow>
-        <FieldRow label="問題演習総数目標">
-          <input
-            type="number"
-            min={100}
-            max={10000}
-            value={settings.totalTargetQuestions}
-            onChange={(e) => save({ ...settings, totalTargetQuestions: Number(e.target.value) })}
-            style={input}
-          />
-        </FieldRow>
-        <FieldRow label="学習継続日数目標">
-          <input
-            type="number"
-            min={30}
-            max={365}
-            value={settings.totalTargetDays}
-            onChange={(e) => save({ ...settings, totalTargetDays: Number(e.target.value) })}
-            style={input}
-          />
-        </FieldRow>
+
+        <div style={{ marginTop: '1.25rem', paddingTop: '1.1rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <p style={{ color: 'rgba(200,169,110,0.7)', fontSize: '0.62rem', letterSpacing: '0.2em', marginBottom: '0.85rem' }}>
+            自動計算された目標（編集不可）
+          </p>
+          <AutoRow label="試験日まで" value={daysUntilExam(settings.examDate) !== null ? `${daysUntilExam(settings.examDate)} 日` : '未設定'} />
+          <AutoRow label="学習継続日数目標" value={`${settings.totalTargetDays} 日`} />
+          <AutoRow label="総学習時間目標" value={`${settings.totalTargetHours} 時間`} />
+          <AutoRow label="問題演習総数目標" value={`${settings.totalTargetQuestions} 問`} />
+        </div>
       </Section>
 
       <Section title="データ管理">
@@ -158,6 +148,15 @@ function Section({ title, children }: { title: string; children: React.ReactNode
         {title.toUpperCase()}
       </p>
       {children}
+    </div>
+  );
+}
+
+function AutoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 200px', gap: '1rem', alignItems: 'center', marginBottom: '0.6rem' }}>
+      <label style={{ color: 'rgba(237,237,232,0.55)', fontSize: '0.8rem' }}>{label}</label>
+      <span style={{ color: '#c8a96e', fontSize: '0.85rem', fontWeight: 600 }}>{value}</span>
     </div>
   );
 }
