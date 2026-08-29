@@ -1,33 +1,41 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-08-26 22:13",
+  "generated_at": "2026-08-29 12:02",
   "summary": {
-    "rank": "watch",
-    "score": 53,
+    "rank": "weak_buy",
+    "score": 56,
     "prob_up_5d": 0.553,
     "prob_down_5pct": 0.261,
     "expected_return": 1.42,
     "risk_reward": 1.09,
     "max_loss_est": -1.3,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=68% / 12ヶ月=69%\n下落確率: 3%=32% / 5%=26% / 10%=15%\n期待値: +1.42% / リスクリワード: 1.09\n判定時刻: 2026-08-26 22:13",
-    "prediction_date": "2026-08-26"
+    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=72% / 12ヶ月=69%\n下落確率: 3%=32% / 5%=26% / 10%=12%\n期待値: +1.42% / リスクリワード: 1.09\n判定時刻: 2026-08-29 12:01",
+    "prediction_date": "2026-08-29"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 4,
-      "BUY": 13,
-      "HOLD": 9,
-      "WATCH": 42,
+      "STRONG_BUY": 5,
+      "BUY": 17,
+      "WEAK BUY": 1,
+      "HOLD": 5,
+      "WATCH": 40,
       "REDUCE": 1
     },
     "category_stats": {
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 58.7
+      },
       "trade_style": {
         "count": 7,
         "buy": 3,
-        "sell": 1,
-        "hold": 3,
-        "avg_score": 59.1
+        "sell": 0,
+        "hold": 4,
+        "avg_score": 63.3
       },
       "personal": {
         "count": 10,
@@ -45,35 +53,37 @@
       },
       "prediction": {
         "count": 10,
-        "buy": 2,
-        "sell": 0,
-        "hold": 8,
-        "avg_score": 53.3
+        "buy": 4,
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 57.6
       },
       "analysis": {
         "count": 10,
-        "buy": 3,
+        "buy": 4,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 53.0
+        "hold": 6,
+        "avg_score": 56.3
       },
       "market_monitor": {
         "count": 7,
-        "buy": 1,
+        "buy": 3,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 47.6
-      },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 52.5
+        "hold": 4,
+        "avg_score": 57.4
       }
     }
   },
   "top_buys": [
+    {
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 84.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 2/10位"
+    },
     {
       "agent": "dividend_income",
       "agent_jp": "配当インカム",
@@ -129,87 +139,69 @@
       "reason": "ROIC優秀(27%) / 高利益率(33%)"
     },
     {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 67.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高値圏 / ADXトレンド強(=33) / 200MA大幅上回り"
-    },
-    {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
-    },
-    {
       "agent": "mid_term_prob",
       "agent_jp": "中期確率",
       "category": "prediction",
-      "score": 65.0,
+      "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=65% / MA20=-0.5% / 売上成長=16%"
+      "reason": "20d/3m上昇確率=71% / MA20=+3.2% / 売上成長=16%"
     },
     {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
+      "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
+      "category": "market_monitor",
+      "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "失敗パターンなし"
-    }
-  ],
-  "top_risks": [
+      "reason": "流動性良好"
+    },
     {
       "agent": "expected_value",
       "agent_jp": "期待値",
       "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
+      "score": 68.0,
+      "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
-    },
+      "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
+    }
+  ],
+  "top_risks": [
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
       "category": "prediction",
-      "score": 55.0,
+      "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=55% / 20d=57% / 3m=68% / 期待値=+1.42%"
+      "reason": "アンサンブル=59% / LGBM=55% / ルール=63% / ファンダ=61%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
+      "agent": "swing_trade",
+      "agent_jp": "スイングトレード",
       "category": "trade_style",
-      "score": 55.0,
+      "score": 59.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "alert",
-      "agent_jp": "アラート",
+      "agent": "score_integration",
+      "agent_jp": "スコア統合",
       "category": "integration",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=56"
+    },
+    {
+      "agent": "institutional_flow",
+      "agent_jp": "機関投資家動向",
+      "category": "analysis",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "異常なし"
+      "reason": "静かな蓄積パターン"
     },
     {
       "agent": "value_invest",
@@ -221,40 +213,49 @@
       "reason": "PBR高い(42.0x) / ROE高(149%) / 配当利回り35.0%"
     },
     {
-      "agent": "market_sentiment",
-      "agent_jp": "市場センチメント",
+      "agent": "lgbm_prob",
+      "agent_jp": "LightGBM確率",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "5d上昇確率=55% / 20d=57% / 3m=72% / 期待値=+1.42%"
+    },
+    {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
+    },
+    {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
       "category": "market_monitor",
-      "score": 53.0,
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "RSI中立ゾーン"
+      "reason": "OBV上昇トレンド"
     },
     {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
+      "agent": "alert",
+      "agent_jp": "アラート",
       "category": "integration",
-      "score": 53.0,
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=53"
+      "reason": "異常なし"
     },
     {
-      "agent": "final_judgment",
-      "agent_jp": "最終判定",
-      "category": "integration",
-      "score": 52.0,
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=68% / 12ヶ月=69%\n下落確率: 3%=32% / 5%=26% / 10%=15%\n期待値: +1.42% / リスクリワード: 1.09\n判定時刻: 2026-08-26 22:13"
-    },
-    {
-      "agent": "earnings_momentum",
-      "agent_jp": "決算モメンタム",
-      "category": "analysis",
-      "score": 50.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "決算特記事項なし"
+      "reason": "ストキャスKD買い"
     }
   ],
   "fundamentals": {
@@ -267,16 +268,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9229,
+    "total_days": 9232,
     "approx_years": 36.6,
     "data_span_label": "IPO以降 約36.6年（1990-01-02〜）",
     "all_time_high": 339.79,
-    "current_close": 309.9,
-    "current_drawdown_pct": -8.8,
+    "current_close": 319.7,
+    "current_drawdown_pct": -5.9,
     "max_drawdown_pct": -81.8,
     "days_below_30pct_dd": 3292,
     "pct_time_below_30pct": 35.7,
-    "current_pct_of_ath": 91.2
+    "current_pct_of_ath": 94.1
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_AAPL",

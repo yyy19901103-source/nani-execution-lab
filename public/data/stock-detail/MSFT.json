@@ -1,39 +1,40 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-08-26 22:13",
+  "generated_at": "2026-08-29 12:02",
   "summary": {
     "rank": "watch",
     "score": 56,
-    "prob_up_5d": 0.527,
-    "prob_down_5pct": 0.187,
-    "expected_return": 1.21,
-    "risk_reward": 1.3,
-    "max_loss_est": -0.93,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=53% / 20日=60% / 3ヶ月=65% / 12ヶ月=72%\n下落確率: 3%=28% / 5%=19% / 10%=6%\n期待値: +1.21% / リスクリワード: 1.30\n判定時刻: 2026-08-26 22:13",
-    "prediction_date": "2026-08-26"
+    "prob_up_5d": 0.519,
+    "prob_down_5pct": 0.167,
+    "expected_return": 1.15,
+    "risk_reward": 1.37,
+    "max_loss_est": -0.84,
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=52% / 20日=60% / 3ヶ月=65% / 12ヶ月=77%\n下落確率: 3%=24% / 5%=17% / 10%=6%\n期待値: +1.15% / リスクリワード: 1.37\n判定時刻: 2026-08-29 12:01",
+    "prediction_date": "2026-08-29"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 6,
-      "BUY": 12,
-      "HOLD": 4,
-      "WATCH": 47
+      "BUY": 14,
+      "HOLD": 5,
+      "WATCH": 43,
+      "REDUCE": 1
     },
     "category_stats": {
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 58.0
-      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 0,
         "hold": 4,
         "avg_score": 62.4
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 57.0
       },
       "personal": {
         "count": 10,
@@ -52,35 +53,44 @@
       "prediction": {
         "count": 10,
         "buy": 2,
+        "sell": 1,
+        "hold": 7,
+        "avg_score": 53.6
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 3,
         "sell": 0,
-        "hold": 8,
-        "avg_score": 55.7
+        "hold": 4,
+        "avg_score": 58.9
       },
       "analysis": {
         "count": 10,
         "buy": 4,
         "sell": 0,
         "hold": 6,
-        "avg_score": 57.6
-      },
-      "market_monitor": {
-        "count": 7,
-        "buy": 1,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 52.7
+        "avg_score": 57.7
       }
     }
   },
   "top_buys": [
     {
+      "agent": "momentum",
+      "agent_jp": "モメンタム",
+      "category": "trade_style",
+      "score": 85.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "52週高値近傍(0.0%) / 60日リターン強(20.2%) / ADXトレンド強(=40) / 200MA大幅上回り"
+    },
+    {
       "agent": "comparative",
       "agent_jp": "比較評価",
       "category": "integration",
-      "score": 90.0,
+      "score": 84.0,
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
-      "reason": "ウォッチリスト内 1/10位"
+      "reason": "ウォッチリスト内 2/10位"
     },
     {
       "agent": "dividend_income",
@@ -119,15 +129,6 @@
       "reason": "Rule of 40超え(63)"
     },
     {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 75.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "52週高値近傍(-3.4%) / ADXトレンド強(=52) / 200MA大幅上回り"
-    },
-    {
       "agent": "growth_invest",
       "agent_jp": "グロース投資",
       "category": "trade_style",
@@ -143,16 +144,16 @@
       "score": 71.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "20d/3m上昇確率=71% / MA20=+2.0% / 売上成長=18%"
+      "reason": "20d/3m上昇確率=71% / MA20=+4.2% / 売上成長=18%"
     },
     {
-      "agent": "technical_summary",
-      "agent_jp": "テクニカル総合",
-      "category": "analysis",
+      "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
+      "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "テクニカル総合買いシグナル / 強弱比=3.8:1.5"
+      "reason": "流動性良好"
     },
     {
       "agent": "fundamental",
@@ -175,22 +176,22 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "sector_rotation",
-      "agent_jp": "セクターローテーション",
-      "category": "market_monitor",
-      "score": 58.0,
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "S&P500比 月次強い(+21.9%)"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率59% / P10=-0.5% P90=+0.7%"
     },
     {
-      "agent": "news_impact",
-      "agent_jp": "ニュース影響",
+      "agent": "technical_summary",
+      "agent_jp": "テクニカル総合",
       "category": "analysis",
       "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ニュース中立"
+      "reason": "テクニカル中立 / 強弱比=3.8:5.0"
     },
     {
       "agent": "score_integration",
@@ -202,22 +203,13 @@
       "reason": "全エージェント統合スコア=56"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "institutional_flow",
+      "agent_jp": "機関投資家動向",
+      "category": "analysis",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
-    },
-    {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "PBR高い(8.1x) / ROE高(34%) / 配当利回り75.0%"
+      "reason": "静かな蓄積パターン"
     },
     {
       "agent": "investor_profile",
@@ -247,13 +239,22 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
       "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "VIX低位(14)"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(8.1x) / ROE高(34%) / 配当利回り75.0%"
     }
   ],
   "fundamentals": {
@@ -266,16 +267,16 @@
   },
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9229,
+    "total_days": 9232,
     "approx_years": 36.6,
     "data_span_label": "IPO以降 約36.6年（1990-01-02〜）",
     "all_time_high": 539.83,
-    "current_close": 491.71,
-    "current_drawdown_pct": -8.9,
+    "current_close": 513.53,
+    "current_drawdown_pct": -4.9,
     "max_drawdown_pct": -69.4,
     "days_below_30pct_dd": 3318,
-    "pct_time_below_30pct": 36.0,
-    "current_pct_of_ath": 91.1
+    "pct_time_below_30pct": 35.9,
+    "current_pct_of_ath": 95.1
   },
   "backtest": {
     "strategy": "lgbm_rule_v1_MSFT",
@@ -290,6 +291,13 @@
     "tested_at": "2026-04-29 09:55:10"
   },
   "news": [
+    {
+      "headline": "Amazon’s Post-Q2 Earnings Rally Has Faded But Don’t Give Up on AMZN Stock Just Yet",
+      "sentiment": 0.63,
+      "importance": 5,
+      "published_at": "2026-08-29 03:46:36",
+      "source": "yahoo"
+    },
     {
       "headline": "Stock Market Today: Dow Steady On Inflation Data; Nvidia Earnings Due After Close (Live Coverage)",
       "sentiment": null,
@@ -312,17 +320,10 @@
       "source": "yahoo"
     },
     {
-      "headline": "onPhase Named to the 2026 Inc. 5000 List of America's Fastest-Growing Private Companies for the Second Consecutive Year",
-      "sentiment": 0.94,
+      "headline": "Why ZM Stock Prints So Much Cash Right Now",
+      "sentiment": 0.36,
       "importance": 2,
-      "published_at": "2026-08-26 22:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Think AI Is Expensive? SpaceX Is Spending $100 Billion to Build a New Starbase",
-      "sentiment": 0.35,
-      "importance": 2,
-      "published_at": "2026-08-26 21:47:55",
+      "published_at": "2026-08-29 07:17:34",
       "source": "yahoo"
     }
   ],
