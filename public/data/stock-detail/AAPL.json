@@ -1,6 +1,6 @@
 {
   "ticker": "AAPL",
-  "generated_at": "2026-08-30 15:48",
+  "generated_at": "2026-08-30 16:05",
   "summary": {
     "rank": "weak_buy",
     "score": 56,
@@ -14,17 +14,17 @@
     "max_loss_est": -1.3,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値22.7%]",
-    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=72% / 12ヶ月=69%\n下落確率: 3%=32% / 5%=26% / 10%=12%\n期待値: +1.42% / リスクリワード: 1.09\n判定時刻: 2026-08-30 15:48",
+    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=55% / 20日=57% / 3ヶ月=72% / 12ヶ月=69%\n下落確率: 3%=32% / 5%=26% / 10%=12%\n期待値: +1.42% / リスクリワード: 1.09\n判定時刻: 2026-08-30 16:05",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 5,
-      "BUY": 17,
+      "BUY": 18,
       "WEAK BUY": 1,
       "HOLD": 5,
-      "WATCH": 40,
+      "WATCH": 39,
       "REDUCE": 1
     },
     "category_stats": {
@@ -58,10 +58,10 @@
       },
       "prediction": {
         "count": 10,
-        "buy": 3,
+        "buy": 4,
         "sell": 1,
-        "hold": 6,
-        "avg_score": 57.3
+        "hold": 5,
+        "avg_score": 57.7
       },
       "analysis": {
         "count": 10,
@@ -191,15 +191,6 @@
       "reason": "MACDゴールデンクロス域 / BB下限タッチ狙い未達 / MA20上方"
     },
     {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率60% / P10=-0.3% P90=+0.6%"
-    },
-    {
       "agent": "score_integration",
       "agent_jp": "スコア統合",
       "category": "integration",
@@ -216,6 +207,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "静かな蓄積パターン"
+    },
+    {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "lgbm_prob",
@@ -245,15 +245,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "PBR高い(42.0x) / ROE高(149%) / 配当利回り35.0%"
-    },
-    {
       "agent": "day_trade",
       "agent_jp": "デイトレード",
       "category": "trade_style",
@@ -261,6 +252,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "PBR高い(42.0x) / ROE高(149%) / 配当利回り35.0%"
     }
   ],
   "fundamentals": {

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-30 15:48",
+  "generated_at": "2026-08-30 16:06",
   "summary": {
     "total_agents": 69,
     "categories": 7,
@@ -21,11 +21,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.474,
           "samples": 114,
-          "executions_today": 82,
-          "avg_score_today": 53.7,
-          "buy_today": 21,
+          "executions_today": 114,
+          "avg_score_today": 53.4,
+          "buy_today": 29,
           "sell_today": 0,
-          "neutral_today": 61,
+          "neutral_today": 85,
           "uses_math_model": false
         },
         {
@@ -36,11 +36,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.448,
           "samples": 29,
-          "executions_today": 72,
-          "avg_score_today": 52.1,
-          "buy_today": 16,
+          "executions_today": 103,
+          "avg_score_today": 52.2,
+          "buy_today": 24,
           "sell_today": 0,
-          "neutral_today": 56,
+          "neutral_today": 79,
           "uses_math_model": false
         },
         {
@@ -51,11 +51,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.5,
           "samples": 4,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 49.3,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -66,11 +66,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.524,
           "samples": 82,
-          "executions_today": 72,
-          "avg_score_today": 51.0,
-          "buy_today": 12,
+          "executions_today": 103,
+          "avg_score_today": 51.6,
+          "buy_today": 20,
           "sell_today": 0,
-          "neutral_today": 60,
+          "neutral_today": 83,
           "uses_math_model": false
         },
         {
@@ -81,11 +81,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.419,
           "samples": 74,
-          "executions_today": 72,
-          "avg_score_today": 54.7,
-          "buy_today": 15,
+          "executions_today": 103,
+          "avg_score_today": 54.1,
+          "buy_today": 21,
           "sell_today": 0,
-          "neutral_today": 57,
+          "neutral_today": 82,
           "uses_math_model": false
         },
         {
@@ -96,9 +96,9 @@
           "weight_updated_at": null,
           "hit_rate": 0.529,
           "samples": 174,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 70.0,
-          "buy_today": 72,
+          "buy_today": 103,
           "sell_today": 0,
           "neutral_today": 0,
           "uses_math_model": false
@@ -111,11 +111,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.415,
           "samples": 65,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         }
       ]
@@ -133,11 +133,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.521,
           "samples": 96,
-          "executions_today": 72,
-          "avg_score_today": 48.3,
-          "buy_today": 0,
-          "sell_today": 5,
-          "neutral_today": 67,
+          "executions_today": 103,
+          "avg_score_today": 49.3,
+          "buy_today": 5,
+          "sell_today": 7,
+          "neutral_today": 91,
           "uses_math_model": false
         },
         {
@@ -148,11 +148,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.353,
           "samples": 17,
-          "executions_today": 72,
-          "avg_score_today": 47.5,
+          "executions_today": 103,
+          "avg_score_today": 47.1,
           "buy_today": 0,
-          "sell_today": 5,
-          "neutral_today": 67,
+          "sell_today": 9,
+          "neutral_today": 94,
           "uses_math_model": false
         },
         {
@@ -163,11 +163,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.412,
           "samples": 119,
-          "executions_today": 72,
-          "avg_score_today": 65.0,
-          "buy_today": 52,
+          "executions_today": 103,
+          "avg_score_today": 64.3,
+          "buy_today": 71,
           "sell_today": 0,
-          "neutral_today": 20,
+          "neutral_today": 32,
           "uses_math_model": false
         },
         {
@@ -178,11 +178,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.404,
           "samples": 47,
-          "executions_today": 74,
-          "avg_score_today": 55.7,
-          "buy_today": 51,
+          "executions_today": 105,
+          "avg_score_today": 56.4,
+          "buy_today": 74,
           "sell_today": 0,
-          "neutral_today": 23,
+          "neutral_today": 31,
           "uses_math_model": false
         },
         {
@@ -193,11 +193,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.521,
           "samples": 73,
-          "executions_today": 72,
-          "avg_score_today": 66.4,
-          "buy_today": 47,
+          "executions_today": 103,
+          "avg_score_today": 64.4,
+          "buy_today": 62,
           "sell_today": 0,
-          "neutral_today": 25,
+          "neutral_today": 41,
           "uses_math_model": false
         },
         {
@@ -208,11 +208,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.554,
           "samples": 56,
-          "executions_today": 72,
-          "avg_score_today": 55.6,
-          "buy_today": 20,
+          "executions_today": 103,
+          "avg_score_today": 55.3,
+          "buy_today": 28,
           "sell_today": 0,
-          "neutral_today": 52,
+          "neutral_today": 75,
           "uses_math_model": false
         },
         {
@@ -223,11 +223,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.503,
           "samples": 161,
-          "executions_today": 72,
-          "avg_score_today": 68.2,
-          "buy_today": 47,
+          "executions_today": 103,
+          "avg_score_today": 66.0,
+          "buy_today": 62,
           "sell_today": 0,
-          "neutral_today": 25,
+          "neutral_today": 41,
           "uses_math_model": false
         }
       ]
@@ -245,11 +245,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.519,
           "samples": 108,
-          "executions_today": 72,
-          "avg_score_today": 60.5,
-          "buy_today": 47,
+          "executions_today": 103,
+          "avg_score_today": 60.4,
+          "buy_today": 65,
           "sell_today": 0,
-          "neutral_today": 25,
+          "neutral_today": 38,
           "uses_math_model": false
         },
         {
@@ -260,11 +260,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.523,
           "samples": 86,
-          "executions_today": 72,
-          "avg_score_today": 64.0,
-          "buy_today": 42,
+          "executions_today": 103,
+          "avg_score_today": 62.4,
+          "buy_today": 55,
           "sell_today": 0,
-          "neutral_today": 30,
+          "neutral_today": 48,
           "uses_math_model": false
         },
         {
@@ -275,11 +275,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
-          "avg_score_today": 49.4,
+          "executions_today": 103,
+          "avg_score_today": 49.2,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -290,11 +290,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.471,
           "samples": 51,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.2,
-          "buy_today": 12,
+          "buy_today": 15,
           "sell_today": 0,
-          "neutral_today": 60,
+          "neutral_today": 88,
           "uses_math_model": false
         },
         {
@@ -305,11 +305,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.236,
           "samples": 55,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 54.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -320,9 +320,9 @@
           "weight_updated_at": null,
           "hit_rate": 0.463,
           "samples": 147,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 65.0,
-          "buy_today": 72,
+          "buy_today": 103,
           "sell_today": 0,
           "neutral_today": 0,
           "uses_math_model": false
@@ -335,11 +335,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.487,
           "samples": 119,
-          "executions_today": 72,
-          "avg_score_today": 50.8,
-          "buy_today": 31,
-          "sell_today": 10,
-          "neutral_today": 31,
+          "executions_today": 103,
+          "avg_score_today": 50.3,
+          "buy_today": 43,
+          "sell_today": 16,
+          "neutral_today": 44,
           "uses_math_model": false
         },
         {
@@ -350,11 +350,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.5,
           "samples": 4,
-          "executions_today": 72,
-          "avg_score_today": 51.5,
+          "executions_today": 103,
+          "avg_score_today": 51.4,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -365,11 +365,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -380,11 +380,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.534,
           "samples": 58,
-          "executions_today": 72,
-          "avg_score_today": 48.4,
-          "buy_today": 10,
-          "sell_today": 5,
-          "neutral_today": 57,
+          "executions_today": 103,
+          "avg_score_today": 48.8,
+          "buy_today": 14,
+          "sell_today": 7,
+          "neutral_today": 82,
           "uses_math_model": false
         }
       ]
@@ -402,11 +402,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.455,
           "samples": 22,
-          "executions_today": 72,
-          "avg_score_today": 55.3,
-          "buy_today": 10,
+          "executions_today": 103,
+          "avg_score_today": 54.8,
+          "buy_today": 14,
           "sell_today": 0,
-          "neutral_today": 62,
+          "neutral_today": 89,
           "uses_math_model": true
         },
         {
@@ -417,11 +417,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.5,
           "samples": 6,
-          "executions_today": 72,
-          "avg_score_today": 47.0,
+          "executions_today": 103,
+          "avg_score_today": 47.5,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": true
         },
         {
@@ -432,11 +432,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.463,
           "samples": 80,
-          "executions_today": 72,
-          "avg_score_today": 63.0,
-          "buy_today": 47,
+          "executions_today": 103,
+          "avg_score_today": 62.3,
+          "buy_today": 62,
           "sell_today": 0,
-          "neutral_today": 25,
+          "neutral_today": 41,
           "uses_math_model": true
         },
         {
@@ -447,11 +447,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.496,
           "samples": 127,
-          "executions_today": 72,
-          "avg_score_today": 65.4,
-          "buy_today": 57,
+          "executions_today": 103,
+          "avg_score_today": 64.6,
+          "buy_today": 78,
           "sell_today": 0,
-          "neutral_today": 15,
+          "neutral_today": 25,
           "uses_math_model": true
         },
         {
@@ -462,11 +462,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.459,
           "samples": 109,
-          "executions_today": 72,
-          "avg_score_today": 41.3,
-          "buy_today": 5,
-          "sell_today": 21,
-          "neutral_today": 46,
+          "executions_today": 103,
+          "avg_score_today": 41.4,
+          "buy_today": 7,
+          "sell_today": 31,
+          "neutral_today": 65,
           "uses_math_model": true
         },
         {
@@ -477,11 +477,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.554,
           "samples": 65,
-          "executions_today": 72,
-          "avg_score_today": 60.9,
-          "buy_today": 21,
+          "executions_today": 103,
+          "avg_score_today": 60.8,
+          "buy_today": 29,
           "sell_today": 0,
-          "neutral_today": 51,
+          "neutral_today": 74,
           "uses_math_model": true
         },
         {
@@ -492,11 +492,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
-          "avg_score_today": 51.2,
+          "executions_today": 103,
+          "avg_score_today": 51.6,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": true
         },
         {
@@ -507,11 +507,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.462,
           "samples": 13,
-          "executions_today": 72,
-          "avg_score_today": 54.5,
+          "executions_today": 103,
+          "avg_score_today": 54.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": true
         },
         {
@@ -522,11 +522,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": true
         },
         {
@@ -537,11 +537,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.511,
           "samples": 47,
-          "executions_today": 72,
-          "avg_score_today": 50.2,
-          "buy_today": 14,
+          "executions_today": 103,
+          "avg_score_today": 50.6,
+          "buy_today": 19,
           "sell_today": 7,
-          "neutral_today": 51,
+          "neutral_today": 77,
           "uses_math_model": true
         }
       ]
@@ -559,11 +559,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.438,
           "samples": 16,
-          "executions_today": 72,
-          "avg_score_today": 58.4,
-          "buy_today": 16,
+          "executions_today": 103,
+          "avg_score_today": 57.0,
+          "buy_today": 19,
           "sell_today": 0,
-          "neutral_today": 56,
+          "neutral_today": 84,
           "uses_math_model": false
         },
         {
@@ -574,11 +574,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.571,
           "samples": 42,
-          "executions_today": 72,
-          "avg_score_today": 54.6,
-          "buy_today": 16,
+          "executions_today": 103,
+          "avg_score_today": 54.5,
+          "buy_today": 22,
           "sell_today": 0,
-          "neutral_today": 56,
+          "neutral_today": 81,
           "uses_math_model": false
         },
         {
@@ -589,11 +589,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.429,
           "samples": 14,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 51.7,
-          "buy_today": 5,
+          "buy_today": 7,
           "sell_today": 0,
-          "neutral_today": 67,
+          "neutral_today": 96,
           "uses_math_model": false
         },
         {
@@ -604,11 +604,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 51.4,
-          "buy_today": 5,
+          "buy_today": 7,
           "sell_today": 0,
-          "neutral_today": 67,
+          "neutral_today": 96,
           "uses_math_model": false
         },
         {
@@ -619,11 +619,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.3,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -634,11 +634,11 @@
           "weight_updated_at": null,
           "hit_rate": 1.0,
           "samples": 1,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -649,11 +649,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.571,
           "samples": 14,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.8,
-          "buy_today": 5,
+          "buy_today": 7,
           "sell_today": 0,
-          "neutral_today": 67,
+          "neutral_today": 96,
           "uses_math_model": false
         },
         {
@@ -664,11 +664,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -679,11 +679,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -694,11 +694,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -709,11 +709,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -724,11 +724,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -739,11 +739,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -754,11 +754,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -769,11 +769,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -784,11 +784,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -799,11 +799,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.438,
           "samples": 16,
-          "executions_today": 72,
-          "avg_score_today": 55.1,
-          "buy_today": 16,
+          "executions_today": 103,
+          "avg_score_today": 54.4,
+          "buy_today": 21,
           "sell_today": 0,
-          "neutral_today": 56,
+          "neutral_today": 82,
           "uses_math_model": false
         },
         {
@@ -814,11 +814,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -829,11 +829,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.535,
           "samples": 101,
-          "executions_today": 72,
-          "avg_score_today": 68.8,
-          "buy_today": 47,
+          "executions_today": 103,
+          "avg_score_today": 67.2,
+          "buy_today": 62,
           "sell_today": 0,
-          "neutral_today": 25,
+          "neutral_today": 41,
           "uses_math_model": false
         }
       ]
@@ -851,9 +851,9 @@
           "weight_updated_at": null,
           "hit_rate": 0.469,
           "samples": 145,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 65.0,
-          "buy_today": 72,
+          "buy_today": 103,
           "sell_today": 0,
           "neutral_today": 0,
           "uses_math_model": false
@@ -866,11 +866,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.509,
           "samples": 173,
-          "executions_today": 72,
-          "avg_score_today": 77.2,
-          "buy_today": 67,
+          "executions_today": 103,
+          "avg_score_today": 75.0,
+          "buy_today": 90,
           "sell_today": 0,
-          "neutral_today": 5,
+          "neutral_today": 13,
           "uses_math_model": false
         },
         {
@@ -881,9 +881,9 @@
           "weight_updated_at": null,
           "hit_rate": 0.5,
           "samples": 160,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 60.0,
-          "buy_today": 72,
+          "buy_today": 103,
           "sell_today": 0,
           "neutral_today": 0,
           "uses_math_model": false
@@ -896,9 +896,9 @@
           "weight_updated_at": null,
           "hit_rate": 0.526,
           "samples": 175,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 65.0,
-          "buy_today": 72,
+          "buy_today": 103,
           "sell_today": 0,
           "neutral_today": 0,
           "uses_math_model": false
@@ -911,11 +911,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.466,
           "samples": 148,
-          "executions_today": 72,
-          "avg_score_today": 59.7,
-          "buy_today": 67,
+          "executions_today": 103,
+          "avg_score_today": 59.6,
+          "buy_today": 94,
           "sell_today": 0,
-          "neutral_today": 5,
+          "neutral_today": 9,
           "uses_math_model": false
         },
         {
@@ -926,11 +926,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.2,
           "samples": 15,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -941,11 +941,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.526,
           "samples": 175,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 60.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -956,11 +956,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
-          "avg_score_today": 55.3,
-          "buy_today": 5,
+          "executions_today": 103,
+          "avg_score_today": 55.4,
+          "buy_today": 9,
           "sell_today": 0,
-          "neutral_today": 67,
+          "neutral_today": 94,
           "uses_math_model": false
         },
         {
@@ -971,11 +971,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -986,11 +986,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 50.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         }
       ]
@@ -1008,11 +1008,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.286,
           "samples": 21,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 55.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -1023,11 +1023,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.474,
           "samples": 175,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 40.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -1038,11 +1038,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
+          "executions_today": 103,
           "avg_score_today": 55.0,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -1053,11 +1053,11 @@
           "weight_updated_at": null,
           "hit_rate": 0.476,
           "samples": 124,
-          "executions_today": 72,
-          "avg_score_today": 55.2,
-          "buy_today": 38,
-          "sell_today": 19,
-          "neutral_today": 15,
+          "executions_today": 103,
+          "avg_score_today": 53.4,
+          "buy_today": 51,
+          "sell_today": 31,
+          "neutral_today": 21,
           "uses_math_model": false
         },
         {
@@ -1068,11 +1068,11 @@
           "weight_updated_at": null,
           "hit_rate": null,
           "samples": 0,
-          "executions_today": 72,
-          "avg_score_today": 54.1,
+          "executions_today": 103,
+          "avg_score_today": 53.9,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 72,
+          "neutral_today": 103,
           "uses_math_model": false
         },
         {
@@ -1083,11 +1083,11 @@
           "weight_updated_at": "2026-08-30 13:31",
           "hit_rate": 0.333,
           "samples": 21,
-          "executions_today": 72,
-          "avg_score_today": 56.2,
+          "executions_today": 103,
+          "avg_score_today": 55.8,
           "buy_today": 0,
           "sell_today": 0,
-          "neutral_today": 42,
+          "neutral_today": 64,
           "uses_math_model": false
         }
       ]

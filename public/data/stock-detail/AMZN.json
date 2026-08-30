@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-08-30 15:48",
+  "generated_at": "2026-08-30 16:05",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -14,7 +14,7 @@
     "max_loss_est": -1.06,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.4%]",
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=21% / 10%=13%\n期待値: +1.36% / リスクリワード: 1.28\n判定時刻: 2026-08-30 15:48",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=21% / 10%=13%\n期待値: +1.36% / リスクリワード: 1.28\n判定時刻: 2026-08-30 16:05",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -41,19 +41,19 @@
         "hold": 3,
         "avg_score": 57.3
       },
-      "sector": {
-        "count": 19,
-        "buy": 1,
-        "sell": 0,
-        "hold": 18,
-        "avg_score": 51.1
-      },
       "market_monitor": {
         "count": 7,
         "buy": 1,
         "sell": 0,
         "hold": 6,
         "avg_score": 52.6
+      },
+      "sector": {
+        "count": 19,
+        "buy": 1,
+        "sell": 0,
+        "hold": 18,
+        "avg_score": 51.1
       },
       "prediction": {
         "count": 10,
@@ -98,15 +98,6 @@
       "reason": "売上高成長(20%) / EPS急成長(242%)"
     },
     {
-      "agent": "sector_ec_retail",
-      "agent_jp": "EC/小売",
-      "category": "sector",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "EC成長良好(20%)"
-    },
-    {
       "agent": "liquidity_risk",
       "agent_jp": "流動性リスク",
       "category": "market_monitor",
@@ -114,6 +105,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "流動性良好"
+    },
+    {
+      "agent": "sector_ec_retail",
+      "agent_jp": "EC/小売",
+      "category": "sector",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "EC成長良好(20%)"
     },
     {
       "agent": "mid_term_prob",
@@ -134,15 +134,6 @@
       "reason": "12m上昇確率=67% / ROIC=7% / PER=21x"
     },
     {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 67.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.3% / 上昇確率72% / P10=-0.4% P90=+1.0%"
-    },
-    {
       "agent": "momentum",
       "agent_jp": "モメンタム",
       "category": "trade_style",
@@ -150,6 +141,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "高値圏 / ADXトレンド強(=36) / 200MA大幅上回り"
+    },
+    {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 67.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.3% / 上昇確率72% / P10=-0.4% P90=+1.1%"
     },
     {
       "agent": "risk_assessment",
@@ -190,13 +190,13 @@
       "reason": "テクニカル中立 / 強弱比=2.3:2.5"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "fundamental",
+      "agent_jp": "ファンダメンタル",
+      "category": "analysis",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "ファンダメンタル中立"
     },
     {
       "agent": "institutional_flow",
@@ -208,22 +208,13 @@
       "reason": "静かな蓄積パターン"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
-      "agent": "alert",
-      "agent_jp": "アラート",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "valuation",
@@ -235,13 +226,22 @@
       "reason": "バリュエーション中立"
     },
     {
-      "agent": "fundamental",
-      "agent_jp": "ファンダメンタル",
-      "category": "analysis",
+      "agent": "alert",
+      "agent_jp": "アラート",
+      "category": "integration",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ファンダメンタル中立"
+      "reason": "異常なし"
+    },
+    {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "macro_environment",

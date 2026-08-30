@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "generated_at": "2026-08-30 15:48",
+  "generated_at": "2026-08-30 16:05",
   "summary": {
     "rank": "weak_buy",
     "score": 55,
@@ -14,17 +14,17 @@
     "max_loss_est": -0.9,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値19.9%]",
-    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=56% / 20日=58% / 3ヶ月=63% / 12ヶ月=67%\n下落確率: 3%=28% / 5%=18% / 10%=8%\n期待値: +1.48% / リスクリワード: 1.64\n判定時刻: 2026-08-30 15:48",
+    "verdict": "【やや買い】★★★\n総合スコア: 55.0/100\n上昇確率: 5日=56% / 20日=58% / 3ヶ月=63% / 12ヶ月=67%\n下落確率: 3%=28% / 5%=18% / 10%=8%\n期待値: +1.48% / リスクリワード: 1.64\n判定時刻: 2026-08-30 16:05",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 6,
-      "BUY": 15,
+      "BUY": 16,
       "WEAK BUY": 1,
       "HOLD": 5,
-      "WATCH": 40,
+      "WATCH": 39,
       "REDUCE": 2
     },
     "category_stats": {
@@ -58,10 +58,10 @@
       },
       "prediction": {
         "count": 10,
-        "buy": 2,
+        "buy": 3,
         "sell": 1,
-        "hold": 7,
-        "avg_score": 53.7
+        "hold": 6,
+        "avg_score": 53.9
       },
       "market_monitor": {
         "count": 7,
@@ -162,25 +162,16 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "portfolio_fit",
-      "agent_jp": "ポートフォリオ適合",
+      "agent": "failure_pattern",
+      "agent_jp": "失敗パターン",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "未保有・新規可能"
+      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
-    {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率62% / P10=-0.2% P90=+0.4%"
-    },
     {
       "agent": "expected_value",
       "agent_jp": "期待値",
@@ -200,13 +191,13 @@
       "reason": "5d上昇確率=56% / 20d=58% / 3m=63% / 期待値=+1.48%"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -218,13 +209,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "score_integration",
@@ -261,6 +252,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "アンサンブル=52% / LGBM=56% / ルール=43% / ファンダ=56%"
+    },
+    {
+      "agent": "market_regime",
+      "agent_jp": "市場レジーム",
+      "category": "market_monitor",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "通常レジーム"
     }
   ],
   "fundamentals": {

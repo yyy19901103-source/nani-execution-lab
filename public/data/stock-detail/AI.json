@@ -1,6 +1,6 @@
 {
   "ticker": "AI",
-  "generated_at": "2026-08-30 15:48",
+  "generated_at": "2026-08-30 16:05",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -14,7 +14,7 @@
     "max_loss_est": -0.25,
     "dip_quality": "neutral",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.8%]",
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-08-30 15:48",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-08-30 16:05",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -45,7 +45,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 56.8
+        "avg_score": 57.1
       },
       "analysis": {
         "count": 10,
@@ -207,13 +207,13 @@
       "reason": "S&P500比 月次強い(+11.7%)"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
-      "score": 55.0,
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 57.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "MC 20日後: 中央値+0.2% / 上昇確率59% / P10=-1.0% P90=+1.4%"
     },
     {
       "agent": "momentum",
@@ -223,6 +223,24 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "ADXトレンド強(=29)"
+    },
+    {
+      "agent": "long_term_prob",
+      "agent_jp": "長期確率",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=55% / ROIC=0% / PERなし"
+    },
+    {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "investor_profile",
@@ -241,24 +259,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "long_term_prob",
-      "agent_jp": "長期確率",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=55% / ROIC=0% / PERなし"
-    },
-    {
-      "agent": "macro_environment",
-      "agent_jp": "マクロ環境",
-      "category": "analysis",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "長期金利高(4.7%) / 金利低下中(株にプラス) / VIX低安定"
     }
   ],
   "fundamentals": null,
