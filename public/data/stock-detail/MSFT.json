@@ -1,6 +1,6 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-08-30 15:45",
+  "generated_at": "2026-08-30 15:48",
   "summary": {
     "rank": "weak_buy",
     "score": 56,
@@ -14,17 +14,17 @@
     "max_loss_est": -0.84,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.2%]",
-    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=52% / 20日=60% / 3ヶ月=65% / 12ヶ月=77%\n下落確率: 3%=24% / 5%=17% / 10%=6%\n期待値: +1.15% / リスクリワード: 1.37\n判定時刻: 2026-08-30 15:13",
+    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=52% / 20日=60% / 3ヶ月=65% / 12ヶ月=77%\n下落確率: 3%=24% / 5%=17% / 10%=6%\n期待値: +1.15% / リスクリワード: 1.37\n判定時刻: 2026-08-30 15:48",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 6,
-      "BUY": 14,
+      "BUY": 13,
       "WEAK BUY": 1,
       "HOLD": 5,
-      "WATCH": 42,
+      "WATCH": 43,
       "REDUCE": 1
     },
     "category_stats": {
@@ -58,10 +58,10 @@
       },
       "prediction": {
         "count": 10,
-        "buy": 3,
+        "buy": 2,
         "sell": 1,
-        "hold": 6,
-        "avg_score": 53.9
+        "hold": 7,
+        "avg_score": 53.8
       },
       "market_monitor": {
         "count": 7,
@@ -173,6 +173,15 @@
   ],
   "top_risks": [
     {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率62% / P10=-0.5% P90=+0.7%"
+    },
+    {
       "agent": "expected_value",
       "agent_jp": "期待値",
       "category": "prediction",
@@ -198,6 +207,24 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "全エージェント統合スコア=56"
+    },
+    {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "VIX低位(14)"
     },
     {
       "agent": "institutional_flow",
@@ -227,24 +254,6 @@
       "reason": "バリュエーション中立"
     },
     {
-      "agent": "alert",
-      "agent_jp": "アラート",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "異常なし"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
       "agent": "value_invest",
       "agent_jp": "バリュー投資",
       "category": "trade_style",
@@ -252,15 +261,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "PBR高い(8.1x) / ROE高(34%) / 配当利回り75.0%"
-    },
-    {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "VIX低位(14)"
     }
   ],
   "fundamentals": {

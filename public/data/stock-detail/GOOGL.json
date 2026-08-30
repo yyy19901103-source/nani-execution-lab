@@ -1,6 +1,6 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-08-30 15:45",
+  "generated_at": "2026-08-30 15:48",
   "summary": {
     "rank": "watch",
     "score": 54,
@@ -14,7 +14,7 @@
     "max_loss_est": -0.82,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値21.1%]",
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-30 15:13",
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-30 15:48",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -67,7 +67,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.2
+        "avg_score": 53.1
       },
       "integration": {
         "count": 6,
@@ -193,19 +193,19 @@
       "agent": "monte_carlo",
       "agent_jp": "モンテカルロ",
       "category": "prediction",
-      "score": 57.0,
+      "score": 56.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率60% / P10=-0.5% P90=+0.8%"
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率58% / P10=-0.6% P90=+0.8%"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "alert",
@@ -217,13 +217,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "macro_environment",
@@ -259,7 +259,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-30 15:13"
+      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-30 15:48"
     }
   ],
   "fundamentals": {

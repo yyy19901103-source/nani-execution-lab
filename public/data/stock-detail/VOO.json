@@ -1,6 +1,6 @@
 {
   "ticker": "VOO",
-  "generated_at": "2026-08-30 15:45",
+  "generated_at": "2026-08-30 15:48",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -14,7 +14,7 @@
     "max_loss_est": -0.37,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値27.5%]",
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=62% / 20日=67% / 3ヶ月=76% / 12ヶ月=71%\n下落確率: 3%=12% / 5%=7% / 10%=0%\n期待値: +1.95% / リスクリワード: 5.27\n判定時刻: 2026-08-30 15:13",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=62% / 20日=67% / 3ヶ月=76% / 12ヶ月=71%\n下落確率: 3%=12% / 5%=7% / 10%=0%\n期待値: +1.95% / リスクリワード: 5.27\n判定時刻: 2026-08-30 15:48",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -34,19 +34,19 @@
         "hold": 4,
         "avg_score": 58.1
       },
-      "market_monitor": {
-        "count": 7,
-        "buy": 2,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 57.0
-      },
       "analysis": {
         "count": 10,
         "buy": 3,
         "sell": 0,
         "hold": 7,
         "avg_score": 54.9
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 2,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 57.0
       },
       "sector": {
         "count": 19,
@@ -60,7 +60,7 @@
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 52.9
+        "avg_score": 53.0
       },
       "personal": {
         "count": 10,
@@ -89,13 +89,13 @@
       "reason": "52週高値近傍(-1.1%) / ADXトレンド強(=35) / 200MA大幅上回り"
     },
     {
-      "agent": "liquidity_risk",
-      "agent_jp": "流動性リスク",
-      "category": "market_monitor",
+      "agent": "dividend_income",
+      "agent_jp": "配当インカム",
+      "category": "trade_style",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "流動性良好"
+      "reason": "高配当(107.0%)"
     },
     {
       "agent": "technical_summary",
@@ -107,13 +107,13 @@
       "reason": "テクニカル総合買いシグナル / 強弱比=3.8:1.5"
     },
     {
-      "agent": "dividend_income",
-      "agent_jp": "配当インカム",
-      "category": "trade_style",
+      "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
+      "category": "market_monitor",
       "score": 70.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "高配当(107.0%)"
+      "reason": "流動性良好"
     },
     {
       "agent": "japan_dividend",
@@ -134,15 +134,6 @@
       "reason": "5d上昇確率=62% / 20d=67% / 3m=76% / 期待値=+1.95%"
     },
     {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
-    },
-    {
       "agent": "portfolio_fit",
       "agent_jp": "ポートフォリオ適合",
       "category": "personal",
@@ -161,13 +152,22 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
+      "agent": "risk_assessment",
+      "agent_jp": "リスク評価",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
+    },
+    {
+      "agent": "supply_demand",
+      "agent_jp": "需給分析",
+      "category": "analysis",
       "score": 63.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "VIX低位(14) / 低ボラ環境 / BBバンド収縮"
+      "reason": "OBV上昇（蓄積） / VWAP上方"
     }
   ],
   "top_risks": [
@@ -181,6 +181,15 @@
       "reason": "20d/3m上昇確率=59% / MA20=+0.0% / 売上成長=0%"
     },
     {
+      "agent": "trend_direction",
+      "agent_jp": "トレンド方向",
+      "category": "market_monitor",
+      "score": 58.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "短期・中期MA上向き / 200MA上抜け / MACD負"
+    },
+    {
       "agent": "expected_value",
       "agent_jp": "期待値",
       "category": "prediction",
@@ -190,13 +199,13 @@
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
     },
     {
-      "agent": "trend_direction",
-      "agent_jp": "トレンド方向",
-      "category": "market_monitor",
-      "score": 58.0,
+      "agent": "value_invest",
+      "agent_jp": "バリュー投資",
+      "category": "trade_style",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "短期・中期MA上向き / 200MA上抜け / MACD負"
+      "reason": "配当利回り107.0%"
     },
     {
       "agent": "ensemble",
@@ -226,15 +235,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
       "agent": "day_trade",
       "agent_jp": "デイトレード",
       "category": "trade_style",
@@ -244,13 +244,13 @@
       "reason": "ストキャスKD買い"
     },
     {
-      "agent": "value_invest",
-      "agent_jp": "バリュー投資",
-      "category": "trade_style",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "配当利回り107.0%"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "macro_environment",

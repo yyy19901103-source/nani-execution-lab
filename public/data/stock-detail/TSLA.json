@@ -1,6 +1,6 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-08-30 15:45",
+  "generated_at": "2026-08-30 15:48",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -14,7 +14,7 @@
     "max_loss_est": -1.49,
     "dip_quality": "caution",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.8%]",
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=54% / 20日=53% / 3ヶ月=41% / 12ヶ月=51%\n下落確率: 3%=41% / 5%=30% / 10%=21%\n期待値: +1.29% / リスクリワード: 0.87\n判定時刻: 2026-08-30 15:13",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=54% / 20日=53% / 3ヶ月=41% / 12ヶ月=51%\n下落確率: 3%=41% / 5%=30% / 10%=21%\n期待値: +1.29% / リスクリワード: 0.87\n判定時刻: 2026-08-30 15:48",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -46,7 +46,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.2
+        "avg_score": 53.0
       },
       "analysis": {
         "count": 10,
@@ -116,15 +116,6 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "portfolio_fit",
-      "agent_jp": "ポートフォリオ適合",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "未保有・新規可能"
-    },
-    {
       "agent": "failure_pattern",
       "agent_jp": "失敗パターン",
       "category": "personal",
@@ -132,6 +123,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "portfolio_fit",
+      "agent_jp": "ポートフォリオ適合",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "未保有・新規可能"
     },
     {
       "agent": "supply_demand",
@@ -161,25 +161,16 @@
       "reason": "20d/3m上昇確率=60% / MA20=+2.9% / 売上成長=26%"
     },
     {
-      "agent": "money_management",
-      "agent_jp": "資金管理",
+      "agent": "emotion_bias",
+      "agent_jp": "感情バイアス",
       "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.8%]"
+      "reason": "感情バイアスなし"
     }
   ],
   "top_risks": [
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
     {
       "agent": "growth_invest",
       "agent_jp": "グロース投資",
@@ -188,6 +179,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "売上高成長(26%) / ROIC低(2%)"
+    },
+    {
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "アンサンブル=55% / LGBM=54% / ルール=57% / ファンダ=56%"
     },
     {
       "agent": "sector_ev",
@@ -199,13 +199,13 @@
       "reason": "EVマージン改善中"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "alert",
@@ -217,13 +217,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
-      "category": "prediction",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=55% / LGBM=54% / ルール=57% / ファンダ=56%"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "macro_environment",
@@ -253,13 +253,13 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "lgbm_prob",
-      "agent_jp": "LightGBM確率",
-      "category": "prediction",
+      "agent": "swing_trade",
+      "agent_jp": "スイングトレード",
+      "category": "trade_style",
       "score": 53.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "5d上昇確率=54% / 20d=53% / 3m=41% / 期待値=+1.29%"
+      "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
     }
   ],
   "fundamentals": {

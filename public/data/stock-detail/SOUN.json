@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-08-30 15:45",
+  "generated_at": "2026-08-30 15:48",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -14,7 +14,7 @@
     "max_loss_est": -0.25,
     "dip_quality": "falling_knife",
     "position_sizing": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]",
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 15:13",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 15:48",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -125,15 +125,6 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "downside_risk",
-      "agent_jp": "下落リスク",
-      "category": "prediction",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "3%下落確率=24% / 5%下落確率=41% / 10%下落確率=70% / ⚠下落リスク高"
-    },
-    {
       "agent": "emotion_bias",
       "agent_jp": "感情バイアス",
       "category": "personal",
@@ -141,6 +132,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "感情バイアスなし"
+    },
+    {
+      "agent": "downside_risk",
+      "agent_jp": "下落リスク",
+      "category": "prediction",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "3%下落確率=24% / 5%下落確率=41% / 10%下落確率=70% / ⚠下落リスク高"
     },
     {
       "agent": "investor_profile",
@@ -190,6 +190,15 @@
       "reason": "ストキャスKD買い"
     },
     {
+      "agent": "momentum",
+      "agent_jp": "モメンタム",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ADXトレンド強(=39)"
+    },
+    {
       "agent": "money_management",
       "agent_jp": "資金管理",
       "category": "personal",
@@ -206,15 +215,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=39)"
     },
     {
       "agent": "macro_environment",

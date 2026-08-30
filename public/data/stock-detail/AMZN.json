@@ -1,6 +1,6 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-08-30 15:45",
+  "generated_at": "2026-08-30 15:48",
   "summary": {
     "rank": "watch",
     "score": 53,
@@ -14,7 +14,7 @@
     "max_loss_est": -1.06,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.4%]",
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=21% / 10%=13%\n期待値: +1.36% / リスクリワード: 1.28\n判定時刻: 2026-08-30 15:13",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=21% / 10%=13%\n期待値: +1.36% / リスクリワード: 1.28\n判定時刻: 2026-08-30 15:48",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -140,7 +140,7 @@
       "score": 67.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.3% / 上昇確率71% / P10=-0.4% P90=+1.0%"
+      "reason": "MC 20日後: 中央値+0.3% / 上昇確率72% / P10=-0.4% P90=+1.0%"
     },
     {
       "agent": "momentum",
@@ -217,15 +217,6 @@
       "reason": "プロファイル適合"
     },
     {
-      "agent": "valuation",
-      "agent_jp": "バリュエーション",
-      "category": "analysis",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "バリュエーション中立"
-    },
-    {
       "agent": "alert",
       "agent_jp": "アラート",
       "category": "integration",
@@ -233,6 +224,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
+    },
+    {
+      "agent": "valuation",
+      "agent_jp": "バリュエーション",
+      "category": "analysis",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "バリュエーション中立"
     },
     {
       "agent": "fundamental",
