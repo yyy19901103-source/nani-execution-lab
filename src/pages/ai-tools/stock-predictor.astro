@@ -536,11 +536,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     if (recs.length > 0) {
       recs.forEach(r => {
         const cls = BADGE_CLASS[r.rank] || 'badge-w';
+        // 2026-08-30: ランキング表と同じ3ヶ月確率を主指標として使い、表示の食い違いを防ぐ
+        const heroProb = r.prob_up_3m != null ? r.prob_up_3m : r.prob_up_5d;
+        const heroProbLabel = r.prob_up_3m != null ? '3ヶ月上昇' : '上昇';
         ctaList.insertAdjacentHTML('beforeend', `
           <div class="hero-cta" data-ticker="${r.ticker}">
             <span class="hero-cta-rank badge ${cls}">${RANK_LABEL[r.rank]}</span>
             <strong style="color:#edede8">${r.ticker}</strong>
-            <span class="hero-cta-info">スコア${r.score} / 上昇${(r.prob_up_5d*100).toFixed(0)}% / 期待${r.expected_return>0?'+':''}${r.expected_return}%</span>
+            <span class="hero-cta-info">スコア${r.score} / ${heroProbLabel}${(heroProb*100).toFixed(0)}% / 期待${r.expected_return>0?'+':''}${r.expected_return}%</span>
             <span style="color:#666">→</span>
           </div>
         `);
@@ -549,11 +552,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       // 様子見でもランキング1位を表示
       const top = (data.rankings || [])[0];
       if (top) {
+        const topProb = top.prob_up_3m != null ? top.prob_up_3m : top.prob_up_5d;
+        const topProbLabel = top.prob_up_3m != null ? '3ヶ月上昇' : '上昇';
         ctaList.insertAdjacentHTML('beforeend', `
           <div class="hero-cta" data-ticker="${top.ticker}">
             <span class="hero-cta-rank badge ${BADGE_CLASS[top.rank]||'badge-w'}">${RANK_LABEL[top.rank]||top.rank}</span>
             <strong style="color:#edede8">${top.ticker}</strong>
-            <span class="hero-cta-info">スコア${top.score}（最上位） / 上昇${(top.prob_up_5d*100).toFixed(0)}%</span>
+            <span class="hero-cta-info">スコア${top.score}（最上位） / ${topProbLabel}${(topProb*100).toFixed(0)}%</span>
             <span style="color:#666">→</span>
           </div>
         `);
@@ -572,24 +577,36 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     document.getElementById('kpi-pending').textContent = acc.pending ?? 0;
   }
 
+  const DIP_BADGE = {
+    healthy_dip:   { label: '✅押し目', color: '#6ec86e' },
+    caution:       { label: '△要注意', color: '#c8a96e' },
+    falling_knife: { label: '⚠下落中', color: '#c86e6e' },
+  };
+
   function renderRanking(data) {
     const grid = document.getElementById('ranking-grid');
     grid.innerHTML = '';
     document.getElementById('ranking-count').textContent = `${(data.rankings || []).length}銘柄`;
     (data.rankings || []).forEach(r => {
       const badgeClass = BADGE_CLASS[r.rank] || 'badge-w';
-      const probPct = r.prob_up_5d != null ? (r.prob_up_5d*100).toFixed(0) : '—';
+      // 2026-08-30: スタイル対応（週〜3ヶ月保有）のため3ヶ月確率を主指標に、5日は補助表示
+      const primaryProb = r.prob_up_3m != null ? r.prob_up_3m : r.prob_up_5d;
+      const probPct = primaryProb != null ? (primaryProb*100).toFixed(0) : '—';
+      const p5dPct = r.prob_up_5d != null ? (r.prob_up_5d*100).toFixed(0) : '—';
+      const probLabel = r.prob_up_3m != null ? '3ヶ月上昇' : '5日上昇';
       const er = r.expected_return != null ? (r.expected_return>0?'+':'')+r.expected_return.toFixed(1)+'%' : '—';
       const erColor = r.expected_return>0?'#6ec86e':r.expected_return<0?'#c86e6e':'#888';
       const updAt = r.updated_at ? r.updated_at.slice(5,16) : '—';
       const fillColor = RANK_COLOR[r.rank] || '#c8a96e';
+      const dip = DIP_BADGE[r.dip_quality];
+      const dipHtml = dip ? `<span style="font-size:0.62rem;color:${dip.color};margin-left:0.4rem">${dip.label}</span>` : '';
       grid.insertAdjacentHTML('beforeend', `
         <div class="rank-row" data-ticker="${r.ticker}">
-          <div class="rank-ticker">${r.ticker}</div>
+          <div class="rank-ticker">${r.ticker}${dipHtml}</div>
           <div><span class="badge ${badgeClass}">${RANK_LABEL[r.rank] || r.rank}</span></div>
           <div>
             <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${probPct}%;background:${fillColor}"></div></div>
-            <div class="rank-bar-text">5日上昇 ${probPct}%</div>
+            <div class="rank-bar-text">${probLabel} ${probPct}%（5日${p5dPct}%）</div>
           </div>
           <div class="rank-score-num">${r.score ?? '—'}</div>
           <div class="rank-er rank-col-er" style="color:${erColor}">${er}</div>

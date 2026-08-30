@@ -1,24 +1,30 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-08-29 12:02",
+  "generated_at": "2026-08-30 15:15",
   "summary": {
     "rank": "watch",
     "score": 52,
     "prob_up_5d": 0.529,
+    "prob_up_20d": 0.528,
+    "prob_up_3m": 0.522,
+    "prob_up_style": 0.526,
     "prob_down_5pct": 0.05,
     "expected_return": 1.24,
     "risk_reward": 4.96,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-08-29 12:01",
-    "prediction_date": "2026-08-29"
+    "dip_quality": "healthy_dip",
+    "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値14.4%]",
+    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=53% / 20日=53% / 3ヶ月=52% / 12ヶ月=52%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.24% / リスクリワード: 4.96\n判定時刻: 2026-08-30 15:13",
+    "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 2,
-      "BUY": 10,
-      "HOLD": 12,
-      "WATCH": 44,
+      "BUY": 11,
+      "HOLD": 11,
+      "WATCH": 43,
+      "REDUCE": 1,
       "SELL": 1
     },
     "category_stats": {
@@ -31,17 +37,17 @@
       },
       "trade_style": {
         "count": 7,
-        "buy": 1,
+        "buy": 2,
         "sell": 1,
-        "hold": 5,
-        "avg_score": 48.7
+        "hold": 4,
+        "avg_score": 50.1
       },
       "analysis": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 54.3
+        "avg_score": 54.0
       },
       "market_monitor": {
         "count": 7,
@@ -60,9 +66,9 @@
       "integration": {
         "count": 6,
         "buy": 0,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 48.3
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 47.0
       },
       "sector": {
         "count": 19,
@@ -129,15 +135,6 @@
       "reason": "200MA上抜け / MACD正"
     },
     {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
-    },
-    {
       "agent": "portfolio_fit",
       "agent_jp": "ポートフォリオ適合",
       "category": "personal",
@@ -154,6 +151,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "失敗パターンなし"
+    },
+    {
+      "agent": "risk_assessment",
+      "agent_jp": "リスク評価",
+      "category": "analysis",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "リスク許容範囲内"
     },
     {
       "agent": "long_term_prob",

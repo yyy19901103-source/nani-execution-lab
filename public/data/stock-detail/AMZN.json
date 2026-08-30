@@ -1,24 +1,29 @@
 {
   "ticker": "AMZN",
-  "generated_at": "2026-08-29 12:02",
+  "generated_at": "2026-08-30 15:15",
   "summary": {
     "rank": "watch",
     "score": 53,
     "prob_up_5d": 0.545,
+    "prob_up_20d": 0.609,
+    "prob_up_3m": 0.629,
+    "prob_up_style": 0.605,
     "prob_down_5pct": 0.212,
     "expected_return": 1.36,
     "risk_reward": 1.28,
     "max_loss_est": -1.06,
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=21% / 10%=13%\n期待値: +1.36% / リスクリワード: 1.28\n判定時刻: 2026-08-29 12:01",
-    "prediction_date": "2026-08-29"
+    "dip_quality": "healthy_dip",
+    "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.4%]",
+    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=55% / 20日=61% / 3ヶ月=63% / 12ヶ月=78%\n下落確率: 3%=30% / 5%=21% / 10%=13%\n期待値: +1.36% / リスクリワード: 1.28\n判定時刻: 2026-08-30 15:13",
+    "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 1,
-      "BUY": 13,
+      "BUY": 14,
       "HOLD": 7,
-      "WATCH": 47,
+      "WATCH": 46,
       "REDUCE": 1
     },
     "category_stats": {
@@ -31,10 +36,10 @@
       },
       "trade_style": {
         "count": 7,
-        "buy": 3,
+        "buy": 4,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 55.9
+        "hold": 3,
+        "avg_score": 57.3
       },
       "sector": {
         "count": 19,
@@ -55,7 +60,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 54.4
+        "avg_score": 54.7
       },
       "analysis": {
         "count": 10,
@@ -129,6 +134,15 @@
       "reason": "12m上昇確率=67% / ROIC=7% / PER=21x"
     },
     {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 67.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.3% / 上昇確率71% / P10=-0.4% P90=+1.0%"
+    },
+    {
       "agent": "momentum",
       "agent_jp": "モメンタム",
       "category": "trade_style",
@@ -154,15 +168,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
-    },
-    {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
     }
   ],
   "top_risks": [
@@ -185,6 +190,15 @@
       "reason": "テクニカル中立 / 強弱比=2.3:2.5"
     },
     {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
       "agent": "institutional_flow",
       "agent_jp": "機関投資家動向",
       "category": "analysis",
@@ -192,6 +206,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "静かな蓄積パターン"
+    },
+    {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "プロファイル適合"
     },
     {
       "agent": "valuation",
@@ -210,24 +233,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
-    },
-    {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "fundamental",

@@ -1,24 +1,29 @@
 {
   "ticker": "TSLA",
-  "generated_at": "2026-08-29 12:02",
+  "generated_at": "2026-08-30 15:15",
   "summary": {
     "rank": "watch",
-    "score": 52,
+    "score": 51,
     "prob_up_5d": 0.536,
+    "prob_up_20d": 0.528,
+    "prob_up_3m": 0.411,
+    "prob_up_style": 0.477,
     "prob_down_5pct": 0.297,
     "expected_return": 1.29,
     "risk_reward": 0.87,
     "max_loss_est": -1.49,
-    "verdict": "【様子見】★★\n総合スコア: 52.0/100\n上昇確率: 5日=54% / 20日=53% / 3ヶ月=41% / 12ヶ月=51%\n下落確率: 3%=41% / 5%=30% / 10%=21%\n期待値: +1.29% / リスクリワード: 0.87\n判定時刻: 2026-08-29 12:01",
-    "prediction_date": "2026-08-29"
+    "dip_quality": "caution",
+    "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.8%]",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=54% / 20日=53% / 3ヶ月=41% / 12ヶ月=51%\n下落確率: 3%=41% / 5%=30% / 10%=21%\n期待値: +1.29% / リスクリワード: 0.87\n判定時刻: 2026-08-30 15:13",
+    "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 1,
       "BUY": 10,
-      "HOLD": 8,
-      "WATCH": 48,
+      "HOLD": 10,
+      "WATCH": 46,
       "REDUCE": 2
     },
     "category_stats": {
@@ -41,7 +46,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.3
+        "avg_score": 53.2
       },
       "analysis": {
         "count": 10,
@@ -50,6 +55,13 @@
         "hold": 6,
         "avg_score": 51.9
       },
+      "trade_style": {
+        "count": 7,
+        "buy": 0,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 45.0
+      },
       "sector": {
         "count": 19,
         "buy": 0,
@@ -57,19 +69,12 @@
         "hold": 19,
         "avg_score": 50.3
       },
-      "trade_style": {
-        "count": 7,
-        "buy": 0,
-        "sell": 0,
-        "hold": 7,
-        "avg_score": 46.1
-      },
       "integration": {
         "count": 6,
         "buy": 0,
         "sell": 1,
         "hold": 5,
-        "avg_score": 48.0
+        "avg_score": 46.7
       }
     }
   },
@@ -156,33 +161,24 @@
       "reason": "20d/3m上昇確率=60% / MA20=+2.9% / 売上成長=26%"
     },
     {
-      "agent": "emotion_bias",
-      "agent_jp": "感情バイアス",
+      "agent": "money_management",
+      "agent_jp": "資金管理",
       "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "感情バイアスなし"
+      "reason": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.8%]"
     }
   ],
   "top_risks": [
     {
-      "agent": "ensemble",
-      "agent_jp": "アンサンブル",
-      "category": "prediction",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "アンサンブル=55% / LGBM=54% / ルール=57% / ファンダ=56%"
-    },
-    {
-      "agent": "sector_ev",
-      "agent_jp": "EV",
-      "category": "sector",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "EVマージン改善中"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "growth_invest",
@@ -192,6 +188,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "売上高成長(26%) / ROIC低(2%)"
+    },
+    {
+      "agent": "sector_ev",
+      "agent_jp": "EV",
+      "category": "sector",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "EVマージン改善中"
     },
     {
       "agent": "investor_profile",
@@ -212,13 +217,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
+      "agent": "ensemble",
+      "agent_jp": "アンサンブル",
+      "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "アンサンブル=55% / LGBM=54% / ルール=57% / ファンダ=56%"
     },
     {
       "agent": "macro_environment",

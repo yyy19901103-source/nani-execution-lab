@@ -1,25 +1,29 @@
 {
   "ticker": "META",
-  "generated_at": "2026-08-29 12:02",
+  "generated_at": "2026-08-30 15:15",
   "summary": {
     "rank": "watch",
-    "score": 55,
+    "score": 56,
     "prob_up_5d": 0.546,
+    "prob_up_20d": 0.432,
+    "prob_up_3m": 0.575,
+    "prob_up_style": 0.519,
     "prob_down_5pct": 0.191,
     "expected_return": 1.37,
     "risk_reward": 1.43,
     "max_loss_est": -0.96,
-    "verdict": "【様子見】★★\n総合スコア: 55.0/100\n上昇確率: 5日=55% / 20日=43% / 3ヶ月=57% / 12ヶ月=19%\n下落確率: 3%=39% / 5%=19% / 10%=9%\n期待値: +1.37% / リスクリワード: 1.43\n判定時刻: 2026-08-29 12:01",
-    "prediction_date": "2026-08-29"
+    "dip_quality": "caution",
+    "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値13.9%]",
+    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=55% / 20日=43% / 3ヶ月=57% / 12ヶ月=19%\n下落確率: 3%=39% / 5%=19% / 10%=9%\n期待値: +1.37% / リスクリワード: 1.43\n判定時刻: 2026-08-30 15:13",
+    "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 5,
-      "BUY": 15,
-      "HOLD": 7,
-      "WATCH": 41,
-      "REDUCE": 1
+      "STRONG_BUY": 4,
+      "BUY": 16,
+      "HOLD": 9,
+      "WATCH": 40
     },
     "category_stats": {
       "trade_style": {
@@ -27,7 +31,7 @@
         "buy": 3,
         "sell": 0,
         "hold": 4,
-        "avg_score": 57.7
+        "avg_score": 56.6
       },
       "personal": {
         "count": 10,
@@ -43,19 +47,12 @@
         "hold": 17,
         "avg_score": 52.9
       },
-      "integration": {
-        "count": 6,
-        "buy": 1,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 55.5
-      },
       "analysis": {
         "count": 10,
         "buy": 4,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 56.3
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 57.1
       },
       "market_monitor": {
         "count": 7,
@@ -69,7 +66,14 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 55.2
+        "avg_score": 55.3
+      },
+      "integration": {
+        "count": 6,
+        "buy": 1,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 54.3
       }
     }
   },
@@ -100,15 +104,6 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "高配当38.0% / ROE良好29.8% / 利益率安定34.8%"
-    },
-    {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
-      "score": 76.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 3/10位"
     },
     {
       "agent": "sector_social_media",
@@ -156,6 +151,15 @@
       "reason": "期待値=+1.80% / RR比=2.50 / 上昇確率=60%"
     },
     {
+      "agent": "comparative",
+      "agent_jp": "比較評価",
+      "category": "integration",
+      "score": 68.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ウォッチリスト内 4/10位"
+    },
+    {
       "agent": "trend_direction",
       "agent_jp": "トレンド方向",
       "category": "market_monitor",
@@ -194,6 +198,15 @@
       "reason": "20d/3m上昇確率=57% / MA20=+0.4% / 売上成長=28%"
     },
     {
+      "agent": "score_integration",
+      "agent_jp": "スコア統合",
+      "category": "integration",
+      "score": 56.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=56"
+    },
+    {
       "agent": "institutional_flow",
       "agent_jp": "機関投資家動向",
       "category": "analysis",
@@ -212,6 +225,15 @@
       "reason": "プロファイル適合"
     },
     {
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率57% / P10=-0.7% P90=+0.9%"
+    },
+    {
       "agent": "alert",
       "agent_jp": "アラート",
       "category": "integration",
@@ -228,24 +250,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
-      "category": "integration",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "全エージェント統合スコア=55"
-    },
-    {
-      "agent": "macro_environment",
-      "agent_jp": "マクロ環境",
-      "category": "analysis",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "長期金利高(4.7%) / 金利低下中(株にプラス) / VIX低安定"
     },
     {
       "agent": "short_term_prob",
@@ -292,51 +296,45 @@
   },
   "news": [
     {
-      "headline": "Nvidia earnings could reveal its fastest-growing business isn't chips: Chart of the Day",
-      "sentiment": 0.2,
-      "importance": 5,
-      "published_at": "2026-08-26 19:00:00",
+      "headline": "Meta Is Down 27%. One Analyst Sees a $22 Billion AI Business Hiding in Plain Sight",
+      "sentiment": -0.57,
+      "importance": 4,
+      "published_at": "2026-08-29 12:04:38",
       "source": "yahoo"
     },
     {
-      "headline": "Dick’s Hit by a Footware Apocalypse",
-      "sentiment": -0.73,
-      "importance": 2,
-      "published_at": "2026-08-29 08:52:00",
+      "headline": "Meta Is Down 27%. One Analyst Sees a $22 Billion AI Business Hiding in Plain Sight",
+      "sentiment": -0.57,
+      "importance": 4,
+      "published_at": "2026-08-29 12:04:38",
       "source": "yahoo"
     },
     {
-      "headline": "Meta's 9.9% Jio Stake Finally Gets a Public Scoreboard",
-      "sentiment": 0.42,
+      "headline": "Meta Stock And 2 Founder Led AI Picks For Higher Rates",
+      "sentiment": 0.79,
       "importance": 2,
-      "published_at": "2026-08-29 07:27:58",
+      "published_at": "2026-08-30 05:15:20",
       "source": "yahoo"
     },
     {
-      "headline": "The Historical Record For Buying AppLovin Stock Dips Carries A Warning",
-      "sentiment": -0.82,
+      "headline": "Meta Stock And 2 Founder Led AI Picks For Higher Rates",
+      "sentiment": 0.79,
       "importance": 2,
-      "published_at": "2026-08-29 06:39:24",
+      "published_at": "2026-08-30 05:15:20",
       "source": "yahoo"
     },
     {
-      "headline": "Chamber Of Commerce Backs Meta In Monopoly Battle",
-      "sentiment": -0.84,
+      "headline": "Meta Continues to Trade Jobs for AI: Robots Are “Coming For Us All”",
+      "sentiment": -0.56,
       "importance": 2,
-      "published_at": "2026-08-29 05:51:13",
+      "published_at": "2026-08-30 00:31:52",
       "source": "yahoo"
     }
   ],
   "earnings_recent": [
     {
       "date": "2026-10-29",
-      "estimated_eps": 6.93154,
-      "actual_eps": null,
-      "surprise_pct": null
-    },
-    {
-      "date": "2026-07-30",
-      "estimated_eps": 7.50889,
+      "estimated_eps": 6.97333,
       "actual_eps": null,
       "surprise_pct": null
     }

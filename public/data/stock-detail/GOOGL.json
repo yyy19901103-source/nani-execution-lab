@@ -1,33 +1,38 @@
 {
   "ticker": "GOOGL",
-  "generated_at": "2026-08-29 12:02",
+  "generated_at": "2026-08-30 15:15",
   "summary": {
     "rank": "watch",
     "score": 54,
     "prob_up_5d": 0.572,
+    "prob_up_20d": 0.62,
+    "prob_up_3m": 0.629,
+    "prob_up_style": 0.615,
     "prob_down_5pct": 0.164,
     "expected_return": 1.58,
     "risk_reward": 1.93,
     "max_loss_est": -0.82,
-    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-29 12:01",
-    "prediction_date": "2026-08-29"
+    "dip_quality": "healthy_dip",
+    "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値21.1%]",
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-30 15:13",
+    "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 5,
-      "BUY": 13,
+      "BUY": 14,
       "HOLD": 8,
-      "WATCH": 42,
+      "WATCH": 41,
       "REDUCE": 1
     },
     "category_stats": {
       "trade_style": {
         "count": 7,
-        "buy": 4,
+        "buy": 5,
         "sell": 1,
-        "hold": 2,
-        "avg_score": 60.3
+        "hold": 1,
+        "avg_score": 61.7
       },
       "analysis": {
         "count": 10,
@@ -62,7 +67,7 @@
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.4
+        "avg_score": 53.2
       },
       "integration": {
         "count": 6,
@@ -156,25 +161,16 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
+      "agent": "portfolio_fit",
+      "agent_jp": "ポートフォリオ適合",
       "category": "personal",
       "score": 65.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "失敗パターンなし"
+      "reason": "未保有・新規可能"
     }
   ],
   "top_risks": [
-    {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率62% / P10=-0.5% P90=+0.8%"
-    },
     {
       "agent": "expected_value",
       "agent_jp": "期待値",
@@ -194,13 +190,22 @@
       "reason": "5d上昇確率=57% / 20d=62% / 3m=63% / 期待値=+1.58%"
     },
     {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
+      "agent": "monte_carlo",
+      "agent_jp": "モンテカルロ",
+      "category": "prediction",
+      "score": 57.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MC 20日後: 中央値+0.1% / 上昇確率60% / P10=-0.5% P90=+0.8%"
+    },
+    {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "ストキャスKD買い"
     },
     {
       "agent": "alert",
@@ -212,13 +217,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ストキャスKD買い"
+      "reason": "プロファイル適合"
     },
     {
       "agent": "macro_environment",
@@ -254,7 +259,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-29 12:01"
+      "reason": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=57% / 20日=62% / 3ヶ月=63% / 12ヶ月=73%\n下落確率: 3%=26% / 5%=16% / 10%=6%\n期待値: +1.58% / リスクリワード: 1.93\n判定時刻: 2026-08-30 15:13"
     }
   ],
   "fundamentals": {

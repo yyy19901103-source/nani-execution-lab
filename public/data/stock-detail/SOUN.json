@@ -1,33 +1,38 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-08-29 12:02",
+  "generated_at": "2026-08-30 15:15",
   "summary": {
     "rank": "watch",
     "score": 51,
     "prob_up_5d": 0.471,
+    "prob_up_20d": 0.472,
+    "prob_up_3m": 0.477,
+    "prob_up_style": 0.474,
     "prob_down_5pct": 0.05,
     "expected_return": 0.76,
     "risk_reward": 3.04,
     "max_loss_est": -0.25,
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-29 12:01",
-    "prediction_date": "2026-08-29"
+    "dip_quality": "falling_knife",
+    "position_sizing": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 15:13",
+    "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 1,
-      "BUY": 6,
+      "BUY": 7,
       "HOLD": 9,
-      "WATCH": 52,
+      "WATCH": 51,
       "SELL": 1
     },
     "category_stats": {
       "personal": {
         "count": 10,
-        "buy": 4,
+        "buy": 5,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 59.0
+        "hold": 5,
+        "avg_score": 59.5
       },
       "market_monitor": {
         "count": 7,
@@ -48,7 +53,14 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 51.8
+        "avg_score": 51.9
+      },
+      "trade_style": {
+        "count": 7,
+        "buy": 0,
+        "sell": 0,
+        "hold": 7,
+        "avg_score": 48.7
       },
       "integration": {
         "count": 6,
@@ -56,13 +68,6 @@
         "sell": 1,
         "hold": 5,
         "avg_score": 45.5
-      },
-      "trade_style": {
-        "count": 7,
-        "buy": 0,
-        "sell": 0,
-        "hold": 7,
-        "avg_score": 48.9
       },
       "sector": {
         "count": 19,
@@ -102,15 +107,6 @@
       "reason": "リスク許容範囲内"
     },
     {
-      "agent": "failure_pattern",
-      "agent_jp": "失敗パターン",
-      "category": "personal",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "失敗パターンなし"
-    },
-    {
       "agent": "portfolio_fit",
       "agent_jp": "ポートフォリオ適合",
       "category": "personal",
@@ -118,6 +114,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "未保有・新規可能"
+    },
+    {
+      "agent": "failure_pattern",
+      "agent_jp": "失敗パターン",
+      "category": "personal",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "失敗パターンなし"
     },
     {
       "agent": "downside_risk",
@@ -136,6 +141,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "感情バイアスなし"
+    },
+    {
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
+      "category": "personal",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "高ボラOK(アグレッシブ)"
     }
   ],
   "top_risks": [
@@ -167,22 +181,22 @@
       "reason": "テクニカル中立 / 強弱比=2.3:3.0"
     },
     {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い"
+    },
+    {
       "agent": "money_management",
       "agent_jp": "資金管理",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%"
-    },
-    {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]"
     },
     {
       "agent": "alert",
@@ -192,15 +206,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "day_trade",
-      "agent_jp": "デイトレード",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ストキャスKD買い"
     },
     {
       "agent": "momentum",
@@ -228,6 +233,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "過去勝率=50% / 事後確率=55%"
+    },
+    {
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
+      "category": "market_monitor",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "RSI中立ゾーン"
     }
   ],
   "fundamentals": null,

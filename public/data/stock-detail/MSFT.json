@@ -1,40 +1,46 @@
 {
   "ticker": "MSFT",
-  "generated_at": "2026-08-29 12:02",
+  "generated_at": "2026-08-30 15:15",
   "summary": {
-    "rank": "watch",
+    "rank": "weak_buy",
     "score": 56,
     "prob_up_5d": 0.519,
+    "prob_up_20d": 0.596,
+    "prob_up_3m": 0.646,
+    "prob_up_style": 0.603,
     "prob_down_5pct": 0.167,
     "expected_return": 1.15,
     "risk_reward": 1.37,
     "max_loss_est": -0.84,
-    "verdict": "【様子見】★★\n総合スコア: 56.0/100\n上昇確率: 5日=52% / 20日=60% / 3ヶ月=65% / 12ヶ月=77%\n下落確率: 3%=24% / 5%=17% / 10%=6%\n期待値: +1.15% / リスクリワード: 1.37\n判定時刻: 2026-08-29 12:01",
-    "prediction_date": "2026-08-29"
+    "dip_quality": "healthy_dip",
+    "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.2%]",
+    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=52% / 20日=60% / 3ヶ月=65% / 12ヶ月=77%\n下落確率: 3%=24% / 5%=17% / 10%=6%\n期待値: +1.15% / リスクリワード: 1.37\n判定時刻: 2026-08-30 15:13",
+    "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 6,
       "BUY": 14,
+      "WEAK BUY": 1,
       "HOLD": 5,
-      "WATCH": 43,
+      "WATCH": 42,
       "REDUCE": 1
     },
     "category_stats": {
       "trade_style": {
         "count": 7,
-        "buy": 3,
+        "buy": 4,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 62.4
+        "hold": 3,
+        "avg_score": 63.9
       },
       "integration": {
         "count": 6,
         "buy": 1,
         "sell": 0,
         "hold": 5,
-        "avg_score": 57.0
+        "avg_score": 58.7
       },
       "personal": {
         "count": 10,
@@ -52,24 +58,24 @@
       },
       "prediction": {
         "count": 10,
-        "buy": 2,
+        "buy": 3,
         "sell": 1,
-        "hold": 7,
-        "avg_score": 53.6
+        "hold": 6,
+        "avg_score": 53.9
       },
       "market_monitor": {
         "count": 7,
-        "buy": 3,
+        "buy": 2,
         "sell": 0,
-        "hold": 4,
-        "avg_score": 58.9
+        "hold": 5,
+        "avg_score": 57.7
       },
       "analysis": {
         "count": 10,
-        "buy": 4,
+        "buy": 3,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 57.7
+        "hold": 7,
+        "avg_score": 56.6
       }
     }
   },
@@ -156,13 +162,13 @@
       "reason": "流動性良好"
     },
     {
-      "agent": "fundamental",
-      "agent_jp": "ファンダメンタル",
-      "category": "analysis",
+      "agent": "sector_rotation",
+      "agent_jp": "セクターローテーション",
+      "category": "market_monitor",
       "score": 68.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "高利益率(45%)"
+      "reason": "S&P500比 直近強い(+5.8%) / S&P500比 月次強い(+7.7%)"
     }
   ],
   "top_risks": [
@@ -174,15 +180,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "期待値=+1.00% / RR比=1.67 / 上昇確率=50%"
-    },
-    {
-      "agent": "monte_carlo",
-      "agent_jp": "モンテカルロ",
-      "category": "prediction",
-      "score": 57.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "MC 20日後: 中央値+0.1% / 上昇確率59% / P10=-0.5% P90=+0.7%"
     },
     {
       "agent": "technical_summary",
@@ -239,13 +236,13 @@
       "reason": "異常なし"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
       "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "VIX低位(14)"
+      "reason": "OBV上昇トレンド"
     },
     {
       "agent": "value_invest",
@@ -255,6 +252,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "PBR高い(8.1x) / ROE高(34%) / 配当利回り75.0%"
+    },
+    {
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "VIX低位(14)"
     }
   ],
   "fundamentals": {
@@ -292,38 +298,38 @@
   },
   "news": [
     {
+      "headline": "Elastic (ESTC) Is Up 16.3% After AI-Fueled Q1 Beat And Higher 2027 Revenue Guidance – Has The Bull Case Changed?",
+      "sentiment": 0.25,
+      "importance": 5,
+      "published_at": "2026-08-30 01:14:52",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Elastic (ESTC) Is Up 16.3% After AI-Fueled Q1 Beat And Higher 2027 Revenue Guidance – Has The Bull Case Changed?",
+      "sentiment": 0.25,
+      "importance": 5,
+      "published_at": "2026-08-30 01:14:52",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Chevron's Microsoft Data Center Deal Was a Bigger Story Than Its Earnings. Here's Why.",
+      "sentiment": 0.65,
+      "importance": 5,
+      "published_at": "2026-08-30 00:05:00",
+      "source": "yahoo"
+    },
+    {
+      "headline": "Chevron's Microsoft Data Center Deal Was a Bigger Story Than Its Earnings. Here's Why.",
+      "sentiment": 0.65,
+      "importance": 5,
+      "published_at": "2026-08-30 00:05:00",
+      "source": "yahoo"
+    },
+    {
       "headline": "Amazon’s Post-Q2 Earnings Rally Has Faded But Don’t Give Up on AMZN Stock Just Yet",
       "sentiment": 0.63,
       "importance": 5,
       "published_at": "2026-08-29 03:46:36",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Stock Market Today: Dow Steady On Inflation Data; Nvidia Earnings Due After Close (Live Coverage)",
-      "sentiment": null,
-      "importance": 5,
-      "published_at": "2026-08-26 22:01:24",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Nvidia earnings could reveal its fastest-growing business isn't chips: Chart of the Day",
-      "sentiment": 0.2,
-      "importance": 5,
-      "published_at": "2026-08-26 19:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Nvidia’s Paradox: Stellar Earnings and a Sliding Stock",
-      "sentiment": -0.53,
-      "importance": 5,
-      "published_at": "2026-08-26 16:00:00",
-      "source": "yahoo"
-    },
-    {
-      "headline": "Why ZM Stock Prints So Much Cash Right Now",
-      "sentiment": 0.36,
-      "importance": 2,
-      "published_at": "2026-08-29 07:17:34",
       "source": "yahoo"
     }
   ],
@@ -331,12 +337,6 @@
     {
       "date": "2026-10-29",
       "estimated_eps": 4.72455,
-      "actual_eps": null,
-      "surprise_pct": null
-    },
-    {
-      "date": "2026-07-30",
-      "estimated_eps": 4.23745,
       "actual_eps": null,
       "surprise_pct": null
     }
