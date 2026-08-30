@@ -1,6 +1,6 @@
 {
   "ticker": "NVDA",
-  "generated_at": "2026-08-30 15:27",
+  "generated_at": "2026-08-30 15:45",
   "summary": {
     "rank": "weak_buy",
     "score": 56,
@@ -14,7 +14,7 @@
     "max_loss_est": -1.29,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.0%]",
-    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=58% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=30% / 5%=26% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.03\n判定時刻: 2026-08-30 15:25",
+    "verdict": "【やや買い】★★★\n総合スコア: 56.0/100\n上昇確率: 5日=54% / 20日=58% / 3ヶ月=64% / 12ヶ月=73%\n下落確率: 3%=30% / 5%=26% / 10%=17%\n期待値: +1.33% / リスクリワード: 1.03\n判定時刻: 2026-08-30 15:33",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -23,23 +23,24 @@
       "STRONG_BUY": 8,
       "BUY": 13,
       "WEAK BUY": 1,
-      "HOLD": 8,
-      "WATCH": 39
+      "HOLD": 7,
+      "WATCH": 39,
+      "REDUCE": 1
     },
     "category_stats": {
-      "sector": {
-        "count": 19,
-        "buy": 3,
-        "sell": 0,
-        "hold": 16,
-        "avg_score": 54.8
-      },
       "trade_style": {
         "count": 7,
         "buy": 4,
         "sell": 0,
         "hold": 3,
         "avg_score": 62.9
+      },
+      "sector": {
+        "count": 19,
+        "buy": 3,
+        "sell": 0,
+        "hold": 16,
+        "avg_score": 54.8
       },
       "personal": {
         "count": 10,
@@ -65,9 +66,9 @@
       "prediction": {
         "count": 10,
         "buy": 2,
-        "sell": 0,
-        "hold": 8,
-        "avg_score": 53.8
+        "sell": 1,
+        "hold": 7,
+        "avg_score": 53.4
       },
       "market_monitor": {
         "count": 7,
@@ -80,15 +81,6 @@
   },
   "top_buys": [
     {
-      "agent": "sector_semiconductor",
-      "agent_jp": "半導体",
-      "category": "sector",
-      "score": 88.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "半導体専門: 売上成長=85% OPM=66%"
-    },
-    {
       "agent": "growth_invest",
       "agent_jp": "グロース投資",
       "category": "trade_style",
@@ -96,6 +88,15 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "売上急成長(85%) / EPS急成長(214%) / ROIC優秀(53%)"
+    },
+    {
+      "agent": "sector_semiconductor",
+      "agent_jp": "半導体",
+      "category": "sector",
+      "score": 88.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "半導体専門: 売上成長=85% OPM=66%"
     },
     {
       "agent": "dividend_income",
@@ -107,15 +108,6 @@
       "reason": "高配当(47.0%) / 高利益率(66%) / ROE高(114%)"
     },
     {
-      "agent": "rule_compliance",
-      "agent_jp": "ルール遵守",
-      "category": "personal",
-      "score": 80.0,
-      "judgment": "STRONG_BUY",
-      "confidence": 0.6,
-      "reason": "全ルール遵守"
-    },
-    {
       "agent": "japan_dividend",
       "agent_jp": "日本高配当",
       "category": "sector",
@@ -123,6 +115,15 @@
       "judgment": "STRONG_BUY",
       "confidence": 0.6,
       "reason": "高配当47.0% / ROE良好114.3% / 利益率安定65.6%"
+    },
+    {
+      "agent": "rule_compliance",
+      "agent_jp": "ルール遵守",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
     },
     {
       "agent": "fundamental",
@@ -253,13 +254,13 @@
       "reason": "5d上昇確率=54% / 20d=58% / 3m=64% / 期待値=+1.33%"
     },
     {
-      "agent": "earnings_momentum",
-      "agent_jp": "決算モメンタム",
-      "category": "analysis",
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
       "score": 50.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "決算特記事項なし"
+      "reason": "VIX低位(14) / BBバンド拡大"
     }
   ],
   "fundamentals": {

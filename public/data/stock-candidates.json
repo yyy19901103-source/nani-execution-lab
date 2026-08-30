@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-30 15:27",
+  "generated_at": "2026-08-30 15:45",
   "suggested_date": "2026-08-30",
-  "count": 6,
+  "count": 5,
   "candidates": [
     {
       "ticker": "AEG",
@@ -28,18 +28,6 @@
       "source_screen": "undervalued_large_caps"
     },
     {
-      "ticker": "AVGO",
-      "company_name": "Broadcom Inc.",
-      "price": 371.54,
-      "ma200_dev": 0.83,
-      "rsi_14": 22.9,
-      "ret_60d": -22.35,
-      "dip_quality": "healthy_dip",
-      "composite_score": 82.0,
-      "reason": "200日線+0.8%の健全な押し目 / RSI23 / 60日-22.4% / 出典:growth_technology_stocks",
-      "source_screen": "growth_technology_stocks"
-    },
-    {
       "ticker": "ULCC",
       "company_name": "Frontier Group Holdings, Inc.",
       "price": 5.91,
@@ -52,28 +40,28 @@
       "source_screen": "aggressive_small_caps"
     },
     {
-      "ticker": "SMCI",
-      "company_name": "Super Micro Computer, Inc.",
-      "price": 38.46,
-      "ma200_dev": 22.67,
-      "rsi_14": 68.1,
-      "ret_60d": -18.89,
+      "ticker": "AVGO",
+      "company_name": "Broadcom Inc.",
+      "price": 371.54,
+      "ma200_dev": 0.83,
+      "rsi_14": 22.9,
+      "ret_60d": -22.35,
       "dip_quality": "healthy_dip",
-      "composite_score": 70.0,
-      "reason": "200日線+22.7%の健全な押し目 / RSI68 / 60日-18.9% / 出典:undervalued_growth_stocks",
-      "source_screen": "undervalued_growth_stocks"
+      "composite_score": 72.0,
+      "reason": "200日線+0.8%の健全な押し目 / RSI23 / ⚠60日-22.4%・直近急落中の可能性（200日線は健全でも要確認） / 出典:growth_technology_stocks",
+      "source_screen": "growth_technology_stocks"
     },
     {
-      "ticker": "LEG",
-      "company_name": "Leggett & Platt, Incorporated",
-      "price": 9.2,
-      "ma200_dev": -12.69,
-      "rsi_14": 21.3,
-      "ret_60d": -18.49,
-      "dip_quality": "caution",
-      "composite_score": 67.0,
-      "reason": "200日線-12.7%・押し目/下落の判別に注意 / RSI21 / 60日-18.5% / 出典:aggressive_small_caps",
-      "source_screen": "aggressive_small_caps"
+      "ticker": "T",
+      "company_name": "AT&T Inc.",
+      "price": 25.43,
+      "ma200_dev": 3.15,
+      "rsi_14": 73.8,
+      "ret_60d": 9.43,
+      "dip_quality": "healthy_dip",
+      "composite_score": 70.0,
+      "reason": "200日線+3.1%の健全な押し目 / RSI74 / 60日+9.4% / 出典:undervalued_growth_stocks",
+      "source_screen": "undervalued_growth_stocks"
     }
   ]
 }
