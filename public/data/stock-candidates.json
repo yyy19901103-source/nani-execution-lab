@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-08-30 15:27",
+  "suggested_date": "2026-08-30",
+  "count": 6,
+  "candidates": [
+    {
+      "ticker": "AEG",
+      "company_name": "Aegon Ltd. New York Registry Sh",
+      "price": 9.15,
+      "ma200_dev": 15.55,
+      "rsi_14": 30.6,
+      "ret_60d": 13.75,
+      "dip_quality": "healthy_dip",
+      "composite_score": 82.0,
+      "reason": "200日線+15.6%の健全な押し目 / RSI31 / 60日+13.8% / 出典:undervalued_large_caps",
+      "source_screen": "undervalued_large_caps"
+    },
+    {
+      "ticker": "LYG",
+      "company_name": "Lloyds Banking Group Plc",
+      "price": 5.92,
+      "ma200_dev": 10.21,
+      "rsi_14": 33.9,
+      "ret_60d": 12.36,
+      "dip_quality": "healthy_dip",
+      "composite_score": 82.0,
+      "reason": "200日線+10.2%の健全な押し目 / RSI34 / 60日+12.4% / 出典:undervalued_large_caps",
+      "source_screen": "undervalued_large_caps"
+    },
+    {
+      "ticker": "AVGO",
+      "company_name": "Broadcom Inc.",
+      "price": 371.54,
+      "ma200_dev": 0.83,
+      "rsi_14": 22.9,
+      "ret_60d": -22.35,
+      "dip_quality": "healthy_dip",
+      "composite_score": 82.0,
+      "reason": "200日線+0.8%の健全な押し目 / RSI23 / 60日-22.4% / 出典:growth_technology_stocks",
+      "source_screen": "growth_technology_stocks"
+    },
+    {
+      "ticker": "ULCC",
+      "company_name": "Frontier Group Holdings, Inc.",
+      "price": 5.91,
+      "ma200_dev": 13.72,
+      "rsi_14": 23.2,
+      "ret_60d": 3.68,
+      "dip_quality": "healthy_dip",
+      "composite_score": 82.0,
+      "reason": "200日線+13.7%の健全な押し目 / RSI23 / 60日+3.7% / 出典:aggressive_small_caps",
+      "source_screen": "aggressive_small_caps"
+    },
+    {
+      "ticker": "SMCI",
+      "company_name": "Super Micro Computer, Inc.",
+      "price": 38.46,
+      "ma200_dev": 22.67,
+      "rsi_14": 68.1,
+      "ret_60d": -18.89,
+      "dip_quality": "healthy_dip",
+      "composite_score": 70.0,
+      "reason": "200日線+22.7%の健全な押し目 / RSI68 / 60日-18.9% / 出典:undervalued_growth_stocks",
+      "source_screen": "undervalued_growth_stocks"
+    },
+    {
+      "ticker": "LEG",
+      "company_name": "Leggett & Platt, Incorporated",
+      "price": 9.2,
+      "ma200_dev": -12.69,
+      "rsi_14": 21.3,
+      "ret_60d": -18.49,
+      "dip_quality": "caution",
+      "composite_score": 67.0,
+      "reason": "200日線-12.7%・押し目/下落の判別に注意 / RSI21 / 60日-18.5% / 出典:aggressive_small_caps",
+      "source_screen": "aggressive_small_caps"
+    }
+  ]
+}

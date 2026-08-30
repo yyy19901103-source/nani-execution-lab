@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-30 15:15",
+  "generated_at": "2026-08-30 15:27",
   "data_quality": {
     "price_source": "yfinance（無料・参考値）",
     "price_verified": true,
@@ -159,7 +159,7 @@
       "prob_up_5d": 0.541,
       "expected_return": 1.33,
       "risk_reward": 1.03,
-      "updated_at": "2026-08-30 15:13:14",
+      "updated_at": "2026-08-30 15:25:33",
       "prob_up_20d": 0.579,
       "prob_up_3m": 0.642,
       "prob_up_style": 0.6,
@@ -280,6 +280,15 @@
   ],
   "history": [
     {
+      "ticker": "NVDA",
+      "rank": "weak_buy",
+      "score": 56,
+      "prob_up_5d": 0.541,
+      "date": "2026-08-30",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
       "ticker": "JPM",
       "rank": "weak_buy",
       "score": 55,
@@ -374,15 +383,6 @@
       "rank": "weak_buy",
       "score": 56,
       "prob_up_5d": 0.519,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "NVDA",
-      "rank": "weak_buy",
-      "score": 56,
-      "prob_up_5d": 0.541,
       "date": "2026-08-30",
       "actual_ret": null,
       "result": "pending"

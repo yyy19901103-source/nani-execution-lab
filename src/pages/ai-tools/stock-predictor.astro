@@ -279,6 +279,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <button class="tab-btn" data-tab="review" role="tab">📋 振り返り</button>
     <button class="tab-btn" data-tab="market" role="tab">🌐 市場分析</button>
     <button class="tab-btn" data-tab="agents" role="tab">🤖 エージェント</button>
+    <button class="tab-btn" data-tab="discover" role="tab">🆕 新銘柄発掘</button>
   </div>
 
   <!-- ========== TAB 1: 今日 ========== -->
@@ -370,6 +371,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <!-- カテゴリブロック -->
       <div id="ag-list"></div>
+    </div>
+  </div>
+
+  <!-- ========== TAB 5: 新銘柄発掘 ========== -->
+  <div class="tab-content" id="tab-discover">
+    <div class="sec-title" style="margin-top:0">🆕 新銘柄発掘候補 — ウォッチリスト外・押し目品質スクリーニング</div>
+    <p class="modal-sub" id="discover-meta">読み込み中…</p>
+    <div id="discover-list"></div>
+    <div class="disclaimer" style="margin-top:1.2rem">
+      これらはyfinanceスクリーナーによる軽量スクリーニング結果であり、
+      69エージェントによる本格分析は経ていません。あくまで一次候補です。
     </div>
   </div>
 
@@ -495,6 +507,46 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     loadPostmortem();
     loadScatter();
     loadAgents();
+    loadCandidates();
+  }
+
+  // ========== 🆕 新銘柄発掘候補 ==========
+  const DIP_LABEL_DISCOVER = {
+    healthy_dip:   { label: '✅ 健全な押し目', color: '#6ec86e' },
+    caution:       { label: '△ 要注意', color: '#c8a96e' },
+    falling_knife: { label: '⚠ 構造的下落', color: '#c86e6e' },
+    neutral:       { label: '中立', color: '#888' },
+  };
+
+  async function loadCandidates() {
+    const metaEl = document.getElementById('discover-meta');
+    const listEl = document.getElementById('discover-list');
+    try {
+      const res = await fetch(`${BASE}/data/stock-candidates.json`);
+      const d = await res.json();
+      metaEl.textContent = `発掘日: ${d.suggested_date || '—'} / ${d.count}件（更新: ${d.generated_at}）`;
+      if (!d.candidates || d.candidates.length === 0) {
+        listEl.innerHTML = '<div style="color:#666">本日の発掘候補はまだありません</div>';
+        return;
+      }
+      listEl.innerHTML = d.candidates.map(c => {
+        const dip = DIP_LABEL_DISCOVER[c.dip_quality] || DIP_LABEL_DISCOVER.neutral;
+        return `
+          <div class="pm-card" style="border-left-color:${dip.color}">
+            <div class="pm-head">
+              <span class="pm-tk">${c.ticker}</span>
+              <span style="color:${dip.color};font-size:0.78rem">${dip.label}</span>
+              <span class="pm-meta-mini">スコア${c.composite_score} / 出典:${c.source_screen}</span>
+            </div>
+            <div class="pm-stats-line">${c.company_name || ''} — $${c.price ?? '—'}</div>
+            <div class="pm-stats-line" style="color:#888;font-size:0.72rem">${c.reason || ''}</div>
+          </div>
+        `;
+      }).join('');
+    } catch (e) {
+      metaEl.textContent = '読み込みエラー';
+      console.error('candidates', e);
+    }
   }
 
   function renderHeader(data) {
