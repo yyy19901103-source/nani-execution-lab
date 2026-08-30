@@ -64,10 +64,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   /* ========== ランキングテーブル（強化版） ========== */
   .rank-grid { display: flex; flex-direction: column; gap: 0.5rem; }
-  .rank-row { display: grid; grid-template-columns: 60px 110px 1fr 1fr 90px 80px; gap: 0.8rem; align-items: center; padding: 0.8rem 1rem; background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 4px; transition: all 0.2s; cursor: pointer; }
+  .rank-row { display: grid; grid-template-columns: 92px 110px 1fr 1fr 90px 80px; gap: 0.8rem; align-items: center; padding: 0.8rem 1rem; background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 4px; transition: all 0.2s; cursor: pointer; }
   .rank-row:hover { background: #141414; border-color: rgba(200,169,110,0.4); transform: translateX(3px); }
-  @media (max-width: 720px) { .rank-row { grid-template-columns: 50px 90px 1fr 80px; gap: 0.5rem; padding: 0.6rem; } .rank-row .rank-col-er, .rank-row .rank-col-time { display: none; } }
+  @media (max-width: 720px) { .rank-row { grid-template-columns: 78px 90px 1fr 80px; gap: 0.5rem; padding: 0.6rem; } .rank-row .rank-col-er, .rank-row .rank-col-time { display: none; } }
   .rank-ticker { font-weight: 600; font-size: 1rem; color: #edede8; }
+  .rank-price { font-size: 0.82rem; color: #c8a96e; font-weight: 700; margin-top: 0.15rem; }
+  .rank-price-date { font-size: 0.62rem; color: #666; font-weight: 400; }
   .rank-bar-wrap { background: #1a1a1a; height: 8px; border-radius: 4px; overflow: hidden; position: relative; }
   .rank-bar-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
   .rank-bar-text { font-size: 0.7rem; color: #aaa; margin-top: 0.2rem; }
@@ -591,11 +593,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         // 2026-08-30: ランキング表と同じ3ヶ月確率を主指標として使い、表示の食い違いを防ぐ
         const heroProb = r.prob_up_3m != null ? r.prob_up_3m : r.prob_up_5d;
         const heroProbLabel = r.prob_up_3m != null ? '3ヶ月上昇' : '上昇';
+        const heroPrice = r.price != null ? `$${r.price}${r.price_date ? `（${r.price_date.slice(5).replace('-','/')}）` : ''} / ` : '';
         ctaList.insertAdjacentHTML('beforeend', `
           <div class="hero-cta" data-ticker="${r.ticker}">
             <span class="hero-cta-rank badge ${cls}">${RANK_LABEL[r.rank]}</span>
             <strong style="color:#edede8">${r.ticker}</strong>
-            <span class="hero-cta-info">スコア${r.score} / ${heroProbLabel}${(heroProb*100).toFixed(0)}% / 期待${r.expected_return>0?'+':''}${r.expected_return}%</span>
+            <span class="hero-cta-info">${heroPrice}スコア${r.score} / ${heroProbLabel}${(heroProb*100).toFixed(0)}% / 期待${r.expected_return>0?'+':''}${r.expected_return}%</span>
             <span style="color:#666">→</span>
           </div>
         `);
@@ -606,11 +609,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       if (top) {
         const topProb = top.prob_up_3m != null ? top.prob_up_3m : top.prob_up_5d;
         const topProbLabel = top.prob_up_3m != null ? '3ヶ月上昇' : '上昇';
+        const topPrice = top.price != null ? `$${top.price}${top.price_date ? `（${top.price_date.slice(5).replace('-','/')}）` : ''} / ` : '';
         ctaList.insertAdjacentHTML('beforeend', `
           <div class="hero-cta" data-ticker="${top.ticker}">
             <span class="hero-cta-rank badge ${BADGE_CLASS[top.rank]||'badge-w'}">${RANK_LABEL[top.rank]||top.rank}</span>
             <strong style="color:#edede8">${top.ticker}</strong>
-            <span class="hero-cta-info">スコア${top.score}（最上位） / ${topProbLabel}${(topProb*100).toFixed(0)}%</span>
+            <span class="hero-cta-info">${topPrice}スコア${top.score}（最上位） / ${topProbLabel}${(topProb*100).toFixed(0)}%</span>
             <span style="color:#666">→</span>
           </div>
         `);
@@ -652,16 +656,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const fillColor = RANK_COLOR[r.rank] || '#c8a96e';
       const dip = DIP_BADGE[r.dip_quality];
       const dipHtml = dip ? `<span style="font-size:0.62rem;color:${dip.color};margin-left:0.4rem">${dip.label}</span>` : '';
-      const priceText = r.price != null
-        ? ` ／ $${r.price}${r.price_date ? `（${r.price_date.slice(5).replace('-', '/')}時点・参考値）` : ''}`
-        : '';
+      const priceLine = r.price != null
+        ? `<div class="rank-price">$${r.price}<span class="rank-price-date"> (${r.price_date ? r.price_date.slice(5).replace('-', '/') : '—'})</span></div>`
+        : `<div class="rank-price rank-price-date">価格不明</div>`;
       grid.insertAdjacentHTML('beforeend', `
         <div class="rank-row" data-ticker="${r.ticker}">
-          <div class="rank-ticker">${r.ticker}${dipHtml}</div>
+          <div class="rank-ticker">${r.ticker}${dipHtml}${priceLine}</div>
           <div><span class="badge ${badgeClass}">${RANK_LABEL[r.rank] || r.rank}</span></div>
           <div>
             <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${probPct}%;background:${fillColor}"></div></div>
-            <div class="rank-bar-text">${probLabel} ${probPct}%（5日${p5dPct}%）${priceText}</div>
+            <div class="rank-bar-text">${probLabel} ${probPct}%（5日${p5dPct}%）</div>
           </div>
           <div class="rank-score-num">${r.score ?? '—'}</div>
           <div class="rank-er rank-col-er" style="color:${erColor}">${er}</div>
@@ -1036,10 +1040,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
 
     const s = d.summary || {};
-    const priceLine = s.price != null
-      ? ` / 株価: $${s.price}（${s.price_date || '—'}時点・参考値）`
+    const priceInline = s.price != null
+      ? ` <span style="color:#c8a96e;font-size:0.85rem">$${s.price}（${s.price_date || '—'}時点）</span>`
       : '';
-    document.getElementById('m-sub').textContent = `更新: ${d.generated_at} / 予測日: ${s.prediction_date || '—'}${priceLine}`;
+    document.getElementById('m-title').innerHTML = `📊 ${ticker} — 判断根拠${priceInline}`;
+    document.getElementById('m-sub').textContent = `更新: ${d.generated_at} / 予測日: ${s.prediction_date || '—'}`;
     document.getElementById('m-rank').textContent = RANK_LABEL[s.rank] || s.rank || '—';
     document.getElementById('m-score').textContent = s.score != null ? s.score : '—';
     document.getElementById('m-rr').textContent = s.risk_reward != null ? s.risk_reward.toFixed(2) : '—';
