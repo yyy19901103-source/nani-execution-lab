@@ -1,6 +1,6 @@
 {
   "ticker": "LYG",
-  "generated_at": "2026-08-30 16:06",
+  "generated_at": "2026-08-30 22:17",
   "summary": {
     "rank": "watch",
     "score": 50,
@@ -14,7 +14,7 @@
     "max_loss_est": -0.25,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=4.2%(約51,953円/資金1,250,000円)[半ケリー基礎値4.2%]",
-    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-08-30 16:05",
+    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-08-30 22:17",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
@@ -22,9 +22,9 @@
     "signal_distribution": {
       "STRONG_BUY": 1,
       "BUY": 11,
-      "HOLD": 12,
+      "HOLD": 13,
       "WATCH": 43,
-      "REDUCE": 2
+      "REDUCE": 1
     },
     "category_stats": {
       "trade_style": {
@@ -60,14 +60,14 @@
         "buy": 1,
         "sell": 1,
         "hold": 8,
-        "avg_score": 48.2
+        "avg_score": 48.3
       },
       "integration": {
         "count": 6,
         "buy": 0,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 46.5
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 48.0
       },
       "sector": {
         "count": 19,
@@ -143,6 +143,15 @@
       "reason": "失敗パターンなし"
     },
     {
+      "agent": "volatility_env",
+      "agent_jp": "ボラティリティ環境",
+      "category": "market_monitor",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "VIX低位(14) / 低ボラ環境"
+    },
+    {
       "agent": "long_term_prob",
       "agent_jp": "長期確率",
       "category": "prediction",
@@ -159,15 +168,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "感情バイアスなし"
-    },
-    {
-      "agent": "money_management",
-      "agent_jp": "資金管理",
-      "category": "personal",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "ケリー推奨=4.2%(約51,953円/資金1,250,000円)[半ケリー基礎値4.2%]"
     }
   ],
   "top_risks": [
@@ -223,16 +223,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-08-30 16:05"
-    },
-    {
-      "agent": "market_sentiment",
-      "agent_jp": "市場センチメント",
-      "category": "market_monitor",
-      "score": 50.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "センチメント中立"
+      "reason": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-08-30 22:17"
     },
     {
       "agent": "news_impact",
@@ -244,15 +235,6 @@
       "reason": "ニュース中立"
     },
     {
-      "agent": "market_regime",
-      "agent_jp": "市場レジーム",
-      "category": "market_monitor",
-      "score": 50.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "通常レジーム"
-    },
-    {
       "agent": "institutional_flow",
       "agent_jp": "機関投資家動向",
       "category": "analysis",
@@ -260,6 +242,24 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "機関動向不明瞭"
+    },
+    {
+      "agent": "seasonality",
+      "agent_jp": "季節性",
+      "category": "analysis",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "月末リバランス注意"
+    },
+    {
+      "agent": "calibration",
+      "agent_jp": "キャリブレーション",
+      "category": "prediction",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "確率精度許容範囲(Brier=0.250)"
     }
   ],
   "fundamentals": null,

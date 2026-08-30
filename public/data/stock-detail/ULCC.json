@@ -1,6 +1,6 @@
 {
   "ticker": "ULCC",
-  "generated_at": "2026-08-30 16:05",
+  "generated_at": "2026-08-30 22:17",
   "summary": {
     "rank": "watch",
     "score": 51,
@@ -14,31 +14,31 @@
     "max_loss_est": -0.25,
     "dip_quality": "healthy_dip",
     "position_sizing": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]",
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 16:05",
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 22:17",
     "prediction_date": "2026-08-30"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "BUY": 12,
-      "HOLD": 9,
+      "HOLD": 10,
       "WATCH": 45,
-      "REDUCE": 3
+      "REDUCE": 2
     },
     "category_stats": {
-      "market_monitor": {
-        "count": 7,
-        "buy": 2,
-        "sell": 0,
-        "hold": 5,
-        "avg_score": 51.0
-      },
       "trade_style": {
         "count": 7,
         "buy": 3,
         "sell": 1,
         "hold": 3,
         "avg_score": 50.7
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 2,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 51.0
       },
       "analysis": {
         "count": 10,
@@ -59,14 +59,14 @@
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 53.5
+        "avg_score": 53.2
       },
       "integration": {
         "count": 6,
         "buy": 0,
-        "sell": 1,
-        "hold": 5,
-        "avg_score": 46.7
+        "sell": 0,
+        "hold": 6,
+        "avg_score": 48.2
       },
       "sector": {
         "count": 19,
@@ -79,15 +79,6 @@
   },
   "top_buys": [
     {
-      "agent": "liquidity_risk",
-      "agent_jp": "流動性リスク",
-      "category": "market_monitor",
-      "score": 70.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "流動性良好"
-    },
-    {
       "agent": "contrarian",
       "agent_jp": "逆張り",
       "category": "trade_style",
@@ -95,6 +86,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "RSI売られ過ぎ(29) / 健全な押し目(200日線+12.2%・長期トレンド維持)"
+    },
+    {
+      "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
+      "category": "market_monitor",
+      "score": 70.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "流動性良好"
     },
     {
       "agent": "technical_summary",
@@ -142,6 +142,15 @@
       "reason": "RSI売られ過ぎ(29)"
     },
     {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ストキャスOver売(10) / ストキャスKD売り"
+    },
+    {
       "agent": "long_term_prob",
       "agent_jp": "長期確率",
       "category": "prediction",
@@ -158,15 +167,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "感情バイアスなし"
-    },
-    {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
-      "category": "personal",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "高ボラOK(アグレッシブ)"
     }
   ],
   "top_risks": [
@@ -240,7 +240,7 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 16:05"
+      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 22:17"
     },
     {
       "agent": "mid_term_prob",
