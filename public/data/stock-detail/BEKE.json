@@ -1,7 +1,9 @@
 {
   "ticker": "BEKE",
-  "generated_at": "2026-08-30 22:17",
+  "generated_at": "2026-08-30 22:22",
   "summary": {
+    "price": 18.32,
+    "price_date": "2026-08-28",
     "rank": "weak_buy",
     "score": 55,
     "prob_up_5d": 0.627,

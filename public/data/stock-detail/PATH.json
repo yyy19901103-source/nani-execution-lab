@@ -1,7 +1,9 @@
 {
   "ticker": "PATH",
-  "generated_at": "2026-08-30 22:17",
+  "generated_at": "2026-08-30 22:22",
   "summary": {
+    "price": 18.15,
+    "price_date": "2026-08-28",
     "rank": "watch",
     "score": 52,
     "prob_up_5d": 0.529,

@@ -1,7 +1,9 @@
 {
   "ticker": "PCG",
-  "generated_at": "2026-08-30 22:17",
+  "generated_at": "2026-08-30 22:22",
   "summary": {
+    "price": 16.6,
+    "price_date": "2026-08-28",
     "rank": "neutral",
     "score": 47,
     "prob_up_5d": 0.373,

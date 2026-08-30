@@ -652,13 +652,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const fillColor = RANK_COLOR[r.rank] || '#c8a96e';
       const dip = DIP_BADGE[r.dip_quality];
       const dipHtml = dip ? `<span style="font-size:0.62rem;color:${dip.color};margin-left:0.4rem">${dip.label}</span>` : '';
+      const priceText = r.price != null
+        ? ` ／ $${r.price}${r.price_date ? `（${r.price_date.slice(5).replace('-', '/')}時点・参考値）` : ''}`
+        : '';
       grid.insertAdjacentHTML('beforeend', `
         <div class="rank-row" data-ticker="${r.ticker}">
           <div class="rank-ticker">${r.ticker}${dipHtml}</div>
           <div><span class="badge ${badgeClass}">${RANK_LABEL[r.rank] || r.rank}</span></div>
           <div>
             <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${probPct}%;background:${fillColor}"></div></div>
-            <div class="rank-bar-text">${probLabel} ${probPct}%（5日${p5dPct}%）</div>
+            <div class="rank-bar-text">${probLabel} ${probPct}%（5日${p5dPct}%）${priceText}</div>
           </div>
           <div class="rank-score-num">${r.score ?? '—'}</div>
           <div class="rank-er rank-col-er" style="color:${erColor}">${er}</div>
@@ -1033,7 +1036,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
 
     const s = d.summary || {};
-    document.getElementById('m-sub').textContent = `更新: ${d.generated_at} / 予測日: ${s.prediction_date || '—'}`;
+    const priceLine = s.price != null
+      ? ` / 株価: $${s.price}（${s.price_date || '—'}時点・参考値）`
+      : '';
+    document.getElementById('m-sub').textContent = `更新: ${d.generated_at} / 予測日: ${s.prediction_date || '—'}${priceLine}`;
     document.getElementById('m-rank').textContent = RANK_LABEL[s.rank] || s.rank || '—';
     document.getElementById('m-score').textContent = s.score != null ? s.score : '—';
     document.getElementById('m-rr').textContent = s.risk_reward != null ? s.risk_reward.toFixed(2) : '—';

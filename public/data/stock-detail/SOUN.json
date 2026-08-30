@@ -1,7 +1,9 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-08-30 22:17",
+  "generated_at": "2026-08-30 22:22",
   "summary": {
+    "price": 7.11,
+    "price_date": "2026-08-28",
     "rank": "watch",
     "score": 51,
     "prob_up_5d": 0.471,
