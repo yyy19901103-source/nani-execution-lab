@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-30 22:22",
+  "generated_at": "2026-08-31 22:39",
   "data_quality": {
     "price_source": "yfinance（無料・参考値）",
     "price_verified": true,
@@ -7,7 +7,7 @@
     "note": "株価はyfinanceから自動取得した参考値。正確性は保証されません。"
   },
   "freshness": {
-    "last_analyzed_date": "2026-08-30",
+    "last_analyzed_date": "2026-08-31",
     "days_since_last": 0,
     "gap_business_days": [
       "2026-05-04",
@@ -111,7 +111,7 @@
       "prob_up_5d": 0.627,
       "expected_return": 2.02,
       "risk_reward": 8.08,
-      "updated_at": "2026-08-30 22:17:08",
+      "updated_at": "2026-08-31 22:32:50",
       "prob_up_20d": 0.62,
       "prob_up_3m": 0.598,
       "prob_up_style": 0.611,
@@ -127,12 +127,28 @@
       "prob_up_5d": 0.627,
       "expected_return": 2.02,
       "risk_reward": 8.08,
-      "updated_at": "2026-08-30 22:17:08",
+      "updated_at": "2026-08-31 22:32:49",
       "prob_up_20d": 0.62,
       "prob_up_3m": 0.598,
       "prob_up_style": 0.611,
       "dip_quality": "healthy_dip",
       "price": 77.76,
+      "price_date": "2026-08-28"
+    },
+    {
+      "ticker": "ASX",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "expected_return": 2.02,
+      "risk_reward": 8.08,
+      "updated_at": "2026-08-31 22:32:49",
+      "prob_up_20d": 0.62,
+      "prob_up_3m": 0.598,
+      "prob_up_style": 0.611,
+      "dip_quality": "healthy_dip",
+      "price": 37.78,
       "price_date": "2026-08-28"
     },
     {
@@ -143,12 +159,44 @@
       "prob_up_5d": 0.627,
       "expected_return": 2.02,
       "risk_reward": 8.08,
-      "updated_at": "2026-08-30 22:17:08",
+      "updated_at": "2026-08-31 22:32:49",
       "prob_up_20d": 0.62,
       "prob_up_3m": 0.598,
       "prob_up_style": 0.611,
       "dip_quality": "healthy_dip",
       "price": 7.1,
+      "price_date": "2026-08-28"
+    },
+    {
+      "ticker": "UMC",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "expected_return": 2.02,
+      "risk_reward": 8.08,
+      "updated_at": "2026-08-31 22:32:50",
+      "prob_up_20d": 0.62,
+      "prob_up_3m": 0.598,
+      "prob_up_style": 0.611,
+      "dip_quality": "healthy_dip",
+      "price": 19.79,
+      "price_date": "2026-08-28"
+    },
+    {
+      "ticker": "VALE",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "expected_return": 2.02,
+      "risk_reward": 8.08,
+      "updated_at": "2026-08-31 22:32:51",
+      "prob_up_20d": 0.62,
+      "prob_up_3m": 0.598,
+      "prob_up_style": 0.611,
+      "dip_quality": "healthy_dip",
+      "price": 15.03,
       "price_date": "2026-08-28"
     },
     {
@@ -159,28 +207,12 @@
       "prob_up_5d": 0.627,
       "expected_return": 2.02,
       "risk_reward": 8.08,
-      "updated_at": "2026-08-30 22:17:07",
+      "updated_at": "2026-08-31 22:32:49",
       "prob_up_20d": 0.62,
       "prob_up_3m": 0.598,
       "prob_up_style": 0.611,
       "dip_quality": "neutral",
       "price": 10.53,
-      "price_date": "2026-08-28"
-    },
-    {
-      "ticker": "ASX",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 53,
-      "prob_up_5d": 0.627,
-      "expected_return": 2.02,
-      "risk_reward": 8.08,
-      "updated_at": "2026-08-30 22:17:08",
-      "prob_up_20d": 0.62,
-      "prob_up_3m": 0.598,
-      "prob_up_style": 0.611,
-      "dip_quality": "healthy_dip",
-      "price": 37.78,
       "price_date": "2026-08-28"
     },
     {
@@ -191,7 +223,7 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-08-30 22:17:09",
+      "updated_at": "2026-08-31 22:32:50",
       "prob_up_20d": 0.564,
       "prob_up_3m": 0.552,
       "prob_up_style": 0.56,
@@ -207,44 +239,12 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-08-30 22:17:09",
+      "updated_at": "2026-08-31 22:32:51",
       "prob_up_20d": 0.564,
       "prob_up_3m": 0.552,
       "prob_up_style": 0.56,
       "dip_quality": "healthy_dip",
       "price": 37.08,
-      "price_date": "2026-08-28"
-    },
-    {
-      "ticker": "UMC",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 53,
-      "prob_up_5d": 0.627,
-      "expected_return": 2.02,
-      "risk_reward": 8.08,
-      "updated_at": "2026-08-30 22:17:08",
-      "prob_up_20d": 0.62,
-      "prob_up_3m": 0.598,
-      "prob_up_style": 0.611,
-      "dip_quality": "healthy_dip",
-      "price": 19.79,
-      "price_date": "2026-08-28"
-    },
-    {
-      "ticker": "VALE",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 53,
-      "prob_up_5d": 0.627,
-      "expected_return": 2.02,
-      "risk_reward": 8.08,
-      "updated_at": "2026-08-30 22:17:09",
-      "prob_up_20d": 0.62,
-      "prob_up_3m": 0.598,
-      "prob_up_style": 0.611,
-      "dip_quality": "healthy_dip",
-      "price": 15.03,
       "price_date": "2026-08-28"
     },
     {
@@ -255,12 +255,60 @@
       "prob_up_5d": 0.529,
       "expected_return": 1.24,
       "risk_reward": 4.96,
-      "updated_at": "2026-08-30 22:17:07",
+      "updated_at": "2026-08-31 22:32:49",
       "prob_up_20d": 0.528,
       "prob_up_3m": 0.522,
       "prob_up_style": 0.526,
       "dip_quality": "healthy_dip",
       "price": 18.15,
+      "price_date": "2026-08-28"
+    },
+    {
+      "ticker": "RELY",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 52,
+      "prob_up_5d": 0.471,
+      "expected_return": 0.76,
+      "risk_reward": 3.04,
+      "updated_at": "2026-08-31 22:32:49",
+      "prob_up_20d": 0.472,
+      "prob_up_3m": 0.477,
+      "prob_up_style": 0.474,
+      "dip_quality": "healthy_dip",
+      "price": 26.55,
+      "price_date": "2026-08-28"
+    },
+    {
+      "ticker": "VSNT",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 52,
+      "prob_up_5d": 0.529,
+      "expected_return": 1.24,
+      "risk_reward": 4.96,
+      "updated_at": "2026-08-31 22:32:50",
+      "prob_up_20d": 0.528,
+      "prob_up_3m": 0.522,
+      "prob_up_style": 0.526,
+      "dip_quality": "neutral",
+      "price": 41.02,
+      "price_date": "2026-08-28"
+    },
+    {
+      "ticker": "LYG",
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 51,
+      "prob_up_5d": 0.373,
+      "expected_return": -0.02,
+      "risk_reward": 0.08,
+      "updated_at": "2026-08-31 22:32:49",
+      "prob_up_20d": 0.38,
+      "prob_up_3m": 0.403,
+      "prob_up_style": 0.389,
+      "dip_quality": "healthy_dip",
+      "price": 5.92,
       "price_date": "2026-08-28"
     },
     {
@@ -271,7 +319,7 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-08-30 22:17:09",
+      "updated_at": "2026-08-31 22:32:50",
       "prob_up_20d": 0.564,
       "prob_up_3m": 0.552,
       "prob_up_style": 0.56,
@@ -280,19 +328,19 @@
       "price_date": "2026-08-28"
     },
     {
-      "ticker": "RELY",
+      "ticker": "PLUG",
       "rank": "watch",
       "rank_ja": "様子見",
       "score": 51,
       "prob_up_5d": 0.471,
       "expected_return": 0.76,
       "risk_reward": 3.04,
-      "updated_at": "2026-08-30 22:17:08",
+      "updated_at": "2026-08-31 22:32:50",
       "prob_up_20d": 0.472,
       "prob_up_3m": 0.477,
       "prob_up_style": 0.474,
-      "dip_quality": "healthy_dip",
-      "price": 26.55,
+      "dip_quality": "caution",
+      "price": 2.19,
       "price_date": "2026-08-28"
     },
     {
@@ -303,7 +351,7 @@
       "prob_up_5d": 0.569,
       "expected_return": 1.55,
       "risk_reward": 6.2,
-      "updated_at": "2026-08-30 22:17:09",
+      "updated_at": "2026-08-31 22:32:51",
       "prob_up_20d": 0.564,
       "prob_up_3m": 0.552,
       "prob_up_style": 0.56,
@@ -319,7 +367,7 @@
       "prob_up_5d": 0.471,
       "expected_return": 0.76,
       "risk_reward": 3.04,
-      "updated_at": "2026-08-30 22:17:07",
+      "updated_at": "2026-08-31 22:32:49",
       "prob_up_20d": 0.472,
       "prob_up_3m": 0.477,
       "prob_up_style": 0.474,
@@ -335,60 +383,12 @@
       "prob_up_5d": 0.471,
       "expected_return": 0.76,
       "risk_reward": 3.04,
-      "updated_at": "2026-08-30 22:17:08",
+      "updated_at": "2026-08-31 22:32:49",
       "prob_up_20d": 0.472,
       "prob_up_3m": 0.477,
       "prob_up_style": 0.474,
       "dip_quality": "healthy_dip",
       "price": 5.84,
-      "price_date": "2026-08-28"
-    },
-    {
-      "ticker": "VSNT",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 51,
-      "prob_up_5d": 0.529,
-      "expected_return": 1.24,
-      "risk_reward": 4.96,
-      "updated_at": "2026-08-30 22:17:08",
-      "prob_up_20d": 0.528,
-      "prob_up_3m": 0.522,
-      "prob_up_style": 0.526,
-      "dip_quality": "neutral",
-      "price": 41.02,
-      "price_date": "2026-08-28"
-    },
-    {
-      "ticker": "LYG",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 50,
-      "prob_up_5d": 0.373,
-      "expected_return": -0.02,
-      "risk_reward": 0.08,
-      "updated_at": "2026-08-30 22:17:07",
-      "prob_up_20d": 0.38,
-      "prob_up_3m": 0.403,
-      "prob_up_style": 0.389,
-      "dip_quality": "healthy_dip",
-      "price": 5.92,
-      "price_date": "2026-08-28"
-    },
-    {
-      "ticker": "PLUG",
-      "rank": "watch",
-      "rank_ja": "様子見",
-      "score": 50,
-      "prob_up_5d": 0.471,
-      "expected_return": 0.76,
-      "risk_reward": 3.04,
-      "updated_at": "2026-08-30 22:17:09",
-      "prob_up_20d": 0.472,
-      "prob_up_3m": 0.477,
-      "prob_up_style": 0.474,
-      "dip_quality": "caution",
-      "price": 2.19,
       "price_date": "2026-08-28"
     },
     {
@@ -399,7 +399,7 @@
       "prob_up_5d": 0.471,
       "expected_return": 0.76,
       "risk_reward": 3.04,
-      "updated_at": "2026-08-30 22:17:09",
+      "updated_at": "2026-08-31 22:32:50",
       "prob_up_20d": 0.472,
       "prob_up_3m": 0.477,
       "prob_up_style": 0.474,
@@ -409,13 +409,13 @@
     },
     {
       "ticker": "PCG",
-      "rank": "neutral",
-      "rank_ja": "中立",
-      "score": 47,
+      "rank": "watch",
+      "rank_ja": "様子見",
+      "score": 48,
       "prob_up_5d": 0.373,
       "expected_return": -0.02,
       "risk_reward": 0.08,
-      "updated_at": "2026-08-30 22:17:08",
+      "updated_at": "2026-08-31 22:32:50",
       "prob_up_20d": 0.38,
       "prob_up_3m": 0.403,
       "prob_up_style": 0.389,
@@ -425,6 +425,195 @@
     }
   ],
   "history": [
+    {
+      "ticker": "NVDA",
+      "rank": "weak_buy",
+      "score": 56,
+      "prob_up_5d": 0.541,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "RIVN",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "SMCI",
+      "rank": "watch",
+      "score": 53,
+      "prob_up_5d": 0.569,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "VALE",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "BEKE",
+      "rank": "weak_buy",
+      "score": 55,
+      "prob_up_5d": 0.627,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "MARA",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.569,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "NOK",
+      "rank": "watch",
+      "score": 53,
+      "prob_up_5d": 0.569,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "PCG",
+      "rank": "watch",
+      "score": 48,
+      "prob_up_5d": 0.373,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "PLUG",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.471,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "SOFI",
+      "rank": "watch",
+      "score": 50,
+      "prob_up_5d": 0.471,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "UMC",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "VSNT",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.529,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AFRM",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "AI",
+      "rank": "watch",
+      "score": 53,
+      "prob_up_5d": 0.627,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "ASX",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "FNKO",
+      "rank": "watch",
+      "score": 54,
+      "prob_up_5d": 0.627,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "LYG",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.373,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "PATH",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.529,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "RELY",
+      "rank": "watch",
+      "score": 52,
+      "prob_up_5d": 0.471,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "SOUN",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.471,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
+    {
+      "ticker": "ULCC",
+      "rank": "watch",
+      "score": 51,
+      "prob_up_5d": 0.471,
+      "date": "2026-08-31",
+      "actual_ret": null,
+      "result": "pending"
+    },
     {
       "ticker": "NVDA",
       "rank": "weak_buy",
@@ -775,195 +964,6 @@
       "date": "2026-08-30",
       "actual_ret": null,
       "result": "pending"
-    },
-    {
-      "ticker": "EC",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.373,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "AIG",
-      "rank": "watch",
-      "score": 49,
-      "prob_up_5d": 0.431,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "BSBR",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.529,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "UAL",
-      "rank": "watch",
-      "score": 51,
-      "prob_up_5d": 0.529,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "JAZZ",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.431,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "CRBG",
-      "rank": "watch",
-      "score": 51,
-      "prob_up_5d": 0.431,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "MET",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.431,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "ARCC",
-      "rank": "watch",
-      "score": 51,
-      "prob_up_5d": 0.529,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "AA",
-      "rank": "watch",
-      "score": 52,
-      "prob_up_5d": 0.627,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "SYF",
-      "rank": "watch",
-      "score": 52,
-      "prob_up_5d": 0.529,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "BKR",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.373,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "ET",
-      "rank": "watch",
-      "score": 51,
-      "prob_up_5d": 0.529,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "PR",
-      "rank": "watch",
-      "score": 51,
-      "prob_up_5d": 0.471,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "ITUB",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.529,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "CCL",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.471,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "BBD",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.529,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "SFL",
-      "rank": "watch",
-      "score": 51,
-      "prob_up_5d": 0.471,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "OXSQ",
-      "rank": "watch",
-      "score": 49,
-      "prob_up_5d": 0.373,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "NPWR",
-      "rank": "watch",
-      "score": 53,
-      "prob_up_5d": 0.627,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "ASC",
-      "rank": "watch",
-      "score": 51,
-      "prob_up_5d": 0.471,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
-    },
-    {
-      "ticker": "LINC",
-      "rank": "watch",
-      "score": 50,
-      "prob_up_5d": 0.471,
-      "date": "2026-08-30",
-      "actual_ret": null,
-      "result": "pending"
     }
   ],
   "earnings": [
@@ -988,6 +988,26 @@
       "estimated_eps": 0.45
     },
     {
+      "ticker": "NOK",
+      "date": "2026-10-22",
+      "estimated_eps": 0.07
+    },
+    {
+      "ticker": "PCG",
+      "date": "2026-10-22",
+      "estimated_eps": 0.42
+    },
+    {
+      "ticker": "SOFI",
+      "date": "2026-10-27",
+      "estimated_eps": 0.17
+    },
+    {
+      "ticker": "UMC",
+      "date": "2026-10-28",
+      "estimated_eps": 0.12
+    },
+    {
       "ticker": "GOOGL",
       "date": "2026-10-29",
       "estimated_eps": 3.0
@@ -996,26 +1016,6 @@
       "ticker": "META",
       "date": "2026-10-29",
       "estimated_eps": 6.97
-    },
-    {
-      "ticker": "MSFT",
-      "date": "2026-10-29",
-      "estimated_eps": 4.72
-    },
-    {
-      "ticker": "AAPL",
-      "date": "2026-10-30",
-      "estimated_eps": 1.98
-    },
-    {
-      "ticker": "AMZN",
-      "date": "2026-10-30",
-      "estimated_eps": 1.95
-    },
-    {
-      "ticker": "SOUN",
-      "date": "2026-11-06",
-      "estimated_eps": -0.06
     }
   ]
 }

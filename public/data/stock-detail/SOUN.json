@@ -1,6 +1,6 @@
 {
   "ticker": "SOUN",
-  "generated_at": "2026-08-30 22:22",
+  "generated_at": "2026-08-31 22:39",
   "summary": {
     "price": 7.11,
     "price_date": "2026-08-28",
@@ -16,16 +16,17 @@
     "max_loss_est": -0.25,
     "dip_quality": "falling_knife",
     "position_sizing": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]",
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 22:17",
-    "prediction_date": "2026-08-30"
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-31 22:32",
+    "prediction_date": "2026-08-31"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 1,
       "BUY": 7,
-      "HOLD": 10,
-      "WATCH": 51
+      "HOLD": 9,
+      "WATCH": 51,
+      "SELL": 1
     },
     "category_stats": {
       "personal": {
@@ -40,21 +41,21 @@
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 50.6
+        "avg_score": 49.9
       },
       "analysis": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 51.2
+        "avg_score": 50.7
       },
       "prediction": {
         "count": 10,
         "buy": 1,
         "sell": 0,
         "hold": 9,
-        "avg_score": 51.8
+        "avg_score": 51.7
       },
       "trade_style": {
         "count": 7,
@@ -66,9 +67,9 @@
       "integration": {
         "count": 6,
         "buy": 0,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 48.2
+        "sell": 1,
+        "hold": 5,
+        "avg_score": 45.5
       },
       "sector": {
         "count": 19,
@@ -126,15 +127,6 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "downside_risk",
-      "agent_jp": "下落リスク",
-      "category": "prediction",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "3%下落確率=24% / 5%下落確率=41% / 10%下落確率=70% / ⚠下落リスク高"
-    },
-    {
       "agent": "emotion_bias",
       "agent_jp": "感情バイアス",
       "category": "personal",
@@ -151,6 +143,15 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "高ボラOK(アグレッシブ)"
+    },
+    {
+      "agent": "downside_risk",
+      "agent_jp": "下落リスク",
+      "category": "prediction",
+      "score": 60.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "3%下落確率=24% / 5%下落確率=41% / 10%下落確率=70% / ⚠下落リスク高"
     }
   ],
   "top_risks": [
@@ -191,6 +192,15 @@
       "reason": "ストキャスKD買い"
     },
     {
+      "agent": "momentum",
+      "agent_jp": "モメンタム",
+      "category": "trade_style",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ADXトレンド強(=39)"
+    },
+    {
       "agent": "money_management",
       "agent_jp": "資金管理",
       "category": "personal",
@@ -209,24 +219,6 @@
       "reason": "異常なし"
     },
     {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ADXトレンド強(=39)"
-    },
-    {
-      "agent": "macro_environment",
-      "agent_jp": "マクロ環境",
-      "category": "analysis",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "長期金利高(4.7%) / 金利低下中(株にプラス) / VIX低安定"
-    },
-    {
       "agent": "bayesian",
       "agent_jp": "ベイズ更新",
       "category": "prediction",
@@ -243,6 +235,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "RSI中立ゾーン"
+    },
+    {
+      "agent": "final_judgment",
+      "agent_jp": "最終判定",
+      "category": "integration",
+      "score": 52.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-31 22:32"
     }
   ],
   "fundamentals": null,

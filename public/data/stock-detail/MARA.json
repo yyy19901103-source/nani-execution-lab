@@ -1,6 +1,6 @@
 {
   "ticker": "MARA",
-  "generated_at": "2026-08-30 22:22",
+  "generated_at": "2026-08-31 22:39",
   "summary": {
     "price": 10.67,
     "price_date": "2026-08-28",
@@ -16,53 +16,54 @@
     "max_loss_est": -0.25,
     "dip_quality": "neutral",
     "position_sizing": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値17.0%]",
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-08-30 22:17",
-    "prediction_date": "2026-08-30"
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=57% / 20日=56% / 3ヶ月=55% / 12ヶ月=54%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +1.55% / リスクリワード: 6.20\n判定時刻: 2026-08-31 22:32",
+    "prediction_date": "2026-08-31"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
+      "STRONG_BUY": 1,
       "BUY": 9,
       "HOLD": 8,
-      "WATCH": 48,
-      "REDUCE": 2,
-      "SELL": 2
+      "WATCH": 47,
+      "REDUCE": 3,
+      "SELL": 1
     },
     "category_stats": {
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.5
+      },
       "analysis": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.7
+        "avg_score": 53.5
       },
       "prediction": {
         "count": 10,
         "buy": 2,
         "sell": 1,
         "hold": 7,
-        "avg_score": 54.3
-      },
-      "personal": {
-        "count": 10,
-        "buy": 4,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 55.5
+        "avg_score": 54.4
       },
       "market_monitor": {
         "count": 7,
         "buy": 1,
         "sell": 1,
         "hold": 5,
-        "avg_score": 48.4
+        "avg_score": 47.7
       },
       "integration": {
         "count": 6,
         "buy": 0,
         "sell": 2,
         "hold": 4,
-        "avg_score": 40.5
+        "avg_score": 41.7
       },
       "trade_style": {
         "count": 7,
@@ -81,6 +82,15 @@
     }
   },
   "top_buys": [
+    {
+      "agent": "rule_compliance",
+      "agent_jp": "ルール遵守",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
+    },
     {
       "agent": "supply_demand",
       "agent_jp": "需給分析",
@@ -219,13 +229,13 @@
       "reason": "OBV上昇トレンド"
     },
     {
-      "agent": "macro_environment",
-      "agent_jp": "マクロ環境",
-      "category": "analysis",
+      "agent": "short_term_prob",
+      "agent_jp": "短期確率",
+      "category": "prediction",
       "score": 54.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "長期金利高(4.7%) / 金利低下中(株にプラス) / VIX低安定"
+      "reason": "1d/5d上昇確率=54% / RSI=58 / MACD正"
     },
     {
       "agent": "bayesian",
@@ -237,15 +247,6 @@
       "reason": "過去勝率=50% / 事後確率=55%"
     },
     {
-      "agent": "short_term_prob",
-      "agent_jp": "短期確率",
-      "category": "prediction",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "1d/5d上昇確率=54% / RSI=58 / MACD正"
-    },
-    {
       "agent": "mid_term_prob",
       "agent_jp": "中期確率",
       "category": "prediction",
@@ -253,6 +254,15 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "20d/3m上昇確率=53% / MA20=+1.5% / 売上成長=0%"
+    },
+    {
+      "agent": "swing_trade",
+      "agent_jp": "スイングトレード",
+      "category": "trade_style",
+      "score": 53.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "MACD改善中 / BB下限タッチ狙い未達 / MA20上方"
     }
   ],
   "fundamentals": null,
@@ -271,5 +281,12 @@
   },
   "backtest": null,
   "news": [],
-  "earnings_recent": []
+  "earnings_recent": [
+    {
+      "date": "2026-11-05",
+      "estimated_eps": -0.325,
+      "actual_eps": null,
+      "surprise_pct": null
+    }
+  ]
 }

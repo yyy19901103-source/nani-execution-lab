@@ -1,11 +1,11 @@
 {
   "ticker": "PLUG",
-  "generated_at": "2026-08-30 22:22",
+  "generated_at": "2026-08-31 22:39",
   "summary": {
     "price": 2.19,
     "price_date": "2026-08-28",
     "rank": "watch",
-    "score": 50,
+    "score": 51,
     "prob_up_5d": 0.471,
     "prob_up_20d": 0.472,
     "prob_up_3m": 0.477,
@@ -16,38 +16,39 @@
     "max_loss_est": -0.25,
     "dip_quality": "caution",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]",
-    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 22:17",
-    "prediction_date": "2026-08-30"
+    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-31 22:32",
+    "prediction_date": "2026-08-31"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
+      "STRONG_BUY": 1,
       "BUY": 7,
       "HOLD": 11,
-      "WATCH": 50,
-      "SELL": 1
+      "WATCH": 49,
+      "REDUCE": 1
     },
     "category_stats": {
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.5
+      },
       "market_monitor": {
         "count": 7,
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 50.7
+        "avg_score": 50.0
       },
       "analysis": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.2
-      },
-      "personal": {
-        "count": 10,
-        "buy": 4,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 55.5
+        "avg_score": 53.0
       },
       "prediction": {
         "count": 10,
@@ -61,7 +62,7 @@
         "buy": 0,
         "sell": 1,
         "hold": 5,
-        "avg_score": 45.3
+        "avg_score": 46.7
       },
       "sector": {
         "count": 19,
@@ -80,6 +81,15 @@
     }
   },
   "top_buys": [
+    {
+      "agent": "rule_compliance",
+      "agent_jp": "ルール遵守",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
+    },
     {
       "agent": "liquidity_risk",
       "agent_jp": "流動性リスク",
@@ -173,6 +183,15 @@
       "reason": "期待値=+1.40% / RR比=2.04 / 上昇確率=55%"
     },
     {
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
+      "score": 55.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "OBV上昇トレンド"
+    },
+    {
       "agent": "investor_profile",
       "agent_jp": "投資家プロファイル",
       "category": "personal",
@@ -189,24 +208,6 @@
       "judgment": "WATCH",
       "confidence": 0.6,
       "reason": "異常なし"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
-    },
-    {
-      "agent": "macro_environment",
-      "agent_jp": "マクロ環境",
-      "category": "analysis",
-      "score": 54.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "長期金利高(4.7%) / 金利低下中(株にプラス) / VIX低安定"
     },
     {
       "agent": "downside_risk",
@@ -233,7 +234,16 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-30 22:17"
+      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-31 22:32"
+    },
+    {
+      "agent": "score_integration",
+      "agent_jp": "スコア統合",
+      "category": "integration",
+      "score": 51.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "全エージェント統合スコア=51"
     }
   ],
   "fundamentals": null,
@@ -252,5 +262,12 @@
   },
   "backtest": null,
   "news": [],
-  "earnings_recent": []
+  "earnings_recent": [
+    {
+      "date": "2026-11-10",
+      "estimated_eps": -0.08,
+      "actual_eps": null,
+      "surprise_pct": null
+    }
+  ]
 }

@@ -1,11 +1,11 @@
 {
   "ticker": "VALE",
-  "generated_at": "2026-08-30 22:22",
+  "generated_at": "2026-08-31 22:39",
   "summary": {
     "price": 15.03,
     "price_date": "2026-08-28",
     "rank": "watch",
-    "score": 53,
+    "score": 54,
     "prob_up_5d": 0.627,
     "prob_up_20d": 0.62,
     "prob_up_3m": 0.598,
@@ -16,45 +16,52 @@
     "max_loss_est": -0.25,
     "dip_quality": "healthy_dip",
     "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値20.8%]",
-    "verdict": "【様子見】★★\n総合スコア: 53.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-08-30 22:17",
-    "prediction_date": "2026-08-30"
+    "verdict": "【様子見】★★\n総合スコア: 54.0/100\n上昇確率: 5日=63% / 20日=62% / 3ヶ月=60% / 12ヶ月=56%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +2.02% / リスクリワード: 8.08\n判定時刻: 2026-08-31 22:32",
+    "prediction_date": "2026-08-31"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
-      "STRONG_BUY": 2,
-      "BUY": 10,
+      "STRONG_BUY": 3,
+      "BUY": 11,
       "HOLD": 10,
-      "WATCH": 47
+      "WATCH": 45
     },
     "category_stats": {
+      "personal": {
+        "count": 10,
+        "buy": 5,
+        "sell": 0,
+        "hold": 5,
+        "avg_score": 59.5
+      },
       "analysis": {
         "count": 10,
         "buy": 3,
         "sell": 0,
         "hold": 7,
-        "avg_score": 56.4
+        "avg_score": 56.2
       },
       "market_monitor": {
         "count": 7,
         "buy": 2,
         "sell": 0,
         "hold": 5,
-        "avg_score": 57.6
+        "avg_score": 56.9
       },
       "prediction": {
         "count": 10,
         "buy": 2,
         "sell": 0,
         "hold": 8,
-        "avg_score": 53.9
+        "avg_score": 54.0
       },
-      "personal": {
-        "count": 10,
-        "buy": 4,
+      "integration": {
+        "count": 6,
+        "buy": 1,
         "sell": 0,
-        "hold": 6,
-        "avg_score": 55.5
+        "hold": 5,
+        "avg_score": 53.2
       },
       "trade_style": {
         "count": 7,
@@ -62,13 +69,6 @@
         "sell": 0,
         "hold": 6,
         "avg_score": 49.4
-      },
-      "integration": {
-        "count": 6,
-        "buy": 0,
-        "sell": 0,
-        "hold": 6,
-        "avg_score": 51.8
       },
       "sector": {
         "count": 19,
@@ -80,6 +80,15 @@
     }
   },
   "top_buys": [
+    {
+      "agent": "rule_compliance",
+      "agent_jp": "ルール遵守",
+      "category": "personal",
+      "score": 80.0,
+      "judgment": "STRONG_BUY",
+      "confidence": 0.6,
+      "reason": "全ルール遵守"
+    },
     {
       "agent": "technical_summary",
       "agent_jp": "テクニカル総合",
@@ -160,15 +169,6 @@
       "judgment": "BUY",
       "confidence": 0.6,
       "reason": "失敗パターンなし"
-    },
-    {
-      "agent": "emotion_bias",
-      "agent_jp": "感情バイアス",
-      "category": "personal",
-      "score": 60.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "感情バイアスなし"
     }
   ],
   "top_risks": [
@@ -209,22 +209,13 @@
       "reason": "20d/3m上昇確率=56% / MA20=+4.5% / 売上成長=0%"
     },
     {
-      "agent": "comparative",
-      "agent_jp": "比較評価",
-      "category": "integration",
-      "score": 56.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "ウォッチリスト内 6/11位"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
+      "agent": "long_term_prob",
+      "agent_jp": "長期確率",
+      "category": "prediction",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "12m上昇確率=55% / ROIC=0% / PERなし"
     },
     {
       "agent": "institutional_flow",
@@ -254,13 +245,22 @@
       "reason": "異常なし"
     },
     {
-      "agent": "long_term_prob",
-      "agent_jp": "長期確率",
-      "category": "prediction",
+      "agent": "volume_anomaly",
+      "agent_jp": "出来高異常",
+      "category": "market_monitor",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "12m上昇確率=55% / ROIC=0% / PERなし"
+      "reason": "OBV上昇トレンド"
+    },
+    {
+      "agent": "short_term_prob",
+      "agent_jp": "短期確率",
+      "category": "prediction",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "1d/5d上昇確率=54% / RSI=58 / MACD正"
     }
   ],
   "fundamentals": null,
@@ -279,5 +279,12 @@
   },
   "backtest": null,
   "news": [],
-  "earnings_recent": []
+  "earnings_recent": [
+    {
+      "date": "2026-10-30",
+      "estimated_eps": 0.4975,
+      "actual_eps": null,
+      "surprise_pct": null
+    }
+  ]
 }
