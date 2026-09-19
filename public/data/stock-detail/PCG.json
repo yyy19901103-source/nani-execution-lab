@@ -1,33 +1,32 @@
 {
   "ticker": "PCG",
-  "generated_at": "2026-08-31 22:39",
+  "generated_at": "2026-09-19 11:32",
   "summary": {
-    "price": 16.6,
-    "price_date": "2026-08-28",
+    "price": 13.2,
+    "price_date": "2026-09-18",
     "rank": "watch",
-    "score": 48,
-    "prob_up_5d": 0.373,
-    "prob_up_20d": 0.38,
-    "prob_up_3m": 0.403,
-    "prob_up_style": 0.389,
+    "score": 50,
+    "prob_up_5d": 0.471,
+    "prob_up_20d": 0.472,
+    "prob_up_3m": 0.477,
+    "prob_up_style": 0.474,
     "prob_down_5pct": 0.05,
-    "expected_return": -0.02,
-    "risk_reward": 0.08,
+    "expected_return": 0.76,
+    "risk_reward": 3.04,
     "max_loss_est": -0.25,
-    "dip_quality": "neutral",
-    "position_sizing": "ケリー推奨=4.2%(約51,953円/資金1,250,000円)[半ケリー基礎値4.2%]",
-    "verdict": "【様子見】★★\n総合スコア: 48.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-08-31 22:32",
-    "prediction_date": "2026-08-31"
+    "dip_quality": "falling_knife",
+    "position_sizing": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]",
+    "verdict": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-09-19 11:31",
+    "prediction_date": "2026-09-19"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 1,
-      "BUY": 6,
-      "HOLD": 13,
-      "WATCH": 43,
-      "REDUCE": 3,
-      "SELL": 3
+      "BUY": 9,
+      "HOLD": 10,
+      "WATCH": 45,
+      "REDUCE": 4
     },
     "category_stats": {
       "personal": {
@@ -37,40 +36,40 @@
         "hold": 5,
         "avg_score": 59.5
       },
-      "market_monitor": {
+      "trade_style": {
         "count": 7,
-        "buy": 1,
-        "sell": 3,
-        "hold": 3,
-        "avg_score": 42.9
-      },
-      "analysis": {
-        "count": 10,
-        "buy": 1,
+        "buy": 2,
         "sell": 1,
-        "hold": 8,
-        "avg_score": 46.9
+        "hold": 4,
+        "avg_score": 48.3
       },
       "prediction": {
         "count": 10,
-        "buy": 0,
-        "sell": 1,
-        "hold": 9,
-        "avg_score": 44.1
-      },
-      "trade_style": {
-        "count": 7,
-        "buy": 0,
+        "buy": 1,
         "sell": 0,
-        "hold": 7,
-        "avg_score": 49.3
+        "hold": 9,
+        "avg_score": 51.9
+      },
+      "market_monitor": {
+        "count": 7,
+        "buy": 2,
+        "sell": 2,
+        "hold": 3,
+        "avg_score": 46.3
       },
       "integration": {
         "count": 6,
         "buy": 0,
         "sell": 1,
         "hold": 5,
-        "avg_score": 42.5
+        "avg_score": 46.5
+      },
+      "analysis": {
+        "count": 10,
+        "buy": 0,
+        "sell": 0,
+        "hold": 10,
+        "avg_score": 47.8
       },
       "sector": {
         "count": 19,
@@ -92,22 +91,13 @@
       "reason": "全ルール遵守"
     },
     {
-      "agent": "liquidity_risk",
-      "agent_jp": "流動性リスク",
-      "category": "market_monitor",
-      "score": 70.0,
+      "agent": "contrarian",
+      "agent_jp": "逆張り",
+      "category": "trade_style",
+      "score": 73.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "流動性良好"
-    },
-    {
-      "agent": "risk_assessment",
-      "agent_jp": "リスク評価",
-      "category": "analysis",
-      "score": 65.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "リスク許容範囲内"
+      "reason": "RSI売られ過ぎ(30) / 52週安値近傍 / 急落後(-26.5%) / ⚠構造的下落の疑い(200日線-20.5%・押し目でなくトレンド崩壊の可能性)"
     },
     {
       "agent": "portfolio_fit",
@@ -128,6 +118,42 @@
       "reason": "失敗パターンなし"
     },
     {
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 65.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "ストキャスKD買い / RSI7売られ過ぎ"
+    },
+    {
+      "agent": "downside_risk",
+      "agent_jp": "下落リスク",
+      "category": "prediction",
+      "score": 62.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "3%下落確率=22% / 5%下落確率=36% / 10%下落確率=70%"
+    },
+    {
+      "agent": "market_sentiment",
+      "agent_jp": "市場センチメント",
+      "category": "market_monitor",
+      "score": 62.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "RSI売られ過ぎ(30)"
+    },
+    {
+      "agent": "liquidity_risk",
+      "agent_jp": "流動性リスク",
+      "category": "market_monitor",
+      "score": 62.0,
+      "judgment": "BUY",
+      "confidence": 0.6,
+      "reason": "高ボラ流動性リスク(5.5%)"
+    },
+    {
       "agent": "emotion_bias",
       "agent_jp": "感情バイアス",
       "category": "personal",
@@ -137,16 +163,25 @@
       "reason": "感情バイアスなし"
     },
     {
-      "agent": "money_management",
-      "agent_jp": "資金管理",
+      "agent": "investor_profile",
+      "agent_jp": "投資家プロファイル",
       "category": "personal",
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ケリー推奨=4.2%(約51,953円/資金1,250,000円)[半ケリー基礎値4.2%]"
+      "reason": "高ボラOK(アグレッシブ)"
     }
   ],
   "top_risks": [
+    {
+      "agent": "bayesian",
+      "agent_jp": "ベイズ更新",
+      "category": "prediction",
+      "score": 59.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "過去勝率=50% / 事後確率=60%"
+    },
     {
       "agent": "expected_value",
       "agent_jp": "期待値",
@@ -154,52 +189,34 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
+      "reason": "期待値=+1.40% / RR比=2.04 / 上昇確率=55%"
     },
     {
-      "agent": "contrarian",
-      "agent_jp": "逆張り",
-      "category": "trade_style",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "CCI売られ(-134)"
-    },
-    {
-      "agent": "momentum",
-      "agent_jp": "モメンタム",
-      "category": "trade_style",
-      "score": 57.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "高値圏"
-    },
-    {
-      "agent": "long_term_prob",
-      "agent_jp": "長期確率",
-      "category": "prediction",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "12m上昇確率=55% / ROIC=0% / PERなし"
-    },
-    {
-      "agent": "investor_profile",
-      "agent_jp": "投資家プロファイル",
+      "agent": "money_management",
+      "agent_jp": "資金管理",
       "category": "personal",
       "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "プロファイル適合"
+      "reason": "高ボラ・サイズ縮小推奨 / ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]"
     },
     {
-      "agent": "market_sentiment",
-      "agent_jp": "市場センチメント",
-      "category": "market_monitor",
-      "score": 53.0,
+      "agent": "alert",
+      "agent_jp": "アラート",
+      "category": "integration",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "RSI中立ゾーン"
+      "reason": "異常なし"
+    },
+    {
+      "agent": "macro_environment",
+      "agent_jp": "マクロ環境",
+      "category": "analysis",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "長期金利高(4.9%) / 金利低下中(株にプラス) / VIX低安定"
     },
     {
       "agent": "final_judgment",
@@ -208,16 +225,16 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 48.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-08-31 22:32"
+      "reason": "【様子見】★★\n総合スコア: 50.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-09-19 11:31"
     },
     {
-      "agent": "volatility_env",
-      "agent_jp": "ボラティリティ環境",
-      "category": "market_monitor",
-      "score": 50.0,
+      "agent": "mid_term_prob",
+      "agent_jp": "中期確率",
+      "category": "prediction",
+      "score": 51.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "ボラ環境正常"
+      "reason": "20d/3m上昇確率=51% / MA20=-11.8% / 売上成長=0%"
     },
     {
       "agent": "market_regime",
@@ -226,38 +243,47 @@
       "score": 50.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "通常レジーム"
+      "reason": "レンジ相場"
     },
     {
-      "agent": "seasonality",
-      "agent_jp": "季節性",
+      "agent": "earnings_momentum",
+      "agent_jp": "決算モメンタム",
       "category": "analysis",
       "score": 50.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "月末リバランス注意"
+      "reason": "決算特記事項なし"
+    },
+    {
+      "agent": "news_impact",
+      "agent_jp": "ニュース影響",
+      "category": "analysis",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "ニュース中立"
     }
   ],
   "fundamentals": null,
   "historical": {
     "first_data_date": "1990-01-02",
-    "total_days": 9232,
-    "approx_years": 36.6,
-    "data_span_label": "IPO以降 約36.6年（1990-01-02〜）",
+    "total_days": 9246,
+    "approx_years": 36.7,
+    "data_span_label": "IPO以降 約36.7年（1990-01-02〜）",
     "all_time_high": 69.78,
-    "current_close": 16.6,
-    "current_drawdown_pct": -76.2,
+    "current_close": 13.2,
+    "current_drawdown_pct": -81.1,
     "max_drawdown_pct": -94.6,
-    "days_below_30pct_dd": 3075,
-    "pct_time_below_30pct": 33.3,
-    "current_pct_of_ath": 23.8
+    "days_below_30pct_dd": 3089,
+    "pct_time_below_30pct": 33.4,
+    "current_pct_of_ath": 18.9
   },
   "backtest": null,
   "news": [],
   "earnings_recent": [
     {
       "date": "2026-10-22",
-      "estimated_eps": 0.42034,
+      "estimated_eps": 0.42134,
       "actual_eps": null,
       "surprise_pct": null
     }

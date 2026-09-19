@@ -1,32 +1,33 @@
 {
   "ticker": "PLUG",
-  "generated_at": "2026-08-31 22:39",
+  "generated_at": "2026-09-19 11:32",
   "summary": {
-    "price": 2.19,
-    "price_date": "2026-08-28",
+    "price": 2.09,
+    "price_date": "2026-09-18",
     "rank": "watch",
-    "score": 51,
-    "prob_up_5d": 0.471,
-    "prob_up_20d": 0.472,
-    "prob_up_3m": 0.477,
-    "prob_up_style": 0.474,
+    "score": 49,
+    "prob_up_5d": 0.373,
+    "prob_up_20d": 0.38,
+    "prob_up_3m": 0.403,
+    "prob_up_style": 0.389,
     "prob_down_5pct": 0.05,
-    "expected_return": 0.76,
-    "risk_reward": 3.04,
+    "expected_return": -0.02,
+    "risk_reward": 0.08,
     "max_loss_est": -0.25,
-    "dip_quality": "caution",
-    "position_sizing": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]",
-    "verdict": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-31 22:32",
-    "prediction_date": "2026-08-31"
+    "dip_quality": "falling_knife",
+    "position_sizing": "ケリー推奨=4.2%(約51,953円/資金1,250,000円)[半ケリー基礎値4.2%]",
+    "verdict": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-09-19 11:31",
+    "prediction_date": "2026-09-19"
   },
   "agent_summary": {
     "total_agents": 69,
     "signal_distribution": {
       "STRONG_BUY": 1,
-      "BUY": 7,
-      "HOLD": 11,
-      "WATCH": 49,
-      "REDUCE": 1
+      "BUY": 6,
+      "HOLD": 16,
+      "WATCH": 43,
+      "REDUCE": 2,
+      "SELL": 1
     },
     "category_stats": {
       "personal": {
@@ -41,28 +42,35 @@
         "buy": 1,
         "sell": 0,
         "hold": 6,
-        "avg_score": 50.0
+        "avg_score": 49.7
       },
       "analysis": {
         "count": 10,
-        "buy": 2,
-        "sell": 0,
+        "buy": 1,
+        "sell": 1,
         "hold": 8,
-        "avg_score": 53.0
+        "avg_score": 47.8
       },
       "prediction": {
         "count": 10,
         "buy": 0,
         "sell": 0,
         "hold": 10,
-        "avg_score": 50.1
+        "avg_score": 46.3
       },
       "integration": {
         "count": 6,
         "buy": 0,
         "sell": 1,
         "hold": 5,
-        "avg_score": 46.7
+        "avg_score": 45.2
+      },
+      "trade_style": {
+        "count": 7,
+        "buy": 0,
+        "sell": 1,
+        "hold": 6,
+        "avg_score": 44.1
       },
       "sector": {
         "count": 19,
@@ -70,13 +78,6 @@
         "sell": 0,
         "hold": 19,
         "avg_score": 50.0
-      },
-      "trade_style": {
-        "count": 7,
-        "buy": 0,
-        "sell": 0,
-        "hold": 7,
-        "avg_score": 45.0
       }
     }
   },
@@ -127,15 +128,6 @@
       "reason": "失敗パターンなし"
     },
     {
-      "agent": "technical_summary",
-      "agent_jp": "テクニカル総合",
-      "category": "analysis",
-      "score": 63.0,
-      "judgment": "BUY",
-      "confidence": 0.6,
-      "reason": "テクニカル中立 / 強弱比=4.5:3.3"
-    },
-    {
       "agent": "emotion_bias",
       "agent_jp": "感情バイアス",
       "category": "personal",
@@ -151,28 +143,10 @@
       "score": 60.0,
       "judgment": "BUY",
       "confidence": 0.6,
-      "reason": "ケリー推奨=10.0%(約125,000円/資金1,250,000円・上限到達(頭打ち))[半ケリー基礎値10.6%]"
+      "reason": "ケリー推奨=4.2%(約51,953円/資金1,250,000円)[半ケリー基礎値4.2%]"
     }
   ],
   "top_risks": [
-    {
-      "agent": "short_term_prob",
-      "agent_jp": "短期確率",
-      "category": "prediction",
-      "score": 59.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "1d/5d上昇確率=59% / RSI=54 / MACD正"
-    },
-    {
-      "agent": "supply_demand",
-      "agent_jp": "需給分析",
-      "category": "analysis",
-      "score": 58.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇（蓄積）"
-    },
     {
       "agent": "expected_value",
       "agent_jp": "期待値",
@@ -180,16 +154,7 @@
       "score": 58.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "期待値=+1.40% / RR比=2.04 / 上昇確率=55%"
-    },
-    {
-      "agent": "volume_anomaly",
-      "agent_jp": "出来高異常",
-      "category": "market_monitor",
-      "score": 55.0,
-      "judgment": "WATCH",
-      "confidence": 0.6,
-      "reason": "OBV上昇トレンド"
+      "reason": "期待値=+0.60% / RR比=1.36 / 上昇確率=45%"
     },
     {
       "agent": "investor_profile",
@@ -210,13 +175,22 @@
       "reason": "異常なし"
     },
     {
-      "agent": "downside_risk",
-      "agent_jp": "下落リスク",
-      "category": "prediction",
-      "score": 53.0,
+      "agent": "day_trade",
+      "agent_jp": "デイトレード",
+      "category": "trade_style",
+      "score": 55.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "3%下落確率=33% / 5%下落確率=54% / 10%下落確率=70% / ⚠下落リスク高"
+      "reason": "ストキャスKD買い"
+    },
+    {
+      "agent": "macro_environment",
+      "agent_jp": "マクロ環境",
+      "category": "analysis",
+      "score": 54.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "長期金利高(4.9%) / 金利低下中(株にプラス) / VIX低安定"
     },
     {
       "agent": "market_sentiment",
@@ -234,29 +208,47 @@
       "score": 52.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "【様子見】★★\n総合スコア: 51.0/100\n上昇確率: 5日=47% / 20日=47% / 3ヶ月=48% / 12ヶ月=48%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: +0.76% / リスクリワード: 3.04\n判定時刻: 2026-08-31 22:32"
+      "reason": "【様子見】★★\n総合スコア: 49.0/100\n上昇確率: 5日=37% / 20日=38% / 3ヶ月=40% / 12ヶ月=44%\n下落確率: 3%=5% / 5%=5% / 10%=5%\n期待値: -0.02% / リスクリワード: 0.08\n判定時刻: 2026-09-19 11:31"
     },
     {
-      "agent": "score_integration",
-      "agent_jp": "スコア統合",
-      "category": "integration",
-      "score": 51.0,
+      "agent": "news_impact",
+      "agent_jp": "ニュース影響",
+      "category": "analysis",
+      "score": 50.0,
       "judgment": "WATCH",
       "confidence": 0.6,
-      "reason": "全エージェント統合スコア=51"
+      "reason": "ニュース中立"
+    },
+    {
+      "agent": "long_term_prob",
+      "agent_jp": "長期確率",
+      "category": "prediction",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "12m上昇確率=50% / ROIC=0% / PERなし"
+    },
+    {
+      "agent": "sector_semiconductor",
+      "agent_jp": "半導体",
+      "category": "sector",
+      "score": 50.0,
+      "judgment": "WATCH",
+      "confidence": 0.6,
+      "reason": "半導体セクター対象外(PLUG)"
     }
   ],
   "fundamentals": null,
   "historical": {
     "first_data_date": "1999-10-29",
-    "total_days": 6748,
+    "total_days": 6762,
     "approx_years": 26.8,
     "data_span_label": "IPO以降 約26.8年（1999-10-29〜）",
     "all_time_high": 1497.5,
-    "current_close": 2.19,
+    "current_close": 2.09,
     "current_drawdown_pct": -99.9,
     "max_drawdown_pct": -100.0,
-    "days_below_30pct_dd": 6651,
+    "days_below_30pct_dd": 6665,
     "pct_time_below_30pct": 98.6,
     "current_pct_of_ath": 0.1
   },
@@ -265,7 +257,7 @@
   "earnings_recent": [
     {
       "date": "2026-11-10",
-      "estimated_eps": -0.08,
+      "estimated_eps": -0.06333,
       "actual_eps": null,
       "surprise_pct": null
     }
